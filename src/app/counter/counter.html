@@ -1,0 +1,10 @@
+<p>We do counting so you don't have to</p>
+
+<p>
+    Increase amount:
+    <input type="number" [(ngModel)]="step" placeholder="step amount">
+</p>
+
+<p>Current value {{count | number: '1.0-3' }}</p>
+
+<button (click)="adjust()">Increment</button>
