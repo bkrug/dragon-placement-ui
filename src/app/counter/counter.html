@@ -15,7 +15,9 @@
     }
     @for (elem1 of array1; track $index) {
         <li>
-            <span>{{elem1 | number: '1.0-3'}}</span>
+            <div [class.pudding]="$index === $count-2">
+                <app-much-math [inputNumber]="elem1"></app-much-math>
+            </div>
         </li>
     }
     @empty {

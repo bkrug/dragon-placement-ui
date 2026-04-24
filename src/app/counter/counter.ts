@@ -1,10 +1,11 @@
-import { DecimalPipe } from '@angular/common';
 import { Component } from '@angular/core';
+import { DecimalPipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { MuchMath } from '../much-math/much-math';
 
 @Component({
   selector: 'app-counter',
-  imports: [ FormsModule, DecimalPipe ],
+  imports: [ FormsModule, DecimalPipe, MuchMath  ],
   templateUrl: './counter.html',
   styleUrl: './counter.scss',
 })
