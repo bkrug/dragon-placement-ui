@@ -2,10 +2,11 @@ import { Component } from '@angular/core';
 import { DecimalPipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MuchMath } from '../much-math/much-math';
+import { ButtonModule } from 'primeng/button';
 
 @Component({
   selector: 'app-counter',
-  imports: [ FormsModule, DecimalPipe, MuchMath  ],
+  imports: [ FormsModule, DecimalPipe, MuchMath, ButtonModule ],
   templateUrl: './counter.html',
   styleUrl: './counter.scss',
 })
