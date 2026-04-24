@@ -8,3 +8,17 @@
 <p>Current value {{count | number: '1.0-3' }}</p>
 
 <button (click)="adjust()">Increment</button>
+
+<p>
+    @if (array1.length > 0) {
+        Some numbers:
+    }
+    @for (elem1 of array1; track $index) {
+        <li>
+            <span>{{elem1 | number: '1.0-3'}}</span>
+        </li>
+    }
+    @empty {
+        [ None ]
+    }
+</p>

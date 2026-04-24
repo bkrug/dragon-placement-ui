@@ -11,7 +11,9 @@ import { FormsModule } from '@angular/forms';
 export class Counter {
   count: number = 0;
   step: number = 1;
+  array1: number[] = [ ];
   adjust() : void {
+    this.array1.push(this.count);
     this.count += this.step;
   }
 }
