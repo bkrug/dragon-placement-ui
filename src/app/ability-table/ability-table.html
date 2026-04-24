@@ -1,0 +1,16 @@
+<div class="card">
+    <p-table [value]="abilities()" [tableStyle]="{ 'min-width': '50rem' }" [paginator]="true" [rows]="5">
+        <ng-template #header>
+            <tr>
+                <th class="w-1/6">Ability Name</th>
+                <th class="w-1/6">Url</th>
+            </tr>
+        </ng-template>
+        <ng-template #body let-product>
+            <tr>
+                <td>{{ product.name }}</td>
+                <td><a href={{ product.url }}>{{ product.url }}</a></td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>
