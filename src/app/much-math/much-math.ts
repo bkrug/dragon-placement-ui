@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, input } from '@angular/core';
 import { DecimalPipe } from '@angular/common';
 
 @Component({
@@ -9,5 +9,5 @@ import { DecimalPipe } from '@angular/common';
   styleUrl: './much-math.scss',
 })
 export class MuchMath {
-  @Input() inputNumber: number = 0;
+  inputNumber = input(0);
 }
