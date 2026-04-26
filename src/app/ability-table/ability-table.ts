@@ -1,7 +1,7 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
 import { Popover, PopoverModule } from 'primeng/popover';
-import { TableModule } from 'primeng/table';
+import { TableLazyLoadEvent, TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
 
 export interface PokemonAbilityPage {
@@ -27,15 +27,24 @@ export interface PokemonAbility {
 export class PopoverDatatableDemo implements OnInit {
   abilities = signal<PokemonAbility[]>([]);
   selectedAbility = signal<PokemonAbility | null>(null);
+  totalRecords = signal(0);
+  first = signal(0);
+  last = signal(0);
+  readonly pageSize = 20;
 
   ngOnInit() {
     console.log('on init is triggered');
+  }
 
-    fetch('https://pokeapi.co/api/v2/ability/')
+  onPageChange(event: TableLazyLoadEvent) {
+    console.log("Loading  page data", event.first);
+    const offset = event.first || 0;
+    fetch(`https://pokeapi.co/api/v2/ability/?offset=${offset}&limit=${this.pageSize}`)
       .then(response => response.json())
       .then(json => {
         const pagedData = json as PokemonAbilityPage;
         this.abilities.set(pagedData.results);
-      });
+        this.totalRecords.set(pagedData.count);
+      });    
   }
 }

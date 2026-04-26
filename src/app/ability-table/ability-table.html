@@ -1,5 +1,18 @@
 <div class="card">
-    <p-table [value]="abilities()" [tableStyle]="{ 'min-width': '50rem' }" [paginator]="true" [rows]="5">
+    <p-table
+        [value]="abilities()"
+        [tableStyle]="{ 'min-width': '50rem' }"
+        [paginator]="true"
+        [rows]="this.pageSize"
+        [rowsPerPageOptions]="[20]"
+        [first]="first()"
+        [totalRecords]="totalRecords()"
+        [lazy]="true"
+        [showLoader]="true"
+        (onLazyLoad)="onPageChange($event)"
+        [showCurrentPageReport]="true"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+        >
         <ng-template #header>
             <tr>
                 <th class="w-1/6">Ability Name</th>
