@@ -24,17 +24,11 @@ export interface PokemonAbility {
   imports: [ButtonModule, PopoverModule, TableModule, TagModule],
   providers: []
 })
-export class PopoverDatatableDemo implements OnInit {
+export class PopoverDatatableDemo {
   abilities = signal<PokemonAbility[]>([]);
   selectedAbility = signal<PokemonAbility | null>(null);
   totalRecords = signal(0);
-  first = signal(0);
-  last = signal(0);
   readonly pageSize = 20;
-
-  ngOnInit() {
-    console.log('on init is triggered');
-  }
 
   onPageChange(event: TableLazyLoadEvent) {
     console.log("Loading  page data", event.first);
