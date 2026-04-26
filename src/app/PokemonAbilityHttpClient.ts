@@ -16,11 +16,9 @@ export interface PokemonAbility {
   providedIn: 'root',
 })
 export class PokemonAbilityHttpClient {
-  getOnePage(offset: number, limit: number) {
-    return fetch(`https://pokeapi.co/api/v2/ability/?offset=${offset}&limit=${limit}`)
-      .then(response => response.json())
-      .then(json => {
-        return json as PokemonAbilityPage;
-      });    
+  async getOnePage(offset: number, limit: number) {
+    const response = await fetch(`https://pokeapi.co/api/v2/ability/?offset=${offset}&limit=${limit}`);
+    const json = await response.json();
+    return json as PokemonAbilityPage;    
   }
 }
