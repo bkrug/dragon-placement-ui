@@ -3,18 +3,7 @@ import { ButtonModule } from 'primeng/button';
 import { Popover, PopoverModule } from 'primeng/popover';
 import { TableLazyLoadEvent, TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
-
-export interface PokemonAbilityPage {
-  count: number
-  next: string | null
-  previous: string | null
-  results: PokemonAbility[]
-}
-
-export interface PokemonAbility {
-  name: string
-  url: string
-}
+import { PokemonAbilityHttpClient, PokemonAbility } from '../PokemonAbilityHttpClient';
 
 @Component({
   standalone: true,
@@ -25,6 +14,8 @@ export interface PokemonAbility {
   providers: []
 })
 export class PopoverDatatableDemo {
+  lazyLoadingService = inject(PokemonAbilityHttpClient);
+
   abilities = signal<PokemonAbility[]>([]);
   selectedAbility = signal<PokemonAbility | null>(null);
   totalRecords = signal(0);
@@ -33,12 +24,11 @@ export class PopoverDatatableDemo {
   onPageChange(event: TableLazyLoadEvent) {
     console.log("Loading  page data", event.first);
     const offset = event.first || 0;
-    fetch(`https://pokeapi.co/api/v2/ability/?offset=${offset}&limit=${this.pageSize}`)
-      .then(response => response.json())
-      .then(json => {
-        const pagedData = json as PokemonAbilityPage;
+    this.lazyLoadingService
+      .getOnePage(offset, this.pageSize)
+      .then(pagedData => {
         this.abilities.set(pagedData.results);
         this.totalRecords.set(pagedData.count);
-      });    
+      });
   }
 }
