@@ -5,7 +5,7 @@ import { PopoverDatatableDemo } from "./ability-table/ability-table";
 
 export const routes: Routes = [
   {
-    path: 'dragonsearch',
+    path: 'dragon-search',
     component: DragonSearch
   },
   {
