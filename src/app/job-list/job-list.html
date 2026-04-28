@@ -1,5 +1,3 @@
-<p>job-management works!</p>
-<p>{{selectedJob()?.jobTitle}}</p>
 @if (selectedJob() === null)
 {
     <p-table
@@ -38,5 +36,5 @@
     </p-table>
 }
 @else {
-    <app-manage-job/>
+    <app-manage-job [selectedJob]="selectedJob()"/>
 }
