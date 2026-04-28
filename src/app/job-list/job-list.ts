@@ -6,18 +6,19 @@ import { TableLazyLoadEvent, TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
 import { DisplayJob } from '../../poco/job';
 import PagedData from '../../poco/pagedData';
+import { ManageJob } from '../manage-job/manage-job';
 
 @Component({
-  selector: 'app-job-management',
-  imports: [ButtonModule, PopoverModule, TableModule, TagModule],
-  templateUrl: './job-management.html',
-  styleUrl: './job-management.scss',
+  selector: 'app-job-list',
+  imports: [ButtonModule, PopoverModule, TableModule, TagModule, ManageJob],
+  templateUrl: './job-list.html',
+  styleUrl: './job-list.scss',
 })
-export class JobManagement {
+export class JobList {
   lazyLoadingService = inject(JobsHttpClient);
 
   jobs = signal<DisplayJob[]>([]);
-  selectedAbility = signal<DisplayJob | null>(null);
+  selectedJob = signal<DisplayJob | null>(null);
   totalRecords = signal(0);
   readonly pageSize = 20;
 

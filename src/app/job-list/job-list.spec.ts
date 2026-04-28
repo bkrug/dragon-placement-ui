@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { JobManagement } from './job-management';
+import { JobManagement } from './job-list';
 
 describe('JobManagement', () => {
   let component: JobManagement;

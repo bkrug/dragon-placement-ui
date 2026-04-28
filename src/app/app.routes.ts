@@ -2,7 +2,7 @@ import { Routes } from '@angular/router';
 import { DragonSearch } from './dragon-search/dragon-search';
 import { Counter } from './counter/counter';
 import { PopoverDatatableDemo } from "./ability-table/ability-table";
-import { JobManagement } from './job-management/job-management';
+import { JobList } from './job-list/job-list';
 
 export const routes: Routes = [
   {
@@ -19,6 +19,6 @@ export const routes: Routes = [
   },
   {
     path: 'jobs',
-    component: JobManagement
+    component: JobList
   }
 ];
