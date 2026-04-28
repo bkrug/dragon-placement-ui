@@ -5,7 +5,6 @@ import { Popover, PopoverModule } from 'primeng/popover';
 import { TableLazyLoadEvent, TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
 import { DisplayJob } from '../../poco/job';
-import PagedData from '../../poco/pagedData';
 import { ManageJob } from '../manage-job/manage-job';
 
 @Component({
@@ -30,5 +29,5 @@ export class JobList {
         this.jobs.set(pagedData.data);
         this.totalRecords.set(pagedData.totalRecords);
       });
-  }  
+  }
 }

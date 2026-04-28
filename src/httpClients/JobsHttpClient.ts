@@ -25,5 +25,5 @@ export class JobsHttpClient {
         } as DisplayJob
       })
     }
-  }  
+  }
 }
