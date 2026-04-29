@@ -3,7 +3,7 @@ import { ButtonModule } from 'primeng/button';
 import { Popover, PopoverModule } from 'primeng/popover';
 import { TableLazyLoadEvent, TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
-import { PokemonAbilityHttpClient, PokemonAbility } from '../../httpClients/PokemonAbilityHttpClient';
+import { PokemonAbilityHttpClient, PokemonAbility } from '../../httpClients/pokemon-ability-http-client';
 
 @Component({
   standalone: true,
