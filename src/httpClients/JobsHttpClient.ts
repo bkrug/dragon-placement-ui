@@ -15,13 +15,17 @@ export class JobsHttpClient {
       limit: source.limit,
       totalRecords: source.totalRecords,
       data: source.data.map(d => {
+        const startDate = new Date(d.startDateUnix * 1000);
+        const endDate = new Date(d.endDateUnix * 1000);
         return {
           jobId: d.jobId,
           jobTitle: d.jobTitle,
           employerName: d.employerName,
           numberOfPositions: d.numberOfPositions,
-          startDate: new Date(d.startDate),
-          endDate: new Date(d.endDate),
+          startDate: startDate,
+          endDate: endDate,
+          startDateString: `${startDate.getUTCMonth() + 1}/${startDate.getUTCDate()}/${startDate.getUTCFullYear()}`,
+          endDateString: `${endDate.getUTCMonth() + 1}/${endDate.getUTCDate()}/${endDate.getUTCFullYear()}`
         } as DisplayJob
       })
     }
