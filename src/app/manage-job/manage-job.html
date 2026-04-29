@@ -13,6 +13,10 @@
       <td>{{selectedJob()?.employerName}}</td>
     </tr>
     <tr>
+      <td>Positions to Fill</td>
+      <td>{{selectedJob()?.openDescription}}</td>
+    </tr>    
+    <tr>
       <td>Start Date</td>
       <td>{{selectedJob()?.startDate | date:'fullDate':'+0'}}</td>
     </tr>

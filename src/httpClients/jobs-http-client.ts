@@ -17,11 +17,14 @@ export class JobsHttpClient {
       data: source.data.map(d => {
         const startDate = new Date(d.startDateUnix * 1000);
         const endDate = new Date(d.endDateUnix * 1000);
+        const openPositions = d.numberOfPositions - d.filledPositions;
         return {
           jobId: d.jobId,
           jobTitle: d.jobTitle,
           employerName: d.employerName,
           numberOfPositions: d.numberOfPositions,
+          openPositions: openPositions,
+          openDescription: openPositions === 0 ? 'Filled' : openPositions + ' of ' + d.numberOfPositions,
           startDate: startDate,
           endDate: endDate
         } as DisplayJob

@@ -19,7 +19,7 @@
             <tr>
                 <th>Job Title</th>
                 <th>Employer Name</th>
-                <th>Number of Positions</th>
+                <th>Positions to Fill</th>
                 <th>Start Date</th>
                 <th>End Date</th>
             </tr>
@@ -28,7 +28,7 @@
             <tr [pSelectableRow]="job">
                 <td>{{ job.jobTitle }}</td>
                 <td>{{ job.employerName }}</td>
-                <td>{{ job.numberOfPositions }}</td>
+                <td>{{ job.openDescription }}</td>
                 <td>{{ job.startDate | date:'fullDate':'+0' }}</td>
                 <td>{{ job.endDate | date:'fullDate':'+0' }}</td>
             </tr>
