@@ -12,11 +12,11 @@
     </tr>
     <tr>
       <td>Start Date</td>
-      <td>{{selectedJob()?.startDate}}</td>
+      <td>{{selectedJob()?.startDate | date:'fullDate':'+0'}}</td>
     </tr>
     <tr>
       <td>End Date</td>
-      <td>{{selectedJob()?.endDate}}</td>
+      <td>{{selectedJob()?.endDate | date:'fullDate':'+0'}}</td>
     </tr>
   </tbody>
 </table>

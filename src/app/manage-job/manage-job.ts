@@ -1,15 +1,13 @@
 import { Component, input, inject, signal } from '@angular/core';
+import { DatePipe } from '@angular/common';
 import { DisplayJob } from '../../poco/job';
 import { DragonHttpClient } from '../../httpClients/dragon-http-client';
 import { Dragon } from '../../poco/dragon';
-import { ButtonModule } from 'primeng/button';
-import { Popover, PopoverModule } from 'primeng/popover';
 import { TableLazyLoadEvent, TableModule } from 'primeng/table';
-import { TagModule } from 'primeng/tag';
 
 @Component({
   selector: 'app-manage-job',
-  imports: [ TableModule ],
+  imports: [ TableModule, DatePipe ],
   templateUrl: './manage-job.html',
   styleUrl: './manage-job.scss',
 })
