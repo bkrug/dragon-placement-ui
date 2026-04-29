@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import PagedData from '../poco/pagedData';
 import { Dragon } from '../poco/dragon';
+import { ValidatedResponse } from '../poco/validatedResponse';
 
 @Injectable({
   providedIn: 'root',
@@ -15,6 +16,24 @@ export class DragonHttpClient {
       limit: source.limit,
       totalRecords: source.totalRecords,
       data: source.data
+    }
+  }
+
+  async assignDragonToJob(dragonId: number, jobId: number) {
+    try {
+      const response = await fetch(`http://localhost:5193/assignment?dragonId=${dragonId}&jobId=${jobId}`, {
+        method: "POST"
+      });
+      const json = await response.json();
+      const validatedResponse = json as ValidatedResponse;
+      return validatedResponse;
+    }
+    catch (ex) {
+      return {
+        isSuccess: false,
+        isInternalError: true,
+        validationFailures: [ JSON.stringify(ex) ]
+      } as ValidatedResponse
     }
   }  
 }

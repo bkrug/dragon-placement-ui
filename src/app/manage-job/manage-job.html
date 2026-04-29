@@ -27,6 +27,7 @@
   [value]="dragons()"
   [tableStyle]="{ 'min-width': '50rem' }"
   [paginator]="true"
+  [first]="this.first()"
   [rows]="this.pageSize"
   [rowsPerPageOptions]="[20]"
   [totalRecords]="totalRecords()"
@@ -40,22 +41,24 @@
   >
   <ng-template #header>
       <tr>
-          <th>Name</th>
-          <th>Breath Fire</th>
-          <th>Passengers</th>
-          <th>Fighting Skills</th>
-          <th>Weight (kg)</th>
-          <th>Length (m)</th>
+        <th></th>
+        <th>Name</th>
+        <th>Breath Fire</th>
+        <th>Passengers</th>
+        <th>Fighting Skills</th>
+        <th>Weight (kg)</th>
+        <th>Length (m)</th>
       </tr>
   </ng-template>
   <ng-template #body let-dragon>
       <tr [pSelectableRow]="dragon">
-          <td>{{ dragon.givenName }} {{ dragon.familyName }}</td>
-          <td>{{ dragon.canBreathFire ? "yes" : "no" }}</td>
-          <td>{{ dragon.canTakePassengers ? "yes" : "no" }}</td>
-          <td>{{ dragon.fightingSkills }}</td>
-          <td>{{ dragon.weightInKg }}</td>
-          <td>{{ dragon.lengthInMeters }}</td>
+        <td><p-button (click)="assignDragon(dragon.dragonId)">Assign</p-button></td>
+        <td>{{ dragon.givenName }} {{ dragon.familyName }}</td>
+        <td>{{ dragon.canBreathFire ? "yes" : "no" }}</td>
+        <td>{{ dragon.canTakePassengers ? "yes" : "no" }}</td>
+        <td>{{ dragon.fightingSkills }}</td>
+        <td>{{ dragon.weightInKg }}</td>
+        <td>{{ dragon.lengthInMeters }}</td>
       </tr>
   </ng-template>
 </p-table>

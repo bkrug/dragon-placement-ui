@@ -22,6 +22,7 @@ export class ManageJob {
   dragons = signal<Dragon[]>([]);
   selectedDragon = signal<Dragon | null>(null);
   totalRecords = signal(0);
+  first = input(0);
   readonly pageSize = 20;
 
   onPageChange(event: TableLazyLoadEvent) {
@@ -35,9 +36,21 @@ export class ManageJob {
         this.dragons.set(pagedData.data);
         this.totalRecords.set(pagedData.totalRecords);
       });
-  }  
+  }
 
   clearSelection() {
     this.onClose.emit(null);
+  }
+
+  assignDragon(dragonId: number) {
+    if (this.selectedJob() === null)
+      return;
+
+    this.lazyLoadingService.assignDragonToJob(dragonId, this.selectedJob()!.jobId)
+      .then(validatedResponse => {
+        if (!validatedResponse.isSuccess) {
+          alert(validatedResponse.validationFailures.join(", "))
+        }
+      });
   }
 }
