@@ -18,13 +18,17 @@ export class JobsHttpClient {
         const startDate = new Date(d.startDateUnix * 1000);
         const endDate = new Date(d.endDateUnix * 1000);
         const openPositions = d.numberOfPositions - d.filledPositions;
+        const openDescription = 
+          openPositions === 0 ? 'Filled'
+          : openPositions < 0 ? `${openPositions} of ${d.numberOfPositions} (overfilled)`
+          : `${openPositions} of ${d.numberOfPositions}`;
         return {
           jobId: d.jobId,
           jobTitle: d.jobTitle,
           employerName: d.employerName,
           numberOfPositions: d.numberOfPositions,
           openPositions: openPositions,
-          openDescription: openPositions === 0 ? 'Filled' : openPositions + ' of ' + d.numberOfPositions,
+          openDescription: openDescription,
           startDate: startDate,
           endDate: endDate
         } as DisplayJob
