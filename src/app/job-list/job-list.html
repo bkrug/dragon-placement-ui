@@ -29,8 +29,8 @@
                 <td>{{ job.jobTitle }}</td>
                 <td>{{ job.employerName }}</td>
                 <td>{{ job.numberOfPositions }}</td>
-                <td>{{ job.startDateString }}</td>
-                <td>{{ job.endDateString }}</td>
+                <td>{{ job.startDate | date:'fullDate':'+0' }}</td>
+                <td>{{ job.endDate | date:'fullDate':'+0' }}</td>
             </tr>
         </ng-template>
     </p-table>

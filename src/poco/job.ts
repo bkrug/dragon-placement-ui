@@ -16,7 +16,5 @@ export class DisplayJob {
   numberOfPositions: number = 0;
   startDate: Date = new Date(0);
   endDate: Date = new Date(0);
-  startDateString: string = '';
-  endDateString: string = '';
 }
 

@@ -23,9 +23,7 @@ export class JobsHttpClient {
           employerName: d.employerName,
           numberOfPositions: d.numberOfPositions,
           startDate: startDate,
-          endDate: endDate,
-          startDateString: `${startDate.getUTCMonth() + 1}/${startDate.getUTCDate()}/${startDate.getUTCFullYear()}`,
-          endDateString: `${endDate.getUTCMonth() + 1}/${endDate.getUTCDate()}/${endDate.getUTCFullYear()}`
+          endDate: endDate
         } as DisplayJob
       })
     }
