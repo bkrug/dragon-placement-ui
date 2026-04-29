@@ -7,8 +7,20 @@ import { ValidatedResponse } from '../poco/validatedResponse';
   providedIn: 'root',
 })
 export class DragonHttpClient {
-  async getOnePage(jobId: number, offset: number, limit: number) {
+  async getOnePageOfCandidates(jobId: number, offset: number, limit: number) {
     const response = await fetch(`http://localhost:5193/dragon?jobId=${jobId}&offset=${offset}&limit=${limit}`);
+    const json = await response.json();
+    let source = json as PagedData<Dragon>;
+    return {
+      offset: source.offset,
+      limit: source.limit,
+      totalRecords: source.totalRecords,
+      data: source.data
+    }
+  }
+
+  async getOnePageOfAssignees(jobId: number, offset: number, limit: number) {
+    const response = await fetch(`http://localhost:5193/job/${jobId}/assigned-dragon?offset=${offset}&limit=${limit}`);
     const json = await response.json();
     let source = json as PagedData<Dragon>;
     return {
