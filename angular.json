@@ -6,7 +6,7 @@
   },
   "newProjectRoot": "projects",
   "projects": {
-    "angular-pokemon-hiring": {
+    "dragon-placement-ui": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -61,10 +61,10 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "angular-pokemon-hiring:build:production"
+              "buildTarget": "dragon-placement-ui:build:production"
             },
             "development": {
-              "buildTarget": "angular-pokemon-hiring:build:development"
+              "buildTarget": "dragon-placement-ui:build:development"
             }
           },
           "defaultConfiguration": "development"
