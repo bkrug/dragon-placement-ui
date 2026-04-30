@@ -1,5 +1,6 @@
 import { Component, input, inject, signal, EventEmitter, Output, OnInit } from '@angular/core';
 import { DisplayJob } from '../../poco/job';
+import { ValidatedResponse } from '../../poco/validatedResponse';
 import { DragonHttpClient } from '../../httpClients/dragon-http-client';
 import { Dragon } from '../../poco/dragon';
 import { TableLazyLoadEvent, TableModule } from 'primeng/table';
@@ -50,32 +51,35 @@ export class DragonTable implements OnInit {
   }
 
   assignDragon(dragonId: number) {
-    if (this.selectedJob() === null)
-      return;
-
-    this.lazyLoadingService.assignDragonToJob(dragonId, this.selectedJob()!.jobId)
-      .then(validatedResponse => {
-        if (validatedResponse.isSuccess) {
-          this.onDragonAssigned.emit();
-        }
-        else {
-          alert(validatedResponse.validationFailures.join(", "));
-        }
-      });
+    this.executeDragonAction(
+      dragonId,
+      this.lazyLoadingService.assignDragonToJob,
+      this.onDragonAssigned);
   }
   
   unassignDragon(dragonId: number) {
+    this.executeDragonAction(
+      dragonId,
+      this.lazyLoadingService.unassignDragonToJob,
+      this.onDragonUnassigned);
+  }
+
+  private executeDragonAction(
+    dragonId: number,
+    httpFunction: (dragonId: number, jobId: number) => Promise<ValidatedResponse>,
+    eventToEmit: EventEmitter<any>
+  ) {
     if (this.selectedJob() === null)
       return;
 
-    this.lazyLoadingService.unassignDragonToJob(dragonId, this.selectedJob()!.jobId)
+    httpFunction(dragonId, this.selectedJob()!.jobId)
       .then(validatedResponse => {
         if (validatedResponse.isSuccess) {
-          this.onDragonUnassigned.emit();
+          eventToEmit.emit();
         }
         else {
           alert(validatedResponse.validationFailures.join(", "));
         }
-      });
+      });    
   }
 }
