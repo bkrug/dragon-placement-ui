@@ -22,7 +22,6 @@ export class PopoverDatatableDemo {
   readonly pageSize = 20;
 
   onPageChange(event: TableLazyLoadEvent) {
-    console.log("Loading  page data", event.first);
     const offset = event.first || 0;
     this.lazyLoadingService
       .getOnePage(offset, this.pageSize)

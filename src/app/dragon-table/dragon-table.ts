@@ -45,7 +45,6 @@ export class DragonTable implements OnInit {
     dragonPromise
       .then(pagedData => {
         this.dragons.set(pagedData.data);
-        console.log(this.dragons().length);
         this.totalRecords.set(pagedData.totalRecords);
       });
   }

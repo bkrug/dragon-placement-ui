@@ -33,7 +33,7 @@ export class DragonHttpClient {
 
   async assignDragonToJob(dragonId: number, jobId: number) {
     try {
-      const response = await fetch(`http://localhost:5193/assignment?dragonId=${dragonId}&jobId=${jobId}`, {
+      const response = await fetch(`http://localhost:5193/job/${jobId}/assigned-dragon/${dragonId}`, {
         method: "POST"
       });
       const json = await response.json();
