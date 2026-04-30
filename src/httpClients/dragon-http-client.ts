@@ -47,5 +47,23 @@ export class DragonHttpClient {
         validationFailures: [ JSON.stringify(ex) ]
       } as ValidatedResponse
     }
+  }
+  
+  async unassignDragonToJob(dragonId: number, jobId: number) {
+    try {
+      const response = await fetch(`http://localhost:5193/job/${jobId}/assigned-dragon/${dragonId}`, {
+        method: "DELETE"
+      });
+      const json = await response.json();
+      const validatedResponse = json as ValidatedResponse;
+      return validatedResponse;
+    }
+    catch (ex) {
+      return {
+        isSuccess: false,
+        isInternalError: true,
+        validationFailures: [ JSON.stringify(ex) ]
+      } as ValidatedResponse
+    }
   }  
 }
