@@ -56,7 +56,6 @@ export class DragonTable implements OnInit {
     this.lazyLoadingService.assignDragonToJob(dragonId, this.selectedJob()!.jobId)
       .then(validatedResponse => {
         if (validatedResponse.isSuccess) {
-          this.forcePageLoad();
           this.onDragonAssigned.emit();
         }
         else {
@@ -72,7 +71,6 @@ export class DragonTable implements OnInit {
     this.lazyLoadingService.unassignDragonToJob(dragonId, this.selectedJob()!.jobId)
       .then(validatedResponse => {
         if (validatedResponse.isSuccess) {
-          this.forcePageLoad();
           this.onDragonUnassigned.emit();
         }
         else {

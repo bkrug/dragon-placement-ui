@@ -28,6 +28,6 @@
 </table>
 
 <h3>Assigned Dragons</h3>
-<app-dragon-table dragonTableType="2" [selectedJob]="selectedJob()"></app-dragon-table>
+<app-dragon-table dragonTableType="2" [selectedJob]="selectedJob()" (onDragonUnassigned)="reloadDragonTables()"></app-dragon-table>
 <h3>Dragons Available to Assign</h3>
-<app-dragon-table dragonTableType="1" [selectedJob]="selectedJob()"></app-dragon-table>
+<app-dragon-table dragonTableType="1" [selectedJob]="selectedJob()" (onDragonAssigned)="reloadDragonTables()"></app-dragon-table>
