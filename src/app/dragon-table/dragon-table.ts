@@ -1,4 +1,4 @@
-import { Component, input, inject, signal, EventEmitter, Output } from '@angular/core';
+import { Component, input, inject, signal, EventEmitter, Output, OnInit } from '@angular/core';
 import { DisplayJob } from '../../poco/job';
 import { DragonHttpClient } from '../../httpClients/dragon-http-client';
 import { Dragon } from '../../poco/dragon';
@@ -11,7 +11,7 @@ import { ButtonModule } from 'primeng/button';
   templateUrl: './dragon-table.html',
   styleUrl: './dragon-table.scss',
 })
-export class DragonTable {
+export class DragonTable implements OnInit {
   lazyLoadingService = inject(DragonHttpClient);
 
   selectedJob = input<DisplayJob | null>();
@@ -30,6 +30,10 @@ export class DragonTable {
     this.onPageChange({ first: this.first() });    
   }
 
+  ngOnInit(): void {
+    this.forcePageLoad();
+  }
+
   onPageChange(event: TableLazyLoadEvent) {
     if (this.selectedJob() === null)
       return;
@@ -41,6 +45,7 @@ export class DragonTable {
     dragonPromise
       .then(pagedData => {
         this.dragons.set(pagedData.data);
+        console.log(this.dragons().length);
         this.totalRecords.set(pagedData.totalRecords);
       });
   }
