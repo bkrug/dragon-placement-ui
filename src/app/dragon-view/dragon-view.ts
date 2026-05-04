@@ -15,6 +15,7 @@ export class DragonView implements OnInit {
   private activatedRoute = inject(ActivatedRoute);
 
   private dragonId: number = 0;
+  haveDragon = signal(false);
   dragon = signal(new Dragon());
   
   constructor() {
@@ -27,6 +28,7 @@ export class DragonView implements OnInit {
     this.dragonHttpClient.getDragonWithJobs(this.dragonId, JobInclusions.CurrentAndFuture)
       .then(validatedResponse => {
         this.dragon.set(validatedResponse.payload);
+        this.haveDragon.set(true);
         console.log(JSON.stringify(validatedResponse));
       });
   }

@@ -1,28 +1,30 @@
-<table>
-  <tbody>
-    <tr>
-      <td>Dragon</td>
-      <td>{{ dragon().givenName }} {{ dragon().familyName || '' }}</td>
-    </tr>
-    <tr>
-      <td>Can Breath Fire</td>
-      <td>{{ dragon().canBreathFire ? "yes" : "no" }}</td>
-    </tr>
-    <tr>
-      <td>Can Take Passengers</td>
-      <td>{{ dragon().canTakePassengers ? "yes" : "no" }}</td>
-    </tr>
-    <tr>
-      <td>Fighting Skills</td>
-      <td>{{ dragon().fightingSkills || '' === '' ? '(not specified)' : dragon().fightingSkills }}</td>
-    </tr>
-    <tr>
-      <td>Weight In Kg</td>
-      <td>{{ dragon().weightInKg }}</td>
-    </tr>
-    <tr>
-      <td>Length in Meters</td>
-      <td>{{ dragon().lengthInMeters }}</td>
-    </tr>
-  </tbody>
-</table>
+@if (haveDragon() === true) {
+  <table>
+    <tbody>
+      <tr>
+        <td>Dragon</td>
+        <td>{{ dragon().givenName }} {{ dragon().familyName || '' }}</td>
+      </tr>
+      <tr>
+        <td>Can Breath Fire</td>
+        <td>{{ dragon().canBreathFire ? "yes" : "no" }}</td>
+      </tr>
+      <tr>
+        <td>Can Take Passengers</td>
+        <td>{{ dragon().canTakePassengers ? "yes" : "no" }}</td>
+      </tr>
+      <tr>
+        <td>Fighting Skills</td>
+        <td>{{ dragon().fightingSkills || '' === '' ? '(not specified)' : dragon().fightingSkills }}</td>
+      </tr>
+      <tr>
+        <td>Weight In Kg</td>
+        <td>{{ dragon().weightInKg }}</td>
+      </tr>
+      <tr>
+        <td>Length in Meters</td>
+        <td>{{ dragon().lengthInMeters }}</td>
+      </tr>
+    </tbody>
+  </table>
+}
