@@ -2,7 +2,9 @@ export class Assignment {
   assignmentId: number = 0;
   jobId: number = 0;
   dragonId: number = 0;
-  jobs: Job[] = [];
+  job: Job = new Job();
+  startDateUnix: number = 0;
+  endDateUnix: number | null = null;
 }
 
 export class Dragon {
@@ -25,6 +27,27 @@ export class Job {
   numberOfPositions: number = 0;
   startDateUnix: number = 0;
   endDateUnix: number = 0;
+}
+
+export class DisplayDragon {
+  dragonId: number = 0;
+  givenName: string = '';
+  familyName: string | null = null;
+  canBreathFire: boolean = false;
+  canTakePassengers: boolean = false;
+  weightInKg: number = 0;
+  lengthInMeters: number = 0;
+  fightingSkills: string | null = null;
+  assignments: DisplayAssignment[] = [];
+}
+
+export class DisplayAssignment {
+  assignmentId: number = 0;
+  jobId: number = 0;
+  dragonId: number = 0;
+  job: DisplayJob = new DisplayJob();
+  startDate: Date = new Date(0);
+  endDate: Date | null = null;
 }
 
 export class DisplayJob {

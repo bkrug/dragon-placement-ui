@@ -27,4 +27,26 @@
       </tr>
     </tbody>
   </table>
+
+  <h3>Current and Upcoming Jobs</h3>
+  <table>
+    <tr>
+      <th>Employer </th>
+      <th>Job Title</th>
+      <th>Assignment Start</th>
+      <th>Assignment End</th>
+    </tr>
+    <tbody>
+      @for (assignment of dragon().assignments; track assignment.assignmentId) {
+        <tr>
+          <td>{{ assignment.job.employerName }}</td>
+          <td>{{ assignment.job.jobTitle }}</td>
+          <td>{{ assignment.startDate | date:'fullDate':'+0' }}</td>
+          <td>{{ assignment.endDate === null ? 'not specified' : assignment.endDate | date:'fullDate':'+0' }}</td>
+        </tr>
+      } @empty {
+        <p> None Assigned </p>
+      }
+    </tbody>
+  </table>
 }
