@@ -2,7 +2,7 @@ import { Component, inject, OnInit, signal } from '@angular/core';
 import { DragonHttpClient } from '../../httpClients/dragon-http-client';
 import { JobInclusions } from '../../poco/JobInclusions';
 import { ActivatedRoute } from '@angular/router';
-import { Dragon } from '../../poco/dragon';
+import { Dragon } from '../../poco/models';
 
 @Component({
   selector: 'app-dragon-view',

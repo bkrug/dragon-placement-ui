@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import PagedData from '../poco/pagedData';
-import Job, { DisplayJob } from '../poco/job';
+import { Job, DisplayJob } from '../poco/models';
 
 @Injectable({
   providedIn: 'root',

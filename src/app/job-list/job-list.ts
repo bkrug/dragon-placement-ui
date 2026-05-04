@@ -5,7 +5,7 @@ import { ButtonModule } from 'primeng/button';
 import { Popover, PopoverModule } from 'primeng/popover';
 import { TableLazyLoadEvent, TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
-import { DisplayJob } from '../../poco/job';
+import { DisplayJob } from '../../poco/models';
 import { ManageJob } from '../manage-job/manage-job';
 
 @Component({

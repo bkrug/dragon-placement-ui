@@ -2,7 +2,7 @@ import { Component, input, EventEmitter, Output, viewChildren } from '@angular/c
 import { DatePipe } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
 import { DragonTable } from '../dragon-table/dragon-table';
-import { DisplayJob } from '../../poco/job';
+import { DisplayJob } from '../../poco/models';
 
 @Component({
   selector: 'app-manage-job',
