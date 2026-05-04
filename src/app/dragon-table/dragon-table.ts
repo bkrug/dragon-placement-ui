@@ -5,6 +5,7 @@ import { DragonHttpClient } from '../../httpClients/dragon-http-client';
 import { Dragon } from '../../poco/models';
 import { TableLazyLoadEvent, TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
+import { DragonTableType } from '../../poco/enums';
 
 @Component({
   selector: 'app-dragon-table',
@@ -16,7 +17,7 @@ export class DragonTable implements OnInit {
   lazyLoadingService = inject(DragonHttpClient);
 
   selectedJob = input<DisplayJob | null>();
-  dragonTableType = input<string>();  // 1 = Assign, 2 = Unassign
+  dragonTableType = input<DragonTableType>();
 
   @Output() onDragonAssigned: EventEmitter<any> = new EventEmitter();
   @Output() onDragonUnassigned: EventEmitter<any> = new EventEmitter();
@@ -26,6 +27,7 @@ export class DragonTable implements OnInit {
   totalRecords = signal(0);
   first = input(0);
   readonly pageSize = 20;
+  DragonTableType = DragonTableType;
 
   forcePageLoad() {
     this.onPageChange({ first: this.first() });    
@@ -40,14 +42,20 @@ export class DragonTable implements OnInit {
       return;
 
     const offset = event.first || 0;
-    const dragonPromise = this.dragonTableType() === '1'
-      ? this.lazyLoadingService.getOnePageOfCandidates(this.selectedJob()!.jobId, offset, this.pageSize)
-      : this.lazyLoadingService.getOnePageOfAssignees(this.selectedJob()!.jobId, offset, this.pageSize);
-    dragonPromise
+    this.getPageOfDragons(offset)
       .then(pagedData => {
         this.dragons.set(pagedData.data);
         this.totalRecords.set(pagedData.totalRecords);
       });
+  }
+
+  private getPageOfDragons(offset: number) {
+    switch (this.dragonTableType()) {
+      case DragonTableType.Assign:
+        return this.lazyLoadingService.getOnePageOfCandidates(this.selectedJob()!.jobId, offset, this.pageSize);
+      default:
+        return this.lazyLoadingService.getOnePageOfAssignees(this.selectedJob()!.jobId, offset, this.pageSize);
+    }
   }
 
   assignDragon(dragonId: number) {
