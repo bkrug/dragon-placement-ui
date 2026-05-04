@@ -35,7 +35,7 @@
         <td [style.display]="dragonTableType() === DragonTableType.Assign ? null : 'none'">
           <p-button (click)="assignDragon(dragon.dragonId)">Assign</p-button>
         </td>
-        <td>{{ dragon.givenName }} {{ dragon.familyName }}</td>
+        <td><a href="/dragons/{{dragon.dragonId}}">{{ dragon.givenName }} {{ dragon.familyName }}</a></td>
         <td>{{ dragon.canBreathFire ? "yes" : "no" }}</td>
         <td>{{ dragon.canTakePassengers ? "yes" : "no" }}</td>
         <td>{{ dragon.fightingSkills }}</td>
