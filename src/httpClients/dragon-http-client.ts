@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import PagedData from '../poco/pagedData';
 import { Dragon } from '../poco/dragon';
-import { ValidatedResponse } from '../poco/validatedResponse';
+import { ValidatedPayload, ValidatedResponse } from '../poco/validatedResponse'; 
+import { JobInclusions } from '../poco/JobInclusions';
 
 @Injectable({
   providedIn: 'root',
@@ -17,6 +18,12 @@ export class DragonHttpClient {
       totalRecords: source.totalRecords,
       data: source.data
     }
+  }
+
+  async getDragonWithJobs(dragonId: number, jobInclusions: JobInclusions) {
+    const response = await fetch(`http://localhost:5193/dragon/${dragonId}?jobInclusions=${jobInclusions}`);
+    const json = await response.json();
+    return json as ValidatedPayload<Dragon>;
   }
 
   async getOnePageOfAssignees(jobId: number, offset: number, limit: number) {

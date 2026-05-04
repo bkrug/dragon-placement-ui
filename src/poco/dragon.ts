@@ -1,3 +1,12 @@
+import Job from "./job";
+
+export class Assignment {
+  assignmentId: number = 0;
+  jobId: number = 0;
+  dragonId: number = 0;
+  jobs: Job[] = [];
+}
+
 export class Dragon {
   dragonId: number = 0;
   givenName: string = '';
@@ -7,4 +16,5 @@ export class Dragon {
   weightInKg: number = 0;
   lengthInMeters: number = 0;
   fightingSkills: string | null = null;
+  assignments: Assignment[] = [];
 }
