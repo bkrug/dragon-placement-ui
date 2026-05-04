@@ -1,6 +1,6 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { DragonHttpClient } from '../../httpClients/dragon-http-client';
-import { JobInclusions } from '../../poco/JobInclusions';
+import { JobInclusions } from '../../poco/job-inclusions';
 import { ActivatedRoute } from '@angular/router';
 import { DisplayDragon } from '../../poco/models';
 import { mapDragonToDisplayDragon } from '../../transformers';

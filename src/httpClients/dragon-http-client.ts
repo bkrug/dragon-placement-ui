@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import PagedData from '../poco/pagedData';
 import { Dragon } from '../poco/models';
 import { ValidatedPayload, ValidatedResponse } from '../poco/validatedResponse'; 
-import { JobInclusions } from '../poco/JobInclusions';
+import { JobInclusions } from '../poco/job-inclusions';
 
 @Injectable({
   providedIn: 'root',
