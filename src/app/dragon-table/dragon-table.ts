@@ -29,14 +29,14 @@ export class DragonTable implements OnInit {
   readonly pageSize = 20;
   DragonTableType = DragonTableType;
 
-  forcePageLoad() {
-    this.onPageChange({ first: this.first() });    
-  }
-
   ngOnInit(): void {
     this.forcePageLoad();
   }
 
+  forcePageLoad() {
+    this.onPageChange({ first: this.first() });    
+  }
+  
   onPageChange(event: TableLazyLoadEvent) {
     if (this.selectedJob() === null)
       return;
@@ -51,6 +51,8 @@ export class DragonTable implements OnInit {
 
   private getPageOfDragons(offset: number) {
     switch (this.dragonTableType()) {
+      case DragonTableType.AllDragons:
+        return this.lazyLoadingService.getOnePageOfDragons(offset, this.pageSize);
       case DragonTableType.Assign:
         return this.lazyLoadingService.getOnePageOfCandidates(this.selectedJob()!.jobId, offset, this.pageSize);
       default:

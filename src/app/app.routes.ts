@@ -4,12 +4,9 @@ import { Counter } from './counter/counter';
 import { PopoverDatatableDemo } from "./ability-table/ability-table";
 import { JobList } from './job-list/job-list';
 import { DragonView } from './dragon-view/dragon-view';
+import { DragonList } from './dragon-list/dragon-list';
 
 export const routes: Routes = [
-  {
-    path: '',
-    component: Home
-  },
   {
     path: 'counter',
     component: Counter
@@ -25,5 +22,13 @@ export const routes: Routes = [
   {
     path: 'dragons/:dragonId',
     component: DragonView
+  },
+  {
+    path: 'dragons',
+    component: DragonList
+  },
+  {
+    path: '',
+    component: Home
   }
 ];
