@@ -2,6 +2,7 @@ import { Component, inject, signal } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
 import { TableLazyLoadEvent, TableModule } from 'primeng/table';
 import { PokemonAbilityHttpClient, PokemonAbility } from '../../httpClients/pokemon-ability-http-client';
+import { PAGE_SIZE } from '../../GlobalConsts';
 
 @Component({
   standalone: true,
@@ -17,7 +18,7 @@ export class PopoverDatatableDemo {
   abilities = signal<PokemonAbility[]>([]);
   selectedAbility = signal<PokemonAbility | null>(null);
   totalRecords = signal(0);
-  readonly pageSize = 20;
+  readonly pageSize = PAGE_SIZE;
 
   onPageChange(event: TableLazyLoadEvent) {
     const offset = event.first || 0;

@@ -6,6 +6,7 @@ import { Dragon } from '../../poco/models';
 import { TableLazyLoadEvent, TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
 import { DragonTableType } from '../../poco/enums';
+import { PAGE_SIZE } from '../../GlobalConsts';
 
 @Component({
   selector: 'app-dragon-table',
@@ -26,7 +27,7 @@ export class DragonTable implements OnInit {
   selectedDragon = signal<Dragon | null>(null);
   totalRecords = signal(0);
   first = input(0);
-  readonly pageSize = 20;
+  readonly pageSize = PAGE_SIZE;
   DragonTableType = DragonTableType;
 
   ngOnInit(): void {

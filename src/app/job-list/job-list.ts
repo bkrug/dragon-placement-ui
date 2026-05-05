@@ -6,6 +6,7 @@ import { TableLazyLoadEvent, TableModule } from 'primeng/table';
 import { DisplayJob } from '../../poco/models';
 import { ManageJob } from '../manage-job/manage-job';
 import { mapJobToDisplayJob } from '../../transformers';
+import { PAGE_SIZE } from '../../GlobalConsts';
 
 @Component({
   selector: 'app-job-list',
@@ -21,7 +22,7 @@ export class JobList {
   jobs = signal<DisplayJob[]>([]);
   selectedJob = signal<DisplayJob | null>(null);
   totalRecords = signal(0);
-  readonly pageSize = 20;
+  readonly pageSize = PAGE_SIZE;
 
   onPageChange(event: TableLazyLoadEvent) {
     const offset = event.first || 0;
