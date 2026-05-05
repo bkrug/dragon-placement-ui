@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import PagedData from '../poco/pagedData';
 import { Dragon } from '../poco/models';
 import { ValidatedPayload } from '../poco/validatedResponse'; 
 import { JobInclusions } from '../poco/enums';

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import PagedData from '../poco/pagedData';
-import { Job, DisplayJob } from '../poco/models';
+import { Job } from '../poco/models';
 import { mapJobToDisplayJob } from '../transformers';
 
 @Injectable({
