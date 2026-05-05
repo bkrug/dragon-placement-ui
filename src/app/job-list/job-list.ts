@@ -6,7 +6,7 @@ import { TableLazyLoadEvent, TableModule } from 'primeng/table';
 import { DisplayJob } from '../../poco/models';
 import { ManageJob } from '../manage-job/manage-job';
 import { mapJobToDisplayJob } from '../../transformers';
-import { PAGE_SIZE } from '../../GlobalConsts';
+import { PAGE_SIZE } from '../../global-consts';
 
 @Component({
   selector: 'app-job-list',

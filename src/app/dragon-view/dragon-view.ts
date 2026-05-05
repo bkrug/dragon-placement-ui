@@ -6,7 +6,7 @@ import { DisplayDragon, Assignment } from '../../poco/models';
 import { TableModule } from 'primeng/table';
 import { mapDragonToDisplayDragon } from '../../transformers';
 import { DatePipe } from '@angular/common';
-import { PAGE_SIZE } from '../../GlobalConsts';
+import { PAGE_SIZE } from '../../global-consts';
 
 @Component({
   selector: 'app-dragon-view',

@@ -6,7 +6,7 @@ import { Dragon } from '../../poco/models';
 import { TableLazyLoadEvent, TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
 import { DragonTableType } from '../../poco/enums';
-import { PAGE_SIZE } from '../../GlobalConsts';
+import { PAGE_SIZE } from '../../global-consts';
 
 @Component({
   selector: 'app-dragon-table',

@@ -2,7 +2,7 @@ import { Component, inject, signal } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
 import { TableLazyLoadEvent, TableModule } from 'primeng/table';
 import { PokemonAbilityHttpClient, PokemonAbility } from '../../httpClients/pokemon-ability-http-client';
-import { PAGE_SIZE } from '../../GlobalConsts';
+import { PAGE_SIZE } from '../../global-consts';
 
 @Component({
   standalone: true,
