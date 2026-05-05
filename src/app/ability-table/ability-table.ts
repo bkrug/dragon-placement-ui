@@ -1,8 +1,6 @@
-import { Component, OnInit, inject, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
-import { Popover, PopoverModule } from 'primeng/popover';
 import { TableLazyLoadEvent, TableModule } from 'primeng/table';
-import { TagModule } from 'primeng/tag';
 import { PokemonAbilityHttpClient, PokemonAbility } from '../../httpClients/pokemon-ability-http-client';
 
 @Component({
@@ -10,7 +8,7 @@ import { PokemonAbilityHttpClient, PokemonAbility } from '../../httpClients/poke
   selector: 'app-ability-table',
   templateUrl: './ability-table.html',
   styleUrl: './ability-table.scss',
-  imports: [ButtonModule, PopoverModule, TableModule, TagModule],
+  imports: [ButtonModule, TableModule],
   providers: []
 })
 export class PopoverDatatableDemo {

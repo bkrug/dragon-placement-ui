@@ -2,13 +2,15 @@ import { Component, inject, OnInit, signal } from '@angular/core';
 import { DragonHttpClient } from '../../httpClients/dragon-http-client';
 import { JobInclusions } from '../../poco/enums';
 import { ActivatedRoute } from '@angular/router';
-import { DisplayDragon } from '../../poco/models';
+import { DisplayDragon, Assignment } from '../../poco/models';
+import { TableModule } from 'primeng/table';
 import { mapDragonToDisplayDragon } from '../../transformers';
 import { DatePipe } from '@angular/common';
+import { PAGE_SIZE } from '../../GlobalConsts';
 
 @Component({
   selector: 'app-dragon-view',
-  imports: [ DatePipe ],
+  imports: [ DatePipe, TableModule ],
   templateUrl: './dragon-view.html',
   styleUrl: './dragon-view.scss',
 })
@@ -19,6 +21,8 @@ export class DragonView implements OnInit {
   private dragonId: number = 0;
   haveDragon = signal(false);
   dragon = signal(new DisplayDragon());
+  selectedAssignment = signal(null as Assignment | null);
+  pageSize = PAGE_SIZE;
   
   constructor() {
     this.activatedRoute.params.subscribe((params) => {

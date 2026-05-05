@@ -15,7 +15,7 @@
       </tr>
       <tr>
         <td>Fighting Skills</td>
-        <td>{{ dragon().fightingSkills || '' === '' ? '(not specified)' : dragon().fightingSkills }}</td>
+        <td>{{ (dragon().fightingSkills || '').length === 0 ? '(not specified)' : dragon().fightingSkills }}</td>
       </tr>
       <tr>
         <td>Weight In Kg</td>
@@ -29,24 +29,39 @@
   </table>
 
   <h3>Current and Upcoming Jobs</h3>
-  <table>
-    <tr>
-      <th>Employer </th>
-      <th>Job Title</th>
-      <th>Assignment Start</th>
-      <th>Assignment End</th>
-    </tr>
-    <tbody>
-      @for (assignment of dragon().assignments; track assignment.assignmentId) {
+  @if (dragon().assignments !== null && dragon().assignments.length > 0)
+  {
+    <p-table
+      [value]="dragon().assignments"
+      [tableStyle]="{ 'min-width': '50rem' }"
+      [paginator]="true"
+      [rows]="this.pageSize"
+      [rowsPerPageOptions]="[20]"
+      [totalRecords]="dragon().assignments.length"
+      [showCurrentPageReport]="true"
+      currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+      [(selection)]="selectedAssignment"
+      [selectionMode]="'single'"
+      >
+      <ng-template #header>
         <tr>
-          <td>{{ assignment.job.employerName }}</td>
+          <th>Employer </th>
+          <th>Job Title</th>
+          <th>Assignment Start</th>
+          <th>Assignment End</th>
+        </tr>
+      </ng-template>
+      <ng-template #body let-assignment>
+        <tr [pSelectableRow]="assignment">
+          <td>{{ assignment.job.employerName  }}</td>
           <td>{{ assignment.job.jobTitle }}</td>
           <td>{{ assignment.startDate | date:'fullDate':'+0' }}</td>
           <td>{{ assignment.endDate === null ? 'not specified' : assignment.endDate | date:'fullDate':'+0' }}</td>
         </tr>
-      } @empty {
-        <p> None Assigned </p>
-      }
-    </tbody>
-  </table>
+      </ng-template>
+    </p-table>
+  }
+  @else {
+    <p>No Upcoming or Current Jobs</p>
+  }  
 }
