@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Dragon, Job } from '../poco/models';
-import { ValidatedPayload } from '../poco/validatedResponse'; 
+import { ValidatedPayload } from '../poco/standard-responses'; 
 import { JobInclusions } from '../poco/enums';
 import { HttpHelpers } from './http-helpers';
 

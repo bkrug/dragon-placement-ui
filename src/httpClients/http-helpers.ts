@@ -1,5 +1,4 @@
-import PagedData from '../poco/pagedData';
-import { ValidatedResponse, ValidatedPayload } from '../poco/validatedResponse';
+import { ValidatedResponse, ValidatedPayload, PagedData } from '../poco/standard-responses';
 
 export class HttpHelpers {
   static async getOnePage<T extends object>(url: string, init?: RequestInit) {

@@ -1,6 +1,6 @@
 import { Component, input, inject, signal, EventEmitter, Output, OnInit } from '@angular/core';
 import { DisplayJob } from '../../poco/models';
-import { ValidatedResponse } from '../../poco/validatedResponse';
+import { ValidatedResponse } from '../../poco/standard-responses';
 import { AssignmentHttpClient } from '../../httpClients/assignment-http-client';
 import { Dragon } from '../../poco/models';
 import { TableLazyLoadEvent, TableModule } from 'primeng/table';
