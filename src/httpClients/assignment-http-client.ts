@@ -7,7 +7,7 @@ import { HttpHelpers } from './http-helpers';
 @Injectable({
   providedIn: 'root',
 })
-export class DragonHttpClient {
+export class AssignmentHttpClient {
   async getOnePageOfDragons(offset: number, limit: number) {
     return await HttpHelpers.getOnePage<Dragon>(`http://localhost:5193/dragon?offset=${offset}&limit=${limit}`);
   };

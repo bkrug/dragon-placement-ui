@@ -1,7 +1,7 @@
 import { Component, input, inject, signal, EventEmitter, Output, OnInit } from '@angular/core';
 import { DisplayJob } from '../../poco/models';
 import { ValidatedResponse } from '../../poco/validatedResponse';
-import { DragonHttpClient } from '../../httpClients/dragon-http-client';
+import { AssignmentHttpClient } from '../../httpClients/assignment-http-client';
 import { Dragon } from '../../poco/models';
 import { TableLazyLoadEvent, TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
@@ -14,7 +14,7 @@ import { DragonTableType } from '../../poco/enums';
   styleUrl: './dragon-table.scss',
 })
 export class DragonTable implements OnInit {
-  lazyLoadingService = inject(DragonHttpClient);
+  lazyLoadingService = inject(AssignmentHttpClient);
 
   selectedJob = input<DisplayJob | null>();
   dragonTableType = input<DragonTableType>();

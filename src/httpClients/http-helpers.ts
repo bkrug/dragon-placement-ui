@@ -1,9 +1,9 @@
 import PagedData from '../poco/pagedData';
-import { ValidatedResponse } from '../poco/validatedResponse';
+import { ValidatedResponse, ValidatedPayload } from '../poco/validatedResponse';
 
 export class HttpHelpers {
-  static async getOnePage<T extends object>(url: string) {
-    const response = await fetch(url);
+  static async getOnePage<T extends object>(url: string, init?: RequestInit) {
+    const response = await fetch(url, init);
     const json = await response.json();
     let source = json as PagedData<T>;
     return {
@@ -14,12 +14,11 @@ export class HttpHelpers {
     };
   };
 
-  static async getValidatedResponse(url: string, init: RequestInit) {
+  static async getValidatedResponse(url: string, init?: RequestInit) {
     try {
       const response = await fetch(url, init);
       const json = await response.json();
-      const validatedResponse = json as ValidatedResponse;
-      return validatedResponse;
+      return json as ValidatedResponse;
     }
     catch (ex) {
       return {
@@ -29,4 +28,19 @@ export class HttpHelpers {
       } as ValidatedResponse;
     }
   };
+
+  static async getValidatedPayload<T extends object>(url: string, init?: RequestInit) {
+    try {
+      const response = await fetch(url, init);
+      const json = await response.json();
+      return json as ValidatedPayload<T>;
+    }
+    catch (ex) {
+      return {
+        isSuccess: false,
+        isInternalError: true,
+        validationFailures: [JSON.stringify(ex)]
+      } as ValidatedPayload<T>;
+    }    
+  }
 }

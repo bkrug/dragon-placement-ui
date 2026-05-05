@@ -1,5 +1,5 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
-import { DragonHttpClient } from '../../httpClients/dragon-http-client';
+import { AssignmentHttpClient } from '../../httpClients/assignment-http-client';
 import { JobInclusions } from '../../poco/enums';
 import { ActivatedRoute } from '@angular/router';
 import { DisplayDragon, Assignment } from '../../poco/models';
@@ -15,7 +15,7 @@ import { PAGE_SIZE } from '../../GlobalConsts';
   styleUrl: './dragon-view.scss',
 })
 export class DragonView implements OnInit {
-  dragonHttpClient = inject(DragonHttpClient);
+  dragonHttpClient = inject(AssignmentHttpClient);
   private activatedRoute = inject(ActivatedRoute);
 
   private dragonId: number = 0;
