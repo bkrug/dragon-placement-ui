@@ -5,6 +5,7 @@ import { ButtonModule } from 'primeng/button';
 import { TableLazyLoadEvent, TableModule } from 'primeng/table';
 import { DisplayJob } from '../../poco/models';
 import { ManageJob } from '../manage-job/manage-job';
+import { mapJobToDisplayJob } from '../../transformers';
 
 @Component({
   selector: 'app-job-list',
@@ -27,7 +28,7 @@ export class JobList {
     this.lazyLoadingService
       .getOnePage(offset, this.pageSize)
       .then(pagedData => {
-        this.jobs.set(pagedData.data);
+        this.jobs.set(pagedData.data.map(mapJobToDisplayJob));
         this.totalRecords.set(pagedData.totalRecords);
       });
   }

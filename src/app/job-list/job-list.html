@@ -1,40 +1,48 @@
+<!--
+When a user selects a particular job, we do not navigate to a job management page.
+We instead hide the job table, and dislay that job management interface.
+This is confusing UX because hitting the back button on the browser does not return the user to the job list.
+I chose this layout so that I could experiment with letting parent and child components communicate with each other,
+but it is not really the correct tool for this particular job.
+-->
+
 @if (selectedJob() === null)
 {
-    <p-table
-        [value]="jobs()"
-        [tableStyle]="{ 'min-width': '50rem' }"
-        [paginator]="true"
-        [rows]="this.pageSize"
-        [rowsPerPageOptions]="[20]"
-        [totalRecords]="totalRecords()"
-        [showCurrentPageReport]="true"
-        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-        [showLoader]="true"
-        [lazy]="true"
-        (onLazyLoad)="onPageChange($event)"
-        [(selection)]="selectedJob"
-        [selectionMode]="'single'"
-        >
-        <ng-template #header>
-            <tr>
-                <th>Job Title</th>
-                <th>Employer Name</th>
-                <th>Positions to Fill</th>
-                <th>Start Date</th>
-                <th>End Date</th>
-            </tr>
-        </ng-template>
-        <ng-template #body let-job>
-            <tr [pSelectableRow]="job">
-                <td>{{ job.jobTitle }}</td>
-                <td>{{ job.employerName }}</td>
-                <td>{{ job.openDescription }}</td>
-                <td>{{ job.startDate | date:'fullDate':'+0' }}</td>
-                <td>{{ job.endDate | date:'fullDate':'+0' }}</td>
-            </tr>
-        </ng-template>
-    </p-table>
+  <p-table
+    [value]="jobs()"
+    [tableStyle]="{ 'min-width': '50rem' }"
+    [paginator]="true"
+    [rows]="this.pageSize"
+    [rowsPerPageOptions]="[20]"
+    [totalRecords]="totalRecords()"
+    [showCurrentPageReport]="true"
+    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+    [showLoader]="true"
+    [lazy]="true"
+    (onLazyLoad)="onPageChange($event)"
+    [(selection)]="selectedJob"
+    [selectionMode]="'single'"
+    >
+    <ng-template #header>
+      <tr>
+        <th>Job Title</th>
+        <th>Employer Name</th>
+        <th>Positions to Fill</th>
+        <th>Start Date</th>
+        <th>End Date</th>
+      </tr>
+    </ng-template>
+    <ng-template #body let-job>
+      <tr [pSelectableRow]="job">
+        <td>{{ job.jobTitle }}</td>
+        <td>{{ job.employerName }}</td>
+        <td>{{ job.openDescription }}</td>
+        <td>{{ job.startDate | date:'fullDate':'+0' }}</td>
+        <td>{{ job.endDate | date:'fullDate':'+0' }}</td>
+      </tr>
+    </ng-template>
+  </p-table>
 }
 @else {
-    <app-manage-job [selectedJob]="selectedJob()" (onClose)="selectedJob.set(null)" />
+  <app-manage-job [selectedJob]="selectedJob()" (onClose)="selectedJob.set(null)" />
 }
