@@ -13,8 +13,8 @@ export class Dragon {
   familyName: string | null = null;
   canBreathFire: boolean = false;
   canTakePassengers: boolean = false;
-  weightInKg: number = 0;
-  lengthInMeters: number = 0;
+  weightInKg: number | null = null;
+  lengthInMeters: number | null = null;
   fightingSkills: string | null = null;
   assignments: Assignment[] = [];
 }

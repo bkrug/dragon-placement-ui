@@ -1,0 +1,126 @@
+<h2>Dragon Form</h2>
+
+<div class="card flex justify-center">
+  <form #exampleForm="ngForm" (ngSubmit)="onSubmit(dragonForm)" class="flex flex-col gap-4 w-full sm:w-56">
+    <div class="flex flex-col gap-1">
+      <label>Given Name</label>
+      <input pInputText 
+        type="text"
+        id="givenName"
+        name="givenName"
+        [(ngModel)]="dragon().givenName"
+        #givenName="ngModel"
+        [invalid]="givenName.invalid && (givenName.touched || exampleForm.submitted)"
+        required />
+      @if (givenName.invalid && (givenName.touched)) {
+        <p-message severity="error" size="small" variant="simple">
+          @for (error of dragonForm.givenName().errors(); track error.kind) {
+            {{ error.message }}
+          }
+        </p-message>
+      }
+    </div>
+    <div class="flex flex-col gap-1">
+      <label>Family Name</label>
+      <input pInputText 
+        type="text"
+        id="familyName"
+        name="familyName"
+        [(ngModel)]="dragon().familyName"
+        #givenName="ngModel"
+        [invalid]="dragonForm.familyName().invalid() && (dragonForm.familyName().touched() || exampleForm.submitted)"
+        required />
+      @if (dragonForm.familyName().invalid() && (dragonForm.familyName().touched())) {
+        <p-message severity="error" size="small" variant="simple">
+          @for (error of dragonForm.familyName().errors(); track error.kind) {
+            {{ error.message }}
+          }
+        </p-message>
+      }
+    </div>
+    <div class="flex flex-col gap-1">
+      <label>Can Breathe Fire</label>
+      <p-checkbox
+        id="canBreathFire"
+        name="canBreathFire"
+        [(ngModel)]="dragon().canBreathFire"
+        [binary]="true"
+        [invalid]="dragonForm.canBreathFire().invalid()" />
+      @if (dragonForm.canBreathFire().invalid() && (dragonForm.canBreathFire().touched())) {
+        <p-message severity="error" size="small" variant="simple">
+          @for (error of dragonForm.canBreathFire().errors(); track error.kind) {
+            {{ error.message }}
+          }
+        </p-message>
+      }
+    </div> 
+    <div class="flex flex-col gap-1">
+      <label>Can Carry Passengers</label>
+      <p-checkbox
+        id="canTakePassengers"
+        name="canTakePassengers"
+        [(ngModel)]="dragon().canTakePassengers"
+        [binary]="true"
+        [invalid]="dragonForm.canTakePassengers().invalid()" />
+      @if (dragonForm.canTakePassengers().invalid() && (dragonForm.canTakePassengers().touched())) {
+        <p-message severity="error" size="small" variant="simple">
+          @for (error of dragonForm.canTakePassengers().errors(); track error.kind) {
+            {{ error.message }}
+          }
+        </p-message>
+      }
+    </div>
+    <div class="flex flex-col gap-1">
+      <label>Weight in Kilograms</label>
+      <p-inputnumber
+        id="weightInKg"
+        name="weightInKg"
+        [(ngModel)]="dragon().weightInKg"
+        [invalid]="dragonForm.weightInKg().invalid()"
+        [min]="0" />
+      @if (dragonForm.weightInKg().invalid() && (dragonForm.weightInKg().touched())) {
+        <p-message severity="error" size="small" variant="simple">
+          @for (error of dragonForm.weightInKg().errors(); track error.kind) {
+            {{ error.message }}
+          }
+        </p-message>
+      }
+    </div>
+    <div class="flex flex-col gap-1">
+      <label>Length in Meters</label>
+      <p-inputnumber
+        id="lengthInMeters"
+        name="lengthInMeters"
+        [(ngModel)]="dragon().lengthInMeters"
+        [invalid]="dragonForm.lengthInMeters().invalid()"
+        [min]="0" />
+      @if (dragonForm.lengthInMeters().invalid() && (dragonForm.lengthInMeters().touched())) {
+        <p-message severity="error" size="small" variant="simple">
+          @for (error of dragonForm.lengthInMeters().errors(); track error.kind) {
+            {{ error.message }}
+          }
+        </p-message>
+      }
+    </div>
+    <div class="flex flex-col gap-1">
+      <label>Dragon's Fighting Skills</label>
+      <p-select
+        id="fightingSkills"
+        name="fightingSkills"
+        optionLabel="name"
+        optionValue="code"
+        [options]="skillLevels"
+        [(ngModel)]="dragon().fightingSkills"
+        [invalid]="dragonForm.fightingSkills().invalid()"
+        class="w-full md:w-56" />
+      @if (dragonForm.fightingSkills().invalid() && (dragonForm.fightingSkills().touched())) {
+        <p-message severity="error" size="small" variant="simple">
+          @for (error of dragonForm.fightingSkills().errors(); track error.kind) {
+            {{ error.message }}
+          }
+        </p-message>
+      }
+    </div>        
+    <button pButton severity="secondary" type="submit"><span pButtonLabel>Submit</span></button>
+  </form>
+</div>

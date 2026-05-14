@@ -5,6 +5,7 @@ import { PopoverDatatableDemo } from "./ability-table/ability-table";
 import { JobList } from './job-list/job-list';
 import { DragonView } from './dragon-view/dragon-view';
 import { DragonList } from './dragon-list/dragon-list';
+import { DragonForm } from './dragon-form/dragon-form';
 
 export const routes: Routes = [
   {
@@ -18,6 +19,14 @@ export const routes: Routes = [
   {
     path: 'jobs',
     component: JobList
+  },
+  {
+    path: 'dragons-form/:dragonId',
+    component: DragonForm
+  },
+  {
+    path: 'dragons-form',
+    component: DragonForm
   },
   {
     path: 'dragons/:dragonId',
