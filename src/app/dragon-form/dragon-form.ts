@@ -31,11 +31,8 @@ export class DragonForm {
     required(fieldPath.givenName, {message: 'Given Name is required'});
   });
 
-  onSubmit(form: any) {
+  onSubmit(event: Event) {
     console.log(this.dragon());
-    if (form.valid) {
-        //this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Form Submitted', life: 3000 });
-        form.resetForm();
-    }
-  }  
+    console.log(this.dragonForm);
+  }
 }
