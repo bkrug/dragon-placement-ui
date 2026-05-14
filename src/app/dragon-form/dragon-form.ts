@@ -33,6 +33,10 @@ export class DragonForm {
 
   onSubmit(event: Event) {
     console.log(this.dragon());
-    console.log(this.dragonForm);
+    console.log(this.dragonForm().valid());
+    console.log(this.dragonForm().errorSummary());
+    console.log(this.dragonForm.givenName().errors());
+    console.log(this.dragonForm.givenName().invalid());
+    console.log(this.dragonForm.givenName().touched());
   }
 }

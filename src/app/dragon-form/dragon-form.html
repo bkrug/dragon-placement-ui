@@ -10,9 +10,9 @@
         name="givenName"
         [(ngModel)]="dragon().givenName"
         #givenName="ngModel"
-        [invalid]="givenName.invalid && (givenName.touched || exampleForm.submitted)"
+        [invalid]="givenName.invalid && (givenName.touched)"
         required />
-      @if (givenName.invalid && (givenName.touched)) {
+      @if (givenName.invalid && givenName.touched) {
         <p-message severity="error" size="small" variant="simple">
           @for (error of dragonForm.givenName().errors(); track error.kind) {
             {{ error.message }}
@@ -27,10 +27,10 @@
         id="familyName"
         name="familyName"
         [(ngModel)]="dragon().familyName"
-        #givenName="ngModel"
-        [invalid]="dragonForm.familyName().invalid() && (dragonForm.familyName().touched() || exampleForm.submitted)"
+        #familyName="ngModel"
+        [invalid]="familyName.invalid && familyName.touched"
         required />
-      @if (dragonForm.familyName().invalid() && (dragonForm.familyName().touched())) {
+      @if (familyName.invalid && familyName.touched) {
         <p-message severity="error" size="small" variant="simple">
           @for (error of dragonForm.familyName().errors(); track error.kind) {
             {{ error.message }}
