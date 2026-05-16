@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { LocalInputField } from './local-input-field';
+import { LocalInputField } from './local-fields';
 
 describe('LocalInputField', () => {
   let component: LocalInputField;
