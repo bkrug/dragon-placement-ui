@@ -1,7 +1,6 @@
 import { Component, Directive, input, signal } from '@angular/core';
-import { AbstractControl, FormGroup, ValidationErrors } from '@angular/forms';
+import { AbstractControl, FormGroup, ReactiveFormsModule, ValidationErrors } from '@angular/forms';
 import { MessageModule } from 'primeng/message';
-import { ReactiveFormsModule } from '@angular/forms';
 import { ValidatedForm } from '../../poco/standard-responses';
 
 @Directive()
@@ -13,12 +12,12 @@ abstract class LocalFieldBase<T extends (boolean | string | number)> {
 
   abstract getFieldControl(): AbstractControl<T|null, T|null, any> | null;
 
-  shouldDisplayError = () => {
+  shouldDisplayError() {
     const fieldControl = this.getFieldControl();
     return fieldControl === null ? false : fieldControl.invalid && (fieldControl.dirty || fieldControl.touched)
   };
 
-  stringify = (obj1: any) => JSON.stringify(obj1);
+  stringify(obj1: any) { return JSON.stringify(obj1); }
 
   getErrors() {
     const field = this.getFieldControl();
@@ -63,12 +62,12 @@ export function applyServerSideValidations<T extends object>(failures: Validated
 };
 
 @Component({
-  selector: 'app-local-input-field',
+  selector: 'app-local-text-field',
   imports: [ ReactiveFormsModule, MessageModule ],
   templateUrl: './local-input-field.html',
   styleUrl: './local-input-field.scss',
 })
-export class LocalInputField extends LocalFieldBase<string> {
+export class LocalTextField extends LocalFieldBase<string> {
   inputType = signal('text');
 
   fieldControl = input.required<AbstractControl<string|null, string|null, any> | null>();
