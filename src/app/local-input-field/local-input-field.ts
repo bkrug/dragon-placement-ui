@@ -1,5 +1,5 @@
-import { Component, input, InputSignal } from '@angular/core';
-import { AbstractControl, FormGroup, FormControl } from '@angular/forms';
+import { Component, input } from '@angular/core';
+import { AbstractControl, FormGroup, ValidationErrors } from '@angular/forms';
 import { MessageModule } from 'primeng/message';
 import { ReactiveFormsModule } from '@angular/forms';
 
@@ -21,6 +21,8 @@ export class LocalInputField {
     return fieldControl === null ? false : fieldControl.invalid && (fieldControl.dirty || fieldControl.touched)
   };
 
+  stringify = (obj1: any) => JSON.stringify(obj1);
+
   getErrors() {
     const field = this.fieldControl();
     if (field === null || field.errors === null)
@@ -30,7 +32,20 @@ export class LocalInputField {
     return keys
       .map(key => { return {
         errorType: key,
-        errorValue : JSON.stringify(errors[key])
+        errorMsg: this.getErrorMsg(key, errors)
       }});
-  }  
+  }
+
+  private getErrorMsg(errorType: string, validationErrors: ValidationErrors) {
+    const errObj = validationErrors[errorType];
+    console.log(JSON.stringify(errObj))
+    switch (errorType) {
+      case 'required':
+        return 'required';
+      case 'minlength':
+        return `minimum length is ${errObj.requiredLength} but is ${errObj.actualLength}`;
+      default:
+        return JSON.stringify(errObj);
+    }
+  }
 }

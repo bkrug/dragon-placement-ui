@@ -43,7 +43,7 @@ export class DragonForm {
       return [];
     const keys = Object.keys(errors);
     return keys
-      .map(key => { return { errorType: key, errorValue : JSON.stringify(errors[key]) }});
+      .map(key => { return { errorType: key, errorValue : errors[key] }});
   }
 
   onSubmit() {
