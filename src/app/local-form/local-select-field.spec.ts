@@ -1,6 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { LocalSelectField } from '../local-select-field/local-select-field';
+import { LocalSelectField } from './local-fields';
 
 describe('LocalSelectField', () => {
   let component: LocalSelectField;

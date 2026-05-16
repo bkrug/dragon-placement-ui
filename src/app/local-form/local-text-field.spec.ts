@@ -1,17 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { LocalTextField } from './local-fields';
 
-import { LocalInputField } from './local-fields';
-
-describe('LocalInputField', () => {
-  let component: LocalInputField;
-  let fixture: ComponentFixture<LocalInputField>;
+describe('LocalTextField', () => {
+  let component: LocalTextField;
+  let fixture: ComponentFixture<LocalTextField>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [LocalInputField],
+      imports: [LocalTextField],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(LocalInputField);
+    fixture = TestBed.createComponent(LocalTextField);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });

@@ -1,8 +1,8 @@
 import { Component, inject, signal } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
 import { TableLazyLoadEvent, TableModule } from 'primeng/table';
-import { PokemonAbilityHttpClient, PokemonAbility } from '../../httpClients/pokemon-ability-http-client';
 import { PAGE_SIZE } from '../../global-consts';
+import { PokemonAbility, PokemonAbilityHttpClient } from '../../httpClients/pokemon-ability-http-client';
 
 @Component({
   standalone: true,
@@ -12,7 +12,7 @@ import { PAGE_SIZE } from '../../global-consts';
   imports: [ButtonModule, TableModule],
   providers: []
 })
-export class PopoverDatatableDemo {
+export class AbilityTable {
   lazyLoadingService = inject(PokemonAbilityHttpClient);
 
   abilities = signal<PokemonAbility[]>([]);

@@ -1,11 +1,11 @@
 import { Routes } from '@angular/router';
-import { Home } from './home/home';
+import { AbilityTable } from './ability-table/ability-table';
 import { Counter } from './counter/counter';
-import { PopoverDatatableDemo } from './ability-table/ability-table';
-import { JobList } from './job-list/job-list';
-import { DragonView } from './dragon-view/dragon-view';
-import { DragonList } from './dragon-list/dragon-list';
 import { DragonForm } from './dragon-form/dragon-form';
+import { DragonList } from './dragon-list/dragon-list';
+import { DragonView } from './dragon-view/dragon-view';
+import { Home } from './home/home';
+import { JobList } from './job-list/job-list';
 
 export const routes: Routes = [
   {
@@ -14,7 +14,7 @@ export const routes: Routes = [
   },
   {
     path: 'ability-table',
-    component: PopoverDatatableDemo
+    component: AbilityTable
   },
   {
     path: 'jobs',
