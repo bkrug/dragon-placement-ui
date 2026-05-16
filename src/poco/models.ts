@@ -19,6 +19,15 @@ export class Dragon {
   assignments: Assignment[] = [];
 }
 
+export class DragonValidationFailures {
+  givenName: string = '';
+  canBreathFire: string = '';
+  canTakePassengers: string = '';
+  weightInKg: string = '';
+  lengthInMeters: string = '';
+  fightingSkills: string = '';
+}
+
 export class Job {
   jobId: number = 0;
   jobTitle: string = '';

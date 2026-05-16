@@ -10,8 +10,14 @@ export interface ValidatedPayload<T extends object> extends ValidatedResponse {
 
 export interface PagedData<T extends object>
 {
-    offset: number;
-    limit: number;
-    totalRecords: number;
-    data: T[];
+  offset: number;
+  limit: number;
+  totalRecords: number;
+  data: T[];
+}
+
+export interface ValidatedForm<T extends object> {
+  isInternalError: boolean;
+  isSuccess: boolean;  
+  validationFailures: T;
 }

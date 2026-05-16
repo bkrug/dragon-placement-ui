@@ -1,9 +1,10 @@
-import { Component, signal } from '@angular/core';
+import { Component, signal, inject } from '@angular/core';
 import { MessageModule } from 'primeng/message';
 import { Dragon } from '../../poco/models';
 import { FormGroup, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { Validators } from '@angular/forms';
 import { LocalCheckbox, LocalInputField, LocalNumberField, LocalSelectField, SelectListOption } from '../local-form/local-fields';
+import { AssignmentHttpClient } from '../../httpClients/assignment-http-client';
 
 @Component({
   selector: 'app-dragon-form',
@@ -12,6 +13,8 @@ import { LocalCheckbox, LocalInputField, LocalNumberField, LocalSelectField, Sel
   styleUrl: './dragon-form.scss',
 })
 export class DragonForm {
+  httpClient = inject(AssignmentHttpClient);
+
   skillLevels = [
     { value: null, display: 'Select Skill Level...' },
     { value: 'b',  display: 'Basic' },
@@ -21,7 +24,7 @@ export class DragonForm {
 
   dragon = signal(new Dragon());
   dragonFormGroup = new FormGroup({
-    givenName: new FormControl(this.dragon().givenName, [ Validators.required, Validators.minLength(3) ]),
+    givenName: new FormControl(this.dragon().givenName, [ Validators.required ]),
     familyName: new FormControl(this.dragon().familyName),
     canBreathFire: new FormControl(this.dragon().canBreathFire),
     canTakePassengers: new FormControl(this.dragon().canTakePassengers),
@@ -32,5 +35,18 @@ export class DragonForm {
 
   onSubmit() {
     console.log(this.dragonFormGroup.value);
+    if (this.dragonFormGroup.valid) {
+      const dragonFromForm = this.dragonFormGroup.value;
+      const response = this.httpClient.postDragonForm({
+        givenName: dragonFromForm.givenName!,
+        familyName: dragonFromForm.familyName || null,
+        canBreathFire: dragonFromForm.canBreathFire === true,
+        canTakePassengers: dragonFromForm.canTakePassengers === true,
+        weightInKg: dragonFromForm.weightInKg || null,
+        lengthInMeters: dragonFromForm.lengthInMeters || null,
+        fightingSkills: dragonFromForm.fightingSkills || null
+      } as Dragon);
+      console.log(response);
+    }
   }
 }

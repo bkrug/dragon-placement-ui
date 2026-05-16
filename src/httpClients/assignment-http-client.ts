@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Dragon, Job } from '../poco/models';
-import { ValidatedPayload } from '../poco/standard-responses'; 
+import { Dragon, Job, DragonValidationFailures } from '../poco/models';
+import { ValidatedForm, ValidatedPayload } from '../poco/standard-responses'; 
 import { JobInclusions } from '../poco/enums';
 import { HttpHelpers } from './http-helpers';
 import { environment } from '../environments/environment';
@@ -40,10 +40,27 @@ export class AssignmentHttpClient {
       method: "POST"
     });
   };
-  
+
   async unassignDragonToJob(dragonId: number, jobId: number) {
     return await HttpHelpers.getValidatedResponse(`${apiUrl}job/${jobId}/assigned-dragon/${dragonId}`, {
       method: "DELETE"
     });
+  };
+
+  async postDragonForm(dragon: Dragon) {
+    const headers = new Headers();
+    headers.set('Content-Type', 'application/json');
+    const response = await fetch(`${apiUrl}dragon`, {
+      method: "POST",
+      headers: headers,
+      body: JSON.stringify(dragon)
+    });
+    const json = await response.json();
+    if (response.ok) {
+      return json as ValidatedPayload<Dragon>;
+    }
+    else {
+      return json as ValidatedForm<DragonValidationFailures>;
+    }
   };
 }
