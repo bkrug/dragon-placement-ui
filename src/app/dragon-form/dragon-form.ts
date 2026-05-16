@@ -10,13 +10,13 @@ import { MessageModule } from 'primeng/message';
 import { Dragon } from '../../poco/models';
 import { FormGroup, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { Validators } from '@angular/forms';
-import { LocalCheckbox, LocalInputField } from '../local-form/local-fields';
+import { LocalCheckbox, LocalInputField, LocalNumberField } from '../local-form/local-fields';
 
 interface SkillLevel { code: string | null, name: string };
 
 @Component({
   selector: 'app-dragon-form',
-  imports: [ ReactiveFormsModule, MessageModule, LocalInputField, LocalCheckbox ],
+  imports: [ ReactiveFormsModule, MessageModule, LocalInputField, LocalCheckbox, LocalNumberField ],
   //FormsModule, ButtonModule, InputTextModule, InputNumberModule, CheckboxModule, SelectModule, MessageModule],
   templateUrl: './dragon-form.html',
   styleUrl: './dragon-form.scss',
@@ -34,7 +34,9 @@ export class DragonForm {
     givenName: new FormControl(this.dragon().givenName, [ Validators.required, Validators.minLength(3) ]),
     familyName: new FormControl(this.dragon().familyName),
     canBreathFire: new FormControl(this.dragon().canBreathFire),
-    canTakePassengers: new FormControl(this.dragon().canTakePassengers)
+    canTakePassengers: new FormControl(this.dragon().canTakePassengers),
+    weightInKg: new FormControl(this.dragon().weightInKg),
+    lengthInMeters: new FormControl(this.dragon().lengthInMeters),
   })
 
   getErrors(fieldName: string) {
@@ -45,8 +47,7 @@ export class DragonForm {
     if (errors === null)
       return [];
     const keys = Object.keys(errors);
-    return keys
-      .map(key => { return { errorType: key, errorValue : errors[key] }});
+    return keys.map(key => { return { errorType: key, errorValue : errors[key] }});
   }
 
   onSubmit() {

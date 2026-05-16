@@ -4,7 +4,7 @@ import { MessageModule } from 'primeng/message';
 import { ReactiveFormsModule } from '@angular/forms';
 
 @Directive()
-abstract class LocalFieldBase<T extends (boolean | string)> {
+abstract class LocalFieldBase<T extends (boolean | string | number)> {
   formGroup = input.required<FormGroup>();
   id = input.required<string>();
   fieldName = input.required<string>();
@@ -54,7 +54,21 @@ abstract class LocalFieldBase<T extends (boolean | string)> {
 export class LocalInputField extends LocalFieldBase<string> {
   fieldControl = input.required<AbstractControl<string|null, string|null, any> | null>();
 
-  override getFieldControl(): AbstractControl<string | null, string | null, any> | null {
+  override getFieldControl() {
+    return this.fieldControl();
+  }
+}
+
+@Component({
+  selector: 'app-local-number-field',
+  imports: [ ReactiveFormsModule, MessageModule ],
+  templateUrl: './local-input-field.html',
+  styleUrl: './local-input-field.scss',
+})
+export class LocalNumberField extends LocalFieldBase<number> {
+  fieldControl = input.required<AbstractControl<number|null, number|null, any> | null>();
+
+  override getFieldControl() {
     return this.fieldControl();
   }
 }
@@ -68,7 +82,7 @@ export class LocalInputField extends LocalFieldBase<string> {
 export class LocalCheckbox extends LocalFieldBase<boolean> {
   fieldControl = input.required<AbstractControl<boolean|null, boolean|null, any> | null>();
 
-  override getFieldControl(): AbstractControl<boolean | null, boolean | null, any> | null {
+  override getFieldControl() {
     return this.fieldControl();
   }
 }

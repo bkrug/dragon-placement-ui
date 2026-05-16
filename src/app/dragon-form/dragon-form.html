@@ -6,6 +6,8 @@
     <app-local-input-field id="family-name" label="Family Name:" fieldName="familyName" [formGroup]="this.dragonFormGroup" [fieldControl]="this.dragonFormGroup.get('familyName')" />
     <app-local-checkbox id="can-breath-fire" label="Can Breath Fire:" fieldName="canBreathFire" [formGroup]="this.dragonFormGroup" [fieldControl]="this.dragonFormGroup.get('canBreathFire')" />
     <app-local-checkbox id="can-take-passengers" label="Can Take Passengers:" fieldName="canTakePassengers" [formGroup]="this.dragonFormGroup" [fieldControl]="this.dragonFormGroup.get('canTakePassengers')" />
+    <app-local-number-field id="length-in-meters" label="Length In Meters:" fieldName="lengthInMeters" [formGroup]="this.dragonFormGroup" [fieldControl]="this.dragonFormGroup.get('lengthInMeters')" />
+    <app-local-number-field id="weight-in-kg" label="Weight In Kilograms:" fieldName="weightInKg" [formGroup]="this.dragonFormGroup" [fieldControl]="this.dragonFormGroup.get('weightInKg')" />
     <button type="submit" [disabled]="!dragonFormGroup.valid">Submit</button>
   </form>
 </div>
