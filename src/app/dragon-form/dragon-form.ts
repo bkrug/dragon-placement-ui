@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, signal, OnInit } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Effect } from 'effect';
@@ -14,7 +14,7 @@ import { LocalCheckbox, LocalNumberField, LocalSelectField, LocalTextField, Sele
   templateUrl: './dragon-form.html',
   styleUrl: './dragon-form.scss',
 })
-export class DragonForm {
+export class DragonForm implements OnInit {
   httpClient = inject(AssignmentHttpClient);
   private activatedRoute = inject(ActivatedRoute);
   private dragonId: number | null = null;

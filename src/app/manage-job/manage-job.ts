@@ -1,9 +1,9 @@
-import { Component, input, EventEmitter, Output, viewChildren } from '@angular/core';
 import { DatePipe } from '@angular/common';
+import { Component, EventEmitter, input, Output, viewChildren } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
-import { DragonTable } from '../dragon-table/dragon-table';
-import { DisplayJob } from '../../poco/models';
 import { DragonTableType } from '../../poco/enums';
+import { DisplayJob } from '../../poco/models';
+import { DragonTable } from '../dragon-table/dragon-table';
 
 @Component({
   selector: 'app-manage-job',
@@ -12,7 +12,7 @@ import { DragonTableType } from '../../poco/enums';
   styleUrl: './manage-job.scss',
 })
 export class ManageJob {
-  @Output() onClose: EventEmitter<any> = new EventEmitter();
+  @Output() onClose = new EventEmitter();
   dragonTables = viewChildren(DragonTable);
 
   selectedJob = input<DisplayJob | null>();

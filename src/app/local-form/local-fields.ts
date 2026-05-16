@@ -57,7 +57,8 @@ export function applyServerSideValidations<T extends object>(failures: Validated
   const keys = Object.keys(vFail);
   keys.forEach((key: string) => {
     const failMsg = (vFail as any)[key] as string;
-    failMsg && formGroup.get(key)?.setErrors({ 'server-side': failMsg });
+    if (failMsg)
+      formGroup.get(key)?.setErrors({ 'server-side': failMsg });
   });
 };
 

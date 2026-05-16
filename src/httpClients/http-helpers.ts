@@ -1,12 +1,11 @@
 import { Effect } from 'effect';
-import { isSuccess } from 'effect/Exit';
 import { PagedData, ValidatedForm, ValidatedPayload, ValidatedResponse } from '../poco/standard-responses';
 
 export class HttpHelpers {
   static async getOnePage<T extends object>(url: string, init?: RequestInit) {
     const response = await fetch(url, init);
     const json = await response.json();
-    let source = json as PagedData<T>;
+    const source = json as PagedData<T>;
     return {
       offset: source.offset,
       limit: source.limit,
@@ -45,7 +44,7 @@ export class HttpHelpers {
     }    
   }
 
-  static async submitForm<Tok extends object, Tfail extends object>(url: string, httpVerb: string, requestBody: any) {
+  static async submitForm<Tok extends object, Tfail extends object>(url: string, httpVerb: string, requestBody: object) {
     try {
       const headers = new Headers();
       headers.set('Content-Type', 'application/json');
@@ -62,7 +61,7 @@ export class HttpHelpers {
         return Effect.fail(json as ValidatedForm<Tfail>);
       }
     }
-    catch (ex:any) {
+    catch (ex) {
       console.error(JSON.stringify(ex));
       return Effect.fail({
         isSuccess: false,

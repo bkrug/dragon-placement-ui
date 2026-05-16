@@ -1,12 +1,11 @@
-import { Component, input, inject, signal, EventEmitter, Output, OnInit } from '@angular/core';
-import { DisplayJob } from '../../poco/models';
-import { ValidatedResponse } from '../../poco/standard-responses';
-import { AssignmentHttpClient } from '../../httpClients/assignment-http-client';
-import { Dragon } from '../../poco/models';
-import { TableLazyLoadEvent, TableModule } from 'primeng/table';
+import { Component, EventEmitter, inject, input, OnInit, Output, signal } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
-import { DragonTableType } from '../../poco/enums';
+import { TableLazyLoadEvent, TableModule } from 'primeng/table';
 import { PAGE_SIZE } from '../../global-consts';
+import { AssignmentHttpClient } from '../../httpClients/assignment-http-client';
+import { DragonTableType } from '../../poco/enums';
+import { DisplayJob, Dragon } from '../../poco/models';
+import { ValidatedResponse } from '../../poco/standard-responses';
 
 @Component({
   selector: 'app-dragon-table',
@@ -20,8 +19,8 @@ export class DragonTable implements OnInit {
   selectedJob = input<DisplayJob | null>();
   dragonTableType = input<DragonTableType>();
 
-  @Output() onDragonAssigned: EventEmitter<any> = new EventEmitter();
-  @Output() onDragonUnassigned: EventEmitter<any> = new EventEmitter();
+  @Output() onDragonAssigned = new EventEmitter();
+  @Output() onDragonUnassigned = new EventEmitter();
 
   dragons = signal<Dragon[]>([]);
   selectedDragon = signal<Dragon | null>(null);
