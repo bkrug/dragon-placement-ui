@@ -12,14 +12,14 @@ import { LocalCheckbox, LocalInputField, LocalNumberField, LocalSelectField, Sel
   styleUrl: './dragon-form.scss',
 })
 export class DragonForm {
-  dragon = signal(new Dragon());
   skillLevels = [
     { value: null, display: 'Select Skill Level...' },
-    { value: 'b', display: 'Basic' },
-    { value: 'm', display: 'Medium' },
-    { value: 'a', display: 'Advanced' }
+    { value: 'b',  display: 'Basic' },
+    { value: 'm',  display: 'Medium' },
+    { value: 'a',  display: 'Advanced' }
   ] as SelectListOption[]
 
+  dragon = signal(new Dragon());
   dragonFormGroup = new FormGroup({
     givenName: new FormControl(this.dragon().givenName, [ Validators.required, Validators.minLength(3) ]),
     familyName: new FormControl(this.dragon().familyName),
@@ -29,17 +29,6 @@ export class DragonForm {
     lengthInMeters: new FormControl(this.dragon().lengthInMeters),
     fightingSkills: new FormControl(this.dragon().fightingSkills)
   })
-
-  getErrors(fieldName: string) {
-    const field = this.dragonFormGroup.get(fieldName);
-    if (field === null)
-      return [];
-    const errors = field.errors;
-    if (errors === null)
-      return [];
-    const keys = Object.keys(errors);
-    return keys.map(key => { return { errorType: key, errorValue : errors[key] }});
-  }
 
   onSubmit() {
     console.log(this.dragonFormGroup.value);
