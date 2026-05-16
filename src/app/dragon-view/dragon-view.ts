@@ -1,12 +1,12 @@
+import { DatePipe } from '@angular/common';
 import { Component, inject, OnInit, signal } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { TableModule } from 'primeng/table';
+import { PAGE_SIZE } from '../../global-consts';
 import { AssignmentHttpClient } from '../../httpClients/assignment-http-client';
 import { JobInclusions } from '../../poco/enums';
-import { ActivatedRoute } from '@angular/router';
-import { DisplayDragon, Assignment } from '../../poco/models';
-import { TableModule } from 'primeng/table';
+import { Assignment, DisplayDragon } from '../../poco/models';
 import { mapDragonToDisplayDragon } from '../../transformers';
-import { DatePipe } from '@angular/common';
-import { PAGE_SIZE } from '../../global-consts';
 
 @Component({
   selector: 'app-dragon-view',
@@ -28,14 +28,13 @@ export class DragonView implements OnInit {
     this.activatedRoute.params.subscribe((params) => {
       this.dragonId = params['dragonId'];
     });
-  }  
+  }
 
   ngOnInit(): void {
     this.dragonHttpClient.getDragonWithJobs(this.dragonId, JobInclusions.CurrentAndFuture)
       .then(validatedResponse => {
         this.dragon.set(mapDragonToDisplayDragon(validatedResponse.payload));
         this.haveDragon.set(true);
-        console.log(JSON.stringify(validatedResponse));
       });
   }
 }

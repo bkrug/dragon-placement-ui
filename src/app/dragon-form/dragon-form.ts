@@ -1,20 +1,39 @@
-import { Component, signal, inject } from '@angular/core';
-import { MessageModule } from 'primeng/message';
-import { Dragon } from '../../poco/models';
-import { FormGroup, FormControl, ReactiveFormsModule } from '@angular/forms';
-import { Validators } from '@angular/forms';
-import { LocalCheckbox, LocalInputField, LocalNumberField, LocalSelectField, SelectListOption, applyServerSideValidations } from '../local-form/local-fields';
-import { AssignmentHttpClient } from '../../httpClients/assignment-http-client';
+import { Component, inject, signal } from '@angular/core';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 import { Effect } from 'effect';
+import { MessageModule } from 'primeng/message';
+import { AssignmentHttpClient } from '../../httpClients/assignment-http-client';
+import { JobInclusions } from '../../poco/enums';
+import { Dragon } from '../../poco/models';
+import { LocalCheckbox, LocalNumberField, LocalSelectField, LocalTextField, SelectListOption, applyServerSideValidations } from '../local-form/local-fields';
 
 @Component({
   selector: 'app-dragon-form',
-  imports: [ ReactiveFormsModule, MessageModule, LocalInputField, LocalCheckbox, LocalNumberField, LocalSelectField ],
+  imports: [ ReactiveFormsModule, MessageModule, LocalTextField, LocalCheckbox, LocalNumberField, LocalSelectField ],
   templateUrl: './dragon-form.html',
   styleUrl: './dragon-form.scss',
 })
 export class DragonForm {
   httpClient = inject(AssignmentHttpClient);
+  private activatedRoute = inject(ActivatedRoute);
+  private dragonId: number | null = null;
+  dragon = signal(new Dragon());
+
+  constructor() {
+    this.activatedRoute.params.subscribe((params) => {
+      this.dragonId = params['dragonId'];
+    });
+  }
+
+  ngOnInit(): void {
+    if (this.dragonId !== null)
+      this.httpClient.getDragonWithJobs(this.dragonId, JobInclusions.None)
+        .then(validatedResponse => {
+          this.dragon.set(validatedResponse.payload);
+          this.dragonFormGroup.set(this.getDragonFormGroup());
+        });
+  }  
 
   skillLevels = [
     { value: null, display: 'Select Skill Level...' },
@@ -23,20 +42,23 @@ export class DragonForm {
     { value: 'a',  display: 'Advanced' }
   ] as SelectListOption[]
 
-  dragon = signal(new Dragon());
-  dragonFormGroup = new FormGroup({
-    givenName: new FormControl(this.dragon().givenName, [ Validators.required ]),
-    familyName: new FormControl(this.dragon().familyName),
-    canBreathFire: new FormControl(this.dragon().canBreathFire),
-    canTakePassengers: new FormControl(this.dragon().canTakePassengers),
-    weightInKg: new FormControl(this.dragon().weightInKg),
-    lengthInMeters: new FormControl(this.dragon().lengthInMeters),
-    fightingSkills: new FormControl(this.dragon().fightingSkills)
-  });
+  dragonFormGroup = signal(this.getDragonFormGroup());
+
+  private getDragonFormGroup() {
+    return new FormGroup({
+      givenName: new FormControl(this.dragon().givenName, [ Validators.required ]),
+      familyName: new FormControl(this.dragon().familyName),
+      canBreathFire: new FormControl(this.dragon().canBreathFire),
+      canTakePassengers: new FormControl(this.dragon().canTakePassengers),
+      weightInKg: new FormControl(this.dragon().weightInKg),
+      lengthInMeters: new FormControl(this.dragon().lengthInMeters),
+      fightingSkills: new FormControl(this.dragon().fightingSkills)
+    });
+  }
 
   onSubmit() {
-    if (this.dragonFormGroup.valid) {
-      const dragonFromForm = this.dragonFormGroup.value;
+    if (this.dragonFormGroup().valid) {
+      const dragonFromForm = this.dragonFormGroup().value;
       const requestBody = {
         givenName: dragonFromForm.givenName!,
         familyName: dragonFromForm.familyName || null,
@@ -49,8 +71,8 @@ export class DragonForm {
       const response = this.httpClient.postDragonForm(requestBody)
         .then(result =>
           Effect.runPromise(Effect.match(result, {
-            onSuccess: _ => this.dragonFormGroup.reset(),
-            onFailure: failureResponse => applyServerSideValidations(failureResponse, this.dragonFormGroup)
+            onSuccess: _ => this.dragonFormGroup().reset(),
+            onFailure: failureResponse => applyServerSideValidations(failureResponse, this.dragonFormGroup())
           }))
         );
     }
