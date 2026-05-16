@@ -1,11 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
-import { form, required} from '@angular/forms/signals';
-import { FormsModule } from '@angular/forms';
-import { ButtonModule } from 'primeng/button';
-import { InputTextModule } from 'primeng/inputtext';
-import { InputNumberModule } from 'primeng/inputnumber';
-import { CheckboxModule } from 'primeng/checkbox';
-import { SelectModule } from 'primeng/select';
+import { Component, signal } from '@angular/core';
 import { MessageModule } from 'primeng/message';
 import { Dragon } from '../../poco/models';
 import { FormGroup, FormControl, ReactiveFormsModule } from '@angular/forms';
@@ -15,7 +8,6 @@ import { LocalCheckbox, LocalInputField, LocalNumberField, LocalSelectField, Sel
 @Component({
   selector: 'app-dragon-form',
   imports: [ ReactiveFormsModule, MessageModule, LocalInputField, LocalCheckbox, LocalNumberField, LocalSelectField ],
-  //FormsModule, ButtonModule, InputTextModule, InputNumberModule, CheckboxModule, SelectModule, MessageModule],
   templateUrl: './dragon-form.html',
   styleUrl: './dragon-form.scss',
 })
