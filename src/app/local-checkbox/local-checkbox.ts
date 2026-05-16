@@ -4,12 +4,12 @@ import { MessageModule } from 'primeng/message';
 import { ReactiveFormsModule } from '@angular/forms';
 
 @Component({
-  selector: 'app-local-input-field',
+  selector: 'app-local-checkbox',
   imports: [ ReactiveFormsModule, MessageModule ],
-  templateUrl: './local-input-field.html',
-  styleUrl: './local-input-field.scss',
+  templateUrl: './local-checkbox.html',
+  styleUrl: './local-checkbox.scss',
 })
-export class LocalInputField {
+export class LocalCheckbox {
   formGroup = input.required<FormGroup>();
   fieldControl = input.required<AbstractControl<string|null, string|null, any> | null>();
   id = input.required<string>();

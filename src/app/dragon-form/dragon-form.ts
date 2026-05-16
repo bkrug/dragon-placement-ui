@@ -11,12 +11,14 @@ import { Dragon } from '../../poco/models';
 import { FormGroup, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { Validators } from '@angular/forms';
 import { LocalInputField } from '../local-input-field/local-input-field';
+import { LocalCheckbox } from '../local-checkbox/local-checkbox';
 
 interface SkillLevel { code: string | null, name: string };
 
 @Component({
   selector: 'app-dragon-form',
-  imports: [ ReactiveFormsModule, MessageModule, LocalInputField ], //FormsModule, ButtonModule, InputTextModule, InputNumberModule, CheckboxModule, SelectModule, MessageModule],
+  imports: [ ReactiveFormsModule, MessageModule, LocalInputField, LocalCheckbox ],
+  //FormsModule, ButtonModule, InputTextModule, InputNumberModule, CheckboxModule, SelectModule, MessageModule],
   templateUrl: './dragon-form.html',
   styleUrl: './dragon-form.scss',
 })
@@ -30,8 +32,10 @@ export class DragonForm {
   ] as SkillLevel[]
 
   dragonFormGroup = new FormGroup({
-    givenName: new FormControl(this.dragon().givenName, [ Validators.required ]),
-    familyName: new FormControl(this.dragon().familyName, [ Validators.minLength(3) ]),
+    givenName: new FormControl(this.dragon().givenName, [ Validators.required, Validators.minLength(3) ]),
+    familyName: new FormControl(this.dragon().familyName),
+    canBreathFire: new FormControl(this.dragon().canBreathFire),
+    canTakePassengers: new FormControl(this.dragon().canTakePassengers)
   })
 
   getErrors(fieldName: string) {

@@ -4,6 +4,8 @@
   <form [formGroup]="dragonFormGroup" (ngSubmit)="onSubmit()">
     <app-local-input-field id="given-name" label="Given Name:" fieldName="givenName" [formGroup]="this.dragonFormGroup" [fieldControl]="this.dragonFormGroup.get('givenName')" />
     <app-local-input-field id="family-name" label="Family Name:" fieldName="familyName" [formGroup]="this.dragonFormGroup" [fieldControl]="this.dragonFormGroup.get('familyName')" />
+    <app-local-checkbox id="can-breath-fire" label="Can Breath Fire:" fieldName="canBreathFire" [formGroup]="this.dragonFormGroup" [fieldControl]="this.dragonFormGroup.get('canBreathFire')" />
+    <app-local-checkbox id="can-take-passengers" label="Can Take Passengers:" fieldName="canTakePassengers" [formGroup]="this.dragonFormGroup" [fieldControl]="this.dragonFormGroup.get('canTakePassengers')" />
     <button type="submit" [disabled]="!dragonFormGroup.valid">Submit</button>
   </form>
 </div>
