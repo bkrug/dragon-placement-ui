@@ -6,6 +6,7 @@ import { Validators } from '@angular/forms';
 import { LocalCheckbox, LocalInputField, LocalNumberField, LocalSelectField, SelectListOption } from '../local-form/local-fields';
 import { AssignmentHttpClient } from '../../httpClients/assignment-http-client';
 import { Effect } from 'effect';
+import { ValidatedForm } from '../../poco/standard-responses';
 
 @Component({
   selector: 'app-dragon-form',
@@ -48,28 +49,23 @@ export class DragonForm {
         fightingSkills: dragonFromForm.fightingSkills || null
       } as Dragon;
       const response = this.httpClient.postDragonForm(requestBody)
-        .then(result => {
+        .then(result =>
           Effect.runPromise(Effect.match(result, {
             onSuccess: _ => this.dragonFormGroup.reset(),
-            onFailure: failureResponse => {
-              const vFail = failureResponse.validationFailures;
-              vFail.givenName && this.dragonFormGroup.get('givenName')?.setErrors({
-                'server-side': vFail.givenName
-              });
-              vFail.weightInKg && this.dragonFormGroup.get('weightInKg')?.setErrors({
-                'server-side': vFail.weightInKg
-              });
-              vFail.lengthInMeters && this.dragonFormGroup.get('lengthInMeters')?.setErrors({
-                'server-side': vFail.lengthInMeters
-              });
-              vFail.fightingSkills && this.dragonFormGroup.get('fightingSkills')?.setErrors({
-                'server-side': vFail.fightingSkills
-              });
-            }
+            onFailure: failureResponse => applyServerSideValidations(failureResponse, this.dragonFormGroup)
           }))
-        });
+        );
 
       console.log(response);
     }
   }
+}
+
+function applyServerSideValidations<T extends object>(failures: ValidatedForm<T>, formGroup: FormGroup<any>) {
+  const vFail = failures.validationFailures;
+  const keys = Object.keys(vFail);
+  keys.forEach((key: string) => {
+    const failMsg = (vFail as any)[key] as string;
+    failMsg && formGroup.get(key)?.setErrors({ 'server-side': failMsg });
+  });
 }
