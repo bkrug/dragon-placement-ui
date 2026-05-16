@@ -45,6 +45,11 @@ abstract class LocalFieldBase<T extends (boolean | string | number)> {
   }
 }
 
+export interface SelectListOption {
+  display: string;
+  value: string | null;
+}
+
 @Component({
   selector: 'app-local-input-field',
   imports: [ ReactiveFormsModule, MessageModule ],
@@ -85,4 +90,19 @@ export class LocalCheckbox extends LocalFieldBase<boolean> {
   override getFieldControl() {
     return this.fieldControl();
   }
+}
+
+@Component({
+  selector: 'app-local-select-field',
+  imports: [ ReactiveFormsModule, MessageModule ],
+  templateUrl: './local-select-field.html',
+  styleUrl: './local-select-field.scss',
+})
+export class LocalSelectField extends LocalFieldBase<string> {
+  options = input.required<SelectListOption[]>();
+  fieldControl = input.required<AbstractControl<string|null, string|null, any> | null>();
+
+  override getFieldControl() {
+    return this.fieldControl();
+  }  
 }

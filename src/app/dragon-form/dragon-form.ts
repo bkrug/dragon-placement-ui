@@ -10,8 +10,7 @@ import { MessageModule } from 'primeng/message';
 import { Dragon } from '../../poco/models';
 import { FormGroup, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { Validators } from '@angular/forms';
-import { LocalCheckbox, LocalInputField, LocalNumberField } from '../local-form/local-fields';
-import { LocalSelectField, SelectListOption } from '../local-select-field/local-select-field';
+import { LocalCheckbox, LocalInputField, LocalNumberField, LocalSelectField, SelectListOption } from '../local-form/local-fields';
 
 @Component({
   selector: 'app-dragon-form',
