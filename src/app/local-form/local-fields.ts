@@ -1,4 +1,4 @@
-import { Component, Directive, input } from '@angular/core';
+import { Component, Directive, input, signal } from '@angular/core';
 import { AbstractControl, FormGroup, ValidationErrors } from '@angular/forms';
 import { MessageModule } from 'primeng/message';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -58,6 +58,7 @@ export interface SelectListOption {
 })
 export class LocalInputField extends LocalFieldBase<string> {
   fieldControl = input.required<AbstractControl<string|null, string|null, any> | null>();
+  inputType = signal('text');
 
   override getFieldControl() {
     return this.fieldControl();
@@ -72,6 +73,7 @@ export class LocalInputField extends LocalFieldBase<string> {
 })
 export class LocalNumberField extends LocalFieldBase<number> {
   fieldControl = input.required<AbstractControl<number|null, number|null, any> | null>();
+  inputType = signal('number');
 
   override getFieldControl() {
     return this.fieldControl();

@@ -1,6 +1,6 @@
 <div [formGroup]="formGroup()">
   <label for="{{id()}}">{{label()}}</label>
-  <input id="{{id()}}" type="text" formControlName="{{fieldName()}}" />
+  <input id="{{id()}}" [type]="inputType()" formControlName="{{fieldName()}}" />
   @if (this.shouldDisplayError()) {
     @for (error of getErrors(); track error.errorType) {
       <p-message severity="error" size="small" variant="simple">
