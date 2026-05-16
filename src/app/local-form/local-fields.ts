@@ -35,6 +35,8 @@ abstract class LocalFieldBase<T extends (boolean | string | number)> {
   private getErrorMsg(errorType: string, validationErrors: ValidationErrors) {
     const errObj = validationErrors[errorType];
     switch (errorType) {
+      case 'server-side':
+        return errObj as string;
       case 'required':
         return 'required';
       case 'minlength':

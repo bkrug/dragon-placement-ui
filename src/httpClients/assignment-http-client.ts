@@ -4,6 +4,7 @@ import { ValidatedForm, ValidatedPayload } from '../poco/standard-responses';
 import { JobInclusions } from '../poco/enums';
 import { HttpHelpers } from './http-helpers';
 import { environment } from '../environments/environment';
+import { Effect } from 'effect';
 
 const apiUrl = environment.backendApi.endsWith('/')
   ? environment.backendApi
@@ -57,10 +58,10 @@ export class AssignmentHttpClient {
     });
     const json = await response.json();
     if (response.ok) {
-      return json as ValidatedPayload<Dragon>;
+      return Effect.succeed(json as ValidatedPayload<Dragon>);
     }
     else {
-      return json as ValidatedForm<DragonValidationFailures>;
+      return Effect.fail(json as ValidatedForm<DragonValidationFailures>);
     }
   };
 }

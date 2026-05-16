@@ -5,6 +5,7 @@ import { FormGroup, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { Validators } from '@angular/forms';
 import { LocalCheckbox, LocalInputField, LocalNumberField, LocalSelectField, SelectListOption } from '../local-form/local-fields';
 import { AssignmentHttpClient } from '../../httpClients/assignment-http-client';
+import { Effect } from 'effect';
 
 @Component({
   selector: 'app-dragon-form',
@@ -31,13 +32,13 @@ export class DragonForm {
     weightInKg: new FormControl(this.dragon().weightInKg),
     lengthInMeters: new FormControl(this.dragon().lengthInMeters),
     fightingSkills: new FormControl(this.dragon().fightingSkills)
-  })
+  });
 
   onSubmit() {
     console.log(this.dragonFormGroup.value);
     if (this.dragonFormGroup.valid) {
       const dragonFromForm = this.dragonFormGroup.value;
-      const response = this.httpClient.postDragonForm({
+      const requestBody = {
         givenName: dragonFromForm.givenName!,
         familyName: dragonFromForm.familyName || null,
         canBreathFire: dragonFromForm.canBreathFire === true,
@@ -45,7 +46,29 @@ export class DragonForm {
         weightInKg: dragonFromForm.weightInKg || null,
         lengthInMeters: dragonFromForm.lengthInMeters || null,
         fightingSkills: dragonFromForm.fightingSkills || null
-      } as Dragon);
+      } as Dragon;
+      const response = this.httpClient.postDragonForm(requestBody)
+        .then(result => {
+          Effect.runPromise(Effect.match(result, {
+            onSuccess: _ => this.dragonFormGroup.reset(),
+            onFailure: failureResponse => {
+              const vFail = failureResponse.validationFailures;
+              vFail.givenName && this.dragonFormGroup.get('givenName')?.setErrors({
+                'server-side': vFail.givenName
+              });
+              vFail.weightInKg && this.dragonFormGroup.get('weightInKg')?.setErrors({
+                'server-side': vFail.weightInKg
+              });
+              vFail.lengthInMeters && this.dragonFormGroup.get('lengthInMeters')?.setErrors({
+                'server-side': vFail.lengthInMeters
+              });
+              vFail.fightingSkills && this.dragonFormGroup.get('fightingSkills')?.setErrors({
+                'server-side': vFail.fightingSkills
+              });
+            }
+          }))
+        });
+
       console.log(response);
     }
   }

@@ -21,8 +21,6 @@ export class Dragon {
 
 export class DragonValidationFailures {
   givenName: string = '';
-  canBreathFire: string = '';
-  canTakePassengers: string = '';
   weightInKg: string = '';
   lengthInMeters: string = '';
   fightingSkills: string = '';
