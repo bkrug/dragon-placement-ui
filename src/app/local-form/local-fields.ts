@@ -57,9 +57,9 @@ export interface SelectListOption {
   styleUrl: './local-input-field.scss',
 })
 export class LocalInputField extends LocalFieldBase<string> {
-  fieldControl = input.required<AbstractControl<string|null, string|null, any> | null>();
   inputType = signal('text');
 
+  fieldControl = input.required<AbstractControl<string|null, string|null, any> | null>();
   override getFieldControl() {
     return this.fieldControl();
   }
@@ -72,9 +72,9 @@ export class LocalInputField extends LocalFieldBase<string> {
   styleUrl: './local-input-field.scss',
 })
 export class LocalNumberField extends LocalFieldBase<number> {
-  fieldControl = input.required<AbstractControl<number|null, number|null, any> | null>();
   inputType = signal('number');
 
+  fieldControl = input.required<AbstractControl<number|null, number|null, any> | null>();
   override getFieldControl() {
     return this.fieldControl();
   }
@@ -88,7 +88,6 @@ export class LocalNumberField extends LocalFieldBase<number> {
 })
 export class LocalCheckbox extends LocalFieldBase<boolean> {
   fieldControl = input.required<AbstractControl<boolean|null, boolean|null, any> | null>();
-
   override getFieldControl() {
     return this.fieldControl();
   }
@@ -102,8 +101,8 @@ export class LocalCheckbox extends LocalFieldBase<boolean> {
 })
 export class LocalSelectField extends LocalFieldBase<string> {
   options = input.required<SelectListOption[]>();
-  fieldControl = input.required<AbstractControl<string|null, string|null, any> | null>();
 
+  fieldControl = input.required<AbstractControl<string|null, string|null, any> | null>();
   override getFieldControl() {
     return this.fieldControl();
   }  
