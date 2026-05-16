@@ -25,7 +25,7 @@ export class Counter {
     this.count += this.step;
   }
   getClasses() : string[] {
-    return ["turtle", "puppy"];
+    return ['turtle', 'puppy'];
   }
   isExpanded() {
     return true;

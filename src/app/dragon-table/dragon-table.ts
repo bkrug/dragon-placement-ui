@@ -34,9 +34,9 @@ export class DragonTable implements OnInit {
   }
 
   forcePageLoad() {
-    this.onPageChange({ first: this.first() });    
+    this.onPageChange({ first: this.first() });
   }
-  
+
   onPageChange(event: TableLazyLoadEvent) {
     if (this.selectedJob() === null)
       return;
@@ -66,7 +66,7 @@ export class DragonTable implements OnInit {
       this.lazyLoadingService.assignDragonToJob,
       this.onDragonAssigned);
   }
-  
+
   unassignDragon(dragonId: number) {
     this.executeDragonAction(
       dragonId,
@@ -88,8 +88,8 @@ export class DragonTable implements OnInit {
           eventToEmit.emit();
         }
         else {
-          alert(validatedResponse.validationFailures.join(", "));
+          alert(validatedResponse.validationFailures.join(', '));
         }
-      });    
+      });
   }
 }

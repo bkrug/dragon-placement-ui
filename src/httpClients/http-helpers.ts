@@ -41,7 +41,7 @@ export class HttpHelpers {
         isInternalError: true,
         validationFailures: [JSON.stringify(ex)]
       } as ValidatedPayload<T>;
-    }    
+    }
   }
 
   static async submitForm<Tok extends object, Tfail extends object>(url: string, httpVerb: string, requestBody: object) {

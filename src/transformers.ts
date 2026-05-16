@@ -4,7 +4,7 @@ export const mapJobToDisplayJob = (source: Job) => {
   const startDate = new Date(source.startDateUnix * 1000);
   const endDate = new Date(source.endDateUnix * 1000);
   const openPositions = source.numberOfPositions - source.filledPositions;
-  const openDescription = 
+  const openDescription =
     openPositions === 0 ? 'Filled'
     : openPositions < 0 ? `${openPositions} of ${source.numberOfPositions} (overfilled)`
     : `${openPositions} of ${source.numberOfPositions}`;

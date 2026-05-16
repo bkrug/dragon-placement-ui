@@ -33,7 +33,7 @@ export class DragonForm implements OnInit {
           this.dragon.set(validatedResponse.payload);
           this.dragonFormGroup.set(this.getDragonFormGroup());
         });
-  }  
+  }
 
   skillLevels = [
     { value: null, display: 'Select Skill Level...' },
@@ -76,7 +76,7 @@ export class DragonForm implements OnInit {
           onSuccess: successResponse => {
             this.dragonId = successResponse.payload.dragonId;
             this.dragon.set(successResponse.payload);
-            this.dragonFormGroup.set(this.getDragonFormGroup());              
+            this.dragonFormGroup.set(this.getDragonFormGroup());
           },
           onFailure: failureResponse => applyServerSideValidations(failureResponse, this.dragonFormGroup())
         }))

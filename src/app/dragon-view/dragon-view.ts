@@ -23,7 +23,7 @@ export class DragonView implements OnInit {
   dragon = signal(new DisplayDragon());
   selectedAssignment = signal(null as Assignment | null);
   readonly pageSize = PAGE_SIZE;
-  
+
   constructor() {
     this.activatedRoute.params.subscribe((params) => {
       this.dragonId = params['dragonId'];

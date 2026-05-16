@@ -27,7 +27,7 @@ export class AssignmentHttpClient {
 
   async getOnePageOfJobs(offset: number, limit: number) {
     return await HttpHelpers.getOnePage<Job>(`${apiUrl}job?offset=${offset}&limit=${limit}`);
-  }  
+  }
 
   async getDragonWithJobs(dragonId: number, jobInclusions: JobInclusions) {
     const response = await fetch(`${apiUrl}dragon/${dragonId}?jobInclusions=${jobInclusions}`);
@@ -37,13 +37,13 @@ export class AssignmentHttpClient {
 
   async assignDragonToJob(dragonId: number, jobId: number) {
     return await HttpHelpers.getValidatedResponse(`${apiUrl}job/${jobId}/assigned-dragon/${dragonId}`, {
-      method: "POST"
+      method: 'POST'
     });
   };
 
   async unassignDragonToJob(dragonId: number, jobId: number) {
     return await HttpHelpers.getValidatedResponse(`${apiUrl}job/${jobId}/assigned-dragon/${dragonId}`, {
-      method: "DELETE"
+      method: 'DELETE'
     });
   };
 
@@ -53,5 +53,5 @@ export class AssignmentHttpClient {
 
   async putDragonForm(dragonId: number, dragon: Dragon) {
     return await HttpHelpers.submitForm<Dragon, DragonValidationFailures>(`${apiUrl}dragon/${dragonId}`, 'PUT', dragon);
-  };  
+  };
 }

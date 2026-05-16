@@ -117,5 +117,5 @@ export class LocalSelectField extends LocalFieldBase<string> {
   fieldControl = input.required<AbstractControl<string|null, string|null, any> | null>();
   override getFieldControl() {
     return this.fieldControl();
-  }  
+  }
 }

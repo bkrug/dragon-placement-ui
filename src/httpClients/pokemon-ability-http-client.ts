@@ -19,6 +19,6 @@ export class PokemonAbilityHttpClient {
   async getOnePage(offset: number, limit: number) {
     const response = await fetch(`https://pokeapi.co/api/v2/ability/?offset=${offset}&limit=${limit}`);
     const json = await response.json();
-    return json as PokemonAbilityPage;    
+    return json as PokemonAbilityPage;
   }
 }

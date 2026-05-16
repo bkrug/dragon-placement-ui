@@ -31,7 +31,14 @@ module.exports = defineConfig([
           style: 'kebab-case',
         },
       ],
-      '@typescript-eslint/no-inferrable-types': 'off'
+      '@typescript-eslint/no-inferrable-types': 'off',
+      'quotes': [
+        'error',
+        'single'
+      ],
+      'no-trailing-spaces': 'warn',
+      'testing-library/prefer-presence-queries': 'off',
+      '__I think that expect(queryByText(...)).toBeInDocument() gives a clearer failure message than getByText() when an expected element is missing.__': 'off'      
     },
   },
   {

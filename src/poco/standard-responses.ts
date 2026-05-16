@@ -18,6 +18,6 @@ export interface PagedData<T extends object>
 
 export interface ValidatedForm<T extends object> {
   isInternalError: boolean;
-  isSuccess: boolean;  
+  isSuccess: boolean;
   validationFailures: T;
 }
