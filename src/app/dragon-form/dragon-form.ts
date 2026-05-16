@@ -8,13 +8,15 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { SelectModule } from 'primeng/select';
 import { MessageModule } from 'primeng/message';
 import { Dragon } from '../../poco/models';
+import { FormGroup, FormControl, ReactiveFormsModule } from '@angular/forms';
+import { Validators } from '@angular/forms';
+import { LocalInputField } from '../local-input-field/local-input-field';
 
-// || givenName.submitted))
 interface SkillLevel { code: string | null, name: string };
 
 @Component({
   selector: 'app-dragon-form',
-  imports: [FormsModule, ButtonModule, InputTextModule, InputNumberModule, CheckboxModule, SelectModule, MessageModule],
+  imports: [ ReactiveFormsModule, MessageModule, LocalInputField ], //FormsModule, ButtonModule, InputTextModule, InputNumberModule, CheckboxModule, SelectModule, MessageModule],
   templateUrl: './dragon-form.html',
   styleUrl: './dragon-form.scss',
 })
@@ -27,16 +29,38 @@ export class DragonForm {
     { code: 'a', name: 'Advanced' }
   ] as SkillLevel[]
 
-  dragonForm = form(this.dragon, (fieldPath) => {
-    required(fieldPath.givenName, {message: 'Given Name is required'});
-  });
+  dragonFormGroup = new FormGroup({
+    givenName: new FormControl(this.dragon().givenName, [ Validators.required ]),
+    familyName: new FormControl(this.dragon().familyName, [ Validators.minLength(3) ]),
+  })
 
-  onSubmit(event: Event) {
-    console.log(this.dragon());
-    console.log(this.dragonForm().valid());
-    console.log(this.dragonForm().errorSummary());
-    console.log(this.dragonForm.givenName().errors());
-    console.log(this.dragonForm.givenName().invalid());
-    console.log(this.dragonForm.givenName().touched());
+  getErrors(fieldName: string) {
+    const field = this.dragonFormGroup.get(fieldName);
+    if (field === null)
+      return [];
+    const errors = field.errors;
+    if (errors === null)
+      return [];
+    const keys = Object.keys(errors);
+    return keys
+      .map(key => { return { errorType: key, errorValue : JSON.stringify(errors[key]) }});
   }
+
+  onSubmit() {
+    console.log(this.dragonFormGroup.value);
+    console.log(this.dragonFormGroup.valid);
+  }
+
+  // dragonForm = form(this.dragon, (fieldPath) => {
+  //   required(fieldPath.givenName, {message: 'Given Name is required'});
+  // });
+
+  // onSubmitOld(event: Event) {
+  //   console.log(this.dragon());
+  //   console.log(this.dragonForm().valid());
+  //   console.log(this.dragonForm().errorSummary());
+  //   console.log(this.dragonForm.givenName().errors());
+  //   console.log(this.dragonForm.givenName().invalid());
+  //   console.log(this.dragonForm.givenName().touched());
+  // }
 }

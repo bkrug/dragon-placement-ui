@@ -1,0 +1,11 @@
+<div [formGroup]="formGroup()">
+  <label for="{{id()}}">{{label()}}</label>
+  <input id="{{id()}}" type="text" formControlName="{{fieldName()}}" />
+  @if (this.shouldDisplayError()) {
+      <p-message severity="error" size="small" variant="simple">
+        @for (error of getErrors(); track error.errorType) {
+          {{ error.errorType }} : {{ error.errorValue }}
+        }
+      </p-message>
+  }
+</div>
