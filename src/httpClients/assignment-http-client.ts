@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Effect } from 'effect';
 import { environment } from '../environments/environment';
 import { JobInclusions } from '../poco/enums';
 import { Dragon, DragonValidationFailures, Job } from '../poco/models';
-import { ValidatedForm, ValidatedPayload } from '../poco/standard-responses';
+import { ValidatedPayload } from '../poco/standard-responses';
 import { HttpHelpers } from './http-helpers';
 
 const apiUrl = environment.backendApi.endsWith('/')
@@ -49,36 +48,10 @@ export class AssignmentHttpClient {
   };
 
   async postDragonForm(dragon: Dragon) {
-    const headers = new Headers();
-    headers.set('Content-Type', 'application/json');
-    const response = await fetch(`${apiUrl}dragon`, {
-      method: "POST",
-      headers: headers,
-      body: JSON.stringify(dragon)
-    });
-    const json = await response.json();
-    if (response.ok) {
-      return Effect.succeed(json as ValidatedPayload<Dragon>);
-    }
-    else {
-      return Effect.fail(json as ValidatedForm<DragonValidationFailures>);
-    }
+    return await HttpHelpers.submitForm<Dragon, DragonValidationFailures>(`${apiUrl}dragon`, 'POST', dragon);
   };
 
   async putDragonForm(dragonId: number, dragon: Dragon) {
-    const headers = new Headers();
-    headers.set('Content-Type', 'application/json');
-    const response = await fetch(`${apiUrl}dragon/${dragonId}`, {
-      method: "PUT",
-      headers: headers,
-      body: JSON.stringify(dragon)
-    });
-    const json = await response.json();
-    if (response.ok) {
-      return Effect.succeed(json as ValidatedPayload<Dragon>);
-    }
-    else {
-      return Effect.fail(json as ValidatedForm<DragonValidationFailures>);
-    }
+    return await HttpHelpers.submitForm<Dragon, DragonValidationFailures>(`${apiUrl}dragon/${dragonId}`, 'PUT', dragon);
   };  
 }
