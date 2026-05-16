@@ -1,4 +1,5 @@
 import { Effect } from 'effect';
+import { isSuccess } from 'effect/Exit';
 import { PagedData, ValidatedForm, ValidatedPayload, ValidatedResponse } from '../poco/standard-responses';
 
 export class HttpHelpers {
@@ -45,19 +46,28 @@ export class HttpHelpers {
   }
 
   static async submitForm<Tok extends object, Tfail extends object>(url: string, httpVerb: string, requestBody: any) {
-    const headers = new Headers();
-    headers.set('Content-Type', 'application/json');
-    const response = await fetch(url, {
-      method: httpVerb,
-      headers: headers,
-      body: JSON.stringify(requestBody)
-    });
-    const json = await response.json();
-    if (response.ok) {
-      return Effect.succeed(json as ValidatedPayload<Tok>);
+    try {
+      const headers = new Headers();
+      headers.set('Content-Type', 'application/json');
+      const response = await fetch(url, {
+        method: httpVerb,
+        headers: headers,
+        body: JSON.stringify(requestBody)
+      });
+      const json = await response.json();
+      if (response.ok) {
+        return Effect.succeed(json as ValidatedPayload<Tok>);
+      }
+      else {
+        return Effect.fail(json as ValidatedForm<Tfail>);
+      }
     }
-    else {
-      return Effect.fail(json as ValidatedForm<Tfail>);
-    }    
+    catch (ex:any) {
+      console.error(JSON.stringify(ex));
+      return Effect.fail({
+        isSuccess: false,
+        isInternalError: true
+      } as ValidatedForm<Tfail>)
+    }
   }
 }
