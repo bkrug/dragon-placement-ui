@@ -22,12 +22,12 @@ export class DragonForm {
 
   constructor() {
     this.activatedRoute.params.subscribe((params) => {
-      this.dragonId = params['dragonId'];
+      this.dragonId = params['dragonId'] || null;
     });
   }
 
   ngOnInit(): void {
-    if (this.dragonId !== null)
+    if (this.dragonId)
       this.httpClient.getDragonWithJobs(this.dragonId, JobInclusions.None)
         .then(validatedResponse => {
           this.dragon.set(validatedResponse.payload);
@@ -68,13 +68,19 @@ export class DragonForm {
         lengthInMeters: dragonFromForm.lengthInMeters || null,
         fightingSkills: dragonFromForm.fightingSkills || null
       } as Dragon;
-      const response = this.httpClient.postDragonForm(requestBody)
-        .then(result =>
-          Effect.runPromise(Effect.match(result, {
-            onSuccess: _ => this.dragonFormGroup().reset(),
-            onFailure: failureResponse => applyServerSideValidations(failureResponse, this.dragonFormGroup())
-          }))
-        );
+      const httpResponse = this.dragonId
+        ? this.httpClient.putDragonForm(this.dragonId, requestBody)
+        : this.httpClient.postDragonForm(requestBody);
+      httpResponse.then(result =>
+        Effect.runPromise(Effect.match(result, {
+          onSuccess: successResponse => {
+            this.dragonId = successResponse.payload.dragonId;
+            this.dragon.set(successResponse.payload);
+            this.dragonFormGroup.set(this.getDragonFormGroup());              
+          },
+          onFailure: failureResponse => applyServerSideValidations(failureResponse, this.dragonFormGroup())
+        }))
+      );
     }
   }
 }
