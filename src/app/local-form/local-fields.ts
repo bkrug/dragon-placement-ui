@@ -38,7 +38,7 @@ abstract class LocalFieldBase<T extends (boolean | string | number)> {
       case 'required':
         return 'required';
       case 'minlength':
-        return `minimum length is ${errObj.requiredLength} but is ${errObj.actualLength}`;
+        return `minimum length is ${errObj.requiredLength} instead of ${errObj.actualLength}`;
       default:
         return JSON.stringify(errObj);
     }
