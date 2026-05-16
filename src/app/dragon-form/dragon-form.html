@@ -2,18 +2,18 @@
 
 <div class="card flex justify-center">
   <form [formGroup]="dragonFormGroup()" (ngSubmit)="onSubmit()">
-    <app-local-text-field id="given-name" label="Given Name:" fieldName="givenName" [formGroup]="this.dragonFormGroup()" [fieldControl]="this.dragonFormGroup().get('givenName')" />
-    <app-local-text-field id="family-name" label="Family Name:" fieldName="familyName" [formGroup]="this.dragonFormGroup()" [fieldControl]="this.dragonFormGroup().get('familyName')" />
-    <app-local-checkbox id="can-breath-fire" label="Can Breath Fire:" fieldName="canBreathFire" [formGroup]="this.dragonFormGroup()" [fieldControl]="this.dragonFormGroup().get('canBreathFire')" />
-    <app-local-checkbox id="can-take-passengers" label="Can Take Passengers:" fieldName="canTakePassengers" [formGroup]="this.dragonFormGroup()" [fieldControl]="this.dragonFormGroup().get('canTakePassengers')" />
-    <app-local-number-field id="length-in-meters" label="Length In Meters:" fieldName="lengthInMeters" [formGroup]="this.dragonFormGroup()" [fieldControl]="this.dragonFormGroup().get('lengthInMeters')" />
-    <app-local-number-field id="weight-in-kg" label="Weight In Kilograms:" fieldName="weightInKg" [formGroup]="this.dragonFormGroup()" [fieldControl]="this.dragonFormGroup().get('weightInKg')" />
+    <app-local-text-field id="given-name" label="Given Name:" fieldName="givenName" [formGroup]="dragonFormGroup()" [fieldControl]="dragonFormGroup().get('givenName')" />
+    <app-local-text-field id="family-name" label="Family Name:" fieldName="familyName" [formGroup]="dragonFormGroup()" [fieldControl]="dragonFormGroup().get('familyName')" />
+    <app-local-checkbox id="can-breath-fire" label="Can Breath Fire:" fieldName="canBreathFire" [formGroup]="dragonFormGroup()" [fieldControl]="dragonFormGroup().get('canBreathFire')" />
+    <app-local-checkbox id="can-take-passengers" label="Can Take Passengers:" fieldName="canTakePassengers" [formGroup]="dragonFormGroup()" [fieldControl]="dragonFormGroup().get('canTakePassengers')" />
+    <app-local-number-field id="length-in-meters" label="Length In Meters:" fieldName="lengthInMeters" [formGroup]="dragonFormGroup()" [fieldControl]="dragonFormGroup().get('lengthInMeters')" />
+    <app-local-number-field id="weight-in-kg" label="Weight In Kilograms:" fieldName="weightInKg" [formGroup]="dragonFormGroup()" [fieldControl]="dragonFormGroup().get('weightInKg')" />
     <app-local-select-field
       id="fighting-skills"
       label="Fighting Skills:"
       fieldName="fightingSkills"
-      [formGroup]="this.dragonFormGroup()"
-      [fieldControl]="this.dragonFormGroup().get('fightingSkills')"
+      [formGroup]="dragonFormGroup()"
+      [fieldControl]="dragonFormGroup().get('fightingSkills')"
       [options]="this.skillLevels" />
     <button type="submit" [disabled]="!dragonFormGroup().valid">Submit</button>
   </form>
