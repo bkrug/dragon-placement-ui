@@ -36,7 +36,6 @@ export class DragonForm {
   });
 
   onSubmit() {
-    console.log(this.dragonFormGroup.value);
     if (this.dragonFormGroup.valid) {
       const dragonFromForm = this.dragonFormGroup.value;
       const requestBody = {
@@ -55,8 +54,6 @@ export class DragonForm {
             onFailure: failureResponse => applyServerSideValidations(failureResponse, this.dragonFormGroup)
           }))
         );
-
-      console.log(response);
     }
   }
 }
