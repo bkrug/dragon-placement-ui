@@ -3,10 +3,9 @@ import { MessageModule } from 'primeng/message';
 import { Dragon } from '../../poco/models';
 import { FormGroup, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { Validators } from '@angular/forms';
-import { LocalCheckbox, LocalInputField, LocalNumberField, LocalSelectField, SelectListOption } from '../local-form/local-fields';
+import { LocalCheckbox, LocalInputField, LocalNumberField, LocalSelectField, SelectListOption, applyServerSideValidations } from '../local-form/local-fields';
 import { AssignmentHttpClient } from '../../httpClients/assignment-http-client';
 import { Effect } from 'effect';
-import { ValidatedForm } from '../../poco/standard-responses';
 
 @Component({
   selector: 'app-dragon-form',
@@ -58,11 +57,4 @@ export class DragonForm {
   }
 }
 
-function applyServerSideValidations<T extends object>(failures: ValidatedForm<T>, formGroup: FormGroup<any>) {
-  const vFail = failures.validationFailures;
-  const keys = Object.keys(vFail);
-  keys.forEach((key: string) => {
-    const failMsg = (vFail as any)[key] as string;
-    failMsg && formGroup.get(key)?.setErrors({ 'server-side': failMsg });
-  });
-}
+

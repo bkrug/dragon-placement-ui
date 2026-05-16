@@ -2,6 +2,7 @@ import { Component, Directive, input, signal } from '@angular/core';
 import { AbstractControl, FormGroup, ValidationErrors } from '@angular/forms';
 import { MessageModule } from 'primeng/message';
 import { ReactiveFormsModule } from '@angular/forms';
+import { ValidatedForm } from '../../poco/standard-responses';
 
 @Directive()
 abstract class LocalFieldBase<T extends (boolean | string | number)> {
@@ -51,6 +52,15 @@ export interface SelectListOption {
   display: string;
   value: string | null;
 }
+
+export function applyServerSideValidations<T extends object>(failures: ValidatedForm<T>, formGroup: FormGroup<any>) {
+  const vFail = failures.validationFailures;
+  const keys = Object.keys(vFail);
+  keys.forEach((key: string) => {
+    const failMsg = (vFail as any)[key] as string;
+    failMsg && formGroup.get(key)?.setErrors({ 'server-side': failMsg });
+  });
+};
 
 @Component({
   selector: 'app-local-input-field',
