@@ -8,6 +8,13 @@
     <app-local-checkbox id="can-take-passengers" label="Can Take Passengers:" fieldName="canTakePassengers" [formGroup]="this.dragonFormGroup" [fieldControl]="this.dragonFormGroup.get('canTakePassengers')" />
     <app-local-number-field id="length-in-meters" label="Length In Meters:" fieldName="lengthInMeters" [formGroup]="this.dragonFormGroup" [fieldControl]="this.dragonFormGroup.get('lengthInMeters')" />
     <app-local-number-field id="weight-in-kg" label="Weight In Kilograms:" fieldName="weightInKg" [formGroup]="this.dragonFormGroup" [fieldControl]="this.dragonFormGroup.get('weightInKg')" />
+    <app-local-select-field
+      id="fighting-skills"
+      label="Weight In Kilograms:"
+      fieldName="fightingSkills"
+      [formGroup]="this.dragonFormGroup"
+      [fieldControl]="this.dragonFormGroup.get('fightingSkills')"
+      [options]="this.skillLevels" />
     <button type="submit" [disabled]="!dragonFormGroup.valid">Submit</button>
   </form>
 </div>

@@ -11,12 +11,11 @@ import { Dragon } from '../../poco/models';
 import { FormGroup, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { Validators } from '@angular/forms';
 import { LocalCheckbox, LocalInputField, LocalNumberField } from '../local-form/local-fields';
-
-interface SkillLevel { code: string | null, name: string };
+import { LocalSelectField, SelectListOption } from '../local-select-field/local-select-field';
 
 @Component({
   selector: 'app-dragon-form',
-  imports: [ ReactiveFormsModule, MessageModule, LocalInputField, LocalCheckbox, LocalNumberField ],
+  imports: [ ReactiveFormsModule, MessageModule, LocalInputField, LocalCheckbox, LocalNumberField, LocalSelectField ],
   //FormsModule, ButtonModule, InputTextModule, InputNumberModule, CheckboxModule, SelectModule, MessageModule],
   templateUrl: './dragon-form.html',
   styleUrl: './dragon-form.scss',
@@ -24,11 +23,11 @@ interface SkillLevel { code: string | null, name: string };
 export class DragonForm {
   dragon = signal(new Dragon());
   skillLevels = [
-    { code: null, name: 'Select Skill Level...' },
-    { code: 'b', name: 'Basic' },
-    { code: 'm', name: 'Medium' },
-    { code: 'a', name: 'Advanced' }
-  ] as SkillLevel[]
+    { value: null, display: 'Select Skill Level...' },
+    { value: 'b', display: 'Basic' },
+    { value: 'm', display: 'Medium' },
+    { value: 'a', display: 'Advanced' }
+  ] as SelectListOption[]
 
   dragonFormGroup = new FormGroup({
     givenName: new FormControl(this.dragon().givenName, [ Validators.required, Validators.minLength(3) ]),
@@ -37,6 +36,7 @@ export class DragonForm {
     canTakePassengers: new FormControl(this.dragon().canTakePassengers),
     weightInKg: new FormControl(this.dragon().weightInKg),
     lengthInMeters: new FormControl(this.dragon().lengthInMeters),
+    fightingSkills: new FormControl(this.dragon().fightingSkills)
   })
 
   getErrors(fieldName: string) {

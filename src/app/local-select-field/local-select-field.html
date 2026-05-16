@@ -1,0 +1,15 @@
+<div [formGroup]="formGroup()">
+  <label for="{{id()}}">{{label()}}</label>
+  <select id="{{id()}}" type="text" formControlName="{{fieldName()}}" >
+    @for (curOpt of options(); track curOpt.value) {
+      <option value="{{curOpt.value}}">{{curOpt.display}}</option>
+    }
+  </select>
+  @if (this.shouldDisplayError()) {
+    @for (error of getErrors(); track error.errorType) {
+      <p-message severity="error" size="small" variant="simple">
+        {{ error.errorMsg }}
+      </p-message>
+    }
+  }
+</div>
