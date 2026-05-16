@@ -10,8 +10,7 @@ import { MessageModule } from 'primeng/message';
 import { Dragon } from '../../poco/models';
 import { FormGroup, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { Validators } from '@angular/forms';
-import { LocalInputField } from '../local-input-field/local-input-field';
-import { LocalCheckbox } from '../local-checkbox/local-checkbox';
+import { LocalCheckbox, LocalInputField } from '../local-form/local-fields';
 
 interface SkillLevel { code: string | null, name: string };
 
@@ -52,19 +51,5 @@ export class DragonForm {
 
   onSubmit() {
     console.log(this.dragonFormGroup.value);
-    console.log(this.dragonFormGroup.valid);
   }
-
-  // dragonForm = form(this.dragon, (fieldPath) => {
-  //   required(fieldPath.givenName, {message: 'Given Name is required'});
-  // });
-
-  // onSubmitOld(event: Event) {
-  //   console.log(this.dragon());
-  //   console.log(this.dragonForm().valid());
-  //   console.log(this.dragonForm().errorSummary());
-  //   console.log(this.dragonForm.givenName().errors());
-  //   console.log(this.dragonForm.givenName().invalid());
-  //   console.log(this.dragonForm.givenName().touched());
-  // }
 }

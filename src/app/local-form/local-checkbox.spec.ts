@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { LocalCheckbox } from './local-checkbox';
+import { LocalCheckbox } from './local-fields';
 
 describe('LocalCheckbox', () => {
   let component: LocalCheckbox;
