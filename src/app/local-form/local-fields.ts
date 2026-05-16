@@ -17,8 +17,6 @@ abstract class LocalFieldBase<T extends (boolean | string | number)> {
     return fieldControl === null ? false : fieldControl.invalid && (fieldControl.dirty || fieldControl.touched)
   };
 
-  stringify(obj1: any) { return JSON.stringify(obj1); }
-
   getErrors() {
     const field = this.getFieldControl();
     if (field === null || field.errors === null)
@@ -52,7 +50,7 @@ export interface SelectListOption {
   value: string | null;
 }
 
-export function applyServerSideValidations<T extends object>(failures: ValidatedForm<T>, formGroup: FormGroup<any>) {
+export function applyServerSideValidations<T extends object>(failures: ValidatedForm<T>, formGroup: FormGroup) {
   const vFail = failures.validationFailures;
   const keys = Object.keys(vFail);
   keys.forEach((key: string) => {
