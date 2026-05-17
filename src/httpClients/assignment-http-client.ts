@@ -34,10 +34,6 @@ export class AssignmentHttpClient {
     return await HttpHelpers.getOnePage<Dragon>(`${apiUrl}job/${jobId}/assigned-dragon?offset=${offset}&limit=${limit}`);
   };
 
-  async getOnePageOfJobs(offset: number, limit: number) {
-    return await HttpHelpers.getOnePage<Job>(`${apiUrl}job?offset=${offset}&limit=${limit}`);
-  }
-
   async getDragonWithJobs(dragonId: number, jobInclusions: JobInclusions) {
     const response = await fetch(`${apiUrl}dragon/${dragonId}?jobInclusions=${jobInclusions}`);
     const json = await response.json();
