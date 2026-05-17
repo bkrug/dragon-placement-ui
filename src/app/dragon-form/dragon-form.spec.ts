@@ -17,6 +17,7 @@ describe('DragonForm', () => {
   });
 
   it('should create', () => {
+    expect(1).toBe(1);
     expect(component).toBeTruthy();
   });
 });

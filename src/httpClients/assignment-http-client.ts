@@ -12,6 +12,15 @@ const apiUrl = environment.backendApi.endsWith('/')
 @Injectable({
   providedIn: 'root',
 })
+export class ExperimentalHttpClient {
+  async getOnePageOfJobs(offset: number, limit: number) {
+    return await HttpHelpers.getOnePage<Job>(`${apiUrl}job?offset=${offset}&limit=${limit}`);
+  }
+}
+
+@Injectable({
+  providedIn: 'root',
+})
 export class AssignmentHttpClient {
   async getOnePageOfDragons(offset: number, limit: number) {
     return await HttpHelpers.getOnePage<Dragon>(`${apiUrl}dragon?offset=${offset}&limit=${limit}`);

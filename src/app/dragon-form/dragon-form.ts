@@ -1,4 +1,4 @@
-import { Component, inject, signal, OnInit } from '@angular/core';
+import { Component, OnInit, inject, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Effect } from 'effect';
@@ -78,7 +78,9 @@ export class DragonForm implements OnInit {
             this.dragon.set(successResponse.payload);
             this.dragonFormGroup.set(this.getDragonFormGroup());
           },
-          onFailure: failureResponse => applyServerSideValidations(failureResponse, this.dragonFormGroup())
+          onFailure: failureResponse => failureResponse.isInternalError
+            ? alert('failed communication with the remote server')
+            : applyServerSideValidations(failureResponse, this.dragonFormGroup())
         }))
       );
     }

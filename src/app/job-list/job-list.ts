@@ -1,12 +1,12 @@
-import { Component, inject, signal } from '@angular/core';
 import { DatePipe } from '@angular/common';
-import { AssignmentHttpClient } from '../../httpClients/assignment-http-client';
+import { Component, inject, signal } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
 import { TableLazyLoadEvent, TableModule } from 'primeng/table';
-import { DisplayJob } from '../../poco/models';
-import { ManageJob } from '../manage-job/manage-job';
-import { mapJobToDisplayJob } from '../../transformers';
 import { PAGE_SIZE } from '../../global-consts';
+import { ExperimentalHttpClient } from '../../httpClients/assignment-http-client';
+import { DisplayJob } from '../../poco/models';
+import { mapJobToDisplayJob } from '../../transformers';
+import { ManageJob } from '../manage-job/manage-job';
 
 @Component({
   selector: 'app-job-list',
@@ -15,9 +15,7 @@ import { PAGE_SIZE } from '../../global-consts';
   styleUrl: './job-list.scss',
 })
 export class JobList {
-  lazyLoadingService = inject(AssignmentHttpClient);
-
-  someDate = Date.now();
+  httpClient = inject(ExperimentalHttpClient);
 
   jobs = signal<DisplayJob[]>([]);
   selectedJob = signal<DisplayJob | null>(null);
@@ -26,7 +24,7 @@ export class JobList {
 
   onPageChange(event: TableLazyLoadEvent) {
     const offset = event.first || 0;
-    this.lazyLoadingService
+    this.httpClient
       .getOnePageOfJobs(offset, this.pageSize)
       .then(pagedData => {
         this.jobs.set(pagedData.data.map(mapJobToDisplayJob));

@@ -6,12 +6,7 @@ export class HttpHelpers {
     const response = await fetch(url, init);
     const json = await response.json();
     const source = json as PagedData<T>;
-    return {
-      offset: source.offset,
-      limit: source.limit,
-      totalRecords: source.totalRecords,
-      data: source.data
-    };
+    return source;
   };
 
   static async getValidatedResponse(url: string, init?: RequestInit) {

@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { Home } from './home';
 
+//TODO: delete this test. Just keep it around now for an example of a working test.
 describe('Home', () => {
   let component: Home;
   let fixture: ComponentFixture<Home>;
