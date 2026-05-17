@@ -3,6 +3,10 @@ import { TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { LocalCheckbox } from './local-fields';
 
+// This test doesn't really assert anything,
+// but if I can think of anything to assert on these local-field components,
+// then this is a good starting point.
+
 describe('LocalCheckbox', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
