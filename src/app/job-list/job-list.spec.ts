@@ -11,6 +11,8 @@ describe('JobList', () => {
     }).compileComponents();
   });
 
+  //TODO: Add tests that assert what happens when you select a particular row.
+
   it('Data coming from the http client should be displayed in job list data table.', async () => {
     const payloadData = [
       {
