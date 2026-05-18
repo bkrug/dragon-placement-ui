@@ -12,13 +12,13 @@ describe('ManageJob', () => {
     await TestBed.configureTestingModule({
       imports: [ManageJob],
     }).compileComponents();
+  });
 
+  it('should create', async () => {
     fixture = TestBed.createComponent(ManageJob);
     component = fixture.componentInstance;
     await fixture.whenStable();
-  });
 
-  it('should create', () => {
     expect(component).toBeTruthy();
   });
 });

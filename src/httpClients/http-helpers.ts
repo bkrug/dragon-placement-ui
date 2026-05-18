@@ -49,12 +49,10 @@ export class HttpHelpers {
         body: JSON.stringify(requestBody)
       });
       const json = await response.json();
-      if (response.ok) {
-        return Effect.succeed(json as ValidatedPayload<Tok>);
-      }
-      else {
-        return Effect.fail(json as ValidatedForm<Tfail>);
-      }
+      const result = response.ok
+        ? Effect.succeed(json as ValidatedPayload<Tok>)
+        : Effect.fail(json as ValidatedForm<Tfail>);
+      return result as Effect.Effect<ValidatedPayload<Tok>, ValidatedForm<Tfail>, never>;
     }
     catch (ex) {
       console.error(JSON.stringify(ex));
