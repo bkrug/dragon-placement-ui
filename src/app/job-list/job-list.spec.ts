@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { ExperimentalHttpClient } from '../../httpClients/assignment-http-client';
+import { AssignmentHttpClient } from '../../httpClients/assignment-http-client';
 import { Job } from '../../poco/models';
 import { PagedData } from '../../poco/standard-responses';
 import { JobList } from './job-list';
@@ -34,19 +34,18 @@ describe('JobList', () => {
         endDateUnix: 3
       }
     ];
-    class MockHttpClient implements ExperimentalHttpClient {
-      async getOnePageOfJobs(offset: number, limit: number) {
-        return {
-          offset: offset,
-          limit: limit,
-          totalRecords: 2,
-          data: payloadData
-        } as PagedData<Job>;
-      }
-    }
+    const mockHttpClient = new AssignmentHttpClient();
+    mockHttpClient.getOnePageOfJobs = async (offset: number, limit: number) => {
+      return {
+        offset: offset,
+        limit: limit,
+        totalRecords: 2,
+        data: payloadData
+      } as PagedData<Job>;
+    };
 
     TestBed.configureTestingModule({
-      providers: [{provide:ExperimentalHttpClient, useClass:MockHttpClient}]
+      providers: [{ provide:AssignmentHttpClient, useValue:mockHttpClient }]
     });
 
     //Act

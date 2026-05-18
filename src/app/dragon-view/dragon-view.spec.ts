@@ -18,40 +18,30 @@ describe('DragonView', () => {
   });
 
   it('should create', async () => {
-    class MockHttpClient implements AssignmentHttpClient {
-      getOnePageOfDragons = AssignmentHttpClient.prototype.getOnePageOfDragons;
-      getOnePageOfCandidates = AssignmentHttpClient.prototype.getOnePageOfCandidates;
-      getOnePageOfAssignees = AssignmentHttpClient.prototype.getOnePageOfAssignees;
-
-      async getDragonWithJobs(dragonId: number, jobInclusions: JobInclusions) {
-        return {
-          isInternalError: false,
-          isSuccess: true,
-          validationFailures: [],
-          payload: {
-            dragonId: dragonId,
-            givenName: 'Girbit',
-            familyName: 'Smokeson',
-            canBreathFire: true,
-            canTakePassengers: true,
-            weightInKg: null,
-            lengthInMeters: null,
-            fightingSkills: null,
-            assignments: []
-          } as Dragon
-        } as ValidatedPayload<Dragon>;
-      };
-
-      assignDragonToJob = AssignmentHttpClient.prototype.assignDragonToJob;
-      unassignDragonToJob = AssignmentHttpClient.prototype.unassignDragonToJob;
-      postDragonForm = AssignmentHttpClient.prototype.postDragonForm;
-      putDragonForm = AssignmentHttpClient.prototype.putDragonForm;
-    };      
+    const mockHttpClient = new AssignmentHttpClient();
+    mockHttpClient.getDragonWithJobs = async (dragonId: number, jobInclusions: JobInclusions) => {
+      return {
+        isInternalError: false,
+        isSuccess: true,
+        validationFailures: [],
+        payload: {
+          dragonId: dragonId,
+          givenName: 'Girbit',
+          familyName: 'Smokeson',
+          canBreathFire: true,
+          canTakePassengers: true,
+          weightInKg: null,
+          lengthInMeters: null,
+          fightingSkills: null,
+          assignments: []
+        } as Dragon
+      } as ValidatedPayload<Dragon>;
+    };
     const mockActivatedRoute = new MockActivatedRoute();
     mockActivatedRoute.setParams({ dragonId: 15 });
     TestBed.configureTestingModule({
       providers: [
-        { provide: AssignmentHttpClient, useClass: MockHttpClient },
+        { provide: AssignmentHttpClient, useValue: mockHttpClient },
         { provide: ActivatedRoute, useValue: mockActivatedRoute }
       ]
     });

@@ -20,66 +20,56 @@ describe('Load a blank Dragon Form for creation of a dragon', () => {
   });
 
   it('should create', async () => {
-    class MockHttpClient implements AssignmentHttpClient {
-      getOnePageOfDragons = AssignmentHttpClient.prototype.getOnePageOfDragons;
-      getOnePageOfCandidates = AssignmentHttpClient.prototype.getOnePageOfCandidates;
-      getOnePageOfAssignees = AssignmentHttpClient.prototype.getOnePageOfAssignees;
-
-      async getDragonWithJobs(dragonId: number, jobInclusions: JobInclusions) {
-        return {
-          isInternalError: false,
-          isSuccess: true,
-          validationFailures: [],
-          payload: {
-            dragonId: 15,
-            givenName: 'Girbit',
-            familyName: 'Smokeson',
-            canBreathFire: true,
-            canTakePassengers: true
-          } as Dragon
-        } as ValidatedPayload<Dragon>;
-      };
-
-      assignDragonToJob = AssignmentHttpClient.prototype.assignDragonToJob;
-      unassignDragonToJob = AssignmentHttpClient.prototype.unassignDragonToJob;
-
-      async postDragonForm(dragon: Dragon) {
-        const validatedPayload = {
-          isInternalError: false,
-          isSuccess: true,
-          validationFailures: [],
-          payload: {
-            dragonId: 15,
-            givenName: 'Girbit',
-            familyName: 'Smokeson',
-            canBreathFire: true,
-            canTakePassengers: true
-          } as Dragon
-        } as ValidatedPayload<Dragon>;
-        return Effect.succeed(validatedPayload) as Effect.Effect<ValidatedPayload<Dragon>, ValidatedForm<DragonValidationFailures>, never>;
-      };
-
-      async putDragonForm(dragonId: number, dragon: Dragon) {
-        const validatedPayload = {
-          isInternalError: false,
-          isSuccess: true,
-          validationFailures: [],
-          payload: {
-            dragonId: 15,
-            givenName: 'Girbit',
-            familyName: 'Smokeson',
-            canBreathFire: true,
-            canTakePassengers: true
-          } as Dragon
-        } as ValidatedPayload<Dragon>;
-        return Effect.succeed(validatedPayload) as Effect.Effect<ValidatedPayload<Dragon>, ValidatedForm<DragonValidationFailures>, never>;
-      };      
-    }
+    const mockHttpClient = new AssignmentHttpClient();
+    mockHttpClient.getDragonWithJobs = async (dragonId: number, jobInclusions: JobInclusions) => {
+      return {
+        isInternalError: false,
+        isSuccess: true,
+        validationFailures: [],
+        payload: {
+          dragonId: 15,
+          givenName: 'Girbit',
+          familyName: 'Smokeson',
+          canBreathFire: true,
+          canTakePassengers: true
+        } as Dragon
+      } as ValidatedPayload<Dragon>;
+    };
+    mockHttpClient.postDragonForm = async (dragon: Dragon) => {
+      const validatedPayload = {
+        isInternalError: false,
+        isSuccess: true,
+        validationFailures: [],
+        payload: {
+          dragonId: 15,
+          givenName: 'Girbit',
+          familyName: 'Smokeson',
+          canBreathFire: true,
+          canTakePassengers: true
+        } as Dragon
+      } as ValidatedPayload<Dragon>;
+      return Effect.succeed(validatedPayload) as Effect.Effect<ValidatedPayload<Dragon>, ValidatedForm<DragonValidationFailures>, never>;
+    };
+    mockHttpClient.putDragonForm = async (dragonId: number, dragon: Dragon) => {
+      const validatedPayload = {
+        isInternalError: false,
+        isSuccess: true,
+        validationFailures: [],
+        payload: {
+          dragonId: 15,
+          givenName: 'Girbit',
+          familyName: 'Smokeson',
+          canBreathFire: true,
+          canTakePassengers: true
+        } as Dragon
+      } as ValidatedPayload<Dragon>;
+      return Effect.succeed(validatedPayload) as Effect.Effect<ValidatedPayload<Dragon>, ValidatedForm<DragonValidationFailures>, never>;
+    };
     const mockActivatedRoute = new MockActivatedRoute();
     mockActivatedRoute.setParams({ dragonId: null });
     TestBed.configureTestingModule({
       providers: [
-        { provide: AssignmentHttpClient, useClass: MockHttpClient },
+        { provide: AssignmentHttpClient, useValue: mockHttpClient },
         { provide: ActivatedRoute, useValue: mockActivatedRoute }
       ]
     });
