@@ -30,7 +30,8 @@ describe('LocalCheckbox', () => {
     });
     const component = fixture.componentInstance;
     await fixture.whenStable();
-    
+
+    //Assert
     expect(component).toBeTruthy();
   });
 });
