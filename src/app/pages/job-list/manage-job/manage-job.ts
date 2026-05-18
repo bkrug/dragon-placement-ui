@@ -1,9 +1,9 @@
 import { DatePipe } from '@angular/common';
 import { Component, EventEmitter, input, Output, viewChildren } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
-import { DragonTableType } from '../../poco/enums';
-import { DisplayJob } from '../../poco/models';
-import { DragonTable } from '../dragon-table/dragon-table';
+import { DragonTableType } from '../../../../poco/enums';
+import { DisplayJob } from '../../../../poco/models';
+import { DragonTable } from '../../../shared-components/dragon-table/dragon-table';
 
 @Component({
   selector: 'app-manage-job',

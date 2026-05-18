@@ -1,10 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
-import { AssignmentHttpClient } from '../../httpClients/assignment-http-client';
-import { JobInclusions } from '../../poco/enums';
-import { Dragon } from '../../poco/models';
-import { ValidatedPayload } from '../../poco/standard-responses';
-import { MockActivatedRoute } from '../../testHelpers/MockActivatedRoute';
+import { AssignmentHttpClient } from '../../../httpClients/assignment-http-client';
+import { JobInclusions } from '../../../poco/enums';
+import { Dragon } from '../../../poco/models';
+import { ValidatedPayload } from '../../../poco/standard-responses';
+import { MockActivatedRoute } from '../../../testHelpers/MockActivatedRoute';
 import { DragonView } from './dragon-view';
 
 describe('DragonView', () => {

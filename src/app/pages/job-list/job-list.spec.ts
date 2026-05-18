@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
-import { AssignmentHttpClient } from '../../httpClients/assignment-http-client';
-import { Job } from '../../poco/models';
-import { PagedData } from '../../poco/standard-responses';
+import { AssignmentHttpClient } from '../../../httpClients/assignment-http-client';
+import { Job } from '../../../poco/models';
+import { PagedData } from '../../../poco/standard-responses';
 import { JobList } from './job-list';
 
 describe('JobList', () => {

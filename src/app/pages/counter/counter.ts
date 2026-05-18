@@ -1,8 +1,8 @@
-import { Component, signal, computed } from '@angular/core';
 import { DecimalPipe } from '@angular/common';
+import { Component, computed, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { MuchMath } from '../much-math/much-math';
 import { ButtonModule } from 'primeng/button';
+import { MuchMath } from './much-math/much-math';
 
 @Component({
   selector: 'app-counter',

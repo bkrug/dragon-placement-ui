@@ -1,11 +1,11 @@
 import { Component, EventEmitter, inject, input, OnInit, Output, signal } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
 import { TableLazyLoadEvent, TableModule } from 'primeng/table';
-import { PAGE_SIZE } from '../../global-consts';
-import { AssignmentHttpClient } from '../../httpClients/assignment-http-client';
-import { DragonTableType } from '../../poco/enums';
-import { DisplayJob, Dragon } from '../../poco/models';
-import { ValidatedResponse } from '../../poco/standard-responses';
+import { PAGE_SIZE } from '../../../global-consts';
+import { AssignmentHttpClient } from '../../../httpClients/assignment-http-client';
+import { DragonTableType } from '../../../poco/enums';
+import { DisplayJob, Dragon } from '../../../poco/models';
+import { ValidatedResponse } from '../../../poco/standard-responses';
 
 @Component({
   selector: 'app-dragon-table',

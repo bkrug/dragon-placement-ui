@@ -1,11 +1,11 @@
 import { Routes } from '@angular/router';
-import { AbilityTable } from './ability-table/ability-table';
-import { Counter } from './counter/counter';
-import { DragonForm } from './dragon-form/dragon-form';
-import { DragonList } from './dragon-list/dragon-list';
-import { DragonView } from './dragon-view/dragon-view';
-import { Home } from './home/home';
-import { JobList } from './job-list/job-list';
+import { AbilityTable } from './pages/ability-table/ability-table';
+import { Counter } from './pages/counter/counter';
+import { DragonForm } from './pages/dragon-form/dragon-form';
+import { DragonList } from './pages/dragon-list/dragon-list';
+import { DragonView } from './pages/dragon-view/dragon-view';
+import { Home } from './pages/home/home';
+import { JobList } from './pages/job-list/job-list';
 
 export const routes: Routes = [
   {

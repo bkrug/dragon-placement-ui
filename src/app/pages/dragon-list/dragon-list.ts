@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { DragonTableType } from '../../poco/enums';
-import { DragonTable } from '../dragon-table/dragon-table';
+import { DragonTableType } from '../../../poco/enums';
+import { DragonTable } from '../../shared-components/dragon-table/dragon-table';
 
 //The dragon table is consumed in different places.
 //We need this almost empty class, so that we can specify that the dragon table is supposed to display "all dragons",
