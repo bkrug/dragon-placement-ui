@@ -5,13 +5,13 @@
     <input type="number" [(ngModel)]="step" placeholder="step amount" />
 </p>
 
-<p>Current value {{count | number: '1.0-3' }}</p>
+<p id="current-value">Current value {{count | number: '1.0-3' }}</p>
 
 <p>Other number: <input type="number" [(ngModel)]="countB" placeholder="step amount" /></p>
 
-<p>Sum of count and other number: {{computedSum()}}</p>
+<p id="sum-of-values">Sum of count and other number: {{computedSum()}}</p>
 
-<p-button (click)="adjust()">Increment</p-button>
+<p-button id="increment-button" (click)="adjust()">Increment</p-button>
 
 <ul [class.kitty]="true" [class.puppy]="false" [class.tutle]="true">Unordered List Element</ul>
 <ul [class]="getClasses()"  [style.backgroundColor]="isExpanded() ? 'red' : 'blue'">Unordered List Element 2</ul>
