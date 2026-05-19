@@ -3,9 +3,9 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { ActivatedRoute } from '@angular/router';
 import { Effect } from 'effect';
 import { MessageModule } from 'primeng/message';
-import { AssignmentHttpClient } from '../../httpClients/assignment-http-client';
-import { Job } from '../../poco/models';
-import { LocalNumberField, LocalTextField, applyServerSideValidations } from '../../app/local-form/local-fields';
+import { AssignmentHttpClient } from '../../../httpClients/assignment-http-client';
+import { Job } from '../../../poco/models';
+import { LocalNumberField, LocalTextField, applyServerSideValidations } from '../../local-form/local-fields';
 
 @Component({
   selector: 'app-job-form',

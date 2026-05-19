@@ -56,11 +56,11 @@ export class AssignmentHttpClient {
   };
 
   async postJobForm(job: Job) {
-    return await HttpHelpers.submitForm<Job, JobValidationFailures>(`${apiUrl}dragon`, 'POST', job);
+    return await HttpHelpers.submitForm<Job, JobValidationFailures>(`${apiUrl}job`, 'POST', job);
   };
 
   async putJobForm(jobId: number, job: Job) {
-    return await HttpHelpers.submitForm<Job, JobValidationFailures>(`${apiUrl}dragon/${jobId}`, 'PUT', job);
+    return await HttpHelpers.submitForm<Job, JobValidationFailures>(`${apiUrl}job/${jobId}`, 'PUT', job);
   };
 
   async getJob(jobId: number) {

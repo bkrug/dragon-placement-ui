@@ -6,6 +6,7 @@ import { DragonList } from './pages/dragon-list/dragon-list';
 import { DragonView } from './pages/dragon-view/dragon-view';
 import { Home } from './pages/home/home';
 import { JobList } from './pages/job-list/job-list';
+import { JobForm } from './pages/job-form/job-form';
 
 export const routes: Routes = [
   {
@@ -19,6 +20,14 @@ export const routes: Routes = [
   {
     path: 'jobs',
     component: JobList
+  },
+  {
+    path: 'jobs-form/:jobId',
+    component: JobForm
+  },
+  {
+    path: 'jobs-form',
+    component: JobForm
   },
   {
     path: 'dragons-form/:dragonId',
