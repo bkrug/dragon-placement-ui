@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { Effect } from 'effect';
@@ -11,6 +11,14 @@ import { DragonForm } from './dragon-form';
 
 //TODO: Assert that there is no junk data in the form, and that no HttpMethods were called
 describe('Dragon Form Tests', () => {
+  function getInputElement(nativeElement:HTMLDivElement, css:string) {
+    return nativeElement.querySelector(css) as HTMLInputElement;
+  }
+
+  function getSelectElement(nativeElement:HTMLDivElement, css:string) {
+    return nativeElement.querySelector(css) as HTMLSelectElement;
+  }
+
   it('Load a blank Dragon Form for creation of a dragon', async () => {
     const mockHttpClient = new AssignmentHttpClient();
     let getMethodWasCalled = false;
@@ -55,20 +63,13 @@ describe('Dragon Form Tests', () => {
     expect(component).toBeTruthy();
     expect(getMethodWasCalled).toEqual(false);
     const nativeElement: HTMLDivElement = fixture.nativeElement;
-    const givenNameInput = nativeElement.querySelector('#given-name input') as HTMLInputElement;
-    expect(givenNameInput.value).toBeFalsy();
-    const familyNameInput = nativeElement.querySelector('#family-name input') as HTMLInputElement;
-    expect(familyNameInput.value).toBeFalsy();
-    const canBreathFireCheck = nativeElement.querySelector('#can-breath-fire input') as HTMLInputElement;
-    expect(canBreathFireCheck.checked).toEqual(false);
-    const canTakePassengersCheck = nativeElement.querySelector('#can-take-passengers input') as HTMLInputElement;
-    expect(canTakePassengersCheck.checked).toEqual(false);
-    const lengthInMetersInput = nativeElement.querySelector('#length-in-meters input') as HTMLInputElement;
-    expect(lengthInMetersInput.value).toBeFalsy();
-    const weightInput = nativeElement.querySelector('#weight-in-kg input') as HTMLInputElement;
-    expect(weightInput.value).toBeFalsy();
-    const fightingSkillsSelect = nativeElement.querySelector('#fighting-skills select') as HTMLSelectElement;
-    expect(fightingSkillsSelect.value).toBeFalsy();
+    expect(getInputElement(nativeElement, '#given-name input').value).toBeFalsy();
+    expect(getInputElement(nativeElement, '#family-name input').value).toBeFalsy();
+    expect(getInputElement(nativeElement, '#can-breath-fire input').checked).toEqual(false);
+    expect(getInputElement(nativeElement, '#can-take-passengers input').checked).toEqual(false);
+    expect(getInputElement(nativeElement, '#length-in-meters input').value).toBeFalsy();
+    expect(getInputElement(nativeElement, '#weight-in-kg input').value).toBeFalsy();
+    expect(getSelectElement(nativeElement, '#fighting-skills select').value).toBeFalsy();
 
     //Act: change form values
     component.dragonFormGroup().get('givenName')?.setValue('Susan');
@@ -140,20 +141,13 @@ describe('Dragon Form Tests', () => {
     //Assert values at load
     expect(component).toBeTruthy();
     const nativeElement: HTMLDivElement = fixture.nativeElement;
-    const givenNameInput = nativeElement.querySelector('#given-name input') as HTMLInputElement;
-    expect(givenNameInput.value).toEqual(initialDbRecord.givenName);
-    const familyNameInput = nativeElement.querySelector('#family-name input') as HTMLInputElement;
-    expect(familyNameInput.value).toEqual(initialDbRecord.familyName);
-    const canBreathFireCheck = nativeElement.querySelector('#can-breath-fire input') as HTMLInputElement;
-    expect(canBreathFireCheck.checked).toEqual(initialDbRecord.canBreathFire);
-    const canTakePassengersCheck = nativeElement.querySelector('#can-take-passengers input') as HTMLInputElement;
-    expect(canTakePassengersCheck.checked).toEqual(initialDbRecord.canTakePassengers);
-    const lengthInMetersInput = nativeElement.querySelector('#length-in-meters input') as HTMLInputElement;
-    expect(lengthInMetersInput.valueAsNumber).toEqual(initialDbRecord.lengthInMeters);
-    const weightInput = nativeElement.querySelector('#weight-in-kg input') as HTMLInputElement;
-    expect(weightInput.valueAsNumber).toEqual(initialDbRecord.weightInKg);
-    const fightingSkillsSelect = nativeElement.querySelector('#fighting-skills select') as HTMLSelectElement;
-    expect(fightingSkillsSelect.value).toEqual(initialDbRecord.fightingSkills);
+    expect(getInputElement(nativeElement, '#given-name input').value).toEqual(initialDbRecord.givenName);
+    expect(getInputElement(nativeElement, '#family-name input').value).toEqual(initialDbRecord.familyName);
+    expect(getInputElement(nativeElement, '#can-breath-fire input').checked).toEqual(initialDbRecord.canBreathFire);
+    expect(getInputElement(nativeElement, '#can-take-passengers input').checked).toEqual(initialDbRecord.canTakePassengers);
+    expect(getInputElement(nativeElement, '#length-in-meters input').valueAsNumber).toEqual(initialDbRecord.lengthInMeters);
+    expect(getInputElement(nativeElement, '#weight-in-kg input').valueAsNumber).toEqual(initialDbRecord.weightInKg);
+    expect(getSelectElement(nativeElement, '#fighting-skills select').value).toEqual(initialDbRecord.fightingSkills);
 
     //Act: change form values
     component.dragonFormGroup().get('givenName')?.setValue('Gilbert');
