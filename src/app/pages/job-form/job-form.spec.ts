@@ -58,9 +58,9 @@ describe('Job Form Tests', () => {
     const nativeElement: HTMLDivElement = fixture.nativeElement;
     expect(getInputElement(nativeElement, '#job-title input').value).toBeFalsy();
     expect(getInputElement(nativeElement, '#employer-name input').value).toBeFalsy();
-    expect(getInputElement(nativeElement, '#number-of-positions input').value).toBeFalsy();
-    expect(getInputElement(nativeElement, '#start-date-unix input').value).toBeFalsy();
-    expect(getInputElement(nativeElement, '#end-date-unix input').value).toBeFalsy();
+    expect(getInputElement(nativeElement, '#number-of-positions input').valueAsNumber).toEqual(0);
+    expect(getInputElement(nativeElement, '#start-date-unix input').valueAsNumber).toEqual(0);
+    expect(getInputElement(nativeElement, '#end-date-unix input').valueAsNumber).toEqual(0);
 
     //Act: change form values
     component.jobFormGroup().get('jobTitle')?.setValue('Dragon Wrangler');
