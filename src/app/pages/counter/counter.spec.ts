@@ -75,5 +75,5 @@ describe('Counter', () => {
 
     //By now we think that we are adding 40 + 3
     expect(sumOfValuesP?.textContent).toEqual('Sum of count and other number: 43');
-  });  
+  });
 });

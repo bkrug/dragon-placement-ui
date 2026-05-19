@@ -58,7 +58,7 @@ describe('Dragon Form Tests', () => {
     const fixture = TestBed.createComponent(DragonForm);
     const component = fixture.componentInstance;
     await fixture.whenStable();
-    
+
     //Assert: fields should be empty
     expect(component).toBeTruthy();
     expect(getMethodWasCalled).toEqual(false);
@@ -82,7 +82,7 @@ describe('Dragon Form Tests', () => {
 
     //Assert record changed
     expect(actualModelInPostRequest.givenName).toEqual('Susan');
-    expect(actualModelInPostRequest.canBreathFire).toEqual(true);    
+    expect(actualModelInPostRequest.canBreathFire).toEqual(true);
   });
 
   it('Load an existing dragon to be edited from this form', async () => {
@@ -123,7 +123,7 @@ describe('Dragon Form Tests', () => {
     };
 
     const mockActivatedRoute = new MockActivatedRoute();
-    const mockParams : { [key:string] : any } = { ['dragonId'] : recordId };
+    const mockParams : Record<string, any> = { ['dragonId'] : recordId };
     mockActivatedRoute.setParams(mockParams);
     TestBed.configureTestingModule({
       providers: [
@@ -137,7 +137,7 @@ describe('Dragon Form Tests', () => {
     const fixture = TestBed.createComponent(DragonForm);
     const component = fixture.componentInstance;
     await fixture.whenStable();
-    
+
     //Assert values at load
     expect(component).toBeTruthy();
     const nativeElement: HTMLDivElement = fixture.nativeElement;
@@ -202,7 +202,7 @@ describe('Dragon Form Tests', () => {
     };
 
     const mockActivatedRoute = new MockActivatedRoute();
-    const mockParams: { [key: string]: any } = { ['dragonId']: recordId };
+    const mockParams: Record<string, any> = { ['dragonId']: recordId };
     mockActivatedRoute.setParams(mockParams);
     TestBed.configureTestingModule({
       providers: [

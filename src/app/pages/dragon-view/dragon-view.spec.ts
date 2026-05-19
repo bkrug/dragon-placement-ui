@@ -19,7 +19,7 @@ describe('DragonView', () => {
 
   it('should create', async () => {
     const mockHttpClient = new AssignmentHttpClient();
-    mockHttpClient.getDragonWithJobs = async (dragonId: number, jobInclusions: JobInclusions) => {
+    mockHttpClient.getDragonWithJobs = async (dragonId: number, _jobInclusions: JobInclusions) => {
       return {
         isInternalError: false,
         isSuccess: true,

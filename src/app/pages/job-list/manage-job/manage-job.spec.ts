@@ -51,7 +51,7 @@ describe('ManageJob', () => {
       providers: [
         { provide: AssignmentHttpClient, useValue: mockHttpClient },
       ]
-    });    
+    });
     fixture = TestBed.createComponent(ManageJob, {
       bindings: [
         inputBinding('selectedJob', () => mockJob),
