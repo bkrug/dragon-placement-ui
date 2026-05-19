@@ -159,9 +159,8 @@ describe('Dragon Form Tests', () => {
     //Act: change form values
     component.dragonFormGroup().get('givenName')?.setValue('Gilbert');
     component.dragonFormGroup().get('canTakePassengers')?.setValue(true);
-    const submitButton = fixture.debugElement.query(By.css('button'));
-    //submitButton.triggerEventHandler('click');
-    component.onSubmit();
+    const submitButton = fixture.nativeElement.querySelector('button');
+    submitButton.click();
     await fixture.whenStable();
 
     //Assert record changed
