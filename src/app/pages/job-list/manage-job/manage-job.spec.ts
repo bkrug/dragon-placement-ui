@@ -1,6 +1,6 @@
 import { inputBinding } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { DisplayJob } from '../../poco/models';
+import { DisplayJob } from '../../../../poco/models';
 import { ManageJob } from './manage-job';
 
 //TODO: Add tests that assert what happens when a dragon is added or deleted from a job
