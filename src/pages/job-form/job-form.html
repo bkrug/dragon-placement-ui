@@ -1,0 +1,12 @@
+<h2>Job Form</h2>
+
+<div class="card flex justify-center">
+  <form [formGroup]="jobFormGroup()" (ngSubmit)="onSubmit()">
+    <app-local-text-field id="job-title" label="Job Title:" fieldName="jobTitle" [formGroup]="jobFormGroup()" [fieldControl]="jobFormGroup().get('jobTitle')" />
+    <app-local-text-field id="employer-name" label="Employer Name:" fieldName="employerName" [formGroup]="jobFormGroup()" [fieldControl]="jobFormGroup().get('employerName')" />
+    <app-local-number-field id="number-of-positions" label="Number Of Positions:" fieldName="numberOfPositions" [formGroup]="jobFormGroup()" [fieldControl]="jobFormGroup().get('numberOfPositions')" />
+    <app-local-number-field id="start-date-unix" label="Start Date Unix:" fieldName="startDateUnix" [formGroup]="jobFormGroup()" [fieldControl]="jobFormGroup().get('startDateUnix')" />
+    <app-local-number-field id="end-date-unix" label="End Date Unix:" fieldName="endDateUnix" [formGroup]="jobFormGroup()" [fieldControl]="jobFormGroup().get('endDateUnix')" />
+    <button type="submit" [disabled]="!jobFormGroup().valid">Submit</button>
+  </form>
+</div>

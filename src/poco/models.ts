@@ -26,6 +26,11 @@ export class DragonValidationFailures {
   fightingSkills: string = '';
 }
 
+export class JobValidationFailures {
+  jobTitle: string = '';
+  numberOfPositions: string = '';
+}
+
 export class Job {
   jobId: number = 0;
   jobTitle: string = '';
