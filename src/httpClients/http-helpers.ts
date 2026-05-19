@@ -9,7 +9,7 @@ export class HttpHelpers {
     return source;
   };
 
-  static async getValidatedResponse(url: string, init?: RequestInit) {
+  static async requestValidatedResponse(url: string, init?: RequestInit) {
     try {
       const response = await fetch(url, init);
       const json = await response.json();
@@ -24,7 +24,7 @@ export class HttpHelpers {
     }
   };
 
-  static async getValidatedPayload<T extends object>(url: string, init?: RequestInit) {
+  static async requestValidatedPayload<T extends object>(url: string, init?: RequestInit) {
     try {
       const response = await fetch(url, init);
       const json = await response.json();
@@ -39,7 +39,7 @@ export class HttpHelpers {
     }
   }
 
-  static async submitForm<Tok extends object, Tfail extends object>(url: string, httpVerb: string, requestBody: object) {
+  static async submitForm<Tok extends object, Tfail extends object>(url: string, httpVerb: 'PUT' | 'POST', requestBody: object) {
     try {
       const headers = new Headers();
       headers.set('Content-Type', 'application/json');

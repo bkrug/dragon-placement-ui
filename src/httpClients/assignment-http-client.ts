@@ -30,19 +30,19 @@ export class AssignmentHttpClient {
   };
 
   async assignDragonToJob(dragonId: number, jobId: number) {
-    return await HttpHelpers.getValidatedResponse(`${apiUrl}job/${jobId}/assigned-dragon/${dragonId}`, {
+    return await HttpHelpers.requestValidatedResponse(`${apiUrl}job/${jobId}/assigned-dragon/${dragonId}`, {
       method: 'POST'
     });
   };
 
   async unassignDragonToJob(dragonId: number, jobId: number) {
-    return await HttpHelpers.getValidatedResponse(`${apiUrl}job/${jobId}/assigned-dragon/${dragonId}`, {
+    return await HttpHelpers.requestValidatedResponse(`${apiUrl}job/${jobId}/assigned-dragon/${dragonId}`, {
       method: 'DELETE'
     });
   };
 
   async getDragonWithJobs(dragonId: number, jobInclusions: JobInclusions) {
-    return await HttpHelpers.getValidatedPayload<Dragon>(`${apiUrl}dragon/${dragonId}?jobInclusions=${jobInclusions}`);
+    return await HttpHelpers.requestValidatedPayload<Dragon>(`${apiUrl}dragon/${dragonId}?jobInclusions=${jobInclusions}`);
   };
 
   async postDragonForm(dragon: Dragon) {
@@ -54,7 +54,7 @@ export class AssignmentHttpClient {
   };
 
   async getJob(jobId: number) {
-    return await HttpHelpers.getValidatedPayload<Job>(`${apiUrl}job/${jobId}`);
+    return await HttpHelpers.requestValidatedPayload<Job>(`${apiUrl}job/${jobId}`);
   };  
 
   async postJobForm(job: Job) {
