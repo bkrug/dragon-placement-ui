@@ -1,5 +1,5 @@
 import { inputBinding } from '@angular/core';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { AssignmentHttpClient } from '../../../../httpClients/assignment-http-client';
 import { DisplayJob, Dragon } from '../../../../poco/models';
 import { PagedData, ValidatedResponse } from '../../../../poco/standard-responses';
@@ -53,7 +53,7 @@ describe('ManageJob', () => {
         data: []
       } as PagedData<Dragon>;
     };
-    mockHttpClient.assignDragonToJob = async (dragonId: number, jobId: number) => {
+    mockHttpClient.assignDragonToJob = async () => {
       ++postAssignmentCount;
       return {
         isSuccess: true,
@@ -140,7 +140,7 @@ describe('ManageJob', () => {
         data: [ mockDragon ]
       } as PagedData<Dragon>;
     };
-    mockHttpClient.unassignDragonToJob = async (_dragonId: number, _jobId: number) => {
+    mockHttpClient.unassignDragonToJob = async () => {
       ++deleteAssignmentCount;
       return {
         isSuccess: true,
@@ -180,5 +180,5 @@ describe('ManageJob', () => {
     expect(deleteAssignmentCount).toEqual(1);
     expect(getCandidateCount).toEqual(1);
     expect(getAssignedCount).toEqual(1);
-  });  
+  });
 });

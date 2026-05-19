@@ -1,7 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
 import { AssignmentHttpClient } from '../../../httpClients/assignment-http-client';
-import { JobInclusions } from '../../../poco/enums';
 import { Dragon } from '../../../poco/models';
 import { ValidatedPayload } from '../../../poco/standard-responses';
 import { MockActivatedRoute } from '../../../testHelpers/MockActivatedRoute';
@@ -19,7 +18,7 @@ describe('DragonView', () => {
 
   it('should create', async () => {
     const mockHttpClient = new AssignmentHttpClient();
-    mockHttpClient.getDragonWithJobs = async (dragonId: number, _jobInclusions: JobInclusions) => {
+    mockHttpClient.getDragonWithJobs = async (dragonId: number) => {
       return {
         isInternalError: false,
         isSuccess: true,
