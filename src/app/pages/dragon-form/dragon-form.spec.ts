@@ -11,63 +11,33 @@ import { DragonForm } from './dragon-form';
 
 //TODO: Assert that there is no junk data in the form, and that no HttpMethods were called
 describe('Dragon Form Tests', () => {
-  let component: DragonForm;
-  let fixture: ComponentFixture<DragonForm>;
-
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [DragonForm],
-    }).compileComponents();
-  });
-
   it('Load a blank Dragon Form for creation of a dragon', async () => {
     const mockHttpClient = new AssignmentHttpClient();
+    let getMethodWasCalled = false;
     mockHttpClient.getDragonWithJobs = async (dragonId: number, jobInclusions: JobInclusions) => {
+      getMethodWasCalled = true;
       return {
         isInternalError: false,
         isSuccess: true,
         validationFailures: [],
-        payload: {
-          dragonId: 15,
-          givenName: 'Girbit',
-          familyName: 'Smokeson',
-          canBreathFire: true,
-          canTakePassengers: true
-        } as Dragon
+        payload: new Dragon()
       } as ValidatedPayload<Dragon>;
     };
+
+    let actualModelInPostRequest: Dragon = new Dragon();
     mockHttpClient.postDragonForm = async (dragon: Dragon) => {
+      actualModelInPostRequest = dragon;
       const validatedPayload = {
         isInternalError: false,
         isSuccess: true,
         validationFailures: [],
-        payload: {
-          dragonId: 15,
-          givenName: 'Girbit',
-          familyName: 'Smokeson',
-          canBreathFire: true,
-          canTakePassengers: true
-        } as Dragon
+        payload: dragon
       } as ValidatedPayload<Dragon>;
       return Effect.succeed(validatedPayload) as Effect.Effect<ValidatedPayload<Dragon>, ValidatedForm<DragonValidationFailures>, never>;
     };
-    mockHttpClient.putDragonForm = async (dragonId: number, dragon: Dragon) => {
-      const validatedPayload = {
-        isInternalError: false,
-        isSuccess: true,
-        validationFailures: [],
-        payload: {
-          dragonId: 15,
-          givenName: 'Girbit',
-          familyName: 'Smokeson',
-          canBreathFire: true,
-          canTakePassengers: true
-        } as Dragon
-      } as ValidatedPayload<Dragon>;
-      return Effect.succeed(validatedPayload) as Effect.Effect<ValidatedPayload<Dragon>, ValidatedForm<DragonValidationFailures>, never>;
-    };
+
     const mockActivatedRoute = new MockActivatedRoute();
-    mockActivatedRoute.setParams({ dragonId: null });
+    mockActivatedRoute.setParams({});
     TestBed.configureTestingModule({
       providers: [
         { provide: AssignmentHttpClient, useValue: mockHttpClient },
@@ -76,16 +46,43 @@ describe('Dragon Form Tests', () => {
     });
 
     //Act
-    fixture = TestBed.createComponent(DragonForm, {
-      bindings: []
-    });
-    component = fixture.componentInstance;
+    await TestBed.configureTestingModule({ imports: [DragonForm], }).compileComponents();
+    const fixture = TestBed.createComponent(DragonForm);
+    const component = fixture.componentInstance;
     await fixture.whenStable();
     
-    expect(1).toBe(1);
+    //Assert: fields should be empty
     expect(component).toBeTruthy();
-  });
+    expect(getMethodWasCalled).toEqual(false);
+    const nativeElement: HTMLDivElement = fixture.nativeElement;
+    const givenNameInput = nativeElement.querySelector('#given-name input') as HTMLInputElement;
+    expect(givenNameInput.value).toBeFalsy();
+    const familyNameInput = nativeElement.querySelector('#family-name input') as HTMLInputElement;
+    expect(familyNameInput.value).toBeFalsy();
+    const canBreathFireCheck = nativeElement.querySelector('#can-breath-fire input') as HTMLInputElement;
+    expect(canBreathFireCheck.checked).toEqual(false);
+    const canTakePassengersCheck = nativeElement.querySelector('#can-take-passengers input') as HTMLInputElement;
+    expect(canTakePassengersCheck.checked).toEqual(false);
+    const lengthInMetersInput = nativeElement.querySelector('#length-in-meters input') as HTMLInputElement;
+    expect(lengthInMetersInput.value).toBeFalsy();
+    const weightInput = nativeElement.querySelector('#weight-in-kg input') as HTMLInputElement;
+    expect(weightInput.value).toBeFalsy();
+    const fightingSkillsSelect = nativeElement.querySelector('#fighting-skills select') as HTMLSelectElement;
+    expect(fightingSkillsSelect.value).toBeFalsy();
 
+    //Act: change form values
+    component.dragonFormGroup().get('givenName')?.setValue('Susan');
+    component.dragonFormGroup().get('canBreathFire')?.setValue(true);
+    expect(component.dragonFormGroup().valid).toEqual(true);
+    //const submitButton = fixture.nativeElement.querySelector('button');
+    //submitButton.click();
+    component.onSubmit();
+    await fixture.whenStable();
+
+    //Assert record changed
+    expect(actualModelInPostRequest.givenName).toEqual('Susan');
+    expect(actualModelInPostRequest.canBreathFire).toEqual(true);    
+  });
 
   it('Load an existing dragon to be edited from this form', async () => {
     const recordId = 15;
@@ -99,6 +96,7 @@ describe('Dragon Form Tests', () => {
       weightInKg: 2409,
       fightingSkills: 'b'
     } as Dragon;
+
     const mockHttpClient = new AssignmentHttpClient();
     mockHttpClient.getDragonWithJobs = async (dragonId: number, jobInclusions: JobInclusions) => {
       return {
@@ -108,7 +106,8 @@ describe('Dragon Form Tests', () => {
         payload: JSON.parse(JSON.stringify(initialDbRecord))
       } as ValidatedPayload<Dragon>;
     };
-    let actualRecordIdInPutRequest: number = -1;
+
+    let actualRecordIdInPutRequest: number = 0;
     let actualModelInPutRequest: Dragon = new Dragon();
     mockHttpClient.putDragonForm = async (dragonId: number, dragon: Dragon) => {
       actualRecordIdInPutRequest = dragonId;
@@ -121,6 +120,7 @@ describe('Dragon Form Tests', () => {
       } as ValidatedPayload<Dragon>;
       return Effect.succeed(validatedPayload) as Effect.Effect<ValidatedPayload<Dragon>, ValidatedForm<DragonValidationFailures>, never>;
     };
+
     const mockActivatedRoute = new MockActivatedRoute();
     const mockParams : { [key:string] : any } = { ['dragonId'] : recordId };
     mockActivatedRoute.setParams(mockParams);
@@ -132,10 +132,9 @@ describe('Dragon Form Tests', () => {
     });
 
     //Act
-    fixture = TestBed.createComponent(DragonForm, {
-      bindings: []
-    });
-    component = fixture.componentInstance;
+    await TestBed.configureTestingModule({ imports: [DragonForm], }).compileComponents();
+    const fixture = TestBed.createComponent(DragonForm);
+    const component = fixture.componentInstance;
     await fixture.whenStable();
     
     //Assert values at load
