@@ -29,12 +29,6 @@ export class AssignmentHttpClient {
     return await HttpHelpers.getOnePage<Dragon>(`${apiUrl}job/${jobId}/assigned-dragon?offset=${offset}&limit=${limit}`);
   };
 
-  async getDragonWithJobs(dragonId: number, jobInclusions: JobInclusions) {
-    const response = await fetch(`${apiUrl}dragon/${dragonId}?jobInclusions=${jobInclusions}`);
-    const json = await response.json();
-    return json as ValidatedPayload<Dragon>;
-  };
-
   async assignDragonToJob(dragonId: number, jobId: number) {
     return await HttpHelpers.getValidatedResponse(`${apiUrl}job/${jobId}/assigned-dragon/${dragonId}`, {
       method: 'POST'
@@ -47,6 +41,10 @@ export class AssignmentHttpClient {
     });
   };
 
+  async getDragonWithJobs(dragonId: number, jobInclusions: JobInclusions) {
+    return await HttpHelpers.getValidatedPayload<Dragon>(`${apiUrl}dragon/${dragonId}?jobInclusions=${jobInclusions}`);
+  };
+
   async postDragonForm(dragon: Dragon) {
     return await HttpHelpers.submitForm<Dragon, DragonValidationFailures>(`${apiUrl}dragon`, 'POST', dragon);
   };
@@ -55,17 +53,15 @@ export class AssignmentHttpClient {
     return await HttpHelpers.submitForm<Dragon, DragonValidationFailures>(`${apiUrl}dragon/${dragonId}`, 'PUT', dragon);
   };
 
+  async getJob(jobId: number) {
+    return await HttpHelpers.getValidatedPayload<Job>(`${apiUrl}job/${jobId}`);
+  };  
+
   async postJobForm(job: Job) {
     return await HttpHelpers.submitForm<Job, JobValidationFailures>(`${apiUrl}job`, 'POST', job);
   };
 
   async putJobForm(jobId: number, job: Job) {
     return await HttpHelpers.submitForm<Job, JobValidationFailures>(`${apiUrl}job/${jobId}`, 'PUT', job);
-  };
-
-  async getJob(jobId: number) {
-    const response = await fetch(`${apiUrl}job/${jobId}`);
-    const json = await response.json();
-    return json as ValidatedPayload<Job>;
   };
 }
