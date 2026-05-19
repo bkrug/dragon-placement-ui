@@ -75,8 +75,8 @@ describe('Dragon Form Tests', () => {
     component.dragonFormGroup().get('givenName')?.setValue('Susan');
     component.dragonFormGroup().get('canBreathFire')?.setValue(true);
     expect(component.dragonFormGroup().valid).toEqual(true);
-    //const submitButton = fixture.nativeElement.querySelector('button');
-    //submitButton.click();
+    // const submitButton = fixture.nativeElement.querySelector('button');
+    // submitButton.click();
     component.onSubmit();
     await fixture.whenStable();
 
@@ -160,5 +160,74 @@ describe('Dragon Form Tests', () => {
     expect(actualRecordIdInPutRequest).toEqual(recordId);
     expect(actualModelInPutRequest.givenName).toEqual('Gilbert');
     expect(actualModelInPutRequest.canTakePassengers).toEqual(true);
+  });
+
+  it('Show server-side validation errors after a failed edit submission', async () => {
+    const recordId = 15;
+    const initialDbRecord = {
+      dragonId: recordId,
+      givenName: 'Girbit',
+      familyName: 'Smokeson',
+      canBreathFire: true,
+      canTakePassengers: false,
+      lengthInMeters: 35,
+      weightInKg: 2409,
+      fightingSkills: 'b'
+    } as Dragon;
+
+    const mockHttpClient = new AssignmentHttpClient();
+    mockHttpClient.getDragonWithJobs = async (dragonId: number, jobInclusions: JobInclusions) => {
+      return {
+        isInternalError: false,
+        isSuccess: true,
+        validationFailures: [],
+        payload: JSON.parse(JSON.stringify(initialDbRecord))
+      } as ValidatedPayload<Dragon>;
+    };
+
+    const validationFailures: DragonValidationFailures = {
+      givenName: 'Given name is too short',
+      weightInKg: 'Weight must be positive',
+      lengthInMeters: 'Length must be positive',
+      fightingSkills: 'Fighting skill level is not recognized'
+    };
+
+    mockHttpClient.putDragonForm = async (_dragonId: number, _dragon: Dragon) => {
+      const failedForm: ValidatedForm<DragonValidationFailures> = {
+        isInternalError: false,
+        isSuccess: false,
+        validationFailures
+      };
+      return Effect.fail(failedForm) as Effect.Effect<ValidatedPayload<Dragon>, ValidatedForm<DragonValidationFailures>, never>;
+    };
+
+    const mockActivatedRoute = new MockActivatedRoute();
+    const mockParams: { [key: string]: any } = { ['dragonId']: recordId };
+    mockActivatedRoute.setParams(mockParams);
+    TestBed.configureTestingModule({
+      providers: [
+        { provide: AssignmentHttpClient, useValue: mockHttpClient },
+        { provide: ActivatedRoute, useValue: mockActivatedRoute }
+      ]
+    });
+
+    //Act
+    await TestBed.configureTestingModule({ imports: [DragonForm] }).compileComponents();
+    const fixture = TestBed.createComponent(DragonForm);
+    const component = fixture.componentInstance;
+    await fixture.whenStable();
+
+    // Simulate the user having touched all fields so that server-side errors will be visible
+    component.dragonFormGroup().markAllAsTouched();
+    const submitButton = fixture.nativeElement.querySelector('button');
+    submitButton.click();
+    await fixture.whenStable();
+
+    //Assert: each field with a server-side failure displays its error message
+    const nativeElement: HTMLDivElement = fixture.nativeElement;
+    expect(nativeElement.querySelector('#given-name p-message')?.textContent).toContain(validationFailures.givenName);
+    expect(nativeElement.querySelector('#weight-in-kg p-message')?.textContent).toContain(validationFailures.weightInKg);
+    expect(nativeElement.querySelector('#length-in-meters p-message')?.textContent).toContain(validationFailures.lengthInMeters);
+    expect(nativeElement.querySelector('#fighting-skills p-message')?.textContent).toContain(validationFailures.fightingSkills);
   });
 });
