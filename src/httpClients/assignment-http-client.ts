@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { environment } from '../environments/environment';
 import { JobInclusions } from '../poco/enums';
 import { Dragon, DragonValidationFailures, Job, JobValidationFailures } from '../poco/models';
-import { ValidatedPayload } from '../poco/standard-responses';
 import { HttpHelpers } from './http-helpers';
 
 const apiUrl = environment.backendApi.endsWith('/')
