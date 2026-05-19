@@ -14,7 +14,7 @@ import { ValidatedResponse } from '../../../poco/standard-responses';
   styleUrl: './dragon-table.scss',
 })
 export class DragonTable implements OnInit {
-  lazyLoadingService = inject(AssignmentHttpClient);
+  httpClient = inject(AssignmentHttpClient);
 
   selectedJob = input<DisplayJob | null>();
   dragonTableType = input<DragonTableType>();
@@ -52,25 +52,25 @@ export class DragonTable implements OnInit {
   private getPageOfDragons(offset: number) {
     switch (this.dragonTableType()) {
       case DragonTableType.AllDragons:
-        return this.lazyLoadingService.getOnePageOfDragons(offset, this.pageSize);
+        return this.httpClient.getOnePageOfDragons(offset, this.pageSize);
       case DragonTableType.Assign:
-        return this.lazyLoadingService.getOnePageOfCandidates(this.selectedJob()!.jobId, offset, this.pageSize);
+        return this.httpClient.getOnePageOfCandidates(this.selectedJob()!.jobId, offset, this.pageSize);
       default:
-        return this.lazyLoadingService.getOnePageOfAssignees(this.selectedJob()!.jobId, offset, this.pageSize);
+        return this.httpClient.getOnePageOfAssignees(this.selectedJob()!.jobId, offset, this.pageSize);
     }
   }
 
   assignDragon(dragonId: number) {
     this.executeDragonAction(
       dragonId,
-      this.lazyLoadingService.assignDragonToJob,
+      this.httpClient.assignDragonToJob,
       this.onDragonAssigned);
   }
 
   unassignDragon(dragonId: number) {
     this.executeDragonAction(
       dragonId,
-      this.lazyLoadingService.unassignDragonToJob,
+      this.httpClient.unassignDragonToJob,
       this.onDragonUnassigned);
   }
 
