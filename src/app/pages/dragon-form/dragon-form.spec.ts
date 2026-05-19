@@ -1,9 +1,7 @@
 import { TestBed } from '@angular/core/testing';
-import { By } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { Effect } from 'effect';
 import { AssignmentHttpClient } from '../../../httpClients/assignment-http-client';
-import { JobInclusions } from '../../../poco/enums';
 import { Dragon, DragonValidationFailures } from '../../../poco/models';
 import { ValidatedForm, ValidatedPayload } from '../../../poco/standard-responses';
 import { MockActivatedRoute } from '../../../testHelpers/MockActivatedRoute';
@@ -22,7 +20,7 @@ describe('Dragon Form Tests', () => {
   it('Load a blank Dragon Form for creation of a dragon', async () => {
     const mockHttpClient = new AssignmentHttpClient();
     let getMethodWasCalled = false;
-    mockHttpClient.getDragonWithJobs = async (dragonId: number, jobInclusions: JobInclusions) => {
+    mockHttpClient.getDragonWithJobs = async () => {
       getMethodWasCalled = true;
       return {
         isInternalError: false,
@@ -99,7 +97,7 @@ describe('Dragon Form Tests', () => {
     } as Dragon;
 
     const mockHttpClient = new AssignmentHttpClient();
-    mockHttpClient.getDragonWithJobs = async (dragonId: number, jobInclusions: JobInclusions) => {
+    mockHttpClient.getDragonWithJobs = async () => {
       return {
         isInternalError: false,
         isSuccess: true,
@@ -176,7 +174,7 @@ describe('Dragon Form Tests', () => {
     } as Dragon;
 
     const mockHttpClient = new AssignmentHttpClient();
-    mockHttpClient.getDragonWithJobs = async (dragonId: number, jobInclusions: JobInclusions) => {
+    mockHttpClient.getDragonWithJobs = async () => {
       return {
         isInternalError: false,
         isSuccess: true,
@@ -192,7 +190,7 @@ describe('Dragon Form Tests', () => {
       fightingSkills: 'Fighting skill level is not recognized'
     };
 
-    mockHttpClient.putDragonForm = async (_dragonId: number, _dragon: Dragon) => {
+    mockHttpClient.putDragonForm = async () => {
       const failedForm: ValidatedForm<DragonValidationFailures> = {
         isInternalError: false,
         isSuccess: false,

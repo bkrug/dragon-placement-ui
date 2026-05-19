@@ -19,8 +19,8 @@ export class DragonTable implements OnInit {
   selectedJob = input<DisplayJob | null>();
   dragonTableType = input<DragonTableType>();
 
-  @Output() onDragonAssigned = new EventEmitter();
-  @Output() onDragonUnassigned = new EventEmitter();
+  @Output() assignedDragon = new EventEmitter();
+  @Output() unassignedDragon = new EventEmitter();
 
   dragons = signal<Dragon[]>([]);
   selectedDragon = signal<Dragon | null>(null);
@@ -64,14 +64,14 @@ export class DragonTable implements OnInit {
     this.executeDragonAction(
       dragonId,
       this.httpClient.assignDragonToJob,
-      this.onDragonAssigned);
+      this.assignedDragon);
   }
 
   unassignDragon(dragonId: number) {
     this.executeDragonAction(
       dragonId,
       this.httpClient.unassignDragonToJob,
-      this.onDragonUnassigned);
+      this.unassignedDragon);
   }
 
   private executeDragonAction(

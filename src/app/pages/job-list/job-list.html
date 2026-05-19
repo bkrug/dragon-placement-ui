@@ -35,7 +35,7 @@
   </p-table>
 }
 @else {
-  <app-manage-job [selectedJob]="selectedJob()" (onClose)="selectedJob.set(null)" />
+  <app-manage-job [selectedJob]="selectedJob()" (closedManageJob)="selectedJob.set(null)" />
 }
 
 <span>

@@ -12,14 +12,14 @@ import { DragonTable } from '../../../shared-components/dragon-table/dragon-tabl
   styleUrl: './manage-job.scss',
 })
 export class ManageJob {
-  @Output() onClose = new EventEmitter();
+  @Output() closedManageJob = new EventEmitter();
   dragonTables = viewChildren(DragonTable);
 
   selectedJob = input<DisplayJob | null>();
   DragonTableType = DragonTableType;
 
   clearSelection() {
-    this.onClose.emit(null);
+    this.closedManageJob.emit(null);
   }
 
   reloadDragonTables() {
