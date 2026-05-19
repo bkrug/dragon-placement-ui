@@ -23,8 +23,6 @@ export class DragonForm implements OnInit {
   constructor() {
     this.activatedRoute.params.subscribe((params) => {
       this.dragonId = params['dragonId'] || null;
-      console.log('params', params);
-      console.log('params', params['dragonId']);
     });
   }
 
@@ -35,8 +33,6 @@ export class DragonForm implements OnInit {
           this.dragon.set(validatedResponse.payload);
           this.dragonFormGroup.set(this.getDragonFormGroup());
         });
-    else
-      console.log('not loading record');
   }
 
   skillLevels = [

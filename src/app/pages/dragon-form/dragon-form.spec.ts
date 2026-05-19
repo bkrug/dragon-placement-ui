@@ -9,7 +9,7 @@ import { MockActivatedRoute } from '../../../testHelpers/MockActivatedRoute';
 import { DragonForm } from './dragon-form';
 
 //TODO: Assert that there is no junk data in the form, and that no HttpMethods were called
-describe('Load a blank Dragon Form for creation of a dragon', () => {
+describe('Dragon Form Tests', () => {
   let component: DragonForm;
   let fixture: ComponentFixture<DragonForm>;
 
@@ -19,7 +19,7 @@ describe('Load a blank Dragon Form for creation of a dragon', () => {
     }).compileComponents();
   });
 
-  it('should create', async () => {
+  it('Load a blank Dragon Form for creation of a dragon', async () => {
     const mockHttpClient = new AssignmentHttpClient();
     mockHttpClient.getDragonWithJobs = async (dragonId: number, jobInclusions: JobInclusions) => {
       return {
@@ -84,19 +84,9 @@ describe('Load a blank Dragon Form for creation of a dragon', () => {
     expect(1).toBe(1);
     expect(component).toBeTruthy();
   });
-});
 
-describe('Load an existing dragon to be edited from this form', () => {
-  let component: DragonForm;
-  let fixture: ComponentFixture<DragonForm>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [DragonForm],
-    }).compileComponents();
-  });
-
-  it('should create', async () => {
+  it('Load an existing dragon to be edited from this form', async () => {
     const recordId = 15;
     const initialDbRecord = {
       dragonId: recordId,
@@ -155,7 +145,7 @@ describe('Load an existing dragon to be edited from this form', () => {
     //Assert
     expect(component).toBeTruthy();
     const nativeElement: HTMLDivElement = fixture.nativeElement;
-    const givenNameInput = nativeElement.querySelector('#given-name');
-    expect(givenNameInput?.textContent).toEqual('Girbit');
+    const givenNameInput = nativeElement.querySelector('#given-name input') as HTMLInputElement;
+    expect(givenNameInput.value).toEqual('Girbit');
   });
 });
