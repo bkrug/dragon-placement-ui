@@ -284,4 +284,40 @@ describe('Dragon Form Tests', () => {
     const nativeElement: HTMLDivElement = fixture.nativeElement;
     expect(nativeElement.querySelector('p-button + p-message')?.textContent).toContain('failed communication with the remote server');
   });
+
+  it('Submit button shows "Submitting..." while waiting for a server response', async () => {
+    const mockHttpClient = new AssignmentHttpClient();
+    mockHttpClient.getDragonWithJobs = async () => ({
+      isInternalError: false,
+      isSuccess: true,
+      validationFailures: [],
+      payload: new Dragon()
+    } as ValidatedPayload<Dragon>);
+
+    mockHttpClient.postDragonForm = () => new Promise(() => {});
+
+    const mockActivatedRoute = new MockActivatedRoute();
+    mockActivatedRoute.setParams({});
+    TestBed.configureTestingModule({
+      providers: [
+        { provide: AssignmentHttpClient, useValue: mockHttpClient },
+        { provide: ActivatedRoute, useValue: mockActivatedRoute }
+      ]
+    });
+
+    //Act
+    await TestBed.configureTestingModule({ imports: [DragonForm] }).compileComponents();
+    const fixture = TestBed.createComponent(DragonForm);
+    const component = fixture.componentInstance;
+    await fixture.whenStable();
+
+    component.dragonFormGroup().get('givenName')?.setValue('Susan');
+    const submitButton = fixture.nativeElement.querySelector('button[type="submit"]');
+    //submitButton.click();
+    component.onSubmit();
+    fixture.detectChanges();
+
+    //Assert: button label changes while request is in flight
+    expect(submitButton.textContent).toContain('Submitting...');
+  });
 });
