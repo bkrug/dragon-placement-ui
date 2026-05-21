@@ -1,6 +1,5 @@
 <div [formGroup]="formGroup()">
   <label for="{{id()}}">{{label()}}</label>
-  <!-- <input id="{{id()}}" [type]="inputType()" formControlName="{{fieldName()}}" /> -->
   <p-datepicker inputId="{{id()}}" formControlName="{{fieldName()}}" [invalid]="isInvalid()" />
   <app-local-field-errors [errors]="getErrors()" [shouldDisplay]="shouldDisplayError()" />
 </div>
