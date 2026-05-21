@@ -1,4 +1,4 @@
-import { Job, DisplayJob, Dragon, DisplayDragon, Assignment, DisplayAssignment } from './poco/models';
+import { Assignment, DisplayAssignment, DisplayDragon, DisplayJob, Dragon, Job } from './poco/models';
 
 export const mapJobToDisplayJob = (source: Job) => {
   const startDate = new Date(source.startDateUnix * 1000);
@@ -46,3 +46,33 @@ export const mapAssigmentToDisplayAssignment = (source: Assignment) => {
     job: mapJobToDisplayJob(source.job)
   } as DisplayAssignment;
 };
+
+const isoDateRegex = /^(?:\d{4})-(?:\d{1,2})-(?:\d{1,2})/
+
+export function getUnixSeconds(sourceDate: string | Date | null | undefined) {
+  if (sourceDate instanceof Date) {
+    return Math.floor(sourceDate.getTime() / 1000)
+  }
+  else if (typeof sourceDate === "string") {
+    const matches = sourceDate.match(isoDateRegex);
+    if (matches === null || matches.length === 0) {
+      return 0;
+    }
+    else {
+      const parts = matches[0].split('-').map(s => parseInt(s, 10));
+      return Math.floor(Date.UTC(parts[0], parts[1] - 1, parts[2]) / 1000);
+    }
+  }
+  else {
+    return 0;
+  }
+}
+
+export function getDateStringFromUnixSeconds(unixSeconds: number | null | undefined) {
+  if (unixSeconds === null || unixSeconds === undefined)
+    return '';
+  const ourDate = new Date(unixSeconds * 1000);
+  const month = (ourDate.getUTCMonth() + 1).toString().padStart(2, '0');
+  const date = ourDate.getUTCDate().toString().padStart(2, '0');
+  return `${ourDate.getUTCFullYear()}-${month}-${date}`;
+}

@@ -90,6 +90,22 @@ export class LocalNumberField extends LocalFieldBase<number> {
   }
 }
 
+//The generic used here is a string, because the input field requires a string in YYYY-MM-dd format.
+@Component({
+  selector: 'app-local-date-field',
+  imports: [ ReactiveFormsModule, MessageModule ],
+  templateUrl: './local-input-field.html',
+  styleUrl: './local-input-field.scss',
+})
+export class LocalDateField extends LocalFieldBase<string> {
+  inputType = signal('date');
+
+  fieldControl = input.required<AbstractControl<string|null, string|null, any> | null>();
+  override getFieldControl() {
+    return this.fieldControl();
+  }
+}
+
 @Component({
   selector: 'app-local-checkbox',
   imports: [ ReactiveFormsModule, MessageModule ],
