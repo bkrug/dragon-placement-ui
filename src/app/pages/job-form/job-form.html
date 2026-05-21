@@ -1,12 +1,15 @@
 <h2>Job Form</h2>
 
 <div class="card flex justify-center">
-  <form [formGroup]="jobFormGroup()" (ngSubmit)="onSubmit()">
+  <form [formGroup]="jobFormGroup()" (ngSubmit)="onSubmit()" (focusin)="onFormFocus()">
     <app-local-text-field id="job-title" label="Job Title:" fieldName="jobTitle" [formGroup]="jobFormGroup()" [fieldControl]="jobFormGroup().get('jobTitle')" />
     <app-local-text-field id="employer-name" label="Employer Name:" fieldName="employerName" [formGroup]="jobFormGroup()" [fieldControl]="jobFormGroup().get('employerName')" />
     <app-local-number-field id="number-of-positions" label="Number Of Positions:" fieldName="numberOfPositions" [formGroup]="jobFormGroup()" [fieldControl]="jobFormGroup().get('numberOfPositions')" />
     <app-local-date-field id="start-date" label="Start Date:" fieldName="startDate" [formGroup]="jobFormGroup()" [fieldControl]="jobFormGroup().get('startDate')" />
     <app-local-date-field id="end-date" label="End Date:" fieldName="endDate" [formGroup]="jobFormGroup()" [fieldControl]="jobFormGroup().get('endDate')" />
-    <p-button type="submit" [disabled]="!jobFormGroup().valid">Submit</p-button>
+    <p-button type="submit" [disabled]="!jobFormGroup().valid || isSubmitting()" [label]="isSubmitting() ? 'Submitting...' : 'Submit'" />
+    @if (showSaved()) {
+      <p-message severity="success" size="small" variant="simple">Saved</p-message>
+    }
   </form>
 </div>

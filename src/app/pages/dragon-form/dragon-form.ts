@@ -44,6 +44,12 @@ export class DragonForm implements OnInit {
   ] as SelectListOption[]
 
   dragonFormGroup = signal(this.getDragonFormGroup());
+  isSubmitting = signal(false);
+  showSaved = signal(false);
+
+  onFormFocus() {
+    this.showSaved.set(false);
+  }
 
   private getDragonFormGroup() {
     return new FormGroup({
@@ -59,6 +65,8 @@ export class DragonForm implements OnInit {
 
   onSubmit() {
     if (this.dragonFormGroup().valid) {
+      this.isSubmitting.set(true);
+      this.showSaved.set(false);
       const dragonFromForm = this.dragonFormGroup().value;
       const requestBody = {
         givenName: dragonFromForm.givenName!,
@@ -78,12 +86,14 @@ export class DragonForm implements OnInit {
             this.dragonId = successResponse.payload.dragonId;
             this.dragon.set(successResponse.payload);
             this.dragonFormGroup.set(this.getDragonFormGroup());
+            this.showSaved.set(true);
           },
           onFailure: failureResponse => failureResponse.isInternalError
             ? alert('failed communication with the remote server')
             : applyServerSideValidations(failureResponse, this.dragonFormGroup())
         }))
-      );
+      )
+      .finally(() => this.isSubmitting.set(false));
     }
   }
 }

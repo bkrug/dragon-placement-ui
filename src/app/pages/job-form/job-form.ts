@@ -37,6 +37,12 @@ export class JobForm implements OnInit {
   }
 
   jobFormGroup = signal(this.getJobFormGroup());
+  isSubmitting = signal(false);
+  showSaved = signal(false);
+
+  onFormFocus() {
+    this.showSaved.set(false);
+  }
 
   private getJobFormGroup() {
     return new FormGroup({
@@ -50,6 +56,8 @@ export class JobForm implements OnInit {
 
   onSubmit() {
     if (this.jobFormGroup().valid) {
+      this.isSubmitting.set(true);
+      this.showSaved.set(false);
       const jobFromForm = this.jobFormGroup().value;
       const requestBody = {
         jobTitle: jobFromForm.jobTitle!,
@@ -67,12 +75,13 @@ export class JobForm implements OnInit {
             this.jobId = successResponse.payload.jobId;
             this.job.set(successResponse.payload);
             this.jobFormGroup.set(this.getJobFormGroup());
+            this.showSaved.set(true);
           },
           onFailure: failureResponse => failureResponse.isInternalError
             ? alert('failed communication with the remote server')
             : applyServerSideValidations(failureResponse, this.jobFormGroup())
         }))
-      );
+      ).finally(() => this.isSubmitting.set(false));
     }
   }
 }

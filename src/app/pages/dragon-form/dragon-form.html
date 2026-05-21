@@ -1,7 +1,7 @@
 <h2>Dragon Form</h2>
 
 <div class="card flex justify-center">
-  <form [formGroup]="dragonFormGroup()" (ngSubmit)="onSubmit()">
+  <form [formGroup]="dragonFormGroup()" (ngSubmit)="onSubmit()" (focusin)="onFormFocus()">
     <app-local-text-field id="given-name" label="Given Name:" fieldName="givenName" [formGroup]="dragonFormGroup()" [fieldControl]="dragonFormGroup().get('givenName')" />
     <app-local-text-field id="family-name" label="Family Name:" fieldName="familyName" [formGroup]="dragonFormGroup()" [fieldControl]="dragonFormGroup().get('familyName')" />
     <app-local-checkbox id="can-breath-fire" label="Can Breath Fire:" fieldName="canBreathFire" [formGroup]="dragonFormGroup()" [fieldControl]="dragonFormGroup().get('canBreathFire')" />
@@ -15,6 +15,9 @@
       [formGroup]="dragonFormGroup()"
       [fieldControl]="dragonFormGroup().get('fightingSkills')"
       [options]="this.skillLevels" />
-    <p-button type="submit" [disabled]="!dragonFormGroup().valid">Submit</p-button>
+    <p-button type="submit" [disabled]="!dragonFormGroup().valid || isSubmitting()" [label]="isSubmitting() ? 'Submitting...' : 'Submit'" />
+    @if (showSaved()) {
+      <p-message severity="success" size="small" variant="simple">Saved</p-message>
+    }
   </form>
 </div>
