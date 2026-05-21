@@ -64,15 +64,15 @@ describe('Job Form Tests', () => {
     expect(getInputElement(nativeElement, '#job-title input').value).toBeFalsy();
     expect(getInputElement(nativeElement, '#employer-name input').value).toBeFalsy();
     expect(getInputElement(nativeElement, '#number-of-positions input').value).toEqual('0');
-    expect(component.jobFormGroup().get('startDate')?.value).toBeFalsy();
-    expect(component.jobFormGroup().get('endDate')?.value).toBeFalsy();
+    expect(component.formGroup().get('startDate')?.value).toBeFalsy();
+    expect(component.formGroup().get('endDate')?.value).toBeFalsy();
 
     //Act: change form values
-    component.jobFormGroup().get('jobTitle')?.setValue('Dragon Wrangler');
-    component.jobFormGroup().get('numberOfPositions')?.setValue(3);
-    component.jobFormGroup().get('startDate')?.setValue(beginDate);
-    component.jobFormGroup().get('endDate')?.setValue(endDate);
-    expect(component.jobFormGroup().valid).toEqual(true);
+    component.formGroup().get('jobTitle')?.setValue('Dragon Wrangler');
+    component.formGroup().get('numberOfPositions')?.setValue(3);
+    component.formGroup().get('startDate')?.setValue(beginDate);
+    component.formGroup().get('endDate')?.setValue(endDate);
+    expect(component.formGroup().valid).toEqual(true);
     component.onSubmit();
     await fixture.whenStable();
 
@@ -141,12 +141,12 @@ describe('Job Form Tests', () => {
     expect(getInputElement(nativeElement, '#job-title input').value).toEqual(initialDbRecord.jobTitle);
     expect(getInputElement(nativeElement, '#employer-name input').value).toEqual(initialDbRecord.employerName);
     expect(getInputElement(nativeElement, '#number-of-positions input').value).toEqual(initialDbRecord.numberOfPositions.toString());
-    expect(component.jobFormGroup().get('startDate')?.value).toEqual(beginDate);
-    expect(component.jobFormGroup().get('endDate')?.value).toEqual(endDate);
+    expect(component.formGroup().get('startDate')?.value).toEqual(beginDate);
+    expect(component.formGroup().get('endDate')?.value).toEqual(endDate);
 
     //Act: change form values
-    component.jobFormGroup().get('jobTitle')?.setValue('Senior Fire Inspector');
-    component.jobFormGroup().get('numberOfPositions')?.setValue(5);
+    component.formGroup().get('jobTitle')?.setValue('Senior Fire Inspector');
+    component.formGroup().get('numberOfPositions')?.setValue(5);
     const submitButton = fixture.nativeElement.querySelector('button[type="submit"]');
     submitButton.click();
     await fixture.whenStable();
@@ -210,7 +210,7 @@ describe('Job Form Tests', () => {
     await fixture.whenStable();
 
     // Simulate the user having touched all fields so that server-side errors will be visible
-    component.jobFormGroup().markAllAsTouched();
+    component.formGroup().markAllAsTouched();
     const submitButton = fixture.nativeElement.querySelector('button[type="submit"]');
     submitButton.click();
     await fixture.whenStable();

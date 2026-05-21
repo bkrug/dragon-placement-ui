@@ -1,26 +1,24 @@
 <h2>Dragon Form</h2>
 
 <div class="card flex justify-center">
-  <form [formGroup]="dragonFormGroup()" (ngSubmit)="onSubmit()" (focusin)="onFormFocus()">
-    <app-local-text-field id="given-name" label="Given Name:" fieldName="givenName" [formGroup]="dragonFormGroup()" [fieldControl]="dragonFormGroup().get('givenName')" />
-    <app-local-text-field id="family-name" label="Family Name:" fieldName="familyName" [formGroup]="dragonFormGroup()" [fieldControl]="dragonFormGroup().get('familyName')" />
-    <app-local-checkbox id="can-breath-fire" label="Can Breath Fire:" fieldName="canBreathFire" [formGroup]="dragonFormGroup()" [fieldControl]="dragonFormGroup().get('canBreathFire')" />
-    <app-local-checkbox id="can-take-passengers" label="Can Take Passengers:" fieldName="canTakePassengers" [formGroup]="dragonFormGroup()" [fieldControl]="dragonFormGroup().get('canTakePassengers')" />
-    <app-local-number-field id="length-in-meters" label="Length In Meters:" fieldName="lengthInMeters" [formGroup]="dragonFormGroup()" [fieldControl]="dragonFormGroup().get('lengthInMeters')" />
-    <app-local-number-field id="weight-in-kg" label="Weight In Kilograms:" fieldName="weightInKg" [formGroup]="dragonFormGroup()" [fieldControl]="dragonFormGroup().get('weightInKg')" />
+  <form [formGroup]="formGroup()" (ngSubmit)="onSubmit()" (focusin)="onFormFocus()">
+    <app-local-text-field id="given-name" label="Given Name:" fieldName="givenName" [formGroup]="formGroup()" [fieldControl]="formGroup().get('givenName')" />
+    <app-local-text-field id="family-name" label="Family Name:" fieldName="familyName" [formGroup]="formGroup()" [fieldControl]="formGroup().get('familyName')" />
+    <app-local-checkbox id="can-breath-fire" label="Can Breath Fire:" fieldName="canBreathFire" [formGroup]="formGroup()" [fieldControl]="formGroup().get('canBreathFire')" />
+    <app-local-checkbox id="can-take-passengers" label="Can Take Passengers:" fieldName="canTakePassengers" [formGroup]="formGroup()" [fieldControl]="formGroup().get('canTakePassengers')" />
+    <app-local-number-field id="length-in-meters" label="Length In Meters:" fieldName="lengthInMeters" [formGroup]="formGroup()" [fieldControl]="formGroup().get('lengthInMeters')" />
+    <app-local-number-field id="weight-in-kg" label="Weight In Kilograms:" fieldName="weightInKg" [formGroup]="formGroup()" [fieldControl]="formGroup().get('weightInKg')" />
     <app-local-select-field
       id="fighting-skills"
       label="Fighting Skills:"
       fieldName="fightingSkills"
-      [formGroup]="dragonFormGroup()"
-      [fieldControl]="dragonFormGroup().get('fightingSkills')"
-      [options]="this.skillLevels" />
-    <p-button type="submit" [disabled]="!dragonFormGroup().valid || isSubmitting()" [label]="isSubmitting() ? 'Submitting...' : 'Submit'" />
-    @if (showSaved()) {
-      <p-message severity="success" size="small" variant="simple">Saved</p-message>
-    }
-    @if (submissionError() !== '') {
-      <p-message severity="error" size="small" variant="simple">{{submissionError()}}</p-message>
-    }
+      [formGroup]="formGroup()"
+      [fieldControl]="formGroup().get('fightingSkills')"
+      [options]="skillLevels" />
+    <app-local-submit-button
+      [isSubmitDisabled]="!formGroup().valid || isSubmitting()"
+      [isSubmitting]="isSubmitting()"
+      [showSaved]="showSaved()"
+      [submissionError]="submissionError()" />
   </form>
 </div>

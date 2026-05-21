@@ -65,14 +65,14 @@ describe('Dragon Form Tests', () => {
     expect(getInputElement(nativeElement, '#family-name input').value).toBeFalsy();
     expect(getInputElement(nativeElement, '#can-breath-fire input').checked).toEqual(false);
     expect(getInputElement(nativeElement, '#can-take-passengers input').checked).toEqual(false);
-    expect(component.dragonFormGroup().get('lengthInMeters')?.value).toBeFalsy();
-    expect(component.dragonFormGroup().get('weightInKg')?.value).toBeFalsy();
-    expect(component.dragonFormGroup().get('fightingSkills')?.value).toBeFalsy();
+    expect(component.formGroup().get('lengthInMeters')?.value).toBeFalsy();
+    expect(component.formGroup().get('weightInKg')?.value).toBeFalsy();
+    expect(component.formGroup().get('fightingSkills')?.value).toBeFalsy();
 
     //Act: change form values
-    component.dragonFormGroup().get('givenName')?.setValue('Susan');
-    component.dragonFormGroup().get('canBreathFire')?.setValue(true);
-    expect(component.dragonFormGroup().valid).toEqual(true);
+    component.formGroup().get('givenName')?.setValue('Susan');
+    component.formGroup().get('canBreathFire')?.setValue(true);
+    expect(component.formGroup().valid).toEqual(true);
     // const submitButton = fixture.nativeElement.querySelector('button[type="submit"]');
     // submitButton.click();
     component.onSubmit();
@@ -143,13 +143,13 @@ describe('Dragon Form Tests', () => {
     expect(getInputElement(nativeElement, '#family-name input').value).toEqual(initialDbRecord.familyName);
     expect(getInputElement(nativeElement, '#can-breath-fire input').checked).toEqual(initialDbRecord.canBreathFire);
     expect(getInputElement(nativeElement, '#can-take-passengers input').checked).toEqual(initialDbRecord.canTakePassengers);
-    expect(component.dragonFormGroup().get('lengthInMeters')?.value).toEqual(initialDbRecord.lengthInMeters);
-    expect(component.dragonFormGroup().get('weightInKg')?.value).toEqual(initialDbRecord.weightInKg);
-    expect(component.dragonFormGroup().get('fightingSkills')?.value).toEqual(initialDbRecord.fightingSkills);
+    expect(component.formGroup().get('lengthInMeters')?.value).toEqual(initialDbRecord.lengthInMeters);
+    expect(component.formGroup().get('weightInKg')?.value).toEqual(initialDbRecord.weightInKg);
+    expect(component.formGroup().get('fightingSkills')?.value).toEqual(initialDbRecord.fightingSkills);
 
     //Act: change form values
-    component.dragonFormGroup().get('givenName')?.setValue('Gilbert');
-    component.dragonFormGroup().get('canTakePassengers')?.setValue(true);
+    component.formGroup().get('givenName')?.setValue('Gilbert');
+    component.formGroup().get('canTakePassengers')?.setValue(true);
     const submitButton = fixture.nativeElement.querySelector('button[type="submit"]');
     submitButton.click();
     await fixture.whenStable();
@@ -216,7 +216,7 @@ describe('Dragon Form Tests', () => {
     await fixture.whenStable();
 
     // Simulate the user having touched all fields so that server-side errors will be visible
-    component.dragonFormGroup().markAllAsTouched();
+    component.formGroup().markAllAsTouched();
     const submitButton = fixture.nativeElement.querySelector('button[type="submit"]');
     submitButton.click();
     await fixture.whenStable();
@@ -311,7 +311,7 @@ describe('Dragon Form Tests', () => {
     const component = fixture.componentInstance;
     await fixture.whenStable();
 
-    component.dragonFormGroup().get('givenName')?.setValue('Susan');
+    component.formGroup().get('givenName')?.setValue('Susan');
     const submitButton = fixture.nativeElement.querySelector('button[type="submit"]');
     //submitButton.click();
     component.onSubmit();

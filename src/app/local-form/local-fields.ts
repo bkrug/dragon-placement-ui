@@ -1,5 +1,6 @@
 import { Component, Directive, input, signal } from '@angular/core';
 import { AbstractControl, FormGroup, ReactiveFormsModule, ValidationErrors } from '@angular/forms';
+import { ButtonModule } from 'primeng/button';
 import { CheckboxModule } from 'primeng/checkbox';
 import { DatePickerModule } from 'primeng/datepicker';
 import { InputNumberModule } from 'primeng/inputnumber';
@@ -162,4 +163,24 @@ export class LocalSelectField extends LocalFieldBase<string> {
   override getFieldControl() {
     return this.fieldControl();
   }
+}
+
+@Component({
+  selector: 'app-local-submit-button',
+  imports: [ButtonModule, MessageModule],
+  template: `
+    <p-button type="submit" [disabled]="isSubmitDisabled()" [label]="isSubmitting() ? 'Submitting...' : 'Submit'" />
+    @if (showSaved()) {
+      <p-message severity="success" size="small" variant="simple">Saved</p-message>
+    }
+    @if (submissionError() !== '') {
+      <p-message severity="error" size="small" variant="simple">{{ submissionError() }}</p-message>
+    }
+  `
+})
+export class LocalSubmitButton {
+  isSubmitDisabled = input.required<boolean>();
+  isSubmitting = input.required<boolean>();
+  showSaved = input.required<boolean>();
+  submissionError = input.required<string>();
 }

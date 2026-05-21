@@ -1,89 +1,63 @@
-import { Component, OnInit, inject, signal } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
-import { Effect } from 'effect';
-import { ButtonModule } from 'primeng/button';
-import { MessageModule } from 'primeng/message';
 import { AssignmentHttpClient } from '../../../httpClients/assignment-http-client';
-import { Job } from '../../../poco/models';
+import { Job, JobValidationFailures } from '../../../poco/models';
 import { getDateFromUnixSeconds, getUnixSeconds } from '../../../transformers';
-import { LocalDateField, LocalNumberField, LocalTextField, applyServerSideValidations } from '../../local-form/local-fields';
+import { EntityFormBase } from '../../local-form/entity-form-base';
+import { LocalDateField, LocalNumberField, LocalSubmitButton, LocalTextField } from '../../local-form/local-fields';
 
 @Component({
   selector: 'app-job-form',
-  imports: [ ReactiveFormsModule, MessageModule, LocalDateField, LocalNumberField, LocalTextField, ButtonModule ],
+  imports: [ ReactiveFormsModule, LocalDateField, LocalNumberField, LocalTextField, LocalSubmitButton ],
   templateUrl: './job-form.html',
   styleUrl: './job-form.scss',
 })
-export class JobForm implements OnInit {
+export class JobForm extends EntityFormBase<Job, JobValidationFailures> implements OnInit {
   httpClient = inject(AssignmentHttpClient);
-  private activatedRoute = inject(ActivatedRoute);
-  private jobId: number | null = null;
   job = signal(new Job());
 
   constructor() {
-    this.activatedRoute.params.subscribe((params) => {
-      this.jobId = params['jobId'] || null;
-    });
+    super('jobId');
   }
 
   ngOnInit(): void {
-    if (this.jobId)
-      this.httpClient.getJob(this.jobId)
+    if (this.entityId)
+      this.httpClient.getJob(this.entityId)
         .then(validatedResponse => {
           this.job.set(validatedResponse.payload);
-          this.jobFormGroup.set(this.getJobFormGroup());
+          this.formGroup.set(this.getJobFormGroup());
         });
   }
 
-  jobFormGroup = signal(this.getJobFormGroup());
-  isSubmitting = signal(false);
-  showSaved = signal(false);
-  submissionError = signal('');
-
-  onFormFocus() {
-    this.showSaved.set(false);
-    this.submissionError.set('');
-  }
+  formGroup = signal(this.getJobFormGroup());
 
   private getJobFormGroup() {
     return new FormGroup({
       jobTitle: new FormControl(this.job().jobTitle, [ Validators.required ]),
       employerName: new FormControl(this.job().employerName),
       numberOfPositions: new FormControl(this.job().numberOfPositions, [ Validators.required ]),
-      startDate: new FormControl(this.jobId ? getDateFromUnixSeconds(this.job().startDateUnix) : null),
-      endDate: new FormControl(this.jobId ? getDateFromUnixSeconds(this.job().endDateUnix) : null),
+      startDate: new FormControl(this.entityId ? getDateFromUnixSeconds(this.job().startDateUnix) : null),
+      endDate: new FormControl(this.entityId ? getDateFromUnixSeconds(this.job().endDateUnix) : null),
     });
   }
 
-  onSubmit() {
-    if (this.jobFormGroup().valid) {
-      this.isSubmitting.set(true);
-      this.showSaved.set(false);
-      const jobFromForm = this.jobFormGroup().value;
-      const requestBody = {
-        jobTitle: jobFromForm.jobTitle!,
-        employerName: jobFromForm.employerName || '',
-        numberOfPositions: jobFromForm.numberOfPositions!,
-        startDateUnix: getUnixSeconds(jobFromForm.startDate),
-        endDateUnix: getUnixSeconds(jobFromForm.endDate),
-      } as Job;
-      const httpResponse = this.jobId
-        ? this.httpClient.putJobForm(this.jobId, requestBody)
-        : this.httpClient.postJobForm(requestBody);
-      httpResponse.then(result =>
-        Effect.runPromise(Effect.match(result, {
-          onSuccess: successResponse => {
-            this.jobId = successResponse.payload.jobId;
-            this.job.set(successResponse.payload);
-            this.jobFormGroup.set(this.getJobFormGroup());
-            this.showSaved.set(true);
-          },
-          onFailure: failureResponse => failureResponse.isInternalError
-            ? this.submissionError.set('failed communication with the remote server')
-            : applyServerSideValidations(failureResponse, this.jobFormGroup())
-        }))
-      ).finally(() => this.isSubmitting.set(false));
-    }
+  protected override makeSubmissionRequest() {
+    const values = this.formGroup().value;
+    const body = {
+      jobTitle: values.jobTitle!,
+      employerName: values.employerName || '',
+      numberOfPositions: values.numberOfPositions!,
+      startDateUnix: getUnixSeconds(values.startDate),
+      endDateUnix: getUnixSeconds(values.endDate),
+    } as Job;
+    return this.entityId
+      ? this.httpClient.putJobForm(this.entityId, body)
+      : this.httpClient.postJobForm(body);
+  }
+
+  protected override handleSubmissionSuccess(payload: Job) {
+    this.entityId = payload.jobId;
+    this.job.set(payload);
+    this.formGroup.set(this.getJobFormGroup());
   }
 }

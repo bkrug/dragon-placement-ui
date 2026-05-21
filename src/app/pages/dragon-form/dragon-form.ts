@@ -1,38 +1,31 @@
-import { Component, OnInit, inject, signal } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
-import { Effect } from 'effect';
-import { ButtonModule } from 'primeng/button';
-import { MessageModule } from 'primeng/message';
 import { AssignmentHttpClient } from '../../../httpClients/assignment-http-client';
 import { JobInclusions } from '../../../poco/enums';
-import { Dragon } from '../../../poco/models';
-import { LocalCheckbox, LocalNumberField, LocalSelectField, LocalTextField, SelectListOption, applyServerSideValidations } from '../../local-form/local-fields';
+import { Dragon, DragonValidationFailures } from '../../../poco/models';
+import { EntityFormBase } from '../../local-form/entity-form-base';
+import { LocalCheckbox, LocalNumberField, LocalSelectField, LocalSubmitButton, LocalTextField, SelectListOption } from '../../local-form/local-fields';
 
 @Component({
   selector: 'app-dragon-form',
-  imports: [ ReactiveFormsModule, MessageModule, LocalTextField, LocalCheckbox, LocalNumberField, LocalSelectField, ButtonModule ],
+  imports: [ ReactiveFormsModule, LocalTextField, LocalCheckbox, LocalNumberField, LocalSelectField, LocalSubmitButton ],
   templateUrl: './dragon-form.html',
   styleUrl: './dragon-form.scss',
 })
-export class DragonForm implements OnInit {
+export class DragonForm extends EntityFormBase<Dragon, DragonValidationFailures> implements OnInit {
   httpClient = inject(AssignmentHttpClient);
-  private activatedRoute = inject(ActivatedRoute);
-  private dragonId: number | null = null;
   dragon = signal(new Dragon());
 
   constructor() {
-    this.activatedRoute.params.subscribe((params) => {
-      this.dragonId = params['dragonId'] || null;
-    });
+    super('dragonId');
   }
 
   ngOnInit(): void {
-    if (this.dragonId)
-      this.httpClient.getDragonWithJobs(this.dragonId, JobInclusions.None)
+    if (this.entityId)
+      this.httpClient.getDragonWithJobs(this.entityId, JobInclusions.None)
         .then(validatedResponse => {
           this.dragon.set(validatedResponse.payload);
-          this.dragonFormGroup.set(this.getDragonFormGroup());
+          this.formGroup.set(this.getDragonFormGroup());
         });
   }
 
@@ -41,17 +34,9 @@ export class DragonForm implements OnInit {
     { value: 'b',  display: 'Basic' },
     { value: 'm',  display: 'Medium' },
     { value: 'a',  display: 'Advanced' }
-  ] as SelectListOption[]
+  ] as SelectListOption[];
 
-  dragonFormGroup = signal(this.getDragonFormGroup());
-  isSubmitting = signal(false);
-  showSaved = signal(false);
-  submissionError = signal('');
-
-  onFormFocus() {
-    this.showSaved.set(false);
-    this.submissionError.set('');
-  }
+  formGroup = signal(this.getDragonFormGroup());
 
   private getDragonFormGroup() {
     return new FormGroup({
@@ -65,39 +50,25 @@ export class DragonForm implements OnInit {
     });
   }
 
-  onSubmit() {
-    if (this.dragonFormGroup().valid) {
-      this.isSubmitting.set(true);
-      this.showSaved.set(false);
-      const dragonFromForm = this.dragonFormGroup().value;
-      const requestBody = {
-        givenName: dragonFromForm.givenName!,
-        familyName: dragonFromForm.familyName || null,
-        canBreathFire: dragonFromForm.canBreathFire === true,
-        canTakePassengers: dragonFromForm.canTakePassengers === true,
-        weightInKg: dragonFromForm.weightInKg || null,
-        lengthInMeters: dragonFromForm.lengthInMeters || null,
-        fightingSkills: dragonFromForm.fightingSkills || null
-      } as Dragon;
-      const httpResponse = this.dragonId
-        ? this.httpClient.putDragonForm(this.dragonId, requestBody)
-        : this.httpClient.postDragonForm(requestBody);
-      httpResponse.then(result =>
-        Effect.runPromise(Effect.match(result, {
-          onSuccess: successResponse => {
-            this.dragonId = successResponse.payload.dragonId;
-            this.dragon.set(successResponse.payload);
-            this.dragonFormGroup.set(this.getDragonFormGroup());
-            this.showSaved.set(true);
-          },
-          onFailure: failureResponse => failureResponse.isInternalError
-            ? this.submissionError.set('failed communication with the remote server')
-            : applyServerSideValidations(failureResponse, this.dragonFormGroup())
-        }))
-      )
-      .finally(() => this.isSubmitting.set(false));
-    }
+  protected override makeSubmissionRequest() {
+    const values = this.formGroup().value;
+    const body = {
+      givenName: values.givenName!,
+      familyName: values.familyName || null,
+      canBreathFire: values.canBreathFire === true,
+      canTakePassengers: values.canTakePassengers === true,
+      weightInKg: values.weightInKg || null,
+      lengthInMeters: values.lengthInMeters || null,
+      fightingSkills: values.fightingSkills || null
+    } as Dragon;
+    return this.entityId
+      ? this.httpClient.putDragonForm(this.entityId, body)
+      : this.httpClient.postDragonForm(body);
+  }
+
+  protected override handleSubmissionSuccess(payload: Dragon) {
+    this.entityId = payload.dragonId;
+    this.dragon.set(payload);
+    this.formGroup.set(this.getDragonFormGroup());
   }
 }
-
-
