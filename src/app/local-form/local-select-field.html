@@ -6,11 +6,5 @@
       <option value="{{curOpt.value}}">{{curOpt.display}}</option>
     }
   </select> -->
-  @if (this.shouldDisplayError()) {
-    @for (error of getErrors(); track error.errorType) {
-      <p-message severity="error" size="small" variant="simple">
-        {{ error.errorMsg }}
-      </p-message>
-    }
-  }
+  <app-local-field-errors [errors]="getErrors()" [shouldDisplay]="shouldDisplayError()" />
 </div>

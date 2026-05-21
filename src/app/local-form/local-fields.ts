@@ -8,6 +8,26 @@ import { MessageModule } from 'primeng/message';
 import { SelectModule } from 'primeng/select';
 import { ValidatedForm } from '../../poco/standard-responses';
 
+export interface FieldError {
+  errorType: string;
+  errorMsg: string;
+}
+
+export interface SelectListOption {
+  display: string;
+  value: string | null;
+}
+
+export function applyServerSideValidations<T extends object>(failures: ValidatedForm<T>, formGroup: FormGroup) {
+  const vFail = failures.validationFailures;
+  const keys = Object.keys(vFail);
+  keys.forEach((key: string) => {
+    const failMsg = (vFail as any)[key] as string;
+    if (failMsg)
+      formGroup.get(key)?.setErrors({ 'server-side': failMsg });
+  });
+};
+
 @Directive()
 abstract class LocalFieldBase<T extends (boolean | string | number | Date)> {
   formGroup = input.required<FormGroup>();
@@ -25,7 +45,7 @@ abstract class LocalFieldBase<T extends (boolean | string | number | Date)> {
     return fieldControl === null ? false : fieldControl.invalid && (fieldControl.dirty || fieldControl.touched)
   };
 
-  getErrors() {
+  getErrors(): FieldError[] {
     const field = this.getFieldControl();
     if (field === null || field.errors === null)
       return [];
@@ -53,24 +73,27 @@ abstract class LocalFieldBase<T extends (boolean | string | number | Date)> {
   }
 }
 
-export interface SelectListOption {
-  display: string;
-  value: string | null;
+@Component({
+  selector: 'app-local-field-errors',
+  imports: [MessageModule],
+  template: `
+    @if (shouldDisplay()) {
+      @for (error of errors(); track error.errorType) {
+        <p-message severity="error" size="small" variant="simple">
+          {{ error.errorMsg }}
+        </p-message>
+      }
+    }
+  `
+})
+export class LocalFieldErrors {
+  errors = input.required<FieldError[]>();
+  shouldDisplay = input.required<boolean>();
 }
-
-export function applyServerSideValidations<T extends object>(failures: ValidatedForm<T>, formGroup: FormGroup) {
-  const vFail = failures.validationFailures;
-  const keys = Object.keys(vFail);
-  keys.forEach((key: string) => {
-    const failMsg = (vFail as any)[key] as string;
-    if (failMsg)
-      formGroup.get(key)?.setErrors({ 'server-side': failMsg });
-  });
-};
 
 @Component({
   selector: 'app-local-text-field',
-  imports: [ ReactiveFormsModule, MessageModule, InputTextModule ],
+  imports: [ ReactiveFormsModule, InputTextModule, LocalFieldErrors ],
   templateUrl: './local-text-field.html',
   styleUrl: './local-field.scss',
 })
@@ -85,7 +108,7 @@ export class LocalTextField extends LocalFieldBase<string> {
 
 @Component({
   selector: 'app-local-number-field',
-  imports: [ ReactiveFormsModule, MessageModule, InputNumberModule ],
+  imports: [ ReactiveFormsModule, InputNumberModule, LocalFieldErrors ],
   templateUrl: './local-number-field.html',
   styleUrl: './local-field.scss',
 })
@@ -101,7 +124,7 @@ export class LocalNumberField extends LocalFieldBase<number> {
 //The generic used here is a string, because the input field requires a string in YYYY-MM-dd format.
 @Component({
   selector: 'app-local-date-field',
-  imports: [ ReactiveFormsModule, MessageModule, DatePickerModule ],
+  imports: [ ReactiveFormsModule, DatePickerModule, LocalFieldErrors ],
   templateUrl: './local-date-field.html',
   styleUrl: './local-field.scss',
 })
@@ -116,7 +139,7 @@ export class LocalDateField extends LocalFieldBase<Date> {
 
 @Component({
   selector: 'app-local-checkbox',
-  imports: [ ReactiveFormsModule, MessageModule, CheckboxModule ],
+  imports: [ ReactiveFormsModule, CheckboxModule, LocalFieldErrors ],
   templateUrl: './local-checkbox.html',
   styleUrl: './local-field.scss',
 })
@@ -129,7 +152,7 @@ export class LocalCheckbox extends LocalFieldBase<boolean> {
 
 @Component({
   selector: 'app-local-select-field',
-  imports: [ ReactiveFormsModule, MessageModule, SelectModule ],
+  imports: [ ReactiveFormsModule, SelectModule, LocalFieldErrors ],
   templateUrl: './local-select-field.html',
   styleUrl: './local-field.scss',
 })

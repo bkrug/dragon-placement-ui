@@ -2,11 +2,5 @@
   <label for="{{id()}}">{{label()}}</label>
   <!-- <input id="{{id()}}" [type]="inputType()" formControlName="{{fieldName()}}" /> -->
   <p-datepicker inputId="{{id()}}" formControlName="{{fieldName()}}" [invalid]="isInvalid()" />
-  @if (this.shouldDisplayError()) {
-    @for (error of getErrors(); track error.errorType) {
-      <p-message severity="error" size="small" variant="simple">
-        {{ error.errorMsg }}
-      </p-message>
-    }
-  }
+  <app-local-field-errors [errors]="getErrors()" [shouldDisplay]="shouldDisplayError()" />
 </div>
