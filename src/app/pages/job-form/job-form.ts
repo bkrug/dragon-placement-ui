@@ -2,15 +2,16 @@ import { Component, OnInit, inject, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Effect } from 'effect';
+import { ButtonModule } from 'primeng/button';
 import { MessageModule } from 'primeng/message';
 import { AssignmentHttpClient } from '../../../httpClients/assignment-http-client';
 import { Job } from '../../../poco/models';
-import { getDateStringFromUnixSeconds, getUnixSeconds } from '../../../transformers';
+import { getDateFromUnixSeconds, getUnixSeconds } from '../../../transformers';
 import { LocalDateField, LocalNumberField, LocalTextField, applyServerSideValidations } from '../../local-form/local-fields';
 
 @Component({
   selector: 'app-job-form',
-  imports: [ ReactiveFormsModule, MessageModule, LocalDateField, LocalNumberField, LocalTextField ],
+  imports: [ ReactiveFormsModule, MessageModule, LocalDateField, LocalNumberField, LocalTextField, ButtonModule ],
   templateUrl: './job-form.html',
   styleUrl: './job-form.scss',
 })
@@ -42,8 +43,8 @@ export class JobForm implements OnInit {
       jobTitle: new FormControl(this.job().jobTitle, [ Validators.required ]),
       employerName: new FormControl(this.job().employerName),
       numberOfPositions: new FormControl(this.job().numberOfPositions, [ Validators.required ]),
-      startDate: new FormControl(this.jobId ? getDateStringFromUnixSeconds(this.job().startDateUnix) : ''),
-      endDate: new FormControl(this.jobId ? getDateStringFromUnixSeconds(this.job().endDateUnix) : ''),
+      startDate: new FormControl(this.jobId ? getDateFromUnixSeconds(this.job().startDateUnix) : null),
+      endDate: new FormControl(this.jobId ? getDateFromUnixSeconds(this.job().endDateUnix) : null),
     });
   }
 

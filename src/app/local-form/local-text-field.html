@@ -1,7 +1,7 @@
 <div [formGroup]="formGroup()">
   <label for="{{id()}}">{{label()}}</label>
-  <!-- <input id="{{id()}}" type="checkbox" formControlName="{{fieldName()}}" /> -->
-  <p-checkbox inputId="{{id()}}" formControlName="{{fieldName()}}" [binary]="true" [invalid]="isInvalid()" />
+  <!-- <input id="{{id()}}" [type]="inputType()" formControlName="{{fieldName()}}" /> -->
+  <input pInputText type="text" id="{{id()}}" formControlName="{{fieldName()}}" [invalid]="isInvalid()" />
   @if (this.shouldDisplayError()) {
     @for (error of getErrors(); track error.errorType) {
       <p-message severity="error" size="small" variant="simple">

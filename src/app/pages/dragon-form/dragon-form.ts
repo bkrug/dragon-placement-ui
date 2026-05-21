@@ -2,6 +2,7 @@ import { Component, OnInit, inject, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Effect } from 'effect';
+import { ButtonModule } from 'primeng/button';
 import { MessageModule } from 'primeng/message';
 import { AssignmentHttpClient } from '../../../httpClients/assignment-http-client';
 import { JobInclusions } from '../../../poco/enums';
@@ -10,7 +11,7 @@ import { LocalCheckbox, LocalNumberField, LocalSelectField, LocalTextField, Sele
 
 @Component({
   selector: 'app-dragon-form',
-  imports: [ ReactiveFormsModule, MessageModule, LocalTextField, LocalCheckbox, LocalNumberField, LocalSelectField ],
+  imports: [ ReactiveFormsModule, MessageModule, LocalTextField, LocalCheckbox, LocalNumberField, LocalSelectField, ButtonModule ],
   templateUrl: './dragon-form.html',
   styleUrl: './dragon-form.scss',
 })

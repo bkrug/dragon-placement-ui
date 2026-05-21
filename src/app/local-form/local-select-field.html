@@ -1,10 +1,11 @@
 <div [formGroup]="formGroup()">
   <label for="{{id()}}">{{label()}}</label>
-  <select id="{{id()}}" type="text" formControlName="{{fieldName()}}" >
+  <p-select inputId="{{id()}}" formControlName="{{fieldName()}}" [options]="options()" [invalid]="isInvalid()" optionLabel="display" optionValue="value" class="w-full md:w-56" />
+  <!-- <select id="{{id()}}" type="text" formControlName="{{fieldName()}}" >
     @for (curOpt of options(); track curOpt.value) {
       <option value="{{curOpt.value}}">{{curOpt.display}}</option>
     }
-  </select>
+  </select> -->
   @if (this.shouldDisplayError()) {
     @for (error of getErrors(); track error.errorType) {
       <p-message severity="error" size="small" variant="simple">

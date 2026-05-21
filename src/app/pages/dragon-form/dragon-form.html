@@ -15,6 +15,6 @@
       [formGroup]="dragonFormGroup()"
       [fieldControl]="dragonFormGroup().get('fightingSkills')"
       [options]="this.skillLevels" />
-    <button type="submit" [disabled]="!dragonFormGroup().valid">Submit</button>
+    <p-button type="submit" [disabled]="!dragonFormGroup().valid">Submit</p-button>
   </form>
 </div>

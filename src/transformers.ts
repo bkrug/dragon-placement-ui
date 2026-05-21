@@ -76,3 +76,9 @@ export function getDateStringFromUnixSeconds(unixSeconds: number | null | undefi
   const date = ourDate.getUTCDate().toString().padStart(2, '0');
   return `${ourDate.getUTCFullYear()}-${month}-${date}`;
 }
+
+export function getDateFromUnixSeconds(unixSeconds: number | null | undefined) {
+  if (unixSeconds === null || unixSeconds === undefined)
+    return null;
+  return new Date(unixSeconds * 1000);
+}
