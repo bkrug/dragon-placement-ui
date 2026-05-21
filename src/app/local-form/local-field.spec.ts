@@ -21,7 +21,6 @@ describe('LocalCheckbox', () => {
 
     const fixture = TestBed.createComponent(LocalCheckbox, {
       bindings: [
-        inputBinding('id', () => 'given-name'),
         inputBinding('fieldName', () => 'givenName'),
         inputBinding('label', () => 'Given Name:'),
         inputBinding('formGroup', () => formGroup),

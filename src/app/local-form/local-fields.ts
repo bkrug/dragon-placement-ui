@@ -31,7 +31,6 @@ export function applyServerSideValidations<T extends object>(failures: Validated
 @Directive()
 abstract class LocalFieldBase<T extends (boolean | string | number | Date)> {
   formGroup = input.required<FormGroup>();
-  id = input.required<string>();
   fieldName = input.required<string>();
   label = input.required<string>();
 
