@@ -64,7 +64,7 @@ export function applyServerSideValidations<T extends object>(failures: Validated
   selector: 'app-local-text-field',
   imports: [ ReactiveFormsModule, MessageModule ],
   templateUrl: './local-input-field.html',
-  styleUrl: './local-input-field.scss',
+  styleUrl: './local-field.scss',
 })
 export class LocalTextField extends LocalFieldBase<string> {
   inputType = signal('text');
@@ -79,7 +79,7 @@ export class LocalTextField extends LocalFieldBase<string> {
   selector: 'app-local-number-field',
   imports: [ ReactiveFormsModule, MessageModule ],
   templateUrl: './local-input-field.html',
-  styleUrl: './local-input-field.scss',
+  styleUrl: './local-field.scss',
 })
 export class LocalNumberField extends LocalFieldBase<number> {
   inputType = signal('number');
@@ -95,7 +95,7 @@ export class LocalNumberField extends LocalFieldBase<number> {
   selector: 'app-local-date-field',
   imports: [ ReactiveFormsModule, MessageModule ],
   templateUrl: './local-input-field.html',
-  styleUrl: './local-input-field.scss',
+  styleUrl: './local-field.scss',
 })
 export class LocalDateField extends LocalFieldBase<string> {
   inputType = signal('date');
@@ -110,7 +110,7 @@ export class LocalDateField extends LocalFieldBase<string> {
   selector: 'app-local-checkbox',
   imports: [ ReactiveFormsModule, MessageModule ],
   templateUrl: './local-checkbox.html',
-  styleUrl: './local-checkbox.scss',
+  styleUrl: './local-field.scss',
 })
 export class LocalCheckbox extends LocalFieldBase<boolean> {
   fieldControl = input.required<AbstractControl<boolean|null, boolean|null, any> | null>();
@@ -123,7 +123,7 @@ export class LocalCheckbox extends LocalFieldBase<boolean> {
   selector: 'app-local-select-field',
   imports: [ ReactiveFormsModule, MessageModule ],
   templateUrl: './local-select-field.html',
-  styleUrl: './local-select-field.scss',
+  styleUrl: './local-field.scss',
 })
 export class LocalSelectField extends LocalFieldBase<string> {
   options = input.required<SelectListOption[]>();
