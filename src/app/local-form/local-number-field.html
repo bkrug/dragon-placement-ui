@@ -1,5 +1,5 @@
 <div [formGroup]="formGroup()">
-  <label for="{{id()}}">{{label()}}</label>
-  <p-inputnumber inputId="{{id()}}" formControlName="{{fieldName()}}" [invalid]="isInvalid()" [showButtons]="true" />
+  <label for="{{fieldName()}}">{{label()}}</label>
+  <p-inputnumber inputId="{{fieldName()}}" formControlName="{{fieldName()}}" [invalid]="isInvalid()" [showButtons]="true" />
   <app-local-field-errors [errors]="getErrors()" [shouldDisplay]="shouldDisplayError()" />
 </div>

@@ -13,9 +13,9 @@ describe('Job Form Tests', () => {
   }
 
   const beginDateUnix = 1262304000;
-  const beginDateString = '2010-01-01';
+  const beginDate = new Date(Date.UTC(2010, 0, 1));
   const endDateUnix = 1293753600;
-  const endDateString = '2010-12-31';
+  const endDate = new Date(Date.UTC(2010, 11, 31));
 
   it('Load a blank Job Form for creation of a job', async () => {
     const mockHttpClient = new AssignmentHttpClient();
@@ -63,15 +63,15 @@ describe('Job Form Tests', () => {
     const nativeElement: HTMLDivElement = fixture.nativeElement;
     expect(getInputElement(nativeElement, '#job-title input').value).toBeFalsy();
     expect(getInputElement(nativeElement, '#employer-name input').value).toBeFalsy();
-    expect(getInputElement(nativeElement, '#number-of-positions input').valueAsNumber).toEqual(0);
-    expect(getInputElement(nativeElement, '#start-date input').value).toBeFalsy();
-    expect(getInputElement(nativeElement, '#end-date input').value).toBeFalsy();
+    expect(getInputElement(nativeElement, '#number-of-positions input').value).toEqual('0');
+    expect(component.jobFormGroup().get('startDate')?.value).toBeFalsy();
+    expect(component.jobFormGroup().get('endDate')?.value).toBeFalsy();
 
     //Act: change form values
     component.jobFormGroup().get('jobTitle')?.setValue('Dragon Wrangler');
     component.jobFormGroup().get('numberOfPositions')?.setValue(3);
-    component.jobFormGroup().get('startDate')?.setValue(beginDateString);
-    component.jobFormGroup().get('endDate')?.setValue(endDateString);
+    component.jobFormGroup().get('startDate')?.setValue(beginDate);
+    component.jobFormGroup().get('endDate')?.setValue(endDate);
     expect(component.jobFormGroup().valid).toEqual(true);
     component.onSubmit();
     await fixture.whenStable();
@@ -140,14 +140,14 @@ describe('Job Form Tests', () => {
     const nativeElement: HTMLDivElement = fixture.nativeElement;
     expect(getInputElement(nativeElement, '#job-title input').value).toEqual(initialDbRecord.jobTitle);
     expect(getInputElement(nativeElement, '#employer-name input').value).toEqual(initialDbRecord.employerName);
-    expect(getInputElement(nativeElement, '#number-of-positions input').valueAsNumber).toEqual(initialDbRecord.numberOfPositions);
-    expect(getInputElement(nativeElement, '#start-date input').value).toEqual(beginDateString);
-    expect(getInputElement(nativeElement, '#end-date input').value).toEqual(endDateString);
+    expect(getInputElement(nativeElement, '#number-of-positions input').value).toEqual(initialDbRecord.numberOfPositions.toString());
+    expect(component.jobFormGroup().get('startDate')?.value).toEqual(beginDate);
+    expect(component.jobFormGroup().get('endDate')?.value).toEqual(endDate);
 
     //Act: change form values
     component.jobFormGroup().get('jobTitle')?.setValue('Senior Fire Inspector');
     component.jobFormGroup().get('numberOfPositions')?.setValue(5);
-    const submitButton = fixture.nativeElement.querySelector('button');
+    const submitButton = fixture.nativeElement.querySelector('button[type="submit"]');
     submitButton.click();
     await fixture.whenStable();
 
@@ -211,13 +211,13 @@ describe('Job Form Tests', () => {
 
     // Simulate the user having touched all fields so that server-side errors will be visible
     component.jobFormGroup().markAllAsTouched();
-    const submitButton = fixture.nativeElement.querySelector('button');
+    const submitButton = fixture.nativeElement.querySelector('button[type="submit"]');
     submitButton.click();
     await fixture.whenStable();
 
     //Assert: each field with a server-side failure displays its error message
     const nativeElement: HTMLDivElement = fixture.nativeElement;
-    expect(nativeElement.querySelector('#job-title p-message')?.textContent).toContain(validationFailures.jobTitle);
-    expect(nativeElement.querySelector('#number-of-positions p-message')?.textContent).toContain(validationFailures.numberOfPositions);
+    expect(nativeElement.querySelector('#job-title p-message')?.textContent || '').toContain(validationFailures.jobTitle);
+    expect(nativeElement.querySelector('#number-of-positions p-message')?.textContent || '').toContain(validationFailures.numberOfPositions);
   });
 });

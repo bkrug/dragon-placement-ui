@@ -1,5 +1,5 @@
 <div [formGroup]="formGroup()">
-  <label for="{{id()}}">{{label()}}</label>
-  <p-checkbox inputId="{{id()}}" formControlName="{{fieldName()}}" [binary]="true" [invalid]="isInvalid()" />
+  <label for="{{fieldName()}}">{{label()}}</label>
+  <p-checkbox inputId="{{fieldName()}}" formControlName="{{fieldName()}}" [binary]="true" [invalid]="isInvalid()" />
   <app-local-field-errors [errors]="getErrors()" [shouldDisplay]="shouldDisplayError()" />
 </div>
