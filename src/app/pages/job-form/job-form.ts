@@ -39,9 +39,11 @@ export class JobForm implements OnInit {
   jobFormGroup = signal(this.getJobFormGroup());
   isSubmitting = signal(false);
   showSaved = signal(false);
+  submissionError = signal('');
 
   onFormFocus() {
     this.showSaved.set(false);
+    this.submissionError.set('');
   }
 
   private getJobFormGroup() {
@@ -78,7 +80,7 @@ export class JobForm implements OnInit {
             this.showSaved.set(true);
           },
           onFailure: failureResponse => failureResponse.isInternalError
-            ? alert('failed communication with the remote server')
+            ? this.submissionError.set('failed communication with the remote server')
             : applyServerSideValidations(failureResponse, this.jobFormGroup())
         }))
       ).finally(() => this.isSubmitting.set(false));

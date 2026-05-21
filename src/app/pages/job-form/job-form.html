@@ -11,5 +11,8 @@
     @if (showSaved()) {
       <p-message severity="success" size="small" variant="simple">Saved</p-message>
     }
+    @if (submissionError() !== '') {
+      <p-message severity="error" size="small" variant="simple">{{submissionError()}}</p-message>
+    }
   </form>
 </div>
