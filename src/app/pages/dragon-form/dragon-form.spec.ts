@@ -228,4 +228,60 @@ describe('Dragon Form Tests', () => {
     expect(nativeElement.querySelector('#length-in-meters p-message')?.textContent).toContain(validationFailures.lengthInMeters);
     expect(nativeElement.querySelector('#fighting-skills p-message')?.textContent).toContain(validationFailures.fightingSkills);
   });
+
+  it('Show a general error message after a failed edit submission with an internal server error', async () => {
+    const recordId = 15;
+    const initialDbRecord = {
+      dragonId: recordId,
+      givenName: 'Girbit',
+      familyName: 'Smokeson',
+      canBreathFire: true,
+      canTakePassengers: false,
+      lengthInMeters: 35,
+      weightInKg: 2409,
+      fightingSkills: 'b'
+    } as Dragon;
+
+    const mockHttpClient = new AssignmentHttpClient();
+    mockHttpClient.getDragonWithJobs = async () => {
+      return {
+        isInternalError: false,
+        isSuccess: true,
+        validationFailures: [],
+        payload: JSON.parse(JSON.stringify(initialDbRecord))
+      } as ValidatedPayload<Dragon>;
+    };
+
+    mockHttpClient.putDragonForm = async () => {
+      const failedForm = {
+        isInternalError: true,
+        isSuccess: false,
+        validationFailures: new DragonValidationFailures()
+      } as ValidatedForm<DragonValidationFailures>;
+      return Effect.fail(failedForm) as Effect.Effect<ValidatedPayload<Dragon>, ValidatedForm<DragonValidationFailures>, never>;
+    };
+
+    const mockActivatedRoute = new MockActivatedRoute();
+    const mockParams: Record<string, any> = { ['dragonId']: recordId };
+    mockActivatedRoute.setParams(mockParams);
+    TestBed.configureTestingModule({
+      providers: [
+        { provide: AssignmentHttpClient, useValue: mockHttpClient },
+        { provide: ActivatedRoute, useValue: mockActivatedRoute }
+      ]
+    });
+
+    //Act
+    await TestBed.configureTestingModule({ imports: [DragonForm] }).compileComponents();
+    const fixture = TestBed.createComponent(DragonForm);
+    await fixture.whenStable();
+
+    const submitButton = fixture.nativeElement.querySelector('button[type="submit"]');
+    submitButton.click();
+    await fixture.whenStable();
+
+    //Assert: general error message is shown directly after the submit button
+    const nativeElement: HTMLDivElement = fixture.nativeElement;
+    expect(nativeElement.querySelector('p-button + p-message')?.textContent).toContain('failed communication with the remote server');
+  });
 });
