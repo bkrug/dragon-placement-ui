@@ -93,7 +93,7 @@ describe('Dragon Form Tests', () => {
 
   it('Load an existing dragon to be edited from this form', async () => {
     const recordId = 15;
-    const initialDbRecord = {
+    const initialDbRecord = Object.assign(new Dragon(), {
       dragonId: recordId,
       givenName: 'Girbit',
       familyName: 'Smokeson',
@@ -101,10 +101,8 @@ describe('Dragon Form Tests', () => {
       canTakePassengers: false,
       lengthInMeters: 35,
       weightInKg: 2409,
-      fightingSkills: 'b',
-      assignments: [],
-      skillTags: []
-    } as Dragon;
+      fightingSkills: 'b'
+    });
 
     const mockHttpClient = new AssignmentHttpClient();
     mockHttpClient.getDragonWithJobs = async () => {
@@ -181,7 +179,7 @@ describe('Dragon Form Tests', () => {
 
   it('Show server-side validation errors after a failed edit submission', async () => {
     const recordId = 15;
-    const initialDbRecord = {
+    const initialDbRecord = Object.assign(new Dragon(), {
       dragonId: recordId,
       givenName: 'Girbit',
       familyName: 'Smokeson',
@@ -189,10 +187,8 @@ describe('Dragon Form Tests', () => {
       canTakePassengers: false,
       lengthInMeters: 35,
       weightInKg: 2409,
-      fightingSkills: 'b',
-      assignments: [],
-      skillTags: []
-    } as Dragon;
+      fightingSkills: 'b'
+    });
 
     const mockHttpClient = new AssignmentHttpClient();
     mockHttpClient.getDragonWithJobs = async () => {
@@ -261,7 +257,7 @@ describe('Dragon Form Tests', () => {
 
   it('Show a general error message after a failed edit submission with an internal server error', async () => {
     const recordId = 15;
-    const initialDbRecord = {
+    const initialDbRecord = Object.assign(new Dragon(), {
       dragonId: recordId,
       givenName: 'Girbit',
       familyName: 'Smokeson',
@@ -269,10 +265,8 @@ describe('Dragon Form Tests', () => {
       canTakePassengers: false,
       lengthInMeters: 35,
       weightInKg: 2409,
-      fightingSkills: 'b',
-      assignments: [],
-      skillTags: []
-    } as Dragon;
+      fightingSkills: 'b'
+    });
 
     const mockHttpClient = new AssignmentHttpClient();
     mockHttpClient.getDragonWithJobs = async () => {
