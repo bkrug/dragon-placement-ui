@@ -17,8 +17,8 @@
     >
     <ng-template #header>
       <tr>
-        <th>Job Title</th>
         <th></th>
+        <th>Job Title</th>
         <th>Employer Name</th>
         <th>Positions to Fill</th>
         <th>Start Date</th>
@@ -27,8 +27,8 @@
     </ng-template>
     <ng-template #body let-job>
       <tr [pSelectableRow]="job">
-        <td>{{ job.jobTitle }}</td>
         <td><a href="/jobs-form/{{ job.jobId }}">Edit</a></td>
+        <td>{{ job.jobTitle }}</td>
         <td>{{ job.employerName }}</td>
         <td>{{ job.openDescription }}</td>
         <td>{{ job.startDate | date:'fullDate':'+0' }}</td>

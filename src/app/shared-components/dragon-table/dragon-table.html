@@ -20,8 +20,8 @@
     <ng-template #header>
       <tr>
         <th [style.display]="dragonTableType() === DragonTableType.Assign ? null : 'none'"></th>
-        <th>Name</th>
         <th [style.display]="dragonTableType() === DragonTableType.AllDragons ? null : 'none'"></th>
+        <th>Name</th>
         <th>Breath Fire</th>
         <th>Passengers</th>
         <th>Fighting Skills</th>
@@ -35,8 +35,8 @@
         <td [style.display]="dragonTableType() === DragonTableType.Assign ? null : 'none'">
           <p-button (click)="assignDragon(dragon.dragonId)">Assign</p-button>
         </td>
-        <td><a href="/dragons/{{dragon.dragonId}}">{{ dragon.givenName }} {{ dragon.familyName }}</a></td>
         <td [style.display]="dragonTableType() === DragonTableType.AllDragons ? null : 'none'"><a href="/dragons-form/{{dragon.dragonId}}">Edit</a></td>
+        <td><a href="/dragons/{{dragon.dragonId}}">{{ dragon.givenName }} {{ dragon.familyName }}</a></td>
         <td>{{ dragon.canBreathFire ? "yes" : "no" }}</td>
         <td>{{ dragon.canTakePassengers ? "yes" : "no" }}</td>
         <td>{{ dragon.fightingSkills }}</td>
