@@ -3,7 +3,7 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { display } from '@primeuix/themes/aura/inplace';
 import { AssignmentHttpClient } from '../../../httpClients/assignment-http-client';
 import { JobInclusions } from '../../../poco/enums';
-import { Dragon, DragonValidationFailures } from '../../../poco/models';
+import { Dragon, DragonValidationFailures, SkillTag } from '../../../poco/models';
 import { EntityFormBase } from '../../local-form/entity-form-base';
 import { LocalCheckbox, LocalNumberField, LocalSelectField, LocalSubmitButton, LocalTagField, LocalTextField, SelectListOption, TagOption } from '../../local-form/local-fields';
 
@@ -24,9 +24,7 @@ export class DragonForm extends EntityFormBase<Dragon, DragonValidationFailures>
   ngOnInit(): void {
     this.httpClient.getAllSkills()
       .then(pagedData => {
-        this.skillTags.set(pagedData.data
-          .map(skillTagEnt => { return { value: skillTagEnt.skillTagId, display: skillTagEnt.skillName } as TagOption; })
-        );
+        this.skillTags.set(pagedData.data.map(this.toTagOption));
         if (this.entityId)
           this.httpClient.getDragonWithJobs(this.entityId, JobInclusions.None)
             .then(validatedResponse => {
@@ -35,6 +33,9 @@ export class DragonForm extends EntityFormBase<Dragon, DragonValidationFailures>
             });
       });
   }
+
+  toTagOption(skillTag: SkillTag) { return { value: skillTag.skillTagId, display: skillTag.skillName } as TagOption; }
+  toSkillTag(tagOption: TagOption) { return { skillTagId: tagOption.value, skillName: tagOption.display }; }
 
   skillLevels = [
     { value: null, display: 'Select Skill Level...' },
@@ -64,7 +65,6 @@ export class DragonForm extends EntityFormBase<Dragon, DragonValidationFailures>
 
   protected override makeSubmissionRequest() {
     const values = this.formGroup().value;
-    const tags = values.skillTags?.map(stId => { return { skillTagId: stId.value, skillName: stId.display }; }) || [];
     const body = {
       givenName: values.givenName!,
       familyName: values.familyName || null,
@@ -73,7 +73,7 @@ export class DragonForm extends EntityFormBase<Dragon, DragonValidationFailures>
       weightInKg: values.weightInKg || null,
       lengthInMeters: values.lengthInMeters || null,
       fightingSkills: values.fightingSkills || null,
-      skillTags: tags
+      skillTags: values.skillTags?.map(this.toSkillTag) || []
     } as Dragon;
     return this.entityId
       ? this.httpClient.putDragonForm(this.entityId, body)
