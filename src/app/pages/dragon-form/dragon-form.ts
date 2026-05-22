@@ -23,20 +23,19 @@ export class DragonForm extends EntityFormBase<Dragon, DragonValidationFailures>
 
   ngOnInit(): void {
     this.httpClient.getAllSkills()
-      .then(pagedData =>
+      .then(pagedData => {
         this.skillTags.set(pagedData.data
           .map(skillTagEnt => {
             return { value: skillTagEnt.skillTagId, display: skillTagEnt.skillName } as TagOption;
           })
-        )
-      );
-
-    if (this.entityId)
-      this.httpClient.getDragonWithJobs(this.entityId, JobInclusions.None)
-        .then(validatedResponse => {
-          this.dragon.set(validatedResponse.payload);
-          this.formGroup.set(this.getDragonFormGroup());
-        });
+        );
+        if (this.entityId)
+          this.httpClient.getDragonWithJobs(this.entityId, JobInclusions.None)
+            .then(validatedResponse => {
+              this.dragon.set(validatedResponse.payload);
+              this.formGroup.set(this.getDragonFormGroup());
+            });
+      });
   }
 
   skillLevels = [
@@ -46,12 +45,7 @@ export class DragonForm extends EntityFormBase<Dragon, DragonValidationFailures>
     { value: 'a',  display: 'Advanced' }
   ] as SelectListOption[];
 
-  skillTags = signal([
-    { value: 1, display: 'apple' },
-    { value: 2, display: 'banana' },
-    { value: 3, display: 'kiwi'},
-    { value: 4, display: 'grapefruit'}
-  ] as TagOption[]);
+  skillTags = signal([] as TagOption[]);
 
   formGroup = signal(this.getDragonFormGroup());
 
@@ -64,7 +58,7 @@ export class DragonForm extends EntityFormBase<Dragon, DragonValidationFailures>
       weightInKg: new FormControl(this.dragon().weightInKg),
       lengthInMeters: new FormControl(this.dragon().lengthInMeters),
       fightingSkills: new FormControl(this.dragon().fightingSkills),
-      skillTags: new FormControl([] as number[])
+      skillTags: new FormControl(this.dragon().skillTags.map(st => st.skillTagId))
     });
   }
 
@@ -77,7 +71,8 @@ export class DragonForm extends EntityFormBase<Dragon, DragonValidationFailures>
       canTakePassengers: values.canTakePassengers === true,
       weightInKg: values.weightInKg || null,
       lengthInMeters: values.lengthInMeters || null,
-      fightingSkills: values.fightingSkills || null
+      fightingSkills: values.fightingSkills || null,
+      skillTags: values.skillTags?.map(stId => { return { skillTagId: stId, skillName: '' }; }) || []
     } as Dragon;
     return this.entityId
       ? this.httpClient.putDragonForm(this.entityId, body)

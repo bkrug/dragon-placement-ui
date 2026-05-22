@@ -17,6 +17,7 @@ export class Dragon {
   lengthInMeters: number | null = null;
   fightingSkills: string | null = null;
   assignments: Assignment[] = [];
+  skillTags: SkillTag[] = [];
 }
 
 export class DragonValidationFailures {
