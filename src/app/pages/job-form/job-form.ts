@@ -1,14 +1,14 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AssignmentHttpClient } from '../../../httpClients/assignment-http-client';
-import { Job, JobValidationFailures } from '../../../poco/models';
+import { Job, JobValidationFailures, SkillTag } from '../../../poco/models';
 import { getDateFromUnixSeconds, getUnixSeconds } from '../../../transformers';
 import { EntityFormBase } from '../../local-form/entity-form-base';
-import { LocalDateField, LocalNumberField, LocalSubmitButton, LocalTextField } from '../../local-form/local-fields';
+import { LocalDateField, LocalNumberField, LocalSubmitButton, LocalTagField, LocalTextField, TagOption } from '../../local-form/local-fields';
 
 @Component({
   selector: 'app-job-form',
-  imports: [ ReactiveFormsModule, LocalDateField, LocalNumberField, LocalTextField, LocalSubmitButton ],
+  imports: [ ReactiveFormsModule, LocalDateField, LocalNumberField, LocalTextField, LocalSubmitButton, LocalTagField ],
   templateUrl: './job-form.html',
   styleUrl: './job-form.scss',
 })
@@ -21,6 +21,8 @@ export class JobForm extends EntityFormBase<Job, JobValidationFailures> implemen
   }
 
   ngOnInit(): void {
+    this.httpClient.getAllSkills()
+      .then(pagedData => this.skillTags.set(pagedData.data.map(this.toTagOption)));
     if (this.entityId)
       this.httpClient.getJob(this.entityId)
         .then(validatedResponse => {
@@ -28,6 +30,16 @@ export class JobForm extends EntityFormBase<Job, JobValidationFailures> implemen
           this.formGroup.set(this.getJobFormGroup());
         });
   }
+
+  toTagOption(skillTag: SkillTag) { return { value: skillTag.skillTagId, display: skillTag.skillName } as TagOption; }
+  toSkillTag(tagOption: TagOption) {
+    //HACK: Despite the strict typing of typescript, testing reveals "tagOption" can be a number.
+    return (typeof tagOption === 'number')
+      ? { skillTagId: tagOption, skillName: '' } as SkillTag
+      : { skillTagId: tagOption.value, skillName: tagOption.display } as SkillTag;
+  }
+
+  skillTags = signal([] as TagOption[]);
 
   formGroup = signal(this.getJobFormGroup());
 
@@ -38,6 +50,7 @@ export class JobForm extends EntityFormBase<Job, JobValidationFailures> implemen
       numberOfPositions: new FormControl(this.job().numberOfPositions, [ Validators.required ]),
       startDate: new FormControl(this.entityId ? getDateFromUnixSeconds(this.job().startDateUnix) : null),
       endDate: new FormControl(this.entityId ? getDateFromUnixSeconds(this.job().endDateUnix) : null),
+      skillTags: new FormControl(this.job().skillTags.map(this.toTagOption))
     });
   }
 
@@ -49,6 +62,7 @@ export class JobForm extends EntityFormBase<Job, JobValidationFailures> implemen
       numberOfPositions: values.numberOfPositions!,
       startDateUnix: getUnixSeconds(values.startDate),
       endDateUnix: getUnixSeconds(values.endDate),
+      skillTags: values.skillTags?.map(this.toSkillTag) || []
     } as Job;
     return this.entityId
       ? this.httpClient.putJobForm(this.entityId, body)
@@ -58,6 +72,5 @@ export class JobForm extends EntityFormBase<Job, JobValidationFailures> implemen
   protected override handleSubmissionSuccess(payload: Job) {
     this.entityId = payload.jobId;
     this.job.set(payload);
-    this.formGroup.set(this.getJobFormGroup());
   }
 }

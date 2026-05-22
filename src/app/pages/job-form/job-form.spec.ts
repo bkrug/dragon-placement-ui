@@ -94,7 +94,7 @@ describe('Job Form Tests', () => {
 
   it('Load an existing job to be edited from this form', async () => {
     const recordId = 7;
-    const initialDbRecord = {
+    const initialDbRecord = Object.assign(new Job(), {
       jobId: recordId,
       jobTitle: 'Fire Inspector',
       employerName: 'City of Dragonford',
@@ -102,7 +102,7 @@ describe('Job Form Tests', () => {
       numberOfPositions: 4,
       startDateUnix: beginDateUnix,
       endDateUnix: endDateUnix,
-    } as Job;
+    });
 
     const mockHttpClient = new AssignmentHttpClient();
     mockHttpClient.getJob = async () => {
@@ -177,7 +177,7 @@ describe('Job Form Tests', () => {
 
   it('Show server-side validation errors after a failed edit submission', async () => {
     const recordId = 7;
-    const initialDbRecord = {
+    const initialDbRecord = Object.assign(new Job(), {
       jobId: recordId,
       jobTitle: 'Fire Inspector',
       employerName: 'City of Dragonford',
@@ -185,7 +185,7 @@ describe('Job Form Tests', () => {
       numberOfPositions: 4,
       startDateUnix: beginDateUnix,
       endDateUnix: endDateUnix,
-    } as Job;
+    });
 
     const mockHttpClient = new AssignmentHttpClient();
     mockHttpClient.getJob = async () => {
