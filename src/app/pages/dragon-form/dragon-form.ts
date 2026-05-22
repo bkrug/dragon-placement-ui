@@ -27,7 +27,7 @@ export class DragonForm extends EntityFormBase<Dragon, DragonValidationFailures>
       this.httpClient.getDragonWithJobs(this.entityId, JobInclusions.None)
         .then(validatedResponse => {
           this.dragon.set(validatedResponse.payload);
-          this.formGroup.set(this.getDragonFormGroup());
+          this.formGroup.set(this.createDragonFormGroup());
         });
   }
 
@@ -48,9 +48,9 @@ export class DragonForm extends EntityFormBase<Dragon, DragonValidationFailures>
 
   skillTags = signal([] as TagOption[]);
 
-  formGroup = signal(this.getDragonFormGroup());
+  formGroup = signal(this.createDragonFormGroup());
 
-  private getDragonFormGroup() {
+  private createDragonFormGroup() {
     return new FormGroup({
       givenName: new FormControl(this.dragon().givenName, [ Validators.required ]),
       familyName: new FormControl(this.dragon().familyName),
@@ -83,6 +83,5 @@ export class DragonForm extends EntityFormBase<Dragon, DragonValidationFailures>
   protected override handleSubmissionSuccess(payload: Dragon) {
     this.entityId = payload.dragonId;
     this.dragon.set(payload);
-    this.formGroup.set(this.getDragonFormGroup());
   }
 }
