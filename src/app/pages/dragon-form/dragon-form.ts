@@ -1,6 +1,5 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { display } from '@primeuix/themes/aura/inplace';
 import { AssignmentHttpClient } from '../../../httpClients/assignment-http-client';
 import { JobInclusions } from '../../../poco/enums';
 import { Dragon, DragonValidationFailures, SkillTag } from '../../../poco/models';
@@ -33,7 +32,7 @@ export class DragonForm extends EntityFormBase<Dragon, DragonValidationFailures>
   }
 
   toTagOption(skillTag: SkillTag) { return { value: skillTag.skillTagId, display: skillTag.skillName } as TagOption; }
-  toSkillTag(tagOption: TagOption) { return { skillTagId: tagOption.value, skillName: tagOption.display }; }
+  toSkillTag(tagOption: TagOption) { return { skillTagId: tagOption.value, skillName: tagOption.display } as SkillTag; }
 
   skillLevels = [
     { value: null, display: 'Select Skill Level...' },
