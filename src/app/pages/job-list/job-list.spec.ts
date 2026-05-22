@@ -11,8 +11,6 @@ describe('JobList', () => {
     }).compileComponents();
   });
 
-  //TODO: Add tests that assert what happens when you select a particular row.
-
   it('Data coming from the http client should be displayed in job list data table.', async () => {
     const payloadData = [
       {
@@ -59,8 +57,8 @@ describe('JobList', () => {
     const htmlTableRows = jobList.querySelectorAll('tr');
     const headerRowCount = 1;
     expect(htmlTableRows.length).toBe(headerRowCount + payloadData.length);
-    expect(htmlTableRows[1].cells[0].textContent).toBe(payloadData[0].jobTitle);
-    expect(htmlTableRows[2].cells[0].textContent).toBe(payloadData[1].jobTitle);
+    expect(htmlTableRows[1].cells[1].textContent).toBe(payloadData[0].jobTitle);
+    expect(htmlTableRows[2].cells[1].textContent).toBe(payloadData[1].jobTitle);
   });
 
   it('When the user selects a row in the job table, more details about that job should appear.', async () => {
