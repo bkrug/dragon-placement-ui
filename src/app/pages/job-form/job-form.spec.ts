@@ -2,8 +2,8 @@ import { TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
 import { Effect } from 'effect';
 import { AssignmentHttpClient } from '../../../httpClients/assignment-http-client';
-import { Job, JobValidationFailures } from '../../../poco/models';
-import { ValidatedForm, ValidatedPayload } from '../../../poco/standard-responses';
+import { Job, JobValidationFailures, SkillTag } from '../../../poco/models';
+import { PagedData, ValidatedForm, ValidatedPayload } from '../../../poco/standard-responses';
 import { MockActivatedRoute } from '../../../testHelpers/MockActivatedRoute';
 import { JobForm } from './job-form';
 
@@ -40,6 +40,15 @@ describe('Job Form Tests', () => {
         payload: job
       } as ValidatedPayload<Job>;
       return Effect.succeed(validatedPayload) as Effect.Effect<ValidatedPayload<Job>, ValidatedForm<JobValidationFailures>, never>;
+    };
+
+    mockHttpClient.getAllSkills = async () => {
+      return {
+        offset: 0,
+        limit: 20,
+        totalRecords: 0,
+        data: []
+      } as PagedData<SkillTag>;
     };
 
     const mockActivatedRoute = new MockActivatedRoute();
@@ -119,6 +128,15 @@ describe('Job Form Tests', () => {
       return Effect.succeed(validatedPayload) as Effect.Effect<ValidatedPayload<Job>, ValidatedForm<JobValidationFailures>, never>;
     };
 
+    mockHttpClient.getAllSkills = async () => {
+      return {
+        offset: 0,
+        limit: 20,
+        totalRecords: 0,
+        data: []
+      } as PagedData<SkillTag>;
+    };
+
     const mockActivatedRoute = new MockActivatedRoute();
     const mockParams: Record<string, any> = { ['jobId']: recordId };
     mockActivatedRoute.setParams(mockParams);
@@ -191,6 +209,15 @@ describe('Job Form Tests', () => {
         validationFailures
       };
       return Effect.fail(failedForm) as Effect.Effect<ValidatedPayload<Job>, ValidatedForm<JobValidationFailures>, never>;
+    };
+
+    mockHttpClient.getAllSkills = async () => {
+      return {
+        offset: 0,
+        limit: 20,
+        totalRecords: 0,
+        data: []
+      } as PagedData<SkillTag>;
     };
 
     const mockActivatedRoute = new MockActivatedRoute();
