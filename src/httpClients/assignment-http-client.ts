@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../environments/environment';
+import { DragonCreateEdit, JobCreateEdit } from '../poco/endpointRequestBodies';
 import { JobInclusions } from '../poco/enums';
 import { Dragon, DragonValidationFailures, Job, JobValidationFailures, SkillTag } from '../poco/models';
 import { HttpHelpers } from './http-helpers';
@@ -44,11 +45,11 @@ export class AssignmentHttpClient {
     return await HttpHelpers.requestValidatedPayload<Dragon>(`${apiUrl}dragon/${dragonId}?jobInclusions=${jobInclusions}`);
   };
 
-  async postDragonForm(dragon: Dragon) {
+  async postDragonForm(dragon: DragonCreateEdit) {
     return await HttpHelpers.submitForm<Dragon, DragonValidationFailures>(`${apiUrl}dragon`, 'POST', dragon);
   };
 
-  async putDragonForm(dragonId: number, dragon: Dragon) {
+  async putDragonForm(dragonId: number, dragon: DragonCreateEdit) {
     return await HttpHelpers.submitForm<Dragon, DragonValidationFailures>(`${apiUrl}dragon/${dragonId}`, 'PUT', dragon);
   };
 
@@ -56,11 +57,11 @@ export class AssignmentHttpClient {
     return await HttpHelpers.requestValidatedPayload<Job>(`${apiUrl}job/${jobId}`);
   };  
 
-  async postJobForm(job: Job) {
+  async postJobForm(job: JobCreateEdit) {
     return await HttpHelpers.submitForm<Job, JobValidationFailures>(`${apiUrl}job`, 'POST', job);
   };
 
-  async putJobForm(jobId: number, job: Job) {
+  async putJobForm(jobId: number, job: JobCreateEdit) {
     return await HttpHelpers.submitForm<Job, JobValidationFailures>(`${apiUrl}job/${jobId}`, 'PUT', job);
   };
 

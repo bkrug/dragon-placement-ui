@@ -6,7 +6,7 @@ import { ValidatedForm, ValidatedPayload } from '../../poco/standard-responses';
 import { applyServerSideValidations } from './local-fields';
 
 @Directive()
-export abstract class EntityFormBase<TEntity extends object, TValidationFailures extends object> {
+export abstract class EntityFormBase<TDb extends object, TValidationFailures extends object> {
   private activatedRoute = inject(ActivatedRoute);
   protected entityId: number | null = null;
 
@@ -22,8 +22,8 @@ export abstract class EntityFormBase<TEntity extends object, TValidationFailures
 
   abstract formGroup: WritableSignal<FormGroup>;
 
-  protected abstract makeSubmissionRequest(): Promise<Effect.Effect<ValidatedPayload<TEntity>, ValidatedForm<TValidationFailures>, never>>;
-  protected abstract handleSubmissionSuccess(payload: TEntity): void;
+  protected abstract makeSubmissionRequest(): Promise<Effect.Effect<ValidatedPayload<TDb>, ValidatedForm<TValidationFailures>, never>>;
+  protected abstract handleSubmissionSuccess(payload: TDb): void;
 
   onFormFocus() {
     this.showSaved.set(false);

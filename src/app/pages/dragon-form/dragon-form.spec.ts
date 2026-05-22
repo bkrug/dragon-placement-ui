@@ -2,6 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
 import { Effect } from 'effect';
 import { AssignmentHttpClient } from '../../../httpClients/assignment-http-client';
+import { DragonCreateEdit } from '../../../poco/endpointRequestBodies';
 import { Dragon, DragonValidationFailures, SkillTag } from '../../../poco/models';
 import { PagedData, ValidatedForm, ValidatedPayload } from '../../../poco/standard-responses';
 import { MockActivatedRoute } from '../../../testHelpers/MockActivatedRoute';
@@ -29,14 +30,23 @@ describe('Dragon Form Tests', () => {
       } as ValidatedPayload<Dragon>;
     };
 
-    let actualModelInPostRequest: Dragon = new Dragon();
-    mockHttpClient.postDragonForm = async (dragon: Dragon) => {
+    let actualModelInPostRequest = new DragonCreateEdit();
+    mockHttpClient.postDragonForm = async (dragon: DragonCreateEdit) => {
       actualModelInPostRequest = dragon;
       const validatedPayload = {
         isInternalError: false,
         isSuccess: true,
         validationFailures: [],
-        payload: dragon
+        payload: Object.assign(new Dragon(), {
+          dragonId: 298,
+          givenName: dragon.givenName,
+          familyName: dragon.familyName,
+          canBreathFire: dragon.canBreathFire,
+          canTakePassengers: dragon.canTakePassengers,
+          weightInKg: dragon.weightInKg,
+          lengthInMeters: dragon.lengthInMeters,
+          fightingSkills: dragon.fightingSkills
+        })
       } as ValidatedPayload<Dragon>;
       return Effect.succeed(validatedPayload) as Effect.Effect<ValidatedPayload<Dragon>, ValidatedForm<DragonValidationFailures>, never>;
     };
@@ -115,8 +125,8 @@ describe('Dragon Form Tests', () => {
     };
 
     let actualRecordIdInPutRequest: number = 0;
-    let actualModelInPutRequest: Dragon = new Dragon();
-    mockHttpClient.putDragonForm = async (dragonId: number, dragon: Dragon) => {
+    let actualModelInPutRequest = new DragonCreateEdit();
+    mockHttpClient.putDragonForm = async (dragonId: number, dragon: DragonCreateEdit) => {
       actualRecordIdInPutRequest = dragonId;
       actualModelInPutRequest = dragon;
       const validatedPayload = {

@@ -2,6 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
 import { Effect } from 'effect';
 import { AssignmentHttpClient } from '../../../httpClients/assignment-http-client';
+import { JobCreateEdit } from '../../../poco/endpointRequestBodies';
 import { Job, JobValidationFailures, SkillTag } from '../../../poco/models';
 import { PagedData, ValidatedForm, ValidatedPayload } from '../../../poco/standard-responses';
 import { MockActivatedRoute } from '../../../testHelpers/MockActivatedRoute';
@@ -30,14 +31,14 @@ describe('Job Form Tests', () => {
       } as ValidatedPayload<Job>;
     };
 
-    let actualModelInPostRequest: Job = new Job();
-    mockHttpClient.postJobForm = async (job: Job) => {
+    let actualModelInPostRequest = new JobCreateEdit();
+    mockHttpClient.postJobForm = async (job: JobCreateEdit) => {
       actualModelInPostRequest = job;
       const validatedPayload = {
         isInternalError: false,
         isSuccess: true,
         validationFailures: [],
-        payload: job
+        payload: JSON.parse(JSON.stringify(job))
       } as ValidatedPayload<Job>;
       return Effect.succeed(validatedPayload) as Effect.Effect<ValidatedPayload<Job>, ValidatedForm<JobValidationFailures>, never>;
     };
@@ -115,8 +116,8 @@ describe('Job Form Tests', () => {
     };
 
     let actualRecordIdInPutRequest: number = 0;
-    let actualModelInPutRequest: Job = new Job();
-    mockHttpClient.putJobForm = async (jobId: number, job: Job) => {
+    let actualModelInPutRequest = new JobCreateEdit();
+    mockHttpClient.putJobForm = async (jobId: number, job: JobCreateEdit) => {
       actualRecordIdInPutRequest = jobId;
       actualModelInPutRequest = job;
       const validatedPayload = {
