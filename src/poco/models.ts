@@ -72,3 +72,8 @@ export class DisplayJob {
   startDate: Date = new Date(0);
   endDate: Date = new Date(0);
 }
+
+export class SkillTag {
+  skillTagId: number = 0;
+  skillName: string = '';
+}

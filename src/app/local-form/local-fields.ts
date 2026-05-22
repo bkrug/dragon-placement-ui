@@ -1,5 +1,6 @@
 import { Component, Directive, input, signal } from '@angular/core';
 import { AbstractControl, FormGroup, ReactiveFormsModule, ValidationErrors } from '@angular/forms';
+import { AutoCompleteCompleteEvent, AutoCompleteModule } from 'primeng/autocomplete';
 import { ButtonModule } from 'primeng/button';
 import { CheckboxModule } from 'primeng/checkbox';
 import { DatePickerModule } from 'primeng/datepicker';
@@ -19,6 +20,11 @@ export interface SelectListOption {
   value: string | null;
 }
 
+export interface TagOption {
+  display: string;
+  value: number;
+}
+
 export function applyServerSideValidations<T extends object>(failures: ValidatedForm<T>, formGroup: FormGroup) {
   const vFail = failures.validationFailures;
   const keys = Object.keys(vFail);
@@ -30,7 +36,7 @@ export function applyServerSideValidations<T extends object>(failures: Validated
 };
 
 @Directive()
-abstract class LocalFieldBase<T extends (boolean | string | number | Date)> {
+abstract class LocalFieldBase<T extends (boolean | string | number | Date | number[])> {
   formGroup = input.required<FormGroup>();
   fieldName = input.required<string>();
   label = input.required<string>();
@@ -121,7 +127,6 @@ export class LocalNumberField extends LocalFieldBase<number> {
   }
 }
 
-//The generic used here is a string, because the input field requires a string in YYYY-MM-dd format.
 @Component({
   selector: 'app-local-date-field',
   imports: [ ReactiveFormsModule, DatePickerModule, LocalFieldErrors ],
@@ -160,6 +165,26 @@ export class LocalSelectField extends LocalFieldBase<string> {
   options = input.required<SelectListOption[]>();
 
   fieldControl = input.required<AbstractControl<string|null, string|null, any> | null>();
+  override getFieldControl() {
+    return this.fieldControl();
+  }
+}
+
+@Component({
+  selector: 'app-local-tag-field',
+  imports: [ ReactiveFormsModule, AutoCompleteModule, LocalFieldErrors ],
+  templateUrl: './local-tag-field.html',
+  styleUrl: './local-field.scss',
+})
+export class LocalTagField extends LocalFieldBase<number[]> {
+  options = input.required<TagOption[]>();
+  filteredOptions = signal([] as TagOption[]);
+
+  search(event: AutoCompleteCompleteEvent) {
+    this.filteredOptions.set(this.options().filter(opt => opt.display.indexOf(event.query) >= 0));
+  }  
+
+  fieldControl = input.required<AbstractControl<number[] | null, number[] | null, any> | null>();
   override getFieldControl() {
     return this.fieldControl();
   }

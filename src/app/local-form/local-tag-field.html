@@ -1,0 +1,12 @@
+<div [formGroup]="formGroup()">
+  <label for="{{fieldName()}}">{{label()}}</label>
+  <p-autocomplete inputId="{{fieldName()}}" formControlName="{{fieldName()}}"
+    [suggestions]="filteredOptions()"
+    (completeMethod)="search($event)"
+    multiple
+    [addOnBlur]="true"
+    [addOnTab]="true"
+    optionLabel="display"
+    optionValue="value" />
+  <app-local-field-errors [errors]="getErrors()" [shouldDisplay]="shouldDisplayError()" />
+</div>

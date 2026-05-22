@@ -4,11 +4,11 @@ import { AssignmentHttpClient } from '../../../httpClients/assignment-http-clien
 import { JobInclusions } from '../../../poco/enums';
 import { Dragon, DragonValidationFailures } from '../../../poco/models';
 import { EntityFormBase } from '../../local-form/entity-form-base';
-import { LocalCheckbox, LocalNumberField, LocalSelectField, LocalSubmitButton, LocalTextField, SelectListOption } from '../../local-form/local-fields';
+import { LocalCheckbox, LocalNumberField, LocalSelectField, LocalSubmitButton, LocalTagField, LocalTextField, SelectListOption, TagOption } from '../../local-form/local-fields';
 
 @Component({
   selector: 'app-dragon-form',
-  imports: [ ReactiveFormsModule, LocalTextField, LocalCheckbox, LocalNumberField, LocalSelectField, LocalSubmitButton ],
+  imports: [ ReactiveFormsModule, LocalTextField, LocalCheckbox, LocalNumberField, LocalSelectField, LocalSubmitButton, LocalTagField ],
   templateUrl: './dragon-form.html',
   styleUrl: './dragon-form.scss',
 })
@@ -36,6 +36,13 @@ export class DragonForm extends EntityFormBase<Dragon, DragonValidationFailures>
     { value: 'a',  display: 'Advanced' }
   ] as SelectListOption[];
 
+  skillTags = [
+    { value: 1, display: 'apple' },
+    { value: 2, display: 'banana' },
+    { value: 3, display: 'kiwi'},
+    { value: 4, display: 'grapefruit'}
+  ] as TagOption[];
+
   formGroup = signal(this.getDragonFormGroup());
 
   private getDragonFormGroup() {
@@ -46,7 +53,8 @@ export class DragonForm extends EntityFormBase<Dragon, DragonValidationFailures>
       canTakePassengers: new FormControl(this.dragon().canTakePassengers),
       weightInKg: new FormControl(this.dragon().weightInKg),
       lengthInMeters: new FormControl(this.dragon().lengthInMeters),
-      fightingSkills: new FormControl(this.dragon().fightingSkills)
+      fightingSkills: new FormControl(this.dragon().fightingSkills),
+      skillTags: new FormControl([] as number[])
     });
   }
 

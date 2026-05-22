@@ -15,6 +15,13 @@
       [formGroup]="formGroup()"
       [fieldControl]="formGroup().get('fightingSkills')"
       [options]="skillLevels" />
+    <app-local-tag-field
+      id="tag-test"
+      label="Skills:"
+      fieldName="skillTags" 
+      [formGroup]="formGroup()"
+      [fieldControl]="formGroup().get('skillTags')"
+      [options]="skillTags" />
     <app-local-submit-button
       [isSubmitDisabled]="!formGroup().valid || isSubmitting()"
       [isSubmitting]="isSubmitting()"
