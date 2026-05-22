@@ -32,7 +32,8 @@ describe('DragonView', () => {
           weightInKg: null,
           lengthInMeters: null,
           fightingSkills: null,
-          assignments: []
+          assignments: [],
+          skillTags: []
         } as Dragon
       } as ValidatedPayload<Dragon>;
     };

@@ -23,15 +23,13 @@ export class DragonForm extends EntityFormBase<Dragon, DragonValidationFailures>
 
   ngOnInit(): void {
     this.httpClient.getAllSkills()
-      .then(pagedData => {
-        this.skillTags.set(pagedData.data.map(this.toTagOption));
-        if (this.entityId)
-          this.httpClient.getDragonWithJobs(this.entityId, JobInclusions.None)
-            .then(validatedResponse => {
-              this.dragon.set(validatedResponse.payload);
-              this.formGroup.set(this.getDragonFormGroup());
-            });
-      });
+      .then(pagedData => this.skillTags.set(pagedData.data.map(this.toTagOption)));
+    if (this.entityId)
+      this.httpClient.getDragonWithJobs(this.entityId, JobInclusions.None)
+        .then(validatedResponse => {
+          this.dragon.set(validatedResponse.payload);
+          this.formGroup.set(this.getDragonFormGroup());
+        });
   }
 
   toTagOption(skillTag: SkillTag) { return { value: skillTag.skillTagId, display: skillTag.skillName } as TagOption; }
@@ -57,9 +55,7 @@ export class DragonForm extends EntityFormBase<Dragon, DragonValidationFailures>
       weightInKg: new FormControl(this.dragon().weightInKg),
       lengthInMeters: new FormControl(this.dragon().lengthInMeters),
       fightingSkills: new FormControl(this.dragon().fightingSkills),
-      skillTags: new FormControl(this.dragon().skillTags.map(st => {
-        return { value: st.skillTagId, display: st.skillName } as TagOption;
-      }))
+      skillTags: new FormControl(this.dragon().skillTags.map(this.toTagOption))
     });
   }
 

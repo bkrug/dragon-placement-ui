@@ -2,12 +2,11 @@ import { TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
 import { Effect } from 'effect';
 import { AssignmentHttpClient } from '../../../httpClients/assignment-http-client';
-import { Dragon, DragonValidationFailures } from '../../../poco/models';
-import { ValidatedForm, ValidatedPayload } from '../../../poco/standard-responses';
+import { Dragon, DragonValidationFailures, SkillTag } from '../../../poco/models';
+import { PagedData, ValidatedForm, ValidatedPayload } from '../../../poco/standard-responses';
 import { MockActivatedRoute } from '../../../testHelpers/MockActivatedRoute';
 import { DragonForm } from './dragon-form';
 
-//TODO: Assert that there is no junk data in the form, and that no HttpMethods were called
 describe('Dragon Form Tests', () => {
   function getInputElement(nativeElement:HTMLDivElement, css:string) {
     return nativeElement.querySelector(css) as HTMLInputElement;
@@ -40,6 +39,15 @@ describe('Dragon Form Tests', () => {
         payload: dragon
       } as ValidatedPayload<Dragon>;
       return Effect.succeed(validatedPayload) as Effect.Effect<ValidatedPayload<Dragon>, ValidatedForm<DragonValidationFailures>, never>;
+    };
+
+    mockHttpClient.getAllSkills = async () => {
+      return {
+        offset: 0,
+        limit: 20,
+        totalRecords: 0,
+        data: []
+      } as PagedData<SkillTag>;
     };
 
     const mockActivatedRoute = new MockActivatedRoute();
@@ -93,7 +101,9 @@ describe('Dragon Form Tests', () => {
       canTakePassengers: false,
       lengthInMeters: 35,
       weightInKg: 2409,
-      fightingSkills: 'b'
+      fightingSkills: 'b',
+      assignments: [],
+      skillTags: []
     } as Dragon;
 
     const mockHttpClient = new AssignmentHttpClient();
@@ -118,6 +128,15 @@ describe('Dragon Form Tests', () => {
         payload: JSON.parse(JSON.stringify(initialDbRecord))
       } as ValidatedPayload<Dragon>;
       return Effect.succeed(validatedPayload) as Effect.Effect<ValidatedPayload<Dragon>, ValidatedForm<DragonValidationFailures>, never>;
+    };
+
+    mockHttpClient.getAllSkills = async () => {
+      return {
+        offset: 0,
+        limit: 20,
+        totalRecords: 0,
+        data: []
+      } as PagedData<SkillTag>;
     };
 
     const mockActivatedRoute = new MockActivatedRoute();
@@ -170,7 +189,9 @@ describe('Dragon Form Tests', () => {
       canTakePassengers: false,
       lengthInMeters: 35,
       weightInKg: 2409,
-      fightingSkills: 'b'
+      fightingSkills: 'b',
+      assignments: [],
+      skillTags: []
     } as Dragon;
 
     const mockHttpClient = new AssignmentHttpClient();
@@ -197,6 +218,15 @@ describe('Dragon Form Tests', () => {
         validationFailures
       };
       return Effect.fail(failedForm) as Effect.Effect<ValidatedPayload<Dragon>, ValidatedForm<DragonValidationFailures>, never>;
+    };
+
+    mockHttpClient.getAllSkills = async () => {
+      return {
+        offset: 0,
+        limit: 20,
+        totalRecords: 0,
+        data: []
+      } as PagedData<SkillTag>;
     };
 
     const mockActivatedRoute = new MockActivatedRoute();
@@ -239,7 +269,9 @@ describe('Dragon Form Tests', () => {
       canTakePassengers: false,
       lengthInMeters: 35,
       weightInKg: 2409,
-      fightingSkills: 'b'
+      fightingSkills: 'b',
+      assignments: [],
+      skillTags: []
     } as Dragon;
 
     const mockHttpClient = new AssignmentHttpClient();
@@ -259,6 +291,15 @@ describe('Dragon Form Tests', () => {
         validationFailures: new DragonValidationFailures()
       } as ValidatedForm<DragonValidationFailures>;
       return Effect.fail(failedForm) as Effect.Effect<ValidatedPayload<Dragon>, ValidatedForm<DragonValidationFailures>, never>;
+    };
+
+    mockHttpClient.getAllSkills = async () => {
+      return {
+        offset: 0,
+        limit: 20,
+        totalRecords: 0,
+        data: []
+      } as PagedData<SkillTag>;
     };
 
     const mockActivatedRoute = new MockActivatedRoute();
@@ -295,6 +336,15 @@ describe('Dragon Form Tests', () => {
     } as ValidatedPayload<Dragon>);
 
     mockHttpClient.postDragonForm = () => new Promise(() => {});
+
+    mockHttpClient.getAllSkills = async () => {
+      return {
+        offset: 0,
+        limit: 20,
+        totalRecords: 0,
+        data: []
+      } as PagedData<SkillTag>;
+    };
 
     const mockActivatedRoute = new MockActivatedRoute();
     mockActivatedRoute.setParams({});

@@ -28,7 +28,8 @@ describe('ManageJob', () => {
       weightInKg: 3027,
       lengthInMeters: 54,
       fightingSkills: 'm',
-      assignments: []
+      assignments: [],
+      skillTags: []
     } as Dragon;
 
     const mockHttpClient = new AssignmentHttpClient();
@@ -115,7 +116,8 @@ describe('ManageJob', () => {
       weightInKg: 3027,
       lengthInMeters: 54,
       fightingSkills: 'm',
-      assignments: []
+      assignments: [],
+      skillTags: []
     } as Dragon;
 
     const mockHttpClient = new AssignmentHttpClient();
