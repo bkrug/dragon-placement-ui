@@ -21,7 +21,7 @@
       fieldName="skillTags" 
       [formGroup]="formGroup()"
       [fieldControl]="formGroup().get('skillTags')"
-      [options]="skillTags" />
+      [options]="skillTags()" />
     <app-local-submit-button
       [isSubmitDisabled]="!formGroup().valid || isSubmitting()"
       [isSubmitting]="isSubmitting()"

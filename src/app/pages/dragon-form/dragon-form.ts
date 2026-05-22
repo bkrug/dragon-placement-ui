@@ -1,5 +1,6 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { display } from '@primeuix/themes/aura/inplace';
 import { AssignmentHttpClient } from '../../../httpClients/assignment-http-client';
 import { JobInclusions } from '../../../poco/enums';
 import { Dragon, DragonValidationFailures } from '../../../poco/models';
@@ -21,6 +22,15 @@ export class DragonForm extends EntityFormBase<Dragon, DragonValidationFailures>
   }
 
   ngOnInit(): void {
+    this.httpClient.getAllSkills()
+      .then(pagedData =>
+        this.skillTags.set(pagedData.data
+          .map(skillTagEnt => {
+            return { value: skillTagEnt.skillTagId, display: skillTagEnt.skillName } as TagOption;
+          })
+        )
+      );
+
     if (this.entityId)
       this.httpClient.getDragonWithJobs(this.entityId, JobInclusions.None)
         .then(validatedResponse => {
@@ -36,12 +46,12 @@ export class DragonForm extends EntityFormBase<Dragon, DragonValidationFailures>
     { value: 'a',  display: 'Advanced' }
   ] as SelectListOption[];
 
-  skillTags = [
+  skillTags = signal([
     { value: 1, display: 'apple' },
     { value: 2, display: 'banana' },
     { value: 3, display: 'kiwi'},
     { value: 4, display: 'grapefruit'}
-  ] as TagOption[];
+  ] as TagOption[]);
 
   formGroup = signal(this.getDragonFormGroup());
 

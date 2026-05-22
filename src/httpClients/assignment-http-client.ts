@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../environments/environment';
 import { JobInclusions } from '../poco/enums';
-import { Dragon, DragonValidationFailures, Job, JobValidationFailures } from '../poco/models';
+import { Dragon, DragonValidationFailures, Job, JobValidationFailures, SkillTag } from '../poco/models';
 import { HttpHelpers } from './http-helpers';
 
 const apiUrl = environment.backendApi.endsWith('/')
@@ -63,4 +63,9 @@ export class AssignmentHttpClient {
   async putJobForm(jobId: number, job: Job) {
     return await HttpHelpers.submitForm<Job, JobValidationFailures>(`${apiUrl}job/${jobId}`, 'PUT', job);
   };
+
+  async getAllSkills() {
+    const limit = 1*1000*1000*1000;
+    return await HttpHelpers.getOnePage<SkillTag>(`${apiUrl}skill-tag?offset=0&limit=${limit}`);
+  };  
 }
