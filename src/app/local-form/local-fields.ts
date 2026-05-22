@@ -1,4 +1,4 @@
-import { Component, Directive, input, signal } from '@angular/core';
+import { Component, computed, Directive, input, signal } from '@angular/core';
 import { AbstractControl, FormGroup, ReactiveFormsModule, ValidationErrors } from '@angular/forms';
 import { AutoCompleteCompleteEvent, AutoCompleteModule } from 'primeng/autocomplete';
 import { ButtonModule } from 'primeng/button';
@@ -36,7 +36,7 @@ export function applyServerSideValidations<T extends object>(failures: Validated
 };
 
 @Directive()
-abstract class LocalFieldBase<T extends (boolean | string | number | Date | number[])> {
+abstract class LocalFieldBase<T extends (boolean | string | number | Date | TagOption[])> {
   formGroup = input.required<FormGroup>();
   fieldName = input.required<string>();
   label = input.required<string>();
@@ -176,15 +176,16 @@ export class LocalSelectField extends LocalFieldBase<string> {
   templateUrl: './local-tag-field.html',
   styleUrl: './local-field.scss',
 })
-export class LocalTagField extends LocalFieldBase<number[]> {
+export class LocalTagField extends LocalFieldBase<TagOption[]> {
   options = input.required<TagOption[]>();
-  filteredOptions = signal([] as TagOption[]);
+  private filter = signal('');
+  filteredOptions = computed(() => this.options().filter(opt => opt.display.toLowerCase().indexOf(this.filter().toLocaleLowerCase()) >= 0));
 
   search(event: AutoCompleteCompleteEvent) {
-    this.filteredOptions.set(this.options().filter(opt => opt.display.indexOf(event.query) >= 0));
-  }  
+    this.filter.set(event.query);
+  }
 
-  fieldControl = input.required<AbstractControl<number[] | null, number[] | null, any> | null>();
+  fieldControl = input.required<AbstractControl<TagOption[] | null, TagOption[] | null, any> | null>();
   override getFieldControl() {
     return this.fieldControl();
   }

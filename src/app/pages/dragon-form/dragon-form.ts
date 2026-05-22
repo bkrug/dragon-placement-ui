@@ -25,9 +25,7 @@ export class DragonForm extends EntityFormBase<Dragon, DragonValidationFailures>
     this.httpClient.getAllSkills()
       .then(pagedData => {
         this.skillTags.set(pagedData.data
-          .map(skillTagEnt => {
-            return { value: skillTagEnt.skillTagId, display: skillTagEnt.skillName } as TagOption;
-          })
+          .map(skillTagEnt => { return { value: skillTagEnt.skillTagId, display: skillTagEnt.skillName } as TagOption; })
         );
         if (this.entityId)
           this.httpClient.getDragonWithJobs(this.entityId, JobInclusions.None)
@@ -58,12 +56,15 @@ export class DragonForm extends EntityFormBase<Dragon, DragonValidationFailures>
       weightInKg: new FormControl(this.dragon().weightInKg),
       lengthInMeters: new FormControl(this.dragon().lengthInMeters),
       fightingSkills: new FormControl(this.dragon().fightingSkills),
-      skillTags: new FormControl(this.dragon().skillTags.map(st => st.skillTagId))
+      skillTags: new FormControl(this.dragon().skillTags.map(st => {
+        return { value: st.skillTagId, display: st.skillName } as TagOption;
+      }))
     });
   }
 
   protected override makeSubmissionRequest() {
     const values = this.formGroup().value;
+    const tags = values.skillTags?.map(stId => { return { skillTagId: stId.value, skillName: stId.display }; }) || [];
     const body = {
       givenName: values.givenName!,
       familyName: values.familyName || null,
@@ -72,7 +73,7 @@ export class DragonForm extends EntityFormBase<Dragon, DragonValidationFailures>
       weightInKg: values.weightInKg || null,
       lengthInMeters: values.lengthInMeters || null,
       fightingSkills: values.fightingSkills || null,
-      skillTags: values.skillTags?.map(stId => { return { skillTagId: stId, skillName: '' }; }) || []
+      skillTags: tags
     } as Dragon;
     return this.entityId
       ? this.httpClient.putDragonForm(this.entityId, body)
