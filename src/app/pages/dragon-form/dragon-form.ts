@@ -32,7 +32,12 @@ export class DragonForm extends EntityFormBase<Dragon, DragonValidationFailures>
   }
 
   toTagOption(skillTag: SkillTag) { return { value: skillTag.skillTagId, display: skillTag.skillName } as TagOption; }
-  toSkillTag(tagOption: TagOption) { return { skillTagId: tagOption.value, skillName: tagOption.display } as SkillTag; }
+  toSkillTag(tagOption: TagOption) { 
+    //HACK: Despite the strict typing of typescript, testing reveals "tagOption" be a number.
+    return (typeof tagOption === 'number')
+      ? { skillTagId: tagOption, skillName: '' } as SkillTag
+      : { skillTagId: tagOption.value, skillName: tagOption.display } as SkillTag;
+  }
 
   skillLevels = [
     { value: null, display: 'Select Skill Level...' },
