@@ -40,6 +40,7 @@ export class Job {
   numberOfPositions: number = 0;
   startDateUnix: number = 0;
   endDateUnix: number = 0;
+  skillTags: SkillTag[] = [];
 }
 
 export class DisplayDragon {
