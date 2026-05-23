@@ -6,6 +6,6 @@ export enum JobInclusions {
 
 export enum DragonTableType {
   AllDragons = 0,
-  Assign = 1,
-  Unassign = 2
+  Candidates = 1,
+  AlreadyAssigned = 2
 }

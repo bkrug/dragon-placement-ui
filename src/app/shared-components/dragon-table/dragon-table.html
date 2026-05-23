@@ -5,7 +5,7 @@
   <p-table
     [value]="dragons()"
     [tableStyle]="{ 'min-width': '50rem' }"
-    [paginator]="true"
+    [paginator]="dragonTableType() !== DragonTableType.AlreadyAssigned && totalRecords() <= this.pageSize"
     [first]="this.first()"
     [rows]="this.pageSize"
     [totalRecords]="totalRecords()"
@@ -19,7 +19,7 @@
     >
     <ng-template #header>
       <tr>
-        <th [style.display]="dragonTableType() === DragonTableType.Assign ? null : 'none'"></th>
+        <th [style.display]="dragonTableType() === DragonTableType.Candidates"></th>
         <th [style.display]="dragonTableType() === DragonTableType.AllDragons ? null : 'none'"></th>
         <th>Name</th>
         <th>Breath Fire</th>
@@ -27,22 +27,24 @@
         <th>Fighting Skills</th>
         <th>Weight (kg)</th>
         <th>Length (m)</th>
-        <th [style.display]="dragonTableType() === DragonTableType.Unassign ? null : 'none'"></th>
+        <th [style.display]="dragonTableType() === DragonTableType.AlreadyAssigned ? null : 'none'"></th>
       </tr>
     </ng-template>
     <ng-template #body let-dragon>
       <tr [pSelectableRow]="dragon">
-        <td [style.display]="dragonTableType() === DragonTableType.Assign ? null : 'none'">
+        <td [style.display]="dragonTableType() === DragonTableType.Candidates ? null : 'none'">
           <p-button (click)="assignDragon(dragon.dragonId)">Assign</p-button>
         </td>
-        <td [style.display]="dragonTableType() === DragonTableType.AllDragons ? null : 'none'"><a href="/dragons-form/{{dragon.dragonId}}">Edit</a></td>
+        <td [style.display]="dragonTableType() === DragonTableType.AllDragons ? null : 'none'">
+          <a href="/dragons-form/{{dragon.dragonId}}">Edit</a>
+        </td>
         <td><a href="/dragons/{{dragon.dragonId}}">{{ dragon.givenName }} {{ dragon.familyName }}</a></td>
         <td>{{ dragon.canBreathFire ? "yes" : "no" }}</td>
         <td>{{ dragon.canTakePassengers ? "yes" : "no" }}</td>
         <td>{{ dragon.fightingSkills }}</td>
         <td>{{ dragon.weightInKg }}</td>
         <td>{{ dragon.lengthInMeters }}</td>
-        <td [style.display]="dragonTableType() === DragonTableType.Unassign ? null : 'none'">
+        <td [style.display]="dragonTableType() === DragonTableType.AlreadyAssigned ? null : 'none'">
           <p-button (click)="unassignDragon(dragon.dragonId)">Unassign</p-button>
         </td>
       </tr>
