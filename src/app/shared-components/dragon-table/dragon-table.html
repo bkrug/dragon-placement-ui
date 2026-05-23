@@ -19,7 +19,7 @@
     >
     <ng-template #header>
       <tr>
-        <th [style.display]="dragonTableType() === DragonTableType.Candidates"></th>
+        <th [style.display]="dragonTableType() === DragonTableType.Candidates ? null : 'none'"></th>
         <th [style.display]="dragonTableType() === DragonTableType.AllDragons ? null : 'none'"></th>
         <th>Name</th>
         <th>Breath Fire</th>
