@@ -28,7 +28,6 @@ export class ManageJob implements OnInit {
         this.selectedJob.set(mapJobToDisplayJob(validatedPayload.payload));
       });
     });    
-    //const jobId = Number(this.activatedRoute.snapshot.paramMap.get('jobId'));
   }
 
   reloadDragonTables() {
