@@ -1,8 +1,6 @@
 <h2>Job to Fill</h2>
 
-<p-button (click)="clearSelection()">Return to Job List</p-button>
-
-<table>
+<table id="job-description">
   <tbody>
     <tr>
       <td>Job Title</td>
@@ -31,7 +29,9 @@
   </tbody>
 </table>
 
-<h3>Assigned Dragons</h3>
-<app-dragon-table id="assigned-table" [dragonTableType]="DragonTableType.AlreadyAssigned" [selectedJob]="selectedJob()" (unassignedDragon)="reloadDragonTables()"></app-dragon-table>
-<h3>Dragons Available to Assign</h3>
-<app-dragon-table id="candidate-table" [dragonTableType]="DragonTableType.Candidates" [selectedJob]="selectedJob()" (assignedDragon)="reloadDragonTables()"></app-dragon-table>
+@if (selectedJob() !== null) {
+  <h3>Assigned Dragons</h3>
+  <app-dragon-table id="assigned-table" [dragonTableType]="DragonTableType.AlreadyAssigned" [selectedJob]="selectedJob()" (unassignedDragon)="reloadDragonTables()"></app-dragon-table>
+  <h3>Dragons Available to Assign</h3>
+  <app-dragon-table id="candidate-table" [dragonTableType]="DragonTableType.Candidates" [selectedJob]="selectedJob()" (assignedDragon)="reloadDragonTables()"></app-dragon-table>
+}

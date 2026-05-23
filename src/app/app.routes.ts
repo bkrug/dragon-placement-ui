@@ -7,6 +7,7 @@ import { DragonView } from './pages/dragon-view/dragon-view';
 import { Home } from './pages/home/home';
 import { JobList } from './pages/job-list/job-list';
 import { JobForm } from './pages/job-form/job-form';
+import { ManageJob } from './pages/manage-job/manage-job';
 
 export const routes: Routes = [
   {
@@ -20,6 +21,10 @@ export const routes: Routes = [
   {
     path: 'jobs',
     component: JobList
+  },
+  {
+    path: 'jobs-manage/:jobId',
+    component: ManageJob
   },
   {
     path: 'jobs-form/:jobId',

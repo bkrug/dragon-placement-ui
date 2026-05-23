@@ -6,11 +6,10 @@ import { PAGE_SIZE } from '../../../global-consts';
 import { AssignmentHttpClient } from '../../../httpClients/assignment-http-client';
 import { DisplayJob } from '../../../poco/models';
 import { mapJobToDisplayJob } from '../../../transformers';
-import { ManageJob } from './manage-job/manage-job';
 
 @Component({
   selector: 'app-job-list',
-  imports: [ButtonModule, TableModule, ManageJob, DatePipe],
+  imports: [ButtonModule, TableModule, DatePipe],
   templateUrl: './job-list.html',
   styleUrl: './job-list.scss',
 })
@@ -18,7 +17,6 @@ export class JobList {
   httpClient = inject(AssignmentHttpClient);
 
   jobs = signal<DisplayJob[]>([]);
-  selectedJob = signal<DisplayJob | null>(null);
   totalRecords = signal(0);
   readonly pageSize = PAGE_SIZE;
 
