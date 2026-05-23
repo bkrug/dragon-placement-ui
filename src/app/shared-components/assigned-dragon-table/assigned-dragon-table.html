@@ -1,0 +1,26 @@
+@if (dragons().length === 0) {
+  <span style="font-style: italic;">None</span>
+}
+@else {
+  <p-table
+    [value]="dragons()"
+    [tableStyle]="{ 'min-width': '30rem' }"
+    >
+    <ng-template #header>
+      <tr>
+        <th>Name</th>
+        <th>Skills</th>
+        <th></th>
+      </tr>
+    </ng-template>
+    <ng-template #body let-dragon>
+      <tr>
+        <td><a href="/dragons/{{dragon.dragonId}}">{{ dragon.givenName }} {{ dragon.familyName }}</a></td>
+        <td>{{ getSkillTagsDisplay(dragon) }}</td>
+        <td>
+          <p-button (click)="unassignDragon(dragon.dragonId)">Unassign</p-button>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+}

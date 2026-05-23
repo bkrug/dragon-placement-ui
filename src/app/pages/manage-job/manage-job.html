@@ -31,7 +31,7 @@
 
 @if (selectedJob() !== null) {
   <h3>Assigned Dragons</h3>
-  <app-dragon-table id="assigned-table" [dragonTableType]="DragonTableType.AlreadyAssigned" [selectedJob]="selectedJob()" (unassignedDragon)="reloadDragonTables()"></app-dragon-table>
+  <app-assigned-dragon-table id="assigned-table" [selectedJob]="selectedJob()" (unassignedDragon)="reloadDragonTables()"></app-assigned-dragon-table>
   <h3>Dragons Available to Assign</h3>
   <app-dragon-table id="candidate-table" [dragonTableType]="DragonTableType.Candidates" [selectedJob]="selectedJob()" (assignedDragon)="reloadDragonTables()"></app-dragon-table>
 }
