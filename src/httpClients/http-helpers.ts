@@ -2,16 +2,18 @@ import { Effect } from 'effect';
 import { PagedData, ValidatedForm, ValidatedPayload, ValidatedResponse } from '../poco/standard-responses';
 
 export class HttpHelpers {
-  static async getOnePage<T extends object>(url: string, init?: RequestInit) {
-    const response = await fetch(url, init);
+  static async getOnePage<T extends object>(url: string) {
+    const response = await fetch(url);
     const json = await response.json();
     const source = json as PagedData<T>;
     return source;
   };
 
-  static async requestValidatedResponse(url: string, init?: RequestInit) {
+  static async requestValidatedResponse(url: string, httpVerb: 'GET' | 'POST' | 'PUT' | 'DELETE') {
     try {
-      const response = await fetch(url, init);
+      const response = await fetch(url, {
+        method: httpVerb
+      });
       const json = await response.json();
       return json as ValidatedResponse;
     }
@@ -24,9 +26,11 @@ export class HttpHelpers {
     }
   };
 
-  static async requestValidatedPayload<T extends object>(url: string, init?: RequestInit) {
+  static async requestValidatedPayload<T extends object>(url: string, httpVerb: 'GET' | 'POST' | 'PUT' | 'DELETE' = 'GET') {
     try {
-      const response = await fetch(url, init);
+      const response = await fetch(url, {
+        method: httpVerb
+      });
       const json = await response.json();
       return json as ValidatedPayload<T>;
     }
