@@ -24,6 +24,10 @@
       <td>End Date</td>
       <td>{{selectedJob()?.endDate | date:'fullDate':'+0'}}</td>
     </tr>
+    <tr>
+      <td>Required Skills</td>
+      <td>{{selectedJob()?.skillTags?.map(st => st.skillName)?.join(', ') || ''}}</td>
+    </tr>
   </tbody>
 </table>
 

@@ -16,7 +16,8 @@ export const mapJobToDisplayJob = (source: Job) => {
     openPositions: openPositions,
     openDescription: openDescription,
     startDate: startDate,
-    endDate: endDate
+    endDate: endDate,
+    skillTags: source.skillTags
   } as DisplayJob;
 };
 

@@ -73,6 +73,7 @@ export class DisplayJob {
   openDescription: string = '';
   startDate: Date = new Date(0);
   endDate: Date = new Date(0);
+  skillTags: SkillTag[] = [];
 }
 
 export class SkillTag {
