@@ -1,0 +1,12 @@
+.filter {
+  display: flex;
+
+  span,
+  p-button {
+    flex: 1
+  }
+
+  div {
+    flex: 2
+  }
+}

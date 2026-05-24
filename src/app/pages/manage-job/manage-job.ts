@@ -6,11 +6,11 @@ import { DragonTableType } from '../../../poco/enums';
 import { DisplayJob } from '../../../poco/models';
 import { mapJobToDisplayJob } from '../../../transformers';
 import { AssignedDragonTable } from '../../shared-components/assigned-dragon-table/assigned-dragon-table';
-import { DragonTable } from '../../shared-components/dragon-table/dragon-table';
+import { CandidateTable } from '../../shared-components/candidate-table/candidate-table';
 
 @Component({
   selector: 'app-manage-job',
-  imports: [DatePipe, AssignedDragonTable, DragonTable],
+  imports: [DatePipe, AssignedDragonTable, CandidateTable],
   templateUrl: './manage-job.html',
   styleUrl: './manage-job.scss',
 })
@@ -19,7 +19,7 @@ export class ManageJob implements OnInit {
   private httpClient = inject(AssignmentHttpClient);
 
   assignedDragonTable = viewChild(AssignedDragonTable);
-  candidateTable = viewChild(DragonTable);
+  candidateTable = viewChild(CandidateTable);
   selectedJob = signal<DisplayJob | null>(null);
   DragonTableType = DragonTableType;
 

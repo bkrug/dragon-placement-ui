@@ -5,7 +5,7 @@
   <p-table
     [value]="dragons()"
     [tableStyle]="{ 'min-width': '50rem' }"
-    [paginator]="dragonTableType() !== DragonTableType.AlreadyAssigned && totalRecords() <= this.pageSize"
+    paginator="true"
     [first]="this.first()"
     [rows]="this.pageSize"
     [totalRecords]="totalRecords()"
@@ -18,10 +18,18 @@
     [selectionMode]="'single'"
     size="small"
     >
+    <ng-template #caption>
+      <div class="filter">
+        <span>Filter:</span>
+        <div>Put Skill Tag Selector Here</div>
+        <div>Put Fighting Skill Selector Here</div>
+        <p-button label="Filter" />
+        <p-button label="Clear" />
+      </div>
+    </ng-template>    
     <ng-template #header>
       <tr>
-        <th [style.display]="dragonTableType() === DragonTableType.Candidates ? null : 'none'"></th>
-        <th [style.display]="dragonTableType() === DragonTableType.AllDragons ? null : 'none'"></th>
+        <th></th>
         <th>Name</th>
         <th>Breath Fire</th>
         <th>Passengers</th>
@@ -32,12 +40,7 @@
     </ng-template>
     <ng-template #body let-dragon>
       <tr [pSelectableRow]="dragon">
-        <td [style.display]="dragonTableType() === DragonTableType.Candidates ? null : 'none'">
-          <p-button (click)="assignDragon(dragon.dragonId)">Assign</p-button>
-        </td>
-        <td [style.display]="dragonTableType() === DragonTableType.AllDragons ? null : 'none'">
-          <a href="/dragons-form/{{dragon.dragonId}}">Edit</a>
-        </td>
+        <td><p-button (click)="assignDragon(dragon.dragonId)">Assign</p-button></td>
         <td><a href="/dragons/{{dragon.dragonId}}">{{ dragon.givenName }} {{ dragon.familyName }}</a></td>
         <td>{{ dragon.canBreathFire ? "yes" : "no" }}</td>
         <td>{{ dragon.canTakePassengers ? "yes" : "no" }}</td>
