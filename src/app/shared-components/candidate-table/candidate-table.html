@@ -1,58 +1,53 @@
-@if (dragons().length === 0) {
-  <span style="font-style: italic;">None</span>
-}
-@else {
-  <p-table
-    [value]="dragons()"
-    [tableStyle]="{ 'min-width': '50rem' }"
-    paginator="true"
-    [first]="this.first()"
-    [rows]="this.pageSize"
-    [totalRecords]="totalRecords()"
-    [showCurrentPageReport]="true"
-    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-    [showLoader]="true"
-    [lazy]="true"
-    (onLazyLoad)="onPageChange($event)"
-    [(selection)]="selectedDragon"
-    [selectionMode]="'single'"
-    size="small"
-    >
-    <ng-template #caption>
-      <div class="filter">
-        <span>Filter:</span>
-        <div>Skills: 
-          <p-multiselect [options]="skillTagOptions()" [(ngModel)]="skillTagFilter" optionLabel="display" optionValue="value" />
-        </div>
-        <div>
-          Fighting Skill:
-          <p-select [options]="fightingSkillOptions()" [(ngModel)]="fightingSkillFilter" optionLabel="display" optionValue="value" />
-        </div>
-        <p-button label="Filter" (onClick)="applyFilter()" />
-        <p-button label="Clear" />
+<p-table
+  [value]="dragons()"
+  [tableStyle]="{ 'min-width': '50rem' }"
+  paginator="true"
+  [first]="this.first()"
+  [rows]="this.pageSize"
+  [totalRecords]="totalRecords()"
+  [showCurrentPageReport]="true"
+  currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+  [showLoader]="true"
+  [lazy]="true"
+  (onLazyLoad)="onPageChange($event)"
+  [(selection)]="selectedDragon"
+  [selectionMode]="'single'"
+  size="small"
+  >
+  <ng-template #caption>
+    <div class="filter">
+      <span>Filter:</span>
+      <div>
+        Skills: 
+        <p-multiselect [options]="skillTagOptions()" [(ngModel)]="skillTagFilter" optionLabel="display" optionValue="value" (onChange)="forcePageLoad()" />
       </div>
-    </ng-template>
-    <ng-template #header>
-      <tr>
-        <th></th>
-        <th>Name</th>
-        <th>Breath Fire</th>
-        <th>Passengers</th>
-        <th>Fighting Skills</th>
-        <th>Weight (kg)</th>
-        <th>Length (m)</th>
-      </tr>
-    </ng-template>
-    <ng-template #body let-dragon>
-      <tr [pSelectableRow]="dragon">
-        <td><p-button (click)="assignDragon(dragon.dragonId)">Assign</p-button></td>
-        <td><a href="/dragons/{{dragon.dragonId}}">{{ dragon.givenName }} {{ dragon.familyName }}</a></td>
-        <td>{{ dragon.canBreathFire ? "yes" : "no" }}</td>
-        <td>{{ dragon.canTakePassengers ? "yes" : "no" }}</td>
-        <td>{{ dragon.fightingSkills }}</td>
-        <td>{{ dragon.weightInKg }}</td>
-        <td>{{ dragon.lengthInMeters }}</td>
-      </tr>
-    </ng-template>
-  </p-table>
-}
+      <div>
+        Fighting Skill:
+        <p-select [options]="fightingSkillOptions()" [(ngModel)]="fightingSkillFilter" optionLabel="display" optionValue="value" (onChange)="forcePageLoad()" />
+      </div>
+      <p-button label="Clear" />
+    </div>
+  </ng-template>
+  <ng-template #header>
+    <tr>
+      <th></th>
+      <th>Name</th>
+      <th>Breath Fire</th>
+      <th>Passengers</th>
+      <th>Fighting Skills</th>
+      <th>Weight (kg)</th>
+      <th>Length (m)</th>
+    </tr>
+  </ng-template>
+  <ng-template #body let-dragon>
+    <tr [pSelectableRow]="dragon">
+      <td><p-button (click)="assignDragon(dragon.dragonId)">Assign</p-button></td>
+      <td><a href="/dragons/{{dragon.dragonId}}">{{ dragon.givenName }} {{ dragon.familyName }}</a></td>
+      <td>{{ dragon.canBreathFire ? "yes" : "no" }}</td>
+      <td>{{ dragon.canTakePassengers ? "yes" : "no" }}</td>
+      <td>{{ dragon.fightingSkills }}</td>
+      <td>{{ dragon.weightInKg }}</td>
+      <td>{{ dragon.lengthInMeters }}</td>
+    </tr>
+  </ng-template>
+</p-table>

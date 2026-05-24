@@ -21,8 +21,9 @@ export class AssignmentHttpClient {
     return await HttpHelpers.getOnePage<Dragon>(`${apiUrl}dragon?offset=${offset}&limit=${limit}`);
   };
 
-  async getOnePageOfCandidates(jobId: number, offset: number, limit: number) {
-    return await HttpHelpers.getOnePage<Dragon>(`${apiUrl}dragon?jobId=${jobId}&offset=${offset}&limit=${limit}`);
+  async getOnePageOfCandidates(jobId: number, skillTagIds: number[], offset: number, limit: number) {
+    const skillTagQuery = skillTagIds.map(id => `&skillTagId=${id}`).join('');
+    return await HttpHelpers.getOnePage<Dragon>(`${apiUrl}dragon?jobId=${jobId}&offset=${offset}&limit=${limit}${skillTagQuery}`);
   };
 
   async getOnePageOfAssignees(jobId: number, offset: number, limit: number) {

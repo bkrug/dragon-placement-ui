@@ -50,17 +50,13 @@ export class CandidateTable implements OnInit {
     this.onPageChange({ first: this.first() });
   }
 
-  applyFilter() {
-    console.log('skill tag filter', this.skillTagFilter());
-    console.log('fighting skill', this.fightingSkillFilter());
-  }
-
   onPageChange(event: TableLazyLoadEvent) {
     if (this.selectedJob() === null)
       return;
 
     const offset = event.first || 0;
-    this.httpClient.getOnePageOfCandidates(this.selectedJob()!.jobId, offset, this.pageSize)
+    const skillTagIds = this.skillTagFilter().map(f => parseInt(f));
+    this.httpClient.getOnePageOfCandidates(this.selectedJob()!.jobId, skillTagIds, offset, this.pageSize)
       .then(pagedData => {
         this.dragons.set(pagedData.data);
         this.totalRecords.set(pagedData.totalRecords);
