@@ -62,7 +62,7 @@ export class CandidateTable implements OnInit {
 
     const offset = event.first || 0;
     const skillTagIds = this.skillTagFilter().map(f => parseInt(f));
-    this.httpClient.getOnePageOfCandidates(this.selectedJob()!.jobId, skillTagIds, offset, this.pageSize)
+    this.httpClient.getOnePageOfCandidates(this.selectedJob()!.jobId, skillTagIds, this.fightingSkillFilter(), offset, this.pageSize)
       .then(pagedData => {
         this.dragons.set(pagedData.data);
         this.totalRecords.set(pagedData.totalRecords);

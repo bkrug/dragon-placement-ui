@@ -54,7 +54,7 @@ export class DragonTable implements OnInit {
       case DragonTableType.AllDragons:
         return this.httpClient.getOnePageOfDragons(offset, this.pageSize);
       case DragonTableType.Candidates:
-        return this.httpClient.getOnePageOfCandidates(this.selectedJob()!.jobId, [], offset, this.pageSize);
+        return this.httpClient.getOnePageOfCandidates(this.selectedJob()!.jobId, [], null, offset, this.pageSize);
       default:
         return this.httpClient.getOnePageOfAssignees(this.selectedJob()!.jobId, offset, this.pageSize);
     }
