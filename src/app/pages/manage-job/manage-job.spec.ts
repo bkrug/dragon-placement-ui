@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
 import { AssignmentHttpClient } from '../../../httpClients/assignment-http-client';
-import { Dragon, Job } from '../../../poco/models';
+import { Dragon, Job, SkillTag } from '../../../poco/models';
 import { PagedData, ValidatedPayload, ValidatedResponse } from '../../../poco/standard-responses';
 import { MockActivatedRoute } from '../../../testHelpers/MockActivatedRoute';
 import { ManageJob } from './manage-job';
@@ -53,6 +53,8 @@ describe('ManageJob', () => {
       ++postAssignmentCount;
       return { isSuccess: true, isInternalError: false, validationFailures: [] } as ValidatedResponse;
     };
+
+    mockHttpClient.getAllSkills = async () => { return { offset: 0, limit: 0, totalRecords: 0, data: [] } as PagedData<SkillTag>; }
 
     const mockActivatedRoute = new MockActivatedRoute();
     const mockParams : Record<string, any> = { ['jobId'] : jobId };
@@ -107,6 +109,8 @@ describe('ManageJob', () => {
       ++deleteAssignmentCount;
       return { isSuccess: true, isInternalError: false, validationFailures: [] } as ValidatedResponse;
     };
+
+    mockHttpClient.getAllSkills = async () => { return { offset: 0, limit: 0, totalRecords: 0, data: [] } as PagedData<SkillTag>; }
 
     const mockActivatedRoute = new MockActivatedRoute();
     const mockParams : Record<string, any> = { ['jobId'] : jobId };

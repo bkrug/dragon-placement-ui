@@ -1,13 +1,18 @@
 import { Component, EventEmitter, inject, input, OnInit, Output, signal } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { SelectModule } from 'primeng/select';
 import { TableLazyLoadEvent, TableModule } from 'primeng/table';
 import { PAGE_SIZE } from '../../../global-consts';
 import { AssignmentHttpClient } from '../../../httpClients/assignment-http-client';
-import { DisplayJob, Dragon } from '../../../poco/models';
+import { DisplayJob, Dragon, SkillTag } from '../../../poco/models';
+import { globalFightingSkillOptions } from '../../../skillLevels';
+import { SelectListOption } from '../../local-form/local-fields';
 
 @Component({
   selector: 'app-candidate-table',
-  imports: [ TableModule, ButtonModule ],
+  imports: [ TableModule, ButtonModule, SelectModule, FormsModule, MultiSelectModule ],
   templateUrl: './candidate-table.html',
   styleUrl: './candidate-table.scss',
 })
@@ -24,12 +29,30 @@ export class CandidateTable implements OnInit {
   first = input(0);
   readonly pageSize = PAGE_SIZE;
 
+  skillTagOptions = signal([] as SelectListOption[]);
+  skillTagFilter = signal([] as string[]);
+
+  fightingSkillOptions = signal(globalFightingSkillOptions);
+  fightingSkillFilter = signal(null as string | null);
+
   ngOnInit(): void {
     this.forcePageLoad();
+    this.httpClient.getAllSkills()
+      .then(pageData => {
+        const options = pageData.data.map(d => (
+          { display: d.skillName, value: d.skillTagId.toString() } as SelectListOption
+        ));
+        this.skillTagOptions.set(options);
+      })
   }
 
   forcePageLoad() {
     this.onPageChange({ first: this.first() });
+  }
+
+  applyFilter() {
+    console.log('skill tag filter', this.skillTagFilter());
+    console.log('fighting skill', this.fightingSkillFilter());
   }
 
   onPageChange(event: TableLazyLoadEvent) {

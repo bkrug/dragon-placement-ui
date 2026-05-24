@@ -21,12 +21,17 @@
     <ng-template #caption>
       <div class="filter">
         <span>Filter:</span>
-        <div>Put Skill Tag Selector Here</div>
-        <div>Put Fighting Skill Selector Here</div>
-        <p-button label="Filter" />
+        <div>Skills: 
+          <p-multiselect [options]="skillTagOptions()" [(ngModel)]="skillTagFilter" optionLabel="display" optionValue="value" />
+        </div>
+        <div>
+          Fighting Skill:
+          <p-select [options]="fightingSkillOptions()" [(ngModel)]="fightingSkillFilter" optionLabel="display" optionValue="value" />
+        </div>
+        <p-button label="Filter" (onClick)="applyFilter()" />
         <p-button label="Clear" />
       </div>
-    </ng-template>    
+    </ng-template>
     <ng-template #header>
       <tr>
         <th></th>

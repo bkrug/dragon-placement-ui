@@ -4,6 +4,7 @@ import { AssignmentHttpClient } from '../../../httpClients/assignment-http-clien
 import { DragonCreateEdit } from '../../../poco/endpointRequestBodies';
 import { JobInclusions } from '../../../poco/enums';
 import { Dragon, DragonValidationFailures, SkillTag } from '../../../poco/models';
+import { globalFightingSkillOptions } from '../../../skillLevels';
 import { EntityFormBase } from '../../local-form/entity-form-base';
 import { LocalCheckbox, LocalNumberField, LocalSelectField, LocalSubmitButton, LocalTagField, LocalTextField, SelectListOption, TagOption } from '../../local-form/local-fields';
 
@@ -15,7 +16,6 @@ import { LocalCheckbox, LocalNumberField, LocalSelectField, LocalSubmitButton, L
 })
 export class DragonForm extends EntityFormBase<Dragon, DragonValidationFailures> implements OnInit {
   httpClient = inject(AssignmentHttpClient);
-  //dragon = signal(new Dragon());
 
   constructor() {
     super('dragonId');
@@ -27,7 +27,6 @@ export class DragonForm extends EntityFormBase<Dragon, DragonValidationFailures>
     if (this.entityId)
       this.httpClient.getDragonWithJobs(this.entityId, JobInclusions.None)
         .then(validatedResponse => {
-          //this.dragon.set(validatedResponse.payload);
           this.formGroup.set(this.createDragonFormGroup(validatedResponse.payload));
         });
   }
@@ -40,12 +39,7 @@ export class DragonForm extends EntityFormBase<Dragon, DragonValidationFailures>
       : tagOption.value;
   }
 
-  skillLevels = [
-    { value: null, display: 'Select Skill Level...' },
-    { value: 'b',  display: 'Basic' },
-    { value: 'm',  display: 'Medium' },
-    { value: 'a',  display: 'Advanced' }
-  ] as SelectListOption[];
+  skillLevels = globalFightingSkillOptions;
 
   skillTags = signal([] as TagOption[]);
 
@@ -83,6 +77,5 @@ export class DragonForm extends EntityFormBase<Dragon, DragonValidationFailures>
 
   protected override handleSubmissionSuccess(payload: Dragon) {
     this.entityId = payload.dragonId;
-    //this.dragon.set(payload);
   }
 }
