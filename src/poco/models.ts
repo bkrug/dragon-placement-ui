@@ -53,6 +53,7 @@ export class DisplayDragon {
   lengthInMeters: number = 0;
   fightingSkills: string | null = null;
   assignments: DisplayAssignment[] = [];
+  skillTags: SkillTag[] = [];
 }
 
 export class DisplayAssignment {

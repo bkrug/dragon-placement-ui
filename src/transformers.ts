@@ -31,7 +31,8 @@ export const mapDragonToDisplayDragon = (source: Dragon) => {
     weightInKg: source.weightInKg,
     lengthInMeters: source.lengthInMeters,
     fightingSkills: source.fightingSkills,
-    assignments: source.assignments.map(mapAssigmentToDisplayAssignment)
+    assignments: source.assignments.map(mapAssigmentToDisplayAssignment),
+    skillTags: source.skillTags
   } as DisplayDragon
 }
 

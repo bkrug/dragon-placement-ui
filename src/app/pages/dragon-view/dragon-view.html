@@ -26,6 +26,10 @@
         <td>Length in Meters</td>
         <td>{{ dragon().lengthInMeters }}</td>
       </tr>
+      <tr>
+        <td>Skills</td>
+        <td>{{ dragon().skillTags.map(st => st.skillName).join(', ') }}</td>
+      </tr>      
     </tbody>
   </table>
 
