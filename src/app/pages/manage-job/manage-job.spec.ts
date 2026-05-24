@@ -41,7 +41,7 @@ describe('ManageJob', () => {
     let getCandidateCount = 0;
     let getAssignedCount = 0;
     let postAssignmentCount = 0;
-    mockHttpClient.getOnePageOfCandidates = async (_jobId: number, _skillTagIds: number[], offset: number, limit: number) => {
+    mockHttpClient.getOnePageOfCandidates = async (_jobId: number, _skillTagIds: number[], _fightingSkilts: string | null, offset: number, limit: number) => {
       ++getCandidateCount;
       return { offset, limit, totalRecords: 1, data: [mockDragon] } as PagedData<Dragon>;
     };
@@ -97,7 +97,7 @@ describe('ManageJob', () => {
     let getCandidateCount = 0;
     let getAssignedCount = 0;
     let deleteAssignmentCount = 0;
-    mockHttpClient.getOnePageOfCandidates = async (_jobId: number, _skillTagIds: number[], offset: number, limit: number) => {
+    mockHttpClient.getOnePageOfCandidates = async (_jobId: number, _skillTagIds: number[], _fightingSkilts: string | null, offset: number, limit: number) => {
       ++getCandidateCount;
       return { offset, limit, totalRecords: 1, data: [] } as PagedData<Dragon>;
     };
