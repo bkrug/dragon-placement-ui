@@ -6,7 +6,7 @@ import { JobInclusions } from '../../../poco/enums';
 import { Dragon, DragonValidationFailures, SkillTag } from '../../../poco/models';
 import { globalFightingSkillOptions } from '../../../skillLevels';
 import { EntityFormBase } from '../../local-form/entity-form-base';
-import { LocalCheckbox, LocalNumberField, LocalSelectField, LocalSubmitButton, LocalTagField, LocalTextField, SelectListOption, TagOption } from '../../local-form/local-fields';
+import { LocalCheckbox, LocalNumberField, LocalSelectField, LocalSubmitButton, LocalTagField, LocalTextField, TagOption } from '../../local-form/local-fields';
 
 @Component({
   selector: 'app-dragon-form',
@@ -32,7 +32,7 @@ export class DragonForm extends EntityFormBase<Dragon, DragonValidationFailures>
   }
 
   toTagOption(skillTag: SkillTag) { return { value: skillTag.skillTagId, display: skillTag.skillName } as TagOption; }
-  toSkillTagId(tagOption: TagOption) { 
+  toSkillTagId(tagOption: TagOption) {
     //HACK: Despite the strict typing of typescript, testing reveals "tagOption" be a number.
     return (typeof tagOption === 'number')
       ? tagOption as number

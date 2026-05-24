@@ -55,7 +55,7 @@ export function getUnixSeconds(sourceDate: string | Date | null | undefined) {
   if (sourceDate instanceof Date) {
     return Math.floor(sourceDate.getTime() / 1000)
   }
-  else if (typeof sourceDate === "string") {
+  else if (typeof sourceDate === 'string') {
     const matches = sourceDate.match(isoDateRegex);
     if (matches === null || matches.length === 0) {
       return 0;

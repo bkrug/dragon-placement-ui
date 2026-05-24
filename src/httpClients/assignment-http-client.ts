@@ -53,7 +53,7 @@ export class AssignmentHttpClient {
 
   async getJob(jobId: number) {
     return await HttpHelpers.requestValidatedPayload<Job>(`${apiUrl}job/${jobId}`);
-  };  
+  };
 
   async postJobForm(job: JobCreateEdit) {
     return await HttpHelpers.submitForm<Job, JobValidationFailures>(`${apiUrl}job`, 'POST', job);
@@ -66,5 +66,5 @@ export class AssignmentHttpClient {
   async getAllSkills() {
     const limit = 1*1000*1000*1000;
     return await HttpHelpers.getOnePage<SkillTag>(`${apiUrl}skill-tag?offset=0&limit=${limit}`);
-  };  
+  };
 }

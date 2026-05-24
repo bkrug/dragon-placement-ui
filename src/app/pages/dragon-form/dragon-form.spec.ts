@@ -13,10 +13,6 @@ describe('Dragon Form Tests', () => {
     return nativeElement.querySelector(css) as HTMLInputElement;
   }
 
-  function getSelectElement(nativeElement:HTMLDivElement, css:string) {
-    return nativeElement.querySelector(css) as HTMLSelectElement;
-  }
-
   it('Load a blank Dragon Form for creation of a dragon', async () => {
     const mockHttpClient = new AssignmentHttpClient();
     let getMethodWasCalled = false;
@@ -148,7 +144,7 @@ describe('Dragon Form Tests', () => {
     };
 
     const mockActivatedRoute = new MockActivatedRoute();
-    const mockParams : Record<string, any> = { ['dragonId'] : recordId };
+    const mockParams : Record<string, number> = { ['dragonId'] : recordId };
     mockActivatedRoute.setParams(mockParams);
     TestBed.configureTestingModule({
       providers: [
@@ -236,7 +232,7 @@ describe('Dragon Form Tests', () => {
     };
 
     const mockActivatedRoute = new MockActivatedRoute();
-    const mockParams: Record<string, any> = { ['dragonId']: recordId };
+    const mockParams: Record<string, number> = { ['dragonId']: recordId };
     mockActivatedRoute.setParams(mockParams);
     TestBed.configureTestingModule({
       providers: [
@@ -307,7 +303,7 @@ describe('Dragon Form Tests', () => {
     };
 
     const mockActivatedRoute = new MockActivatedRoute();
-    const mockParams: Record<string, any> = { ['dragonId']: recordId };
+    const mockParams: Record<string, number> = { ['dragonId']: recordId };
     mockActivatedRoute.setParams(mockParams);
     TestBed.configureTestingModule({
       providers: [
@@ -339,7 +335,14 @@ describe('Dragon Form Tests', () => {
       payload: new Dragon()
     } as ValidatedPayload<Dragon>);
 
-    mockHttpClient.postDragonForm = () => new Promise(() => {});
+    mockHttpClient.postDragonForm = async () => {
+      const failedForm = {
+        isInternalError: false,
+        isSuccess: false,
+        payload: new Dragon()
+      } as ValidatedPayload<Dragon>;
+      return Effect.succeed(failedForm) as Effect.Effect<ValidatedPayload<Dragon>, ValidatedForm<DragonValidationFailures>, never>;
+    };
 
     mockHttpClient.getAllSkills = async () => {
       return {

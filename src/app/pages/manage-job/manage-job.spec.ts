@@ -37,7 +37,7 @@ describe('ManageJob', () => {
   it('When a dragon from the list of candidates is assigned, a request should be made for both dragon tables to reload data.', async () => {
     const mockHttpClient = new AssignmentHttpClient();
     mockHttpClient.getJob = async () => mockValidatedJob(mockJob);
-    
+
     let getCandidateCount = 0;
     let getAssignedCount = 0;
     let postAssignmentCount = 0;
@@ -57,8 +57,8 @@ describe('ManageJob', () => {
     mockHttpClient.getAllSkills = async () => { return { offset: 0, limit: 0, totalRecords: 0, data: [] } as PagedData<SkillTag>; }
 
     const mockActivatedRoute = new MockActivatedRoute();
-    const mockParams : Record<string, any> = { ['jobId'] : jobId };
-    mockActivatedRoute.setParams(mockParams);    
+    const mockParams : Record<string, number> = { ['jobId'] : jobId };
+    mockActivatedRoute.setParams(mockParams);
 
     //Act
     await TestBed.configureTestingModule({
@@ -113,7 +113,7 @@ describe('ManageJob', () => {
     mockHttpClient.getAllSkills = async () => { return { offset: 0, limit: 0, totalRecords: 0, data: [] } as PagedData<SkillTag>; }
 
     const mockActivatedRoute = new MockActivatedRoute();
-    const mockParams : Record<string, any> = { ['jobId'] : jobId };
+    const mockParams : Record<string, number> = { ['jobId'] : jobId };
     mockActivatedRoute.setParams(mockParams);
 
     //Act

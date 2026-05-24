@@ -139,7 +139,7 @@ describe('Job Form Tests', () => {
     };
 
     const mockActivatedRoute = new MockActivatedRoute();
-    const mockParams: Record<string, any> = { ['jobId']: recordId };
+    const mockParams: Record<string, number> = { ['jobId']: recordId };
     mockActivatedRoute.setParams(mockParams);
     TestBed.configureTestingModule({
       providers: [
@@ -222,7 +222,7 @@ describe('Job Form Tests', () => {
     };
 
     const mockActivatedRoute = new MockActivatedRoute();
-    const mockParams: Record<string, any> = { ['jobId']: recordId };
+    const mockParams: Record<string, number> = { ['jobId']: recordId };
     mockActivatedRoute.setParams(mockParams);
     TestBed.configureTestingModule({
       providers: [
