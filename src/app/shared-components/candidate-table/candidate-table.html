@@ -25,7 +25,7 @@
         Fighting Skill:
         <p-select [options]="fightingSkillOptions()" [(ngModel)]="fightingSkillFilter" optionLabel="display" optionValue="value" (onChange)="forcePageLoad()" />
       </div>
-      <p-button label="Clear" />
+      <p-button label="Clear" (onClick)="clearFilter()" />
     </div>
   </ng-template>
   <ng-template #header>

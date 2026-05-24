@@ -46,6 +46,12 @@ export class CandidateTable implements OnInit {
       })
   }
 
+  clearFilter() {
+    this.skillTagFilter.set([]);
+    this.fightingSkillFilter.set(null);
+    this.forcePageLoad();
+  }
+
   forcePageLoad() {
     this.onPageChange({ first: this.first() });
   }
