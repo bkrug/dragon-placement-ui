@@ -27,8 +27,6 @@ describe('DragonView', () => {
           dragonId: dragonId,
           givenName: 'Girbit',
           familyName: 'Smokeson',
-          canBreathFire: true,
-          canTakePassengers: true,
           weightInKg: null,
           lengthInMeters: null,
           fightingSkills: null,

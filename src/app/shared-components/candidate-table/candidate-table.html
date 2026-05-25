@@ -32,8 +32,6 @@
     <tr>
       <th></th>
       <th>Name</th>
-      <th>Breath Fire</th>
-      <th>Passengers</th>
       <th>Fighting Skills</th>
       <th>Weight (kg)</th>
       <th>Length (m)</th>
@@ -43,8 +41,6 @@
     <tr [pSelectableRow]="dragon">
       <td><p-button (click)="assignDragon(dragon.dragonId)">Assign</p-button></td>
       <td><a href="/dragons/{{dragon.dragonId}}">{{ dragon.givenName }} {{ dragon.familyName }}</a></td>
-      <td>{{ dragon.canBreathFire ? "yes" : "no" }}</td>
-      <td>{{ dragon.canTakePassengers ? "yes" : "no" }}</td>
       <td>{{ dragon.fightingSkills }}</td>
       <td>{{ dragon.weightInKg }}</td>
       <td>{{ dragon.lengthInMeters }}</td>

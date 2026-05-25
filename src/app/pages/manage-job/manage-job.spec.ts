@@ -25,8 +25,6 @@ describe('ManageJob', () => {
     dragonId: 25,
     givenName: 'Ichabod',
     familyName: 'Mane',
-    canBreathFire: false,
-    canTakePassengers: false,
     weightInKg: 3027,
     lengthInMeters: 54,
     fightingSkills: 'm',

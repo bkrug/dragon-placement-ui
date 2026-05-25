@@ -37,8 +37,6 @@ describe('Dragon Form Tests', () => {
           dragonId: 298,
           givenName: dragon.givenName,
           familyName: dragon.familyName,
-          canBreathFire: dragon.canBreathFire,
-          canTakePassengers: dragon.canTakePassengers,
           weightInKg: dragon.weightInKg,
           lengthInMeters: dragon.lengthInMeters,
           fightingSkills: dragon.fightingSkills
@@ -77,15 +75,12 @@ describe('Dragon Form Tests', () => {
     const nativeElement: HTMLDivElement = fixture.nativeElement;
     expect(getInputElement(nativeElement, '#given-name input').value).toBeFalsy();
     expect(getInputElement(nativeElement, '#family-name input').value).toBeFalsy();
-    expect(getInputElement(nativeElement, '#can-breath-fire input').checked).toEqual(false);
-    expect(getInputElement(nativeElement, '#can-take-passengers input').checked).toEqual(false);
     expect(component.formGroup().get('lengthInMeters')?.value).toBeFalsy();
     expect(component.formGroup().get('weightInKg')?.value).toBeFalsy();
     expect(component.formGroup().get('fightingSkills')?.value).toBeFalsy();
 
     //Act: change form values
     component.formGroup().get('givenName')?.setValue('Susan');
-    component.formGroup().get('canBreathFire')?.setValue(true);
     expect(component.formGroup().valid).toEqual(true);
     // const submitButton = fixture.nativeElement.querySelector('button[type="submit"]');
     // submitButton.click();
@@ -94,7 +89,6 @@ describe('Dragon Form Tests', () => {
 
     //Assert record changed
     expect(actualModelInPostRequest.givenName).toEqual('Susan');
-    expect(actualModelInPostRequest.canBreathFire).toEqual(true);
   });
 
   it('Load an existing dragon to be edited from this form', async () => {
@@ -103,8 +97,6 @@ describe('Dragon Form Tests', () => {
       dragonId: recordId,
       givenName: 'Girbit',
       familyName: 'Smokeson',
-      canBreathFire: true,
-      canTakePassengers: false,
       lengthInMeters: 35,
       weightInKg: 2409,
       fightingSkills: 'b'
@@ -164,15 +156,12 @@ describe('Dragon Form Tests', () => {
     const nativeElement: HTMLDivElement = fixture.nativeElement;
     expect(getInputElement(nativeElement, '#given-name input').value).toEqual(initialDbRecord.givenName);
     expect(getInputElement(nativeElement, '#family-name input').value).toEqual(initialDbRecord.familyName);
-    expect(getInputElement(nativeElement, '#can-breath-fire input').checked).toEqual(initialDbRecord.canBreathFire);
-    expect(getInputElement(nativeElement, '#can-take-passengers input').checked).toEqual(initialDbRecord.canTakePassengers);
     expect(component.formGroup().get('lengthInMeters')?.value).toEqual(initialDbRecord.lengthInMeters);
     expect(component.formGroup().get('weightInKg')?.value).toEqual(initialDbRecord.weightInKg);
     expect(component.formGroup().get('fightingSkills')?.value).toEqual(initialDbRecord.fightingSkills);
 
     //Act: change form values
     component.formGroup().get('givenName')?.setValue('Gilbert');
-    component.formGroup().get('canTakePassengers')?.setValue(true);
     const submitButton = fixture.nativeElement.querySelector('button[type="submit"]');
     submitButton.click();
     await fixture.whenStable();
@@ -180,7 +169,6 @@ describe('Dragon Form Tests', () => {
     //Assert record changed
     expect(actualRecordIdInPutRequest).toEqual(recordId);
     expect(actualModelInPutRequest.givenName).toEqual('Gilbert');
-    expect(actualModelInPutRequest.canTakePassengers).toEqual(true);
   });
 
   it('Show server-side validation errors after a failed edit submission', async () => {
@@ -189,8 +177,6 @@ describe('Dragon Form Tests', () => {
       dragonId: recordId,
       givenName: 'Girbit',
       familyName: 'Smokeson',
-      canBreathFire: true,
-      canTakePassengers: false,
       lengthInMeters: 35,
       weightInKg: 2409,
       fightingSkills: 'b'
@@ -267,8 +253,6 @@ describe('Dragon Form Tests', () => {
       dragonId: recordId,
       givenName: 'Girbit',
       familyName: 'Smokeson',
-      canBreathFire: true,
-      canTakePassengers: false,
       lengthInMeters: 35,
       weightInKg: 2409,
       fightingSkills: 'b'

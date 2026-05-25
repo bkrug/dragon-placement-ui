@@ -6,11 +6,11 @@ import { JobInclusions } from '../../../poco/enums';
 import { Dragon, DragonValidationFailures, SkillTag } from '../../../poco/models';
 import { globalFightingSkillOptions } from '../../../skillLevels';
 import { EntityFormBase } from '../../local-form/entity-form-base';
-import { LocalCheckbox, LocalNumberField, LocalSelectField, LocalSubmitButton, LocalTagField, LocalTextField, TagOption } from '../../local-form/local-fields';
+import { LocalNumberField, LocalSelectField, LocalSubmitButton, LocalTagField, LocalTextField, TagOption } from '../../local-form/local-fields';
 
 @Component({
   selector: 'app-dragon-form',
-  imports: [ ReactiveFormsModule, LocalTextField, LocalCheckbox, LocalNumberField, LocalSelectField, LocalSubmitButton, LocalTagField ],
+  imports: [ ReactiveFormsModule, LocalTextField, LocalNumberField, LocalSelectField, LocalSubmitButton, LocalTagField ],
   templateUrl: './dragon-form.html',
   styleUrl: './dragon-form.scss',
 })
@@ -49,8 +49,6 @@ export class DragonForm extends EntityFormBase<Dragon, DragonValidationFailures>
     return new FormGroup({
       givenName: new FormControl(payload.givenName, [ Validators.required ]),
       familyName: new FormControl(payload.familyName),
-      canBreathFire: new FormControl(payload.canBreathFire),
-      canTakePassengers: new FormControl(payload.canTakePassengers),
       weightInKg: new FormControl(payload.weightInKg),
       lengthInMeters: new FormControl(payload.lengthInMeters),
       fightingSkills: new FormControl(payload.fightingSkills),
@@ -63,8 +61,6 @@ export class DragonForm extends EntityFormBase<Dragon, DragonValidationFailures>
     const body = {
       givenName: values.givenName!,
       familyName: values.familyName || null,
-      canBreathFire: values.canBreathFire === true,
-      canTakePassengers: values.canTakePassengers === true,
       weightInKg: values.weightInKg || null,
       lengthInMeters: values.lengthInMeters || null,
       fightingSkills: values.fightingSkills || null,

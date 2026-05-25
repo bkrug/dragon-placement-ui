@@ -4,8 +4,6 @@
   <form [formGroup]="formGroup()" (ngSubmit)="onSubmit()" (focusin)="onFormFocus()">
     <app-local-text-field id="given-name" label="Given Name:" fieldName="givenName" [formGroup]="formGroup()" [fieldControl]="formGroup().get('givenName')" />
     <app-local-text-field id="family-name" label="Family Name:" fieldName="familyName" [formGroup]="formGroup()" [fieldControl]="formGroup().get('familyName')" />
-    <app-local-checkbox id="can-breath-fire" label="Can Breath Fire:" fieldName="canBreathFire" [formGroup]="formGroup()" [fieldControl]="formGroup().get('canBreathFire')" />
-    <app-local-checkbox id="can-take-passengers" label="Can Take Passengers:" fieldName="canTakePassengers" [formGroup]="formGroup()" [fieldControl]="formGroup().get('canTakePassengers')" />
     <app-local-number-field id="length-in-meters" label="Length In Meters:" fieldName="lengthInMeters" [formGroup]="formGroup()" [fieldControl]="formGroup().get('lengthInMeters')" />
     <app-local-number-field id="weight-in-kg" label="Weight In Kilograms:" fieldName="weightInKg" [formGroup]="formGroup()" [fieldControl]="formGroup().get('weightInKg')" />
     <app-local-select-field

@@ -7,14 +7,6 @@
         <td>{{ dragon().givenName }} {{ dragon().familyName || '' }}</td>
       </tr>
       <tr>
-        <td>Can Breath Fire</td>
-        <td>{{ dragon().canBreathFire ? "yes" : "no" }}</td>
-      </tr>
-      <tr>
-        <td>Can Take Passengers</td>
-        <td>{{ dragon().canTakePassengers ? "yes" : "no" }}</td>
-      </tr>
-      <tr>
         <td>Fighting Skills</td>
         <td>{{ (dragon().fightingSkills || '').length === 0 ? '(not specified)' : dragon().fightingSkills }}</td>
       </tr>

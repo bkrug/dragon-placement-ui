@@ -26,8 +26,6 @@ export const mapDragonToDisplayDragon = (source: Dragon) => {
     dragonId: source.dragonId,
     givenName: source.givenName,
     familyName: source.familyName,
-    canBreathFire: source.canBreathFire,
-    canTakePassengers: source.canTakePassengers,
     weightInKg: source.weightInKg,
     lengthInMeters: source.lengthInMeters,
     fightingSkills: source.fightingSkills,

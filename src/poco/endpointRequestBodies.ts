@@ -1,8 +1,6 @@
 export class DragonCreateEdit {
   givenName: string = '';
   familyName: string | null = null;
-  canBreathFire: boolean = false;
-  canTakePassengers: boolean = false;
   weightInKg: number | null = null;
   lengthInMeters: number | null = null;
   fightingSkills: string | null = null;
