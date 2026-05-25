@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { DragonTableType } from '../../../poco/enums';
 import { DragonTable } from '../../shared-components/dragon-table/dragon-table';
 
@@ -7,7 +8,7 @@ import { DragonTable } from '../../shared-components/dragon-table/dragon-table';
 //instead of just assigned or unassigned dragons.
 @Component({
   selector: 'app-dragon-list',
-  imports: [ DragonTable ],
+  imports: [ DragonTable, RouterLink ],
   templateUrl: './dragon-list.html',
   styleUrl: './dragon-list.scss',
 })

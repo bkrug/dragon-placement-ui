@@ -1,5 +1,6 @@
 import { Component, EventEmitter, inject, input, OnInit, Output, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { RouterLink } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { SelectModule } from 'primeng/select';
@@ -12,7 +13,7 @@ import { SelectListOption } from '../../local-form/local-fields';
 
 @Component({
   selector: 'app-candidate-table',
-  imports: [ TableModule, ButtonModule, SelectModule, FormsModule, MultiSelectModule ],
+  imports: [ TableModule, ButtonModule, SelectModule, FormsModule, MultiSelectModule, RouterLink ],
   templateUrl: './candidate-table.html',
   styleUrl: './candidate-table.scss',
 })

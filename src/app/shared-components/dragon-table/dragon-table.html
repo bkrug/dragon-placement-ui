@@ -34,9 +34,9 @@
           <p-button (click)="assignDragon(dragon.dragonId)">Assign</p-button>
         </td>
         <td [style.display]="dragonTableType() === DragonTableType.AllDragons ? null : 'none'">
-          <a href="/dragons-form/{{dragon.dragonId}}">Edit</a>
+          <a [routerLink]="['/dragons-form', dragon.dragonId]">Edit</a>
         </td>
-        <td><a href="/dragons/{{dragon.dragonId}}">{{ dragon.givenName }} {{ dragon.familyName }}</a></td>
+        <td><a [routerLink]="['/dragons', dragon.dragonId]">{{ dragon.givenName }} {{ dragon.familyName }}</a></td>
         <td>{{ dragon.fightingSkills }}</td>
         <td>{{ dragon.weightInKg }}</td>
         <td>{{ dragon.lengthInMeters }}</td>

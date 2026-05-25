@@ -1,4 +1,5 @@
 import { TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
 import { AssignmentHttpClient } from '../../../httpClients/assignment-http-client';
 import { Job } from '../../../poco/models';
 import { PagedData } from '../../../poco/standard-responses';
@@ -8,6 +9,7 @@ describe('JobList', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [JobList],
+      providers: [provideRouter([])],
     }).compileComponents();
   });
 

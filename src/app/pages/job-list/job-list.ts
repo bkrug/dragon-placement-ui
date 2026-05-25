@@ -1,5 +1,6 @@
 import { DatePipe } from '@angular/common';
 import { Component, inject, signal } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { TableLazyLoadEvent, TableModule } from 'primeng/table';
 import { PAGE_SIZE } from '../../../global-consts';
@@ -9,7 +10,7 @@ import { DisplayJob } from '../../../poco/models';
 
 @Component({
   selector: 'app-job-list',
-  imports: [ButtonModule, TableModule, DatePipe],
+  imports: [ButtonModule, TableModule, DatePipe, RouterLink],
   templateUrl: './job-list.html',
   styleUrl: './job-list.scss',
 })

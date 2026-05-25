@@ -40,7 +40,7 @@
   <ng-template #body let-dragon>
     <tr [pSelectableRow]="dragon">
       <td><p-button (click)="assignDragon(dragon.dragonId)">Assign</p-button></td>
-      <td><a href="/dragons/{{dragon.dragonId}}">{{ dragon.givenName }} {{ dragon.familyName }}</a></td>
+      <td><a [routerLink]="['/dragons', dragon.dragonId]">{{ dragon.givenName }} {{ dragon.familyName }}</a></td>
       <td>{{ dragon.fightingSkills }}</td>
       <td>{{ dragon.weightInKg }}</td>
       <td>{{ dragon.lengthInMeters }}</td>

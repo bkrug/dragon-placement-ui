@@ -1,6 +1,6 @@
 <h3>Jobs</h3>
 
-<div class="right-link"><span class="attention">⨮ </span><a href="/jobs-form">Create</a></div>
+<div class="right-link"><span class="attention">⨮ </span><a routerLink="/jobs-form">Create</a></div>
 <p-table
   [value]="jobs()"
   [tableStyle]="{ 'min-width': '50rem' }"
@@ -26,8 +26,8 @@
   </ng-template>
   <ng-template #body let-job>
     <tr>
-      <td><a href="/jobs-form/{{ job.jobId }}">Edit</a></td>
-      <td><a href="/jobs-manage/{{ job.jobId }}">{{ job.jobTitle }}</a></td>
+      <td><a [routerLink]="['/jobs-form', job.jobId]">Edit</a></td>
+      <td><a [routerLink]="['/jobs-manage', job.jobId]">{{ job.jobTitle }}</a></td>
       <td>{{ job.employerName }}</td>
       <td>{{ job.openDescription }}</td>
       <td>{{ job.startDate | date:'fullDate':'+0' }}</td>

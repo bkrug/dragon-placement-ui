@@ -15,7 +15,7 @@
     </ng-template>
     <ng-template #body let-dragon>
       <tr>
-        <td><a href="/dragons/{{dragon.dragonId}}">{{ dragon.givenName }} {{ dragon.familyName }}</a></td>
+        <td><a [routerLink]="['/dragons', dragon.dragonId]">{{ dragon.givenName }} {{ dragon.familyName }}</a></td>
         <td>{{ getSkillTagsDisplay(dragon) }}</td>
         <td>
           <p-button (click)="unassignDragon(dragon.dragonId)">Unassign</p-button>

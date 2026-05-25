@@ -1,4 +1,5 @@
 import { Component, EventEmitter, inject, input, OnInit, Output, signal } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { TableLazyLoadEvent, TableModule } from 'primeng/table';
 import { PAGE_SIZE } from '../../../global-consts';
@@ -9,7 +10,7 @@ import { ValidatedResponse } from '../../../poco/standard-responses';
 
 @Component({
   selector: 'app-dragon-table',
-  imports: [ TableModule, ButtonModule ],
+  imports: [ TableModule, ButtonModule, RouterLink ],
   templateUrl: './dragon-table.html',
   styleUrl: './dragon-table.scss',
 })
