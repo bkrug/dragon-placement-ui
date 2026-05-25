@@ -39,7 +39,8 @@ describe('Dragon Form Tests', () => {
           familyName: dragon.familyName,
           weightInKg: dragon.weightInKg,
           lengthInMeters: dragon.lengthInMeters,
-          fightingSkills: dragon.fightingSkills
+          fightingSkills: dragon.fightingSkills,
+          skillTags: dragon.skillTagIds.map(stId => ({ skillTageId: stId, skillTageName: '' }))
         })
       } as ValidatedPayload<Dragon>;
       return Effect.succeed(validatedPayload) as Effect.Effect<ValidatedPayload<Dragon>, ValidatedForm<DragonValidationFailures>, never>;
@@ -49,8 +50,11 @@ describe('Dragon Form Tests', () => {
       return {
         offset: 0,
         limit: 20,
-        totalRecords: 0,
-        data: []
+        totalRecords: 2,
+        data: [
+          { skillTagId: 5, skillName: 'Camouflage' },
+          { skillTagId: 8, skillName: 'Stealth' }
+        ]
       } as PagedData<SkillTag>;
     };
 
@@ -78,9 +82,11 @@ describe('Dragon Form Tests', () => {
     expect(component.formGroup().get('lengthInMeters')?.value).toBeFalsy();
     expect(component.formGroup().get('weightInKg')?.value).toBeFalsy();
     expect(component.formGroup().get('fightingSkills')?.value).toBeFalsy();
+    expect(component.formGroup().get('skillTags')?.value).toEqual([]);
 
     //Act: change form values
     component.formGroup().get('givenName')?.setValue('Susan');
+    component.formGroup().get('skillTags')?.setValue([{ value: 5, display: 'Camouflage' }]);
     expect(component.formGroup().valid).toEqual(true);
     // const submitButton = fixture.nativeElement.querySelector('button[type="submit"]');
     // submitButton.click();
@@ -89,6 +95,7 @@ describe('Dragon Form Tests', () => {
 
     //Assert record changed
     expect(actualModelInPostRequest.givenName).toEqual('Susan');
+    expect(actualModelInPostRequest.skillTagIds).toEqual([5]);
   });
 
   it('Load an existing dragon to be edited from this form', async () => {
@@ -99,7 +106,8 @@ describe('Dragon Form Tests', () => {
       familyName: 'Smokeson',
       lengthInMeters: 35,
       weightInKg: 2409,
-      fightingSkills: 'b'
+      fightingSkills: 'b',
+      skillTags: [{ skillTagId: 3, skillName: 'Roar' }]
     });
 
     const mockHttpClient = new AssignmentHttpClient();
@@ -130,8 +138,11 @@ describe('Dragon Form Tests', () => {
       return {
         offset: 0,
         limit: 20,
-        totalRecords: 0,
-        data: []
+        totalRecords: 2,
+        data: [
+          { skillTagId: 3, skillName: 'Roar' },
+          { skillTagId: 7, skillName: 'Flight' }
+        ]
       } as PagedData<SkillTag>;
     };
 
@@ -159,9 +170,11 @@ describe('Dragon Form Tests', () => {
     expect(component.formGroup().get('lengthInMeters')?.value).toEqual(initialDbRecord.lengthInMeters);
     expect(component.formGroup().get('weightInKg')?.value).toEqual(initialDbRecord.weightInKg);
     expect(component.formGroup().get('fightingSkills')?.value).toEqual(initialDbRecord.fightingSkills);
+    expect(component.formGroup().get('skillTags')?.value).toEqual([{ value: 3, display: 'Roar' }]);
 
     //Act: change form values
     component.formGroup().get('givenName')?.setValue('Gilbert');
+    component.formGroup().get('skillTags')?.setValue([{ value: 7, display: 'Flight' }]);
     const submitButton = fixture.nativeElement.querySelector('button[type="submit"]');
     submitButton.click();
     await fixture.whenStable();
@@ -169,6 +182,7 @@ describe('Dragon Form Tests', () => {
     //Assert record changed
     expect(actualRecordIdInPutRequest).toEqual(recordId);
     expect(actualModelInPutRequest.givenName).toEqual('Gilbert');
+    expect(actualModelInPutRequest.skillTagIds).toEqual([7]);
   });
 
   it('Show server-side validation errors after a failed edit submission', async () => {
