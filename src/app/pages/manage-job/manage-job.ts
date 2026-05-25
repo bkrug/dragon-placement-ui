@@ -1,6 +1,6 @@
 import { DatePipe } from '@angular/common';
 import { Component, inject, OnInit, signal, viewChild } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { AssignmentHttpClient } from '../../../httpClients/assignment-http-client';
 import { mapJobToDisplayJob } from '../../../misc/transformers';
 import { DragonTableType } from '../../../poco/enums';
@@ -10,7 +10,7 @@ import { CandidateTable } from '../../shared-components/candidate-table/candidat
 
 @Component({
   selector: 'app-manage-job',
-  imports: [DatePipe, AssignedDragonTable, CandidateTable],
+  imports: [DatePipe, AssignedDragonTable, CandidateTable, RouterLink],
   templateUrl: './manage-job.html',
   styleUrl: './manage-job.scss',
 })
