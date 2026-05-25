@@ -38,16 +38,6 @@
     height: 100dvh;
   }
 
-  .site-header {
-    font-weight: 500;
-    line-height: 100%;
-    letter-spacing: -0.125rem;
-    margin: 0;
-    font-family: "Inter Tight", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-      Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
-      "Segoe UI Symbol";
-  }
-
   main {
     width: 100%;
     display: flex;
@@ -60,11 +50,28 @@
 
   .content {
     display: flex;
-    justify-content: space-around;
+    /* justify-content: space-around; */
     width: 100%;
-    max-width: 700px;
     margin-bottom: 3rem;
+    
+    > div, > a {
+      margin: 0 1em;
+    }
   }
+
+  .site-title {
+    display: flex;
+
+    h1 {
+      font-weight: 500;
+      line-height: 100%;
+      letter-spacing: -0.125rem;
+      margin: 0 .3em;
+      font-family: "Inter Tight", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+        Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
+        "Segoe UI Symbol";
+    }
+  }  
 
   @media screen and (max-width: 650px) {
     .content {
@@ -83,9 +90,15 @@
 
 <main class="main">
   <div class="content">
-    <div class="left-side">
-      <h1 class="site-header"><a href="/">Dragon Job Placement</a></h1>
+    <div  class="site-title">
+      <img src="icons8-european-dragon-32.png" />
+      <h1><a href="/">Dragon Job Placement</a></h1>
+      <img src="icons8-european-dragon-32.png" />
     </div>
+    <a href="/jobs">Manage Jobs</a>
+    <a href="/dragons">View Dragons</a>
+    <a href="/ability-table">Ability Table</a>
+    <a href="/counter">Counter Test</a>  
   </div>
 </main>
 
