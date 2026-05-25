@@ -1,10 +1,10 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AssignmentHttpClient } from '../../../httpClients/assignment-http-client';
+import { globalFightingSkillOptions } from '../../../misc/skillLevels';
 import { DragonCreateEdit } from '../../../poco/endpointRequestBodies';
 import { JobInclusions } from '../../../poco/enums';
 import { Dragon, DragonValidationFailures, SkillTag } from '../../../poco/models';
-import { globalFightingSkillOptions } from '../../../skillLevels';
 import { EntityFormBase } from '../../local-form/entity-form-base';
 import { LocalNumberField, LocalSelectField, LocalSubmitButton, LocalTagField, LocalTextField, TagOption } from '../../local-form/local-fields';
 

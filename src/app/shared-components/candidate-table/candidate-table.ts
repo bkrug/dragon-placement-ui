@@ -6,8 +6,8 @@ import { SelectModule } from 'primeng/select';
 import { TableLazyLoadEvent, TableModule } from 'primeng/table';
 import { PAGE_SIZE } from '../../../global-consts';
 import { AssignmentHttpClient } from '../../../httpClients/assignment-http-client';
+import { globalFightingSkillOptions } from '../../../misc/skillLevels';
 import { DisplayJob, Dragon } from '../../../poco/models';
-import { globalFightingSkillOptions } from '../../../skillLevels';
 import { SelectListOption } from '../../local-form/local-fields';
 
 @Component({

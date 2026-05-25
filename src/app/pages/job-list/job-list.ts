@@ -4,8 +4,8 @@ import { ButtonModule } from 'primeng/button';
 import { TableLazyLoadEvent, TableModule } from 'primeng/table';
 import { PAGE_SIZE } from '../../../global-consts';
 import { AssignmentHttpClient } from '../../../httpClients/assignment-http-client';
+import { mapJobToDisplayJob } from '../../../misc/transformers';
 import { DisplayJob } from '../../../poco/models';
-import { mapJobToDisplayJob } from '../../../transformers';
 
 @Component({
   selector: 'app-job-list',

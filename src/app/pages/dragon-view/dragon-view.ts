@@ -4,9 +4,9 @@ import { ActivatedRoute } from '@angular/router';
 import { TableModule } from 'primeng/table';
 import { PAGE_SIZE } from '../../../global-consts';
 import { AssignmentHttpClient } from '../../../httpClients/assignment-http-client';
+import { mapDragonToDisplayDragon } from '../../../misc/transformers';
 import { JobInclusions } from '../../../poco/enums';
 import { Assignment, DisplayDragon } from '../../../poco/models';
-import { mapDragonToDisplayDragon } from '../../../transformers';
 
 @Component({
   selector: 'app-dragon-view',

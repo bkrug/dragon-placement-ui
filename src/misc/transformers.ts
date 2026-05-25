@@ -1,4 +1,4 @@
-import { Assignment, DisplayAssignment, DisplayDragon, DisplayJob, Dragon, Job } from './poco/models';
+import { Assignment, DisplayAssignment, DisplayDragon, DisplayJob, Dragon, Job } from '../poco/models';
 
 export const mapJobToDisplayJob = (source: Job) => {
   const startDate = new Date(source.startDateUnix * 1000);

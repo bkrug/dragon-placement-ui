@@ -1,4 +1,4 @@
-import { SelectListOption } from './app/local-form/local-fields';
+import { SelectListOption } from '../app/local-form/local-fields';
 
 export const globalFightingSkillOptions = [
   { value: null, display: 'Select Skill Level...' },

@@ -2,9 +2,9 @@ import { DatePipe } from '@angular/common';
 import { Component, inject, OnInit, signal, viewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AssignmentHttpClient } from '../../../httpClients/assignment-http-client';
+import { mapJobToDisplayJob } from '../../../misc/transformers';
 import { DragonTableType } from '../../../poco/enums';
 import { DisplayJob } from '../../../poco/models';
-import { mapJobToDisplayJob } from '../../../transformers';
 import { AssignedDragonTable } from '../../shared-components/assigned-dragon-table/assigned-dragon-table';
 import { CandidateTable } from '../../shared-components/candidate-table/candidate-table';
 
