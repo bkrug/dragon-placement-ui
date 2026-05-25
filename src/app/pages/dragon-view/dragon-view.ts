@@ -1,6 +1,6 @@
 import { DatePipe } from '@angular/common';
 import { Component, inject, OnInit, signal } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { TableModule } from 'primeng/table';
 import { PAGE_SIZE } from '../../../global-consts';
 import { AssignmentHttpClient } from '../../../httpClients/assignment-http-client';
@@ -10,7 +10,7 @@ import { Assignment, DisplayDragon } from '../../../poco/models';
 
 @Component({
   selector: 'app-dragon-view',
-  imports: [ DatePipe, TableModule ],
+  imports: [ DatePipe, TableModule, RouterLink ],
   templateUrl: './dragon-view.html',
   styleUrl: './dragon-view.scss',
 })

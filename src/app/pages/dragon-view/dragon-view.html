@@ -1,5 +1,5 @@
 @if (haveDragon() === true) {
-  <a href="/dragons-form/{{dragon().dragonId}}">Edit</a>
+  <a [routerLink]="['/dragons-form', dragon().dragonId]">Edit</a>
   <table>
     <tbody>
       <tr>

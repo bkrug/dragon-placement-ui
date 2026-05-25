@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, provideRouter } from '@angular/router';
 import { AssignmentHttpClient } from '../../../httpClients/assignment-http-client';
 import { Dragon } from '../../../poco/models';
 import { ValidatedPayload } from '../../../poco/standard-responses';
@@ -13,6 +13,7 @@ describe('DragonView', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [DragonView],
+      providers: [provideRouter([])]
     }).compileComponents();
   });
 
