@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { SelectModule } from 'primeng/select';
@@ -16,7 +16,7 @@ import { DisplayJob } from '../../../poco/models';
   templateUrl: './job-list.html',
   styleUrl: './job-list.scss',
 })
-export class JobList {
+export class JobList implements OnInit {
   httpClient = inject(AssignmentHttpClient);
 
   jobs = signal<DisplayJob[]>([]);
@@ -30,7 +30,20 @@ export class JobList {
   ];
   jobInclusionsFilter = signal<JobInclusions>(JobInclusions.CurrentAndFuture);
 
+  private readonly localStorageKey = 'job-list:jobInclusions';
+
+  ngOnInit() {
+    const stored = localStorage.getItem(this.localStorageKey);
+    if (stored !== null) {
+      const parsed = parseInt(stored, 10);
+      if (this.jobInclusionsOptions.some(o => o.value === parsed)) {
+        this.jobInclusionsFilter.set(parsed);
+      }
+    }
+  }
+
   onJobInclusionChange() {
+    localStorage.setItem(this.localStorageKey, String(this.jobInclusionsFilter()));
     this.onPageChange({ first: 0 });
   }
 
