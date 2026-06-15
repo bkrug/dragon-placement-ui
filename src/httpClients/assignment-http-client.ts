@@ -13,8 +13,8 @@ const apiUrl = environment.backendApi.endsWith('/')
   providedIn: 'root',
 })
 export class AssignmentHttpClient {
-  async getOnePageOfJobs(offset: number, limit: number) {
-    return await HttpHelpers.getOnePage<Job>(`${apiUrl}job?offset=${offset}&limit=${limit}`);
+  async getOnePageOfJobs(offset: number, limit: number, jobInclusions: JobInclusions) {
+    return await HttpHelpers.getOnePage<Job>(`${apiUrl}job?offset=${offset}&limit=${limit}&jobInclusions=${jobInclusions}`);
   }
 
   async getOnePageOfDragons(offset: number, limit: number) {

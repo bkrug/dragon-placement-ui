@@ -1,7 +1,8 @@
 export enum JobInclusions {
   None = 0,
   CurrentAndFuture,
-  Past
+  Past,
+  All
 }
 
 export enum DragonTableType {
