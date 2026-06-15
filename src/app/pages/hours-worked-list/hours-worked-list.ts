@@ -1,4 +1,4 @@
-import { DatePipe } from '@angular/common';
+import { DatePipe, DecimalPipe } from '@angular/common';
 import { Component, inject, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { TableLazyLoadEvent, TableModule } from 'primeng/table';
@@ -8,7 +8,7 @@ import { HoursWorked } from '../../../poco/models';
 
 @Component({
   selector: 'app-hours-worked-list',
-  imports: [TableModule, DatePipe],
+  imports: [TableModule, DatePipe, DecimalPipe],
   templateUrl: './hours-worked-list.html',
   styleUrl: './hours-worked-list.scss',
 })

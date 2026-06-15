@@ -16,8 +16,9 @@
   <ng-template #header>
     <tr>
       <th>Date</th>
-      <th>Start Time</th>
-      <th>End Time</th>
+      <th>Start</th>
+      <th>End</th>
+      <th>Total Hours</th>
     </tr>
   </ng-template>
   <ng-template #body let-hw>
@@ -25,6 +26,7 @@
       <td>{{ hw.startDateTimeUnix * 1000 | date:'mediumDate':'+0' }}</td>
       <td>{{ hw.startDateTimeUnix * 1000 | date:'shortTime':'+0' }}</td>
       <td>{{ hw.endDateTimeUnix * 1000 | date:'shortTime':'+0' }}</td>
+      <td>{{ ((hw.endDateTimeUnix - hw.startDateTimeUnix) / 3600) | number: '1.2-2'}}</td>
     </tr>
   </ng-template>
 </p-table>
