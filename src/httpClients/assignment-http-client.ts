@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { environment } from '../environments/environment';
 import { DragonCreateEdit, JobCreateEdit } from '../poco/endpointRequestBodies';
 import { JobInclusions } from '../poco/enums';
-import { Dragon, DragonValidationFailures, Job, JobValidationFailures, SkillTag } from '../poco/models';
+import { Dragon, DragonValidationFailures, HoursWorked, Job, JobValidationFailures, SkillTag } from '../poco/models';
 import { HttpHelpers } from './http-helpers';
 
 const apiUrl = environment.backendApi.endsWith('/')
@@ -15,6 +15,10 @@ const apiUrl = environment.backendApi.endsWith('/')
 export class AssignmentHttpClient {
   async getOnePageOfJobs(offset: number, limit: number, jobInclusions: JobInclusions) {
     return await HttpHelpers.getOnePage<Job>(`${apiUrl}job?offset=${offset}&limit=${limit}&jobInclusions=${jobInclusions}`);
+  }
+
+  async getOnePageOfHoursWorked(dragonId: number, offset: number, limit: number) {
+    return await HttpHelpers.getOnePage<HoursWorked>(`${apiUrl}dragon/${dragonId}/hoursworked?offset=${offset}&limit=${limit}`);
   }
 
   async getOnePageOfDragons(offset: number, limit: number) {

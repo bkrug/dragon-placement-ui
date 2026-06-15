@@ -1,0 +1,30 @@
+<h3>Hours Worked</h3>
+
+<p-table
+  [value]="hoursWorked()"
+  [tableStyle]="{ 'min-width': '40rem' }"
+  paginator="true"
+  [rows]="pageSize"
+  [totalRecords]="totalRecords()"
+  showCurrentPageReport="true"
+  currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+  showLoader="true"
+  lazy="true"
+  (onLazyLoad)="onPageChange($event)"
+  size="small"
+  >
+  <ng-template #header>
+    <tr>
+      <th>Date</th>
+      <th>Start Time</th>
+      <th>End Time</th>
+    </tr>
+  </ng-template>
+  <ng-template #body let-hw>
+    <tr>
+      <td>{{ hw.startDateTimeUnix * 1000 | date:'mediumDate':'+0' }}</td>
+      <td>{{ hw.startDateTimeUnix * 1000 | date:'shortTime':'+0' }}</td>
+      <td>{{ hw.endDateTimeUnix * 1000 | date:'shortTime':'+0' }}</td>
+    </tr>
+  </ng-template>
+</p-table>

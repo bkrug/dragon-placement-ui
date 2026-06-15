@@ -5,6 +5,7 @@ import { DragonForm } from './pages/dragon-form/dragon-form';
 import { DragonList } from './pages/dragon-list/dragon-list';
 import { DragonView } from './pages/dragon-view/dragon-view';
 import { Home } from './pages/home/home';
+import { HoursWorkedList } from './pages/hours-worked-list/hours-worked-list';
 import { JobList } from './pages/job-list/job-list';
 import { JobForm } from './pages/job-form/job-form';
 import { ManageJob } from './pages/manage-job/manage-job';
@@ -41,6 +42,10 @@ export const routes: Routes = [
   {
     path: 'dragons-form',
     component: DragonForm
+  },
+  {
+    path: 'dragons/:dragonId/hours-worked',
+    component: HoursWorkedList
   },
   {
     path: 'dragons/:dragonId',

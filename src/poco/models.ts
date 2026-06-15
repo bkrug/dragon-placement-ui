@@ -77,3 +77,11 @@ export class SkillTag {
   skillTagId: number = 0;
   skillName: string = '';
 }
+
+export class HoursWorked {
+  hoursWorkedId: number = 0;
+  assignmentId: number = 0;
+  dragonId: number = 0;
+  startDateTimeUnix: number = 0;
+  endDateTimeUnix: number = 0;
+}
