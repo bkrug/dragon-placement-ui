@@ -1,4 +1,5 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { DecimalPipe } from '@angular/common';
+import { Component, effect, inject, OnInit, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { AssignmentHttpClient } from '../../../httpClients/assignment-http-client';
@@ -7,9 +8,11 @@ import { HoursWorked, HoursWorkedValidationFailures } from '../../../poco/models
 import { EntityFormBase } from '../../local-form/entity-form-base';
 import { LocalDateField, LocalSubmitButton, LocalTimeField } from '../../local-form/local-fields';
 
+const SECONDS_PER_DAY = 24*60*60;
+
 @Component({
   selector: 'app-hours-worked-form',
-  imports: [ReactiveFormsModule, LocalDateField, LocalTimeField, LocalSubmitButton],
+  imports: [ReactiveFormsModule, LocalDateField, LocalTimeField, LocalSubmitButton, DecimalPipe],
   templateUrl: './hours-worked-form.html',
   styleUrl: './hours-worked-form.scss',
 })
@@ -19,12 +22,20 @@ export class HoursWorkedForm extends EntityFormBase<HoursWorked, HoursWorkedVali
   private dragonId: number = 0;
   private assignmentId: number = 0;
 
+  totalHours = signal<number | null>(null);
+
   constructor() {
     super('hoursWorkedId');
     this.route.params.subscribe(params => {
       this.dragonId = params['dragonId'] || 0;
       this.assignmentId = params['assignmentId'] || 0;
       this.entityId = params['hoursWorkedId'] || 0;
+    });
+    effect((onCleanup) => {
+      const fg = this.formGroup();
+      this.calcTotalHours(fg.value);
+      const sub = fg.valueChanges.subscribe(values => this.calcTotalHours(values));
+      onCleanup(() => sub.unsubscribe());
     });
   }
 
@@ -34,7 +45,9 @@ export class HoursWorkedForm extends EntityFormBase<HoursWorked, HoursWorkedVali
     if (this.entityId) {
       this.httpClient.getHoursWorked(this.entityId)
         .then(r => {
-          return this.formGroup.set(this.createFormGroup(r.payload));
+          this.dragonId = r.payload.dragonId;
+          this.assignmentId = r.payload.assignmentId;
+          this.formGroup.set(this.createFormGroup(r.payload));
         });
     }
   }
@@ -56,13 +69,31 @@ export class HoursWorkedForm extends EntityFormBase<HoursWorked, HoursWorkedVali
     });
   }
 
+  private calcTotalHours(values: { startDateTimeUnix?: Date | null, endDateTimeUnix?: Date | null }) {
+    const start = values.startDateTimeUnix;
+    const end = values.endDateTimeUnix;
+    if (!start || !end) {
+      this.totalHours.set(null);
+      return;
+    }
+    const startSecs = start.getTime() / 1000 % SECONDS_PER_DAY;
+    const endSecs = end.getTime() / 1000 % SECONDS_PER_DAY;
+    this.totalHours.set(((endSecs - startSecs + SECONDS_PER_DAY) % SECONDS_PER_DAY) / 3600);
+  }
+
   protected override makeSubmissionRequest() {
     const values = this.formGroup().value;
+    const workDateUnixSeconds = Math.floor(values.workDateUnix!.getTime() / 1000 / SECONDS_PER_DAY) * SECONDS_PER_DAY;
+    const startTimeUnixSeconds = values.startDateTimeUnix!.getTime() / 1000 % SECONDS_PER_DAY;
+    const endTimeUnixSeconds = values.endDateTimeUnix!.getTime() / 1000 % SECONDS_PER_DAY;
+
     const body: HoursWorkedCreateEdit = {
       assignmentId: this.assignmentId,
       dragonId: this.dragonId,
-      startDateTimeUnix: Math.floor(values.startDateTimeUnix!.getTime() / 1000),
-      endDateTimeUnix: Math.floor(values.endDateTimeUnix!.getTime() / 1000),
+      startDateTimeUnix: workDateUnixSeconds + startTimeUnixSeconds,
+      endDateTimeUnix: endTimeUnixSeconds > startTimeUnixSeconds
+        ? workDateUnixSeconds + endTimeUnixSeconds
+        : workDateUnixSeconds + SECONDS_PER_DAY + endTimeUnixSeconds,
     };
     return this.entityId
       ? this.httpClient.putHoursWorkedForm(this.entityId, body)
