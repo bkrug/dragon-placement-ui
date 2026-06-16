@@ -78,6 +78,11 @@ export class SkillTag {
   skillName: string = '';
 }
 
+export class HoursWorkedValidationFailures {
+  startDateTimeUnix: string = '';
+  endDateTimeUnix: string = '';
+}
+
 export class HoursWorked {
   hoursWorkedId: number = 0;
   assignmentId: number = 0;

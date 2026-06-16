@@ -1,5 +1,6 @@
 <h3>Hours Worked</h3>
 
+<div class="right-link"><span class="attention">⨮ </span><a routerLink="/hours-worked-form">Create</a></div>
 <p-table
   [value]="hoursWorked()"
   [tableStyle]="{ 'min-width': '40rem' }"
@@ -15,6 +16,7 @@
   >
   <ng-template #header>
     <tr>
+      <th></th>
       <th>Date</th>
       <th>Start</th>
       <th>End</th>
@@ -23,6 +25,9 @@
   </ng-template>
   <ng-template #body let-hw>
     <tr>
+      <td>
+        <a [routerLink]="['/hours-worked-form', hw.hoursWorkedId]">Edit</a>
+      </td>      
       <td>{{ hw.startDateTimeUnix * 1000 | date:'mediumDate':'+0' }}</td>
       <td>{{ hw.startDateTimeUnix * 1000 | date:'shortTime':'+0' }}</td>
       <td>{{ hw.endDateTimeUnix * 1000 | date:'shortTime':'+0' }}</td>

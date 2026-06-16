@@ -1,0 +1,14 @@
+<h2>Hours Worked</h2>
+
+<div class="card flex justify-center">
+  <form [formGroup]="formGroup()" (ngSubmit)="onSubmit()" (focusin)="onFormFocus()">
+    <app-local-date-field id="start-date" label="Start Date:" fieldName="startDateTimeUnix" [formGroup]="formGroup()" [fieldControl]="formGroup().get('startDateUnix')" />
+    <app-local-time-field id="start-date" label="Start Time:" fieldName="startDateTimeUnix" [formGroup]="formGroup()" [fieldControl]="formGroup().get('startTimeUnix')" />
+    <app-local-time-field id="end-date" label="End Time:" fieldName="endDateTimeUnix" [formGroup]="formGroup()" [fieldControl]="formGroup().get('endDateTimeUnix')" />
+    <app-local-submit-button
+      [isSubmitDisabled]="!formGroup().valid || isSubmitting()"
+      [isSubmitting]="isSubmitting()"
+      [showSaved]="showSaved()"
+      [submissionError]="submissionError()" />
+  </form>
+</div>
