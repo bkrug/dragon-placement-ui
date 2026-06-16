@@ -22,7 +22,7 @@ export class HoursWorkedForm extends EntityFormBase<HoursWorked, HoursWorkedVali
   private dragonId: number = 0;
   private assignmentId: number = 0;
 
-  totalHours = signal<number | null>(null);
+  totalHours = signal<number>(0);
 
   constructor() {
     super('hoursWorkedId');
@@ -73,12 +73,15 @@ export class HoursWorkedForm extends EntityFormBase<HoursWorked, HoursWorkedVali
     const start = values.startDateTimeUnix;
     const end = values.endDateTimeUnix;
     if (!start || !end) {
-      this.totalHours.set(null);
+      this.totalHours.set(0);
       return;
     }
     const startSecs = start.getTime() / 1000 % SECONDS_PER_DAY;
     const endSecs = end.getTime() / 1000 % SECONDS_PER_DAY;
-    this.totalHours.set(((endSecs - startSecs + SECONDS_PER_DAY) % SECONDS_PER_DAY) / 3600);
+    this.totalHours.set(endSecs > startSecs
+      ? (endSecs - startSecs) / 3600
+      : (endSecs + SECONDS_PER_DAY - startSecs) / 3600
+    );
   }
 
   protected override makeSubmissionRequest() {
