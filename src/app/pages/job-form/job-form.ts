@@ -1,15 +1,15 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AssignmentHttpClient } from '../../../httpClients/assignment-http-client';
-import { getDateFromUnixSeconds, getUnixSeconds } from '../../../misc/transformers';
+import { getDateStringFromUnixSeconds, getUnixSeconds } from '../../../misc/transformers';
 import { JobCreateEdit } from '../../../poco/endpointRequestBodies';
 import { Job, JobValidationFailures, SkillTag } from '../../../poco/models';
 import { EntityFormBase } from '../../local-form/entity-form-base';
-import { LocalDateField, LocalNumberField, LocalSubmitButton, LocalTagField, LocalTextField, TagOption } from '../../local-form/local-fields';
+import { LocalNumberField, LocalStringDateField, LocalSubmitButton, LocalTagField, LocalTextField, TagOption } from '../../local-form/local-fields';
 
 @Component({
   selector: 'app-job-form',
-  imports: [ ReactiveFormsModule, LocalDateField, LocalNumberField, LocalTextField, LocalSubmitButton, LocalTagField ],
+  imports: [ ReactiveFormsModule, LocalStringDateField, LocalNumberField, LocalTextField, LocalSubmitButton, LocalTagField ],
   templateUrl: './job-form.html',
   styleUrl: './job-form.scss',
 })
@@ -47,8 +47,8 @@ export class JobForm extends EntityFormBase<Job, JobValidationFailures> implemen
       jobTitle: new FormControl(payload.jobTitle, [ Validators.required ]),
       employerName: new FormControl(payload.employerName),
       numberOfPositions: new FormControl(payload.numberOfPositions, [ Validators.required ]),
-      startDate: new FormControl(this.entityId ? getDateFromUnixSeconds(payload.startDateUnix) : null),
-      endDate: new FormControl(this.entityId ? getDateFromUnixSeconds(payload.endDateUnix) : null),
+      startDate: new FormControl<string | null>(this.entityId ? getDateStringFromUnixSeconds(payload.startDateUnix) : null),
+      endDate: new FormControl<string | null>(this.entityId ? getDateStringFromUnixSeconds(payload.endDateUnix) : null),
       skillTags: new FormControl(payload.skillTags.map(this.toTagOption))
     })
   }
