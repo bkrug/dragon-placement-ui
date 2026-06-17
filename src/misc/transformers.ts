@@ -68,6 +68,12 @@ export function getUnixSeconds(sourceDate: string | Date | null | undefined) {
   }
 }
 
+export function getDateFromUnixSeconds(unixSeconds: number | null | undefined) {
+  if (unixSeconds === null || unixSeconds === undefined)
+    return null;
+  return new Date(unixSeconds * 1000);
+}
+
 export function getDateStringFromUnixSeconds(unixSeconds: number | null | undefined) {
   if (unixSeconds === null || unixSeconds === undefined)
     return '';
@@ -75,12 +81,6 @@ export function getDateStringFromUnixSeconds(unixSeconds: number | null | undefi
   const month = (ourDate.getUTCMonth() + 1).toString().padStart(2, '0');
   const date = ourDate.getUTCDate().toString().padStart(2, '0');
   return `${ourDate.getUTCFullYear()}-${month}-${date}`;
-}
-
-export function getDateFromUnixSeconds(unixSeconds: number | null | undefined) {
-  if (unixSeconds === null || unixSeconds === undefined)
-    return null;
-  return new Date(unixSeconds * 1000);
 }
 
 export function getTimeStringFromUnixSeconds(unixSeconds: number | null | undefined) {
