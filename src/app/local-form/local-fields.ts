@@ -128,36 +128,6 @@ export class LocalNumberField extends LocalFieldBase<number> {
 }
 
 @Component({
-  selector: 'app-local-date-field',
-  imports: [ ReactiveFormsModule, DatePickerModule, LocalFieldErrors ],
-  templateUrl: './local-date-field.html',
-  styleUrl: './local-field.scss',
-})
-export class LocalDateField extends LocalFieldBase<Date> {
-  inputType = signal('date');
-
-  fieldControl = input.required<AbstractControl<Date|null, Date|null, any> | null>();
-  override getFieldControl() {
-    return this.fieldControl();
-  }
-}
-
-@Component({
-  selector: 'app-local-time-field',
-  imports: [ ReactiveFormsModule, DatePickerModule, LocalFieldErrors ],
-  templateUrl: './local-time-field.html',
-  styleUrl: './local-field.scss',
-})
-export class LocalTimeField extends LocalFieldBase<Date> {
-  inputType = signal('date');
-
-  fieldControl = input.required<AbstractControl<Date|null, Date|null, any> | null>();
-  override getFieldControl() {
-    return this.fieldControl();
-  }
-}
-
-@Component({
   selector: 'app-local-string-date-field',
   imports: [ ReactiveFormsModule, InputTextModule, LocalFieldErrors ],
   templateUrl: './local-string-date-field.html',

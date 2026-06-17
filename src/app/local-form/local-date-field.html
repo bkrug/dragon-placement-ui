@@ -1,9 +1,0 @@
-<div [formGroup]="formGroup()">
-  <label for="{{fieldName()}}">{{label()}}</label>
-  <p-datepicker
-    inputId="{{fieldName()}}"
-    formControlName="{{fieldName()}}"
-    [invalid]="isInvalid()"
-    class="local-date-field" />
-  <app-local-field-errors [errors]="getErrors()" [shouldDisplay]="shouldDisplayError()" />
-</div>
