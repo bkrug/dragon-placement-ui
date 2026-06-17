@@ -5,6 +5,7 @@
     formControlName="{{fieldName()}}"
     [invalid]="isInvalid()"
     [timeOnly]="true"
-    hourFormat="12" />
+    hourFormat="12"
+    class="local-time-field" />
   <app-local-field-errors [errors]="getErrors()" [shouldDisplay]="shouldDisplayError()" />
 </div>
