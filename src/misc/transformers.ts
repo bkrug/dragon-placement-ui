@@ -82,3 +82,12 @@ export function getDateFromUnixSeconds(unixSeconds: number | null | undefined) {
     return null;
   return new Date(unixSeconds * 1000);
 }
+
+export function getTimeStringFromUnixSeconds(unixSeconds: number | null | undefined) {
+  if (unixSeconds === null || unixSeconds === undefined)
+    return '';
+  const d = new Date(unixSeconds * 1000);
+  const hours = d.getUTCHours().toString().padStart(2, '0');
+  const minutes = d.getUTCMinutes().toString().padStart(2, '0');
+  return `${hours}:${minutes}`;
+}

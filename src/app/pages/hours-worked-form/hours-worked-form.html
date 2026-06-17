@@ -2,19 +2,19 @@
 
 <div class="card flex justify-center">
   <form [formGroup]="formGroup()" (ngSubmit)="onSubmit()" (focusin)="onFormFocus()">
-    <app-local-date-field
+    <app-local-string-date-field
       id="start-date"
       label="Start Date:"
       fieldName="workDateUnix"
       [formGroup]="formGroup()"
       [fieldControl]="formGroup().get('workDateUnix')" />
-    <app-local-time-field
+    <app-local-string-time-field
       id="start-date"
       label="Start Time:"
       fieldName="startDateTimeUnix"
       [formGroup]="formGroup()"
       [fieldControl]="formGroup().get('startDateTimeUnix')" />
-    <app-local-time-field
+    <app-local-string-time-field
       id="end-date"
       label="End Time:"
       fieldName="endDateTimeUnix"

@@ -158,6 +158,32 @@ export class LocalTimeField extends LocalFieldBase<Date> {
 }
 
 @Component({
+  selector: 'app-local-string-date-field',
+  imports: [ ReactiveFormsModule, InputTextModule, LocalFieldErrors ],
+  templateUrl: './local-string-date-field.html',
+  styleUrl: './local-field.scss',
+})
+export class LocalStringDateField extends LocalFieldBase<string> {
+  fieldControl = input.required<AbstractControl<string|null, string|null, any> | null>();
+  override getFieldControl() {
+    return this.fieldControl();
+  }
+}
+
+@Component({
+  selector: 'app-local-string-time-field',
+  imports: [ ReactiveFormsModule, InputTextModule, LocalFieldErrors ],
+  templateUrl: './local-string-time-field.html',
+  styleUrl: './local-field.scss',
+})
+export class LocalStringTimeField extends LocalFieldBase<string> {
+  fieldControl = input.required<AbstractControl<string|null, string|null, any> | null>();
+  override getFieldControl() {
+    return this.fieldControl();
+  }
+}
+
+@Component({
   selector: 'app-local-checkbox',
   imports: [ ReactiveFormsModule, CheckboxModule, LocalFieldErrors ],
   templateUrl: './local-checkbox.html',
