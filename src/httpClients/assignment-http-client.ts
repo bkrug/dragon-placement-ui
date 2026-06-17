@@ -73,8 +73,8 @@ export class AssignmentHttpClient {
   providedIn: 'root',
 })
 export class HoursWorkedClient {
-  async getOnePageOfHoursWorked(dragonId: number, offset: number, limit: number) {
-    return await HttpHelpers.getOnePage<HoursWorkedWithJob>(`${apiUrl}dragon/${dragonId}/hoursworked?offset=${offset}&limit=${limit}`);
+  async getOnePageOfHoursWorked(dragonId: number, assignmentId: number, offset: number, limit: number) {
+    return await HttpHelpers.getOnePage<HoursWorkedWithJob>(`${apiUrl}dragon/${dragonId}/assignment/${assignmentId}/hoursworked?offset=${offset}&limit=${limit}`);
   }
 
   async getHoursWorked(hoursWorkedId: number) {

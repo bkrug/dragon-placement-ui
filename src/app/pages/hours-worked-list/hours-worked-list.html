@@ -16,8 +16,7 @@
   >
   <ng-template #header>
     <tr>
-      <th>Employer</th>
-      <th>JobTitle</th>
+      <th>Job</th>
       <th></th>
       <th>Date</th>
       <th>Start</th>
@@ -27,11 +26,8 @@
   </ng-template>
   <ng-template #body let-hw>
     <tr>
-      <td>{{ hw.employerName || '' }}</td>
-      <td>{{ hw.jobTitle }}</td>
-      <td>
-        <a [routerLink]="['/hours-worked-form', hw.hoursWorkedId]">Edit</a>
-      </td>
+      <td>{{ hw.jobTitle }} at {{ hw.employerName || '' }}</td>
+      <td><a [routerLink]="['/hours-worked-form', hw.hoursWorkedId]">Edit</a></td>
       <td>{{ hw.startDateTimeUnix * 1000 | date:'mediumDate':'+0' }}</td>
       <td>{{ hw.startDateTimeUnix * 1000 | date:'shortTime':'+0' }}</td>
       <td>{{ hw.endDateTimeUnix * 1000 | date:'shortTime':'+0' }}</td>

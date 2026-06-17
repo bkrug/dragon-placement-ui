@@ -45,6 +45,7 @@
           <th>Job Title</th>
           <th>Assignment Start</th>
           <th>Assignment End</th>
+          <th></th>
         </tr>
       </ng-template>
       <ng-template #body let-assignment>
@@ -53,6 +54,7 @@
           <td>{{ assignment.job.jobTitle }}</td>
           <td>{{ assignment.startDate | date:'fullDate':'+0' }}</td>
           <td>{{ assignment.endDate === null ? 'not specified' : assignment.endDate | date:'fullDate':'+0' }}</td>
+          <td><a [routerLink]="['/dragons', assignment.dragonId, 'assignments', assignment.assignmentId, 'hours-worked']">Log Hours</a></td>
         </tr>
       </ng-template>
     </p-table>

@@ -45,7 +45,7 @@ export const routes: Routes = [
     component: DragonForm
   },
   {
-    path: 'dragons/:dragonId/hours-worked',
+    path: 'dragons/:dragonId/assignments/:assignmentId/hours-worked',
     component: HoursWorkedList
   },
   {
