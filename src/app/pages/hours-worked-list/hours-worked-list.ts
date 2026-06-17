@@ -19,20 +19,20 @@ export class HoursWorkedList {
   hoursWorked = signal<HoursWorkedWithJob[]>([]);
   totalRecords = signal(0);
   readonly pageSize = PAGE_SIZE;
-  private dragonId: number = 0;
-  private assignmentId: number = 0;
+  dragonId = signal(0);
+  assignmentId = signal(0);
 
   constructor() {
     this.activatedRoute.params.subscribe(params => {
-      this.dragonId = params['dragonId'];
-      this.assignmentId = params['assignmentId'];
+      this.dragonId.set(params['dragonId']);
+      this.assignmentId.set(params['assignmentId']);
     });
   }
 
   onPageChange(event: TableLazyLoadEvent) {
     const offset = event.first || 0;
     this.httpClient
-      .getOnePageOfHoursWorked(this.dragonId, this.assignmentId, offset, this.pageSize)
+      .getOnePageOfHoursWorked(this.dragonId(), this.assignmentId(), offset, this.pageSize)
       .then(pagedData => {
         this.hoursWorked.set(pagedData.data);
         this.totalRecords.set(pagedData.totalRecords);

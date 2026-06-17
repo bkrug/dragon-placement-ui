@@ -1,6 +1,8 @@
 <h3>Hours Worked</h3>
 
-<div class="right-link"><span class="attention">⨮ </span><a routerLink="/hours-worked-form">Create</a></div>
+<div class="right-link"><span class="attention">⨮ </span>
+  <a [routerLink]="['/dragon', this.dragonId(), 'assignment', this.assignmentId(), 'hours-worked-form']">Create</a>
+</div>
 <p-table
   [value]="hoursWorked()"
   [tableStyle]="{ 'min-width': '40rem' }"

@@ -53,7 +53,7 @@ export const routes: Routes = [
     component: HoursWorkedForm
   },
   {
-    path: 'hours-worked-form/dragon/:dragonId/assignment/:assignmentId',
+    path: 'dragon/:dragonId/assignment/:assignmentId/hours-worked-form',
     component: HoursWorkedForm
   },
   {

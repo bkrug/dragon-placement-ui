@@ -3,6 +3,7 @@ import { Component, effect, inject, OnInit, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { HoursWorkedClient } from '../../../httpClients/assignment-http-client';
+import { getDateFromUnixSeconds, getUnixSeconds } from '../../../misc/transformers';
 import { HoursWorkedCreateEdit } from '../../../poco/endpointRequestBodies';
 import { HoursWorked, HoursWorkedValidationFailures } from '../../../poco/models';
 import { EntityFormBase } from '../../local-form/entity-form-base';
@@ -55,15 +56,15 @@ export class HoursWorkedForm extends EntityFormBase<HoursWorked, HoursWorkedVali
   private createFormGroup(hw: HoursWorked) {
     return new FormGroup({
       workDateUnix: new FormControl<Date | null>(
-        hw.startDateTimeUnix ? new Date(hw.startDateTimeUnix * 1000) : null,
+        this.entityId ? getDateFromUnixSeconds(hw.startDateTimeUnix) : null,
         [Validators.required]
       ),      
       startDateTimeUnix: new FormControl<Date | null>(
-        hw.startDateTimeUnix ? new Date(hw.startDateTimeUnix * 1000) : null,
+        this.entityId ? getDateFromUnixSeconds(hw.startDateTimeUnix) : null,
         [Validators.required]
       ),
       endDateTimeUnix: new FormControl<Date | null>(
-        hw.endDateTimeUnix ? new Date(hw.endDateTimeUnix * 1000) : null,
+        this.entityId ? getDateFromUnixSeconds(hw.endDateTimeUnix) : null,
         [Validators.required]
       ),
     });
@@ -76,8 +77,8 @@ export class HoursWorkedForm extends EntityFormBase<HoursWorked, HoursWorkedVali
       this.totalHours.set(0);
       return;
     }
-    const startSecs = start.getTime() / 1000 % SECONDS_PER_DAY;
-    const endSecs = end.getTime() / 1000 % SECONDS_PER_DAY;
+    const startSecs = getUnixSeconds(start) % SECONDS_PER_DAY;
+    const endSecs = getUnixSeconds(end) % SECONDS_PER_DAY;
     this.totalHours.set(endSecs > startSecs
       ? (endSecs - startSecs) / 3600
       : (endSecs + SECONDS_PER_DAY - startSecs) / 3600
@@ -86,9 +87,12 @@ export class HoursWorkedForm extends EntityFormBase<HoursWorked, HoursWorkedVali
 
   protected override makeSubmissionRequest() {
     const values = this.formGroup().value;
-    const workDateUnixSeconds = Math.floor(values.workDateUnix!.getTime() / 1000 / SECONDS_PER_DAY) * SECONDS_PER_DAY;
-    const startTimeUnixSeconds = values.startDateTimeUnix!.getTime() / 1000 % SECONDS_PER_DAY;
-    const endTimeUnixSeconds = values.endDateTimeUnix!.getTime() / 1000 % SECONDS_PER_DAY;
+    const workDateUnixSeconds = Math.floor(getUnixSeconds(values.workDateUnix) / SECONDS_PER_DAY) * SECONDS_PER_DAY;
+    const startTimeUnixSeconds = getUnixSeconds(values.startDateTimeUnix) % SECONDS_PER_DAY;
+    const endTimeUnixSeconds = getUnixSeconds(values.endDateTimeUnix) % SECONDS_PER_DAY;
+
+    console.log(values.startDateTimeUnix);
+    console.log(startTimeUnixSeconds);
 
     const body: HoursWorkedCreateEdit = {
       assignmentId: this.assignmentId,
