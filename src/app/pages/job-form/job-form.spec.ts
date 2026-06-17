@@ -163,7 +163,7 @@ describe('Job Form Tests', () => {
     expect(getInputElement(nativeElement, '#employer-name input').value).toEqual(initialDbRecord.employerName);
     expect(getInputElement(nativeElement, '#number-of-positions input').value).toEqual(initialDbRecord.numberOfPositions.toString());
     expect(component.formGroup().get('startDate')?.value).toEqual(beginDateString);
-    expect(component.formGroup().get('endDate')?.value).toEqual(endDateStringa);
+    expect(component.formGroup().get('endDate')?.value).toEqual(endDateString);
 
     //Act: change form values
     component.formGroup().get('jobTitle')?.setValue('Senior Fire Inspector');
