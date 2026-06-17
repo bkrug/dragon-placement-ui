@@ -2,7 +2,7 @@ import { DecimalPipe } from '@angular/common';
 import { Component, effect, inject, OnInit, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { AssignmentHttpClient } from '../../../httpClients/assignment-http-client';
+import { HoursWorkedClient } from '../../../httpClients/assignment-http-client';
 import { HoursWorkedCreateEdit } from '../../../poco/endpointRequestBodies';
 import { HoursWorked, HoursWorkedValidationFailures } from '../../../poco/models';
 import { EntityFormBase } from '../../local-form/entity-form-base';
@@ -17,7 +17,7 @@ const SECONDS_PER_DAY = 24*60*60;
   styleUrl: './hours-worked-form.scss',
 })
 export class HoursWorkedForm extends EntityFormBase<HoursWorked, HoursWorkedValidationFailures> implements OnInit {
-  httpClient = inject(AssignmentHttpClient);
+  httpClient = inject(HoursWorkedClient);
   private route = inject(ActivatedRoute);
   private dragonId: number = 0;
   private assignmentId: number = 0;

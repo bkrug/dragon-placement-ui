@@ -17,22 +17,6 @@ export class AssignmentHttpClient {
     return await HttpHelpers.getOnePage<Job>(`${apiUrl}job?offset=${offset}&limit=${limit}&jobInclusions=${jobInclusions}`);
   }
 
-  async getOnePageOfHoursWorked(dragonId: number, offset: number, limit: number) {
-    return await HttpHelpers.getOnePage<HoursWorkedWithJob>(`${apiUrl}dragon/${dragonId}/hoursworked?offset=${offset}&limit=${limit}`);
-  }
-
-  async getHoursWorked(hoursWorkedId: number) {
-    return await HttpHelpers.requestValidatedPayload<HoursWorked>(`${apiUrl}hoursworked/${hoursWorkedId}`);
-  }
-
-  async postHoursWorkedForm(body: HoursWorkedCreateEdit) {
-    return await HttpHelpers.submitForm<HoursWorked, HoursWorkedValidationFailures>(`${apiUrl}hoursworked`, 'POST', body);
-  }
-
-  async putHoursWorkedForm(hoursWorkedId: number, body: HoursWorkedCreateEdit) {
-    return await HttpHelpers.submitForm<HoursWorked, HoursWorkedValidationFailures>(`${apiUrl}hoursworked/${hoursWorkedId}`, 'PUT', body);
-  }
-
   async getOnePageOfDragons(offset: number, limit: number) {
     return await HttpHelpers.getOnePage<Dragon>(`${apiUrl}dragon?offset=${offset}&limit=${limit}`);
   };
@@ -83,4 +67,25 @@ export class AssignmentHttpClient {
     const limit = 1*1000*1000*1000;
     return await HttpHelpers.getOnePage<SkillTag>(`${apiUrl}skill-tag?offset=0&limit=${limit}`);
   };
+}
+
+@Injectable({
+  providedIn: 'root',
+})
+export class HoursWorkedClient {
+  async getOnePageOfHoursWorked(dragonId: number, offset: number, limit: number) {
+    return await HttpHelpers.getOnePage<HoursWorkedWithJob>(`${apiUrl}dragon/${dragonId}/hoursworked?offset=${offset}&limit=${limit}`);
+  }
+
+  async getHoursWorked(hoursWorkedId: number) {
+    return await HttpHelpers.requestValidatedPayload<HoursWorked>(`${apiUrl}hoursworked/${hoursWorkedId}`);
+  }
+
+  async postHoursWorkedForm(body: HoursWorkedCreateEdit) {
+    return await HttpHelpers.submitForm<HoursWorked, HoursWorkedValidationFailures>(`${apiUrl}hoursworked`, 'POST', body);
+  }
+
+  async putHoursWorkedForm(hoursWorkedId: number, body: HoursWorkedCreateEdit) {
+    return await HttpHelpers.submitForm<HoursWorked, HoursWorkedValidationFailures>(`${apiUrl}hoursworked/${hoursWorkedId}`, 'PUT', body);
+  }  
 }
