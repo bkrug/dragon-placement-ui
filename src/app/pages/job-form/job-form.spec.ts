@@ -15,8 +15,10 @@ describe('Job Form Tests', () => {
 
   const beginDateUnix = 1262304000;
   const beginDate = new Date(Date.UTC(2010, 0, 1));
+  const beginDateString = "2010-01-01";
   const endDateUnix = 1293753600;
   const endDate = new Date(Date.UTC(2010, 11, 31));
+  const endDateString = "2010-12-31";
 
   it('Load a blank Job Form for creation of a job', async () => {
     const mockHttpClient = new AssignmentHttpClient();
@@ -80,8 +82,8 @@ describe('Job Form Tests', () => {
     //Act: change form values
     component.formGroup().get('jobTitle')?.setValue('Dragon Wrangler');
     component.formGroup().get('numberOfPositions')?.setValue(3);
-    component.formGroup().get('startDate')?.setValue(beginDate);
-    component.formGroup().get('endDate')?.setValue(endDate);
+    component.formGroup().get('startDate')?.setValue(beginDateString);
+    component.formGroup().get('endDate')?.setValue(endDateString);
     expect(component.formGroup().valid).toEqual(true);
     component.onSubmit();
     await fixture.whenStable();
@@ -160,8 +162,8 @@ describe('Job Form Tests', () => {
     expect(getInputElement(nativeElement, '#job-title input').value).toEqual(initialDbRecord.jobTitle);
     expect(getInputElement(nativeElement, '#employer-name input').value).toEqual(initialDbRecord.employerName);
     expect(getInputElement(nativeElement, '#number-of-positions input').value).toEqual(initialDbRecord.numberOfPositions.toString());
-    expect(component.formGroup().get('startDate')?.value).toEqual(beginDate);
-    expect(component.formGroup().get('endDate')?.value).toEqual(endDate);
+    expect(component.formGroup().get('startDate')?.value).toEqual(beginDateString);
+    expect(component.formGroup().get('endDate')?.value).toEqual(endDateStringa);
 
     //Act: change form values
     component.formGroup().get('jobTitle')?.setValue('Senior Fire Inspector');
