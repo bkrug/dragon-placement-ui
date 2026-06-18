@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { environment } from '../environments/environment';
 import { DragonCreateEdit, HoursWorkedCreateEdit, HoursWorkedWithJob, JobCreateEdit } from '../poco/endpointRequestBodies';
 import { JobInclusions } from '../poco/enums';
-import { Dragon, DragonValidationFailures, HoursWorked, HoursWorkedValidationFailures, Job, JobValidationFailures, SkillTag } from '../poco/models';
+import { Dragon, DragonValidationFailures, HoursWorked, HoursWorkedValidationFailures, Job, JobValidationFailures, PayPeriod, SkillTag } from '../poco/models';
 import { HttpHelpers } from './http-helpers';
 
 const apiUrl = environment.backendApi.endsWith('/')
@@ -88,4 +88,8 @@ export class HoursWorkedClient {
   async putHoursWorkedForm(hoursWorkedId: number, body: HoursWorkedCreateEdit) {
     return await HttpHelpers.submitForm<HoursWorked, HoursWorkedValidationFailures>(`${apiUrl}hoursworked/${hoursWorkedId}`, 'PUT', body);
   }  
+
+  async getOnePageOfPayPeriods(dragonId: number, assignmentId: number, offset: number, limit: number) {
+    return await HttpHelpers.getOnePage<PayPeriod>(`${apiUrl}dragon/${dragonId}/assignment/${assignmentId}/payperiod?offset=${offset}&limit=${limit}`);
+  }
 }

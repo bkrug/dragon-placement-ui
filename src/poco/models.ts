@@ -89,4 +89,15 @@ export class HoursWorked {
   dragonId: number = 0;
   startDateTimeUnix: number = 0;
   endDateTimeUnix: number = 0;
+  payPeriodId: number = 0;
+}
+
+export class PayPeriod {
+  payPeriodId: number = 0;
+  assignmentId: number = 0;
+  dragonId: number = 0;
+  startDateUnix: number = 0;
+  endDateUnix: number = 0;
+  submissionStatus: string = '';
+  hoursWorked: HoursWorked[] = [];
 }
