@@ -1,0 +1,35 @@
+<h3>Pay Periods</h3>
+
+<div class="right-link"><span class="attention">⨮ </span>
+  <a href="#">Create</a>
+</div>
+<p-table
+  [value]="payPeriods()"
+  [tableStyle]="{ 'min-width': '40rem' }"
+  paginator="true"
+  [rows]="pageSize"
+  [totalRecords]="totalRecords()"
+  showCurrentPageReport="true"
+  currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+  showLoader="true"
+  lazy="true"
+  (onLazyLoad)="onPageChange($event)"
+  size="small"
+  >
+  <ng-template #header>
+    <tr>
+      <th></th>
+      <th>Start Date</th>
+      <th>End Date</th>
+      <th>Status</th>
+    </tr>
+  </ng-template>
+  <ng-template #body let-pp>
+    <tr>
+      <td><a href="#">Edit</a></td>
+      <td>{{ pp.startDateUnix * 1000 | date:'mediumDate':'+0' }}</td>
+      <td>{{ pp.endDateUnix * 1000 | date:'mediumDate':'+0' }}</td>
+      <td>{{ pp.submissionStatus }}</td>
+    </tr>
+  </ng-template>
+</p-table>
