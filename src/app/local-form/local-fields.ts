@@ -134,6 +134,9 @@ export class LocalNumberField extends LocalFieldBase<number> {
   styleUrl: './local-field.scss',
 })
 export class LocalStringDateField extends LocalFieldBase<string> {
+  min = input<string | null>(null);
+  max = input<string | null>(null);
+
   fieldControl = input.required<AbstractControl<string|null, string|null, any> | null>();
   override getFieldControl() {
     return this.fieldControl();

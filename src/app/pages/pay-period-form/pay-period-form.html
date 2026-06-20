@@ -41,7 +41,9 @@
                 label=""
                 fieldName="workDateUnix"
                 [formGroup]="rowGroup"
-                [fieldControl]="rowGroup.get('workDateUnix')" />
+                [fieldControl]="rowGroup.get('workDateUnix')"
+                [min]="minDate()"
+                [max]="maxDate()" />
             </td>
             <td>
               <app-local-string-time-field

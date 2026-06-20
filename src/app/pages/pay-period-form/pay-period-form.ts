@@ -42,6 +42,14 @@ export class PayPeriodForm implements OnInit {
 
   hoursWorkedRows = signal<FormGroup[]>([]);
   selectedCandidate = signal<PayPeriod | null>(null);
+  minDate = computed(() => {
+    const c = this.selectedCandidate();
+    return c ? getDateStringFromUnixSeconds(c.startDateUnix) : null;
+  });
+  maxDate = computed(() => {
+    const c = this.selectedCandidate();
+    return c ? getDateStringFromUnixSeconds(c.endDateUnix) : null;
+  });
 
   get hoursWorkedArray() {
     return this.formGroup().get('hoursWorked') as FormArray;
