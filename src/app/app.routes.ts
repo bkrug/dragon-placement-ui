@@ -55,7 +55,7 @@ export const routes: Routes = [
     component: HoursWorkedForm
   },
   {
-    path: 'dragon/:dragonId/assignment/:assignmentId/hours-worked-form',
+    path: 'dragons/:dragonId/assignments/:assignmentId/hours-worked-form',
     component: HoursWorkedForm
   },
   {
@@ -63,7 +63,7 @@ export const routes: Routes = [
     component: PayPeriodList
   },
   {
-    path: 'dragon/:dragonId/assignment/:assignmentId/pay-period-form',
+    path: 'dragons/:dragonId/assignments/:assignmentId/pay-period-form',
     component: PayPeriodForm
   },
   {
