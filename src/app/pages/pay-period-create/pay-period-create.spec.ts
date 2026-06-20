@@ -218,4 +218,67 @@ describe('Pay Period Create Tests', () => {
     expect(payPeriodForm.formGroup().valid).toEqual(false);
     expect(submitButton.disabled).toEqual(true);
   });
+
+  it('should sort hours-worked rows in ascending order by date and time', async () => {
+    const candidate = Object.assign(new PayPeriod(), {
+      dragonId,
+      assignmentId,
+      startDateUnix: payPeriodStartUnix,
+      endDateUnix: payPeriodEndUnix,
+    });
+
+    const mockHttpClient = new HoursWorkedClient();
+    mockHttpClient.getPayPeriodCandidates = async () => ({
+      isInternalError: false,
+      isSuccess: true,
+      validationFailures: [],
+      payload: [candidate]
+    } as ValidatedPayload<PayPeriod[]>);
+
+    const mockActivatedRoute = new MockActivatedRoute();
+    mockActivatedRoute.setParams({ dragonId, assignmentId });
+    TestBed.configureTestingModule({
+      providers: [
+        { provide: HoursWorkedClient, useValue: mockHttpClient },
+        { provide: ActivatedRoute, useValue: mockActivatedRoute }
+      ]
+    });
+
+    await TestBed.configureTestingModule({ imports: [PayPeriodCreate] }).compileComponents();
+    const fixture = TestBed.createComponent(PayPeriodCreate);
+    const component = fixture.componentInstance;
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    component.onCandidateSelect({ value: payPeriodStartUnix.toString() });
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    const payPeriodFormDebugEl = fixture.debugElement.query(By.directive(PayPeriodForm));
+    const payPeriodForm = payPeriodFormDebugEl.componentInstance as PayPeriodForm;
+
+    //Act: add 3 rows in non-sorted order
+    payPeriodForm.addRow();
+    payPeriodForm.hoursWorkedArray.at(0).patchValue({ workDate: '2010-01-04', startDateTime: '09:00', endDateTime: '17:00' }); // Monday
+
+    payPeriodForm.addRow();
+    payPeriodForm.hoursWorkedArray.at(1).patchValue({ workDate: '2010-01-05', startDateTime: '14:00', endDateTime: '18:00' }); // Tuesday afternoon
+
+    payPeriodForm.addRow();
+    payPeriodForm.hoursWorkedArray.at(2).patchValue({ workDate: '2010-01-05', startDateTime: '09:00', endDateTime: '13:00' }); // Tuesday morning
+
+    //Act: add an empty row, which triggers re-sort
+    payPeriodForm.addRow();
+    fixture.detectChanges();
+
+    //Assert: displayed rows are sorted ascending by workDate then startDateTime
+    const displayedRows = payPeriodForm.hoursWorkedRows();
+    expect(displayedRows.map(r => r.value)).toMatchObject([
+      { workDate: '2010-01-04', startDateTime: '09:00', endDateTime: '17:00' },
+      { workDate: '2010-01-05', startDateTime: '09:00', endDateTime: '13:00' },
+      { workDate: '2010-01-05', startDateTime: '14:00', endDateTime: '18:00' },
+      { workDate: null, startDateTime: null, endDateTime: null },
+    ]);
+  });
 });
