@@ -4,7 +4,7 @@ import { ButtonModule } from 'primeng/button';
 import { TableLazyLoadEvent, TableModule } from 'primeng/table';
 import { PAGE_SIZE } from '../../../global-consts';
 import { AssignmentHttpClient } from '../../../httpClients/assignment-http-client';
-import { DragonTableType } from '../../../poco/enums';
+import { DragonTableType } from '../../../misc/enums';
 import { DisplayJob, Dragon } from '../../../poco/models';
 import { ValidatedResponse } from '../../../poco/standard-responses';
 

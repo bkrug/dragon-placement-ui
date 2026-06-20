@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { DragonTableType } from '../../../poco/enums';
+import { DragonTableType } from '../../../misc/enums';
 import { DragonTable } from '../../shared-components/dragon-table/dragon-table';
 
 //The dragon table is consumed in different places.

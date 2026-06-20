@@ -5,7 +5,7 @@ import { AssignmentHttpClient } from '../../../httpClients/assignment-http-clien
 import { JobCreateEdit } from '../../../poco/endpoint-request-bodies';
 import { Job, SkillTag } from '../../../poco/models';
 import { PagedData, ValidatedForm, ValidatedPayload } from '../../../poco/standard-responses';
-import { JobValidationFailures } from '../../../poco/validationFailures';
+import { JobValidationFailures } from '../../../poco/validation-failures';
 import { MockActivatedRoute } from '../../../testHelpers/MockActivatedRoute';
 import { JobForm } from './job-form';
 

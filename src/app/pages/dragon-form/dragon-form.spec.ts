@@ -5,7 +5,7 @@ import { AssignmentHttpClient } from '../../../httpClients/assignment-http-clien
 import { DragonCreateEdit } from '../../../poco/endpoint-request-bodies';
 import { Dragon, SkillTag } from '../../../poco/models';
 import { PagedData, ValidatedForm, ValidatedPayload } from '../../../poco/standard-responses';
-import { DragonValidationFailures } from '../../../poco/validationFailures';
+import { DragonValidationFailures } from '../../../poco/validation-failures';
 import { MockActivatedRoute } from '../../../testHelpers/MockActivatedRoute';
 import { DragonForm } from './dragon-form';
 

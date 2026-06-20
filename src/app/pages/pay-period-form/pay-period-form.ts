@@ -1,5 +1,5 @@
 import { DatePipe, DecimalPipe } from '@angular/common';
-import { Component, inject, input, OnInit, signal, OnChanges } from '@angular/core';
+import { Component, inject, input, OnChanges, OnInit, signal } from '@angular/core';
 import { FormArray, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Effect } from 'effect';
@@ -9,7 +9,7 @@ import { getDateStringFromUnixSeconds, getTimeStringFromUnixSeconds, getUnixSeco
 import { HoursWorkedCreateEdit, PayPeriodCreateEdit } from '../../../poco/endpoint-request-bodies';
 import { PayPeriod } from '../../../poco/models';
 import { ValidatedForm, ValidatedPayload } from '../../../poco/standard-responses';
-import { PayPeriodValidationFailures } from '../../../poco/validationFailures';
+import { PayPeriodValidationFailures } from '../../../poco/validation-failures';
 import { EntityFormBase } from '../../local-form/entity-form-base';
 import { LocalStringDateField, LocalStringTimeField, LocalSubmitButton } from '../../local-form/local-fields';
 

@@ -4,7 +4,7 @@ import { AssignmentHttpClient } from '../../../httpClients/assignment-http-clien
 import { getDateStringFromUnixSeconds, getUnixSeconds } from '../../../misc/transformers';
 import { JobCreateEdit } from '../../../poco/endpoint-request-bodies';
 import { Job, SkillTag } from '../../../poco/models';
-import { JobValidationFailures } from '../../../poco/validationFailures';
+import { JobValidationFailures } from '../../../poco/validation-failures';
 import { EntityFormBase } from '../../local-form/entity-form-base';
 import { LocalNumberField, LocalStringDateField, LocalSubmitButton, LocalTagField, LocalTextField, TagOption } from '../../local-form/local-fields';
 

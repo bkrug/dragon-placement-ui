@@ -6,8 +6,8 @@ import { SelectModule } from 'primeng/select';
 import { TableLazyLoadEvent, TableModule } from 'primeng/table';
 import { PAGE_SIZE } from '../../../global-consts';
 import { AssignmentHttpClient } from '../../../httpClients/assignment-http-client';
+import { JobInclusions } from '../../../misc/enums';
 import { mapJobToDisplayJob } from '../../../misc/transformers';
-import { JobInclusions } from '../../../poco/enums';
 import { DisplayJob } from '../../../poco/models';
 
 @Component({
