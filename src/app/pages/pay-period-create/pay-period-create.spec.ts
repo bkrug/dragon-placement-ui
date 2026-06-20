@@ -142,7 +142,11 @@ describe('Pay Period Create Tests', () => {
     expect(actualPutBody).toMatchObject({
       dragonId,
       assignmentId,
-      hoursWorked: [{}, {}, {}],
+      hoursWorked: [
+        { dragonId, assignmentId, startDateTimeUnix: jan2Unix + 8 * 3600, endDateTimeUnix: jan2Unix + 16 * 3600 },
+        { dragonId, assignmentId, startDateTimeUnix: jan5Unix + 9 * 3600, endDateTimeUnix: jan5Unix + 17 * 3600 },
+        { dragonId, assignmentId, startDateTimeUnix: jan8Unix + 10 * 3600, endDateTimeUnix: jan8Unix + 14 * 3600 },
+      ],
     });
   });
 
