@@ -1,5 +1,5 @@
 import { DatePipe, DecimalPipe } from '@angular/common';
-import { Component, computed, inject, input, OnInit, signal } from '@angular/core';
+import { Component, inject, input, OnInit, signal } from '@angular/core';
 import { FormArray, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Effect } from 'effect';
@@ -78,18 +78,18 @@ export class PayPeriodForm extends EntityFormBase<PayPeriod, PayPeriodValidation
       startDateUnix: new FormControl<number | null>(existingRecord.startDateUnix, [Validators.required]),
       endDateUnix: new FormControl<number | null>(existingRecord.endDateUnix, [Validators.required]),
       hoursWorked: new FormArray<FormGroup>(existingRecord.hoursWorked.map(hw => new FormGroup({
-        workDateUnix: new FormControl<string | null>(getDateStringFromUnixSeconds(hw.startDateTimeUnix), [Validators.required]),
-        startDateTimeUnix: new FormControl<string | null>(getTimeStringFromUnixSeconds(hw.startDateTimeUnix), [Validators.required]),
-        endDateTimeUnix: new FormControl<string | null>(getTimeStringFromUnixSeconds(hw.endDateTimeUnix), [Validators.required]),
+        workDate: new FormControl<string | null>(getDateStringFromUnixSeconds(hw.startDateTimeUnix), [Validators.required]),
+        startDateTime: new FormControl<string | null>(getTimeStringFromUnixSeconds(hw.startDateTimeUnix), [Validators.required]),
+        endDateTime: new FormControl<string | null>(getTimeStringFromUnixSeconds(hw.endDateTimeUnix), [Validators.required]),
       }))),
     });
   }
 
   addRow() {
     const row = new FormGroup({
-      workDateUnix: new FormControl<string | null>(null, [Validators.required]),
-      startDateTimeUnix: new FormControl<string | null>(null, [Validators.required]),
-      endDateTimeUnix: new FormControl<string | null>(null, [Validators.required]),
+      workDate: new FormControl<string | null>(null, [Validators.required]),
+      startDateTime: new FormControl<string | null>(null, [Validators.required]),
+      endDateTime: new FormControl<string | null>(null, [Validators.required]),
     });
     this.hoursWorkedArray.push(row);
     this.hoursWorkedRows.set(this.cloneHoursWorkedArray());
@@ -103,18 +103,18 @@ export class PayPeriodForm extends EntityFormBase<PayPeriod, PayPeriodValidation
   private cloneHoursWorkedArray(): FormGroup<any>[] {
     const sortedGroup = [...this.hoursWorkedArray.controls as FormGroup[]]
       .sort((fg1, fg2) => {
-        const startTime1 = getUnixSeconds(fg1.get('workDateUnix')?.value || '')
-          + parseTimeToSeconds(fg1.get('startDateTimeUnix')?.value || '');
-        const startTime2 = getUnixSeconds(fg2.get('workDateUnix')?.value || '')
-          + parseTimeToSeconds(fg2.get('startDateTimeUnix')?.value || '');
+        const startTime1 = getUnixSeconds(fg1.get('workDate')?.value || '')
+          + parseTimeToSeconds(fg1.get('startDateTime')?.value || '');
+        const startTime2 = getUnixSeconds(fg2.get('workDate')?.value || '')
+          + parseTimeToSeconds(fg2.get('startDateTime')?.value || '');
         return startTime1 - startTime2;
       });
     return sortedGroup;
   }
 
   getTotalHours(rowGroup: FormGroup): number {
-    const start = rowGroup.get('startDateTimeUnix')?.value;
-    const end = rowGroup.get('endDateTimeUnix')?.value;
+    const start = rowGroup.get('startDateTime')?.value;
+    const end = rowGroup.get('endDateTime')?.value;
     if (!start || !end) return 0;
     const startSecs = parseTimeToSeconds(start);
     const endSecs = parseTimeToSeconds(end);
@@ -133,9 +133,9 @@ export class PayPeriodForm extends EntityFormBase<PayPeriod, PayPeriodValidation
       submissionStatus: '',
       hoursWorked: this.hoursWorkedArray.controls.map(row => {
         const v = row.value;
-        const workDateSecs = getUnixSeconds(v.workDateUnix);
-        const startSecs = parseTimeToSeconds(v.startDateTimeUnix!);
-        const endSecs = parseTimeToSeconds(v.endDateTimeUnix!);
+        const workDateSecs = getUnixSeconds(v.workDate);
+        const startSecs = parseTimeToSeconds(v.startDateTime!);
+        const endSecs = parseTimeToSeconds(v.endDateTime!);
         return {
           assignmentId: fg.value.assignmentId!,
           dragonId: fg.value.dragonId!,

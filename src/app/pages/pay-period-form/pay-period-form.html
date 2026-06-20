@@ -24,25 +24,25 @@
         <td>
           <app-local-string-date-field
             label=""
-            fieldName="workDateUnix"
+            fieldName="workDate"
             [formGroup]="rowGroup"
-            [fieldControl]="rowGroup.get('workDateUnix')"
+            [fieldControl]="rowGroup.get('workDate')"
             [min]="minDate()"
             [max]="maxDate()" />
         </td>
         <td>
           <app-local-string-time-field
             label=""
-            fieldName="startDateTimeUnix"
+            fieldName="startDateTime"
             [formGroup]="rowGroup"
-            [fieldControl]="rowGroup.get('startDateTimeUnix')" />
+            [fieldControl]="rowGroup.get('startDateTime')" />
         </td>
         <td>
           <app-local-string-time-field
             label=""
-            fieldName="endDateTimeUnix"
+            fieldName="endDateTime"
             [formGroup]="rowGroup"
-            [fieldControl]="rowGroup.get('endDateTimeUnix')" />
+            [fieldControl]="rowGroup.get('endDateTime')" />
         </td>
         <td>{{ getTotalHours(rowGroup) | number:'1.2-2' }}</td>
         <td><button type="button" (click)="removeRow(i)">Remove</button></td>
