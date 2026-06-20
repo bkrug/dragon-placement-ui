@@ -2,12 +2,12 @@
   <input type="hidden" formControlName="dragonId" />
   <input type="hidden" formControlName="assignmentId" />
   <div class="date-display">
-    <label>Start Date:</label>
-    <span>{{ (formGroup().value.startDateUnix || 0) * 1000 | date:'fullDate':'+0' }}</span>
-  </div>
-  <div class="date-display">
-    <label>End Date:</label>
-    <span>{{ (formGroup().value.endDateUnix || 0) * 1000 | date:'fullDate':'+0' }}</span>
+    <label>Timesheet Period:</label>
+    <span>
+      {{ (formGroup().value.startDateUnix || 0) * 1000 | date:'fullDate':'+0' }}
+      to
+      {{ (formGroup().value.endDateUnix || 0) * 1000 | date:'fullDate':'+0' }}
+    </span>
   </div>
   <p-table [value]="hoursWorkedRows()" [tableStyle]="{ 'min-width': '40rem' }">
     <ng-template #header>
