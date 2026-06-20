@@ -1,5 +1,5 @@
 import { DatePipe, DecimalPipe } from '@angular/common';
-import { Component, inject, input, OnInit, signal } from '@angular/core';
+import { Component, inject, input, OnInit, signal, OnChanges } from '@angular/core';
 import { FormArray, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Effect } from 'effect';
@@ -27,7 +27,7 @@ const SECONDS_PER_DAY = 24 * 60 * 60;
   templateUrl: './pay-period-form.html',
   styleUrl: './pay-period-form.scss',
 })
-export class PayPeriodForm extends EntityFormBase<PayPeriod, PayPeriodValidationFailures> implements OnInit {
+export class PayPeriodForm extends EntityFormBase<PayPeriod, PayPeriodValidationFailures> implements OnInit, OnChanges {
   httpClient = inject(HoursWorkedClient);
   private route = inject(ActivatedRoute);
 
@@ -48,7 +48,7 @@ export class PayPeriodForm extends EntityFormBase<PayPeriod, PayPeriodValidation
     super('payPeriodId');
     this.route.params.subscribe(params => {
       this.entityId = params['payPeriodId'] || 0;
-    });    
+    });
   }
 
   ngOnInit(): void {
@@ -62,7 +62,7 @@ export class PayPeriodForm extends EntityFormBase<PayPeriod, PayPeriodValidation
     const pp = this.dataFromParentComponent();
     if (pp)
       this.initializeForm(pp);
-  }  
+  }
 
   private initializeForm(pp: PayPeriod) {
     this.formGroup.set(this.createFormGroup(pp));
@@ -121,7 +121,7 @@ export class PayPeriodForm extends EntityFormBase<PayPeriod, PayPeriodValidation
     return endSecs > startSecs
       ? (endSecs - startSecs) / 3600
       : (endSecs + SECONDS_PER_DAY - startSecs) / 3600;
-  }  
+  }
 
   private buildBody(): PayPeriodCreateEdit {
     const fg = this.formGroup();

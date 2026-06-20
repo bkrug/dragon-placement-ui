@@ -15,11 +15,9 @@ describe('Job Form Tests', () => {
   }
 
   const beginDateUnix = 1262304000;
-  const beginDate = new Date(Date.UTC(2010, 0, 1));
-  const beginDateString = "2010-01-01";
+  const beginDateString = '2010-01-01';
   const endDateUnix = 1293753600;
-  const endDate = new Date(Date.UTC(2010, 11, 31));
-  const endDateString = "2010-12-31";
+  const endDateString = '2010-12-31';
 
   it('Load a blank Job Form for creation of a job', async () => {
     const mockHttpClient = new AssignmentHttpClient();

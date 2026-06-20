@@ -3,7 +3,6 @@ import { AbstractControl, FormGroup, ReactiveFormsModule, ValidationErrors } fro
 import { AutoCompleteCompleteEvent, AutoCompleteModule } from 'primeng/autocomplete';
 import { ButtonModule } from 'primeng/button';
 import { CheckboxModule } from 'primeng/checkbox';
-import { DatePickerModule } from 'primeng/datepicker';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { InputTextModule } from 'primeng/inputtext';
 import { MessageModule } from 'primeng/message';
@@ -42,7 +41,7 @@ abstract class LocalFieldBase<T extends (boolean | string | number | Date | TagO
   label = input.required<string>();
 
   abstract getFieldControl(): AbstractControl<T|null, T|null, any> | null;
-  isInvalid() {
+  isInvalid(): boolean {
     return this.getFieldControl()?.valid === false;
   };
 

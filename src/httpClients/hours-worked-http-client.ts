@@ -43,5 +43,5 @@ export class HoursWorkedClient {
 
   async putPayPeriodForm(payPeriodId: number, body: PayPeriodCreateEdit) {
     return await HttpHelpers.submitForm<PayPeriod, PayPeriodValidationFailures>(`${apiUrl}payperiod/${payPeriodId}`, 'PUT', body);
-  }  
+  }
 }

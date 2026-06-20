@@ -2,7 +2,7 @@
   <input type="hidden" formControlName="dragonId" />
   <input type="hidden" formControlName="assignmentId" />
   <div class="date-display">
-    <label>Timesheet Period:</label>
+    <h4>Timesheet Period:</h4>
     <span>
       {{ (formGroup().value.startDateUnix || 0) * 1000 | date:'fullDate':'+0' }}
       to
