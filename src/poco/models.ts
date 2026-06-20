@@ -18,18 +18,6 @@ export class Dragon {
   skillTags: SkillTag[] = [];
 }
 
-export class DragonValidationFailures {
-  givenName: string = '';
-  weightInKg: string = '';
-  lengthInMeters: string = '';
-  fightingSkills: string = '';
-}
-
-export class JobValidationFailures {
-  jobTitle: string = '';
-  numberOfPositions: string = '';
-}
-
 export class Job {
   jobId: number = 0;
   jobTitle: string = '';
@@ -76,11 +64,6 @@ export class DisplayJob {
 export class SkillTag {
   skillTagId: number = 0;
   skillName: string = '';
-}
-
-export class HoursWorkedValidationFailures {
-  startDateTimeUnix: string = '';
-  endDateTimeUnix: string = '';
 }
 
 export class HoursWorked {

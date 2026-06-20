@@ -4,7 +4,8 @@ import { AssignmentHttpClient } from '../../../httpClients/assignment-http-clien
 import { globalFightingSkillOptions } from '../../../misc/skillLevels';
 import { DragonCreateEdit } from '../../../poco/endpointRequestBodies';
 import { JobInclusions } from '../../../poco/enums';
-import { Dragon, DragonValidationFailures, SkillTag } from '../../../poco/models';
+import { Dragon, SkillTag } from '../../../poco/models';
+import { DragonValidationFailures } from '../../../poco/validationFailures';
 import { EntityFormBase } from '../../local-form/entity-form-base';
 import { LocalNumberField, LocalSelectField, LocalSubmitButton, LocalTagField, LocalTextField, TagOption } from '../../local-form/local-fields';
 

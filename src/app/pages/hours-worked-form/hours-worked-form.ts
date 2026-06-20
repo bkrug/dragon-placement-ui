@@ -5,7 +5,8 @@ import { ActivatedRoute } from '@angular/router';
 import { HoursWorkedClient } from '../../../httpClients/hours-worked-http-client';
 import { getDateStringFromUnixSeconds, getTimeStringFromUnixSeconds, getUnixSeconds, parseTimeToSeconds } from '../../../misc/transformers';
 import { HoursWorkedCreateEdit } from '../../../poco/endpointRequestBodies';
-import { HoursWorked, HoursWorkedValidationFailures } from '../../../poco/models';
+import { HoursWorked } from '../../../poco/models';
+import { HoursWorkedValidationFailures } from '../../../poco/validationFailures';
 import { EntityFormBase } from '../../local-form/entity-form-base';
 import { LocalStringDateField, LocalStringTimeField, LocalSubmitButton } from '../../local-form/local-fields';
 

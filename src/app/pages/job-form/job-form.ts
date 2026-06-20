@@ -3,7 +3,8 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { AssignmentHttpClient } from '../../../httpClients/assignment-http-client';
 import { getDateStringFromUnixSeconds, getUnixSeconds } from '../../../misc/transformers';
 import { JobCreateEdit } from '../../../poco/endpointRequestBodies';
-import { Job, JobValidationFailures, SkillTag } from '../../../poco/models';
+import { Job, SkillTag } from '../../../poco/models';
+import { JobValidationFailures } from '../../../poco/validationFailures';
 import { EntityFormBase } from '../../local-form/entity-form-base';
 import { LocalNumberField, LocalStringDateField, LocalSubmitButton, LocalTagField, LocalTextField, TagOption } from '../../local-form/local-fields';
 
