@@ -4,7 +4,7 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { ActivatedRoute } from '@angular/router';
 import { HoursWorkedClient } from '../../../httpClients/hours-worked-http-client';
 import { getDateStringFromUnixSeconds, getTimeStringFromUnixSeconds, getUnixSeconds, parseTimeToSeconds } from '../../../misc/transformers';
-import { HoursWorkedCreateEdit } from '../../../poco/endpointRequestBodies';
+import { HoursWorkedCreateEdit } from '../../../poco/endpoint-request-bodies';
 import { HoursWorked } from '../../../poco/models';
 import { HoursWorkedValidationFailures } from '../../../poco/validationFailures';
 import { EntityFormBase } from '../../local-form/entity-form-base';

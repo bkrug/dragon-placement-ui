@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { DragonCreateEdit, JobCreateEdit } from '../poco/endpointRequestBodies';
+import { DragonCreateEdit, JobCreateEdit } from '../poco/endpoint-request-bodies';
 import { JobInclusions } from '../poco/enums';
 import { Dragon, Job, SkillTag } from '../poco/models';
 import { DragonValidationFailures, JobValidationFailures } from '../poco/validationFailures';

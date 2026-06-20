@@ -2,7 +2,7 @@ import { Component, inject, OnInit, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AssignmentHttpClient } from '../../../httpClients/assignment-http-client';
 import { getDateStringFromUnixSeconds, getUnixSeconds } from '../../../misc/transformers';
-import { JobCreateEdit } from '../../../poco/endpointRequestBodies';
+import { JobCreateEdit } from '../../../poco/endpoint-request-bodies';
 import { Job, SkillTag } from '../../../poco/models';
 import { JobValidationFailures } from '../../../poco/validationFailures';
 import { EntityFormBase } from '../../local-form/entity-form-base';

@@ -2,7 +2,7 @@ import { Component, inject, OnInit, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AssignmentHttpClient } from '../../../httpClients/assignment-http-client';
 import { globalFightingSkillOptions } from '../../../misc/skillLevels';
-import { DragonCreateEdit } from '../../../poco/endpointRequestBodies';
+import { DragonCreateEdit } from '../../../poco/endpoint-request-bodies';
 import { JobInclusions } from '../../../poco/enums';
 import { Dragon, SkillTag } from '../../../poco/models';
 import { DragonValidationFailures } from '../../../poco/validationFailures';

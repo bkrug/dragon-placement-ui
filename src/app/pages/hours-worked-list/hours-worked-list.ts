@@ -4,7 +4,7 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 import { TableLazyLoadEvent, TableModule } from 'primeng/table';
 import { PAGE_SIZE } from '../../../global-consts';
 import { HoursWorkedClient } from '../../../httpClients/hours-worked-http-client';
-import { HoursWorkedWithJob } from '../../../poco/endpointRequestBodies';
+import { HoursWorkedWithJob } from '../../../poco/endpoint-request-bodies';
 
 @Component({
   selector: 'app-hours-worked-list',

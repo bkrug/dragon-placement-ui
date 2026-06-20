@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HoursWorkedCreateEdit, HoursWorkedWithJob, PayPeriodCreateEdit } from '../poco/endpointRequestBodies';
+import { HoursWorkedCreateEdit, HoursWorkedWithJob, PayPeriodCreateEdit } from '../poco/endpoint-request-bodies';
 import { HoursWorked, PayPeriod } from '../poco/models';
 import { HoursWorkedValidationFailures, PayPeriodValidationFailures } from '../poco/validationFailures';
 import { apiUrl } from './api-url';

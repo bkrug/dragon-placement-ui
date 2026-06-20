@@ -2,10 +2,10 @@ import { TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
 import { Effect } from 'effect';
 import { AssignmentHttpClient } from '../../../httpClients/assignment-http-client';
-import { DragonCreateEdit } from '../../../poco/endpointRequestBodies';
+import { DragonCreateEdit } from '../../../poco/endpoint-request-bodies';
 import { Dragon, SkillTag } from '../../../poco/models';
-import { DragonValidationFailures } from '../../../poco/validationFailures';
 import { PagedData, ValidatedForm, ValidatedPayload } from '../../../poco/standard-responses';
+import { DragonValidationFailures } from '../../../poco/validationFailures';
 import { MockActivatedRoute } from '../../../testHelpers/MockActivatedRoute';
 import { DragonForm } from './dragon-form';
 

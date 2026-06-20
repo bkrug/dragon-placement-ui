@@ -2,10 +2,10 @@ import { TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
 import { Effect } from 'effect';
 import { AssignmentHttpClient } from '../../../httpClients/assignment-http-client';
-import { JobCreateEdit } from '../../../poco/endpointRequestBodies';
+import { JobCreateEdit } from '../../../poco/endpoint-request-bodies';
 import { Job, SkillTag } from '../../../poco/models';
-import { JobValidationFailures } from '../../../poco/validationFailures';
 import { PagedData, ValidatedForm, ValidatedPayload } from '../../../poco/standard-responses';
+import { JobValidationFailures } from '../../../poco/validationFailures';
 import { MockActivatedRoute } from '../../../testHelpers/MockActivatedRoute';
 import { JobForm } from './job-form';
 
