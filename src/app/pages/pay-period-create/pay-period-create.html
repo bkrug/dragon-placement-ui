@@ -1,0 +1,21 @@
+<h2>Pay Period</h2>
+
+<div class="card flex justify-center">
+  <div>
+    <label for="pay-period-select">Pay Period:</label>
+    <p-select
+      inputId="pay-period-select"
+      [options]="candidateOptions()"
+      optionLabel="display"
+      optionValue="value"
+      placeholder="Select new pay period..."
+      (onChange)="onCandidateSelect($event)"
+      class="w-full md:w-56" />
+  </div>
+  @if (selectedCandidate(); as candidate) {
+    <app-pay-period-form
+      [payPeriod]="candidate"
+      [dragonId]="dragonId()"
+      [assignmentId]="assignmentId()" />
+  }
+</div>

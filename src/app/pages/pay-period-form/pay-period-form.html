@@ -1,77 +1,60 @@
-<h2>Pay Period</h2>
-
-<div class="card flex justify-center">
-  <div>
-    <label for="pay-period-select">Pay Period:</label>
-    <p-select
-      inputId="pay-period-select"
-      [options]="candidateOptions()"
-      optionLabel="display"
-      optionValue="value"
-      placeholder="Select new pay period..."
-      (onChange)="onCandidateSelect($event)"
-      class="w-full md:w-56" />
+<form [formGroup]="formGroup()" (ngSubmit)="onSubmit()">
+  <input type="hidden" formControlName="dragonId" />
+  <input type="hidden" formControlName="assignmentId" />
+  <div class="date-display">
+    <label>Start Date:</label>
+    <span>{{ payPeriod().startDateUnix * 1000 | date:'fullDate':'+0' }}</span>
   </div>
-  @if (selectedCandidate(); as candidate) {
-    <form [formGroup]="formGroup()" (ngSubmit)="onSubmit()">
-      <input type="hidden" formControlName="dragonId" />
-      <input type="hidden" formControlName="assignmentId" />
-      <div class="date-display">
-        <label>Start Date:</label>
-        <span>{{ candidate.startDateUnix * 1000 | date:'mediumDate':'+0' }}</span>
-      </div>
-      <div class="date-display">
-        <label>End Date:</label>
-        <span>{{ candidate.endDateUnix * 1000 | date:'mediumDate':'+0' }}</span>
-      </div>
-      <p-table [value]="hoursWorkedRows()" [tableStyle]="{ 'min-width': '40rem' }">
-        <ng-template #header>
-          <tr>
-            <th>Work Date</th>
-            <th>Start Time</th>
-            <th>End Time</th>
-            <th>Total Hours</th>
-            <th></th>
-          </tr>
-        </ng-template>
-        <ng-template #body let-rowGroup let-i="rowIndex">
-          <tr>
-            <td>
-              <app-local-string-date-field
-                label=""
-                fieldName="workDateUnix"
-                [formGroup]="rowGroup"
-                [fieldControl]="rowGroup.get('workDateUnix')"
-                [min]="minDate()"
-                [max]="maxDate()" />
-            </td>
-            <td>
-              <app-local-string-time-field
-                label=""
-                fieldName="startDateTimeUnix"
-                [formGroup]="rowGroup"
-                [fieldControl]="rowGroup.get('startDateTimeUnix')" />
-            </td>
-            <td>
-              <app-local-string-time-field
-                label=""
-                fieldName="endDateTimeUnix"
-                [formGroup]="rowGroup"
-                [fieldControl]="rowGroup.get('endDateTimeUnix')" />
-            </td>
-            <td>{{ getTotalHours(rowGroup) | number:'1.2-2' }}</td>
-            <td><button type="button" (click)="removeRow(i)">Remove</button></td>
-          </tr>
-        </ng-template>
-      </p-table>
-      <button type="button" (click)="addRow()">Add Row</button>
-      <p>
-        <app-local-submit-button
-          [isSubmitDisabled]="!formGroup().valid"
-          [isSubmitting]="false"
-          [showSaved]="false"
-          [submissionError]="''" />
-      </p>
-    </form>
-  }
-</div>
+  <div class="date-display">
+    <label>End Date:</label>
+    <span>{{ payPeriod().endDateUnix * 1000 | date:'fullDate':'+0' }}</span>
+  </div>
+  <p-table [value]="hoursWorkedRows()" [tableStyle]="{ 'min-width': '40rem' }">
+    <ng-template #header>
+      <tr>
+        <th>Work Date</th>
+        <th>Start Time</th>
+        <th>End Time</th>
+        <th>Total Hours</th>
+        <th></th>
+      </tr>
+    </ng-template>
+    <ng-template #body let-rowGroup let-i="rowIndex">
+      <tr>
+        <td>
+          <app-local-string-date-field
+            label=""
+            fieldName="workDateUnix"
+            [formGroup]="rowGroup"
+            [fieldControl]="rowGroup.get('workDateUnix')"
+            [min]="minDate()"
+            [max]="maxDate()" />
+        </td>
+        <td>
+          <app-local-string-time-field
+            label=""
+            fieldName="startDateTimeUnix"
+            [formGroup]="rowGroup"
+            [fieldControl]="rowGroup.get('startDateTimeUnix')" />
+        </td>
+        <td>
+          <app-local-string-time-field
+            label=""
+            fieldName="endDateTimeUnix"
+            [formGroup]="rowGroup"
+            [fieldControl]="rowGroup.get('endDateTimeUnix')" />
+        </td>
+        <td>{{ getTotalHours(rowGroup) | number:'1.2-2' }}</td>
+        <td><button type="button" (click)="removeRow(i)">Remove</button></td>
+      </tr>
+    </ng-template>
+  </p-table>
+  <button type="button" (click)="addRow()">Add Row</button>
+  <p>
+    <app-local-submit-button
+      [isSubmitDisabled]="!formGroup().valid"
+      [isSubmitting]="false"
+      [showSaved]="false"
+      [submissionError]="''" />
+  </p>
+</form>

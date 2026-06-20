@@ -1,36 +1,27 @@
 import { DatePipe, DecimalPipe } from '@angular/common';
-import { Component, computed, inject, OnInit, signal } from '@angular/core';
+import { Component, computed, input, signal } from '@angular/core';
 import { FormArray, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
-import { SelectModule } from 'primeng/select';
 import { TableModule } from 'primeng/table';
-import { HoursWorkedClient } from '../../../httpClients/hours-worked-http-client';
 import { getDateStringFromUnixSeconds, getUnixSeconds, parseTimeToSeconds } from '../../../misc/transformers';
 import { HoursWorkedCreateEdit, PayPeriodCreateEdit } from '../../../poco/endpointRequestBodies';
 import { PayPeriod } from '../../../poco/models';
-import { LocalStringDateField, LocalStringTimeField, LocalSubmitButton, SelectListOption } from '../../local-form/local-fields';
+import { LocalStringDateField, LocalStringTimeField, LocalSubmitButton } from '../../local-form/local-fields';
 
 const SECONDS_PER_DAY = 24 * 60 * 60;
 
 @Component({
   selector: 'app-pay-period-form',
-  imports: [ReactiveFormsModule, SelectModule, DatePipe, DecimalPipe, TableModule, LocalStringDateField, LocalStringTimeField, LocalSubmitButton],
+  imports: [ReactiveFormsModule, DatePipe, DecimalPipe, TableModule, LocalStringDateField, LocalStringTimeField, LocalSubmitButton],
   templateUrl: './pay-period-form.html',
   styleUrl: './pay-period-form.scss',
 })
-export class PayPeriodForm implements OnInit {
-  private httpClient = inject(HoursWorkedClient);
-  private route = inject(ActivatedRoute);
-  private dragonId = 0;
-  private assignmentId = 0;
+export class PayPeriodForm {
+  payPeriod = input.required<PayPeriod>();
+  dragonId = input.required<number>();
+  assignmentId = input.required<number>();
 
-  candidates = signal<PayPeriod[]>([]);
-  candidateOptions = computed<SelectListOption[]>(() =>
-    this.candidates().map(c => ({
-      display: `${getDateStringFromUnixSeconds(c.startDateUnix)} - ${getDateStringFromUnixSeconds(c.endDateUnix)}` ,
-      value: c.startDateUnix.toString(),
-    }))
-  );
+  minDate = computed(() => getDateStringFromUnixSeconds(this.payPeriod().startDateUnix));
+  maxDate = computed(() => getDateStringFromUnixSeconds(this.payPeriod().endDateUnix));
 
   formGroup = signal(new FormGroup({
     dragonId: new FormControl<number>(0),
@@ -41,47 +32,21 @@ export class PayPeriodForm implements OnInit {
   }));
 
   hoursWorkedRows = signal<FormGroup[]>([]);
-  selectedCandidate = signal<PayPeriod | null>(null);
-  minDate = computed(() => {
-    const c = this.selectedCandidate();
-    return c ? getDateStringFromUnixSeconds(c.startDateUnix) : null;
-  });
-  maxDate = computed(() => {
-    const c = this.selectedCandidate();
-    return c ? getDateStringFromUnixSeconds(c.endDateUnix) : null;
-  });
 
   get hoursWorkedArray() {
     return this.formGroup().get('hoursWorked') as FormArray;
   }
 
-  constructor() {
-    this.route.params.subscribe(params => {
-      this.dragonId = params['dragonId'] || 0;
-      this.assignmentId = params['assignmentId'] || 0;
-      this.formGroup().patchValue({
-        dragonId: this.dragonId,
-        assignmentId: this.assignmentId,
-      });
+  ngOnChanges() {
+    const pp = this.payPeriod();
+    this.formGroup().patchValue({
+      dragonId: this.dragonId(),
+      assignmentId: this.assignmentId(),
+      startDateUnix: pp.startDateUnix,
+      endDateUnix: pp.endDateUnix,
     });
-  }
-
-  ngOnInit() {
-    this.httpClient.getPayPeriodCandidates(this.dragonId, this.assignmentId)
-      .then(r => this.candidates.set(r.payload));
-  }
-
-  onCandidateSelect(event: { value: string }) {
-    const match = this.candidates().find(c => c.startDateUnix.toString() === event.value);
-    if (match) {
-      this.selectedCandidate.set(match);
-      this.formGroup().patchValue({
-        startDateUnix: match.startDateUnix,
-        endDateUnix: match.endDateUnix,
-      });
-      this.hoursWorkedArray.clear();
-      this.hoursWorkedRows.set(this.cloneHoursWorkedArray());
-    }
+    this.hoursWorkedArray.clear();
+    this.hoursWorkedRows.set([]);
   }
 
   addRow() {
