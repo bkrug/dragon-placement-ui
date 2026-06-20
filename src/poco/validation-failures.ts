@@ -10,11 +10,6 @@ export class JobValidationFailures {
   numberOfPositions: string = '';
 }
 
-export class HoursWorkedValidationFailures {
-  startDateTimeUnix: string = '';
-  endDateTimeUnix: string = '';
-}
-
 export class PayPeriodValidationFailures {
   startDateUnix: string = '';
   endDateUnix: string = '';

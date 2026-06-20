@@ -4,9 +4,9 @@
   <div class="date-display">
     <h4>Timesheet Period:</h4>
     <span>
-      {{ (formGroup().value.startDateUnix || 0) * 1000 | date:'fullDate':'+0' }}
+      {{ minDate() }}
       to
-      {{ (formGroup().value.endDateUnix || 0) * 1000 | date:'fullDate':'+0' }}
+      {{ maxDate() }}
     </span>
   </div>
   <p-table [value]="hoursWorkedRows()" [tableStyle]="{ 'min-width': '40rem' }">

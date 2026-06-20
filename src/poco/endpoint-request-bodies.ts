@@ -23,16 +23,6 @@ export class PayPeriodCreateEdit {
   hoursWorked: HoursWorkedCreateEdit[] = [];
 }
 
-export class HoursWorkedWithJob {
-  hoursWorkedId: number = 0;
-  assignmentId: number = 0;
-  dragonId: number = 0;
-  startDateTimeUnix: number = 0;
-  endDateTimeUnix: number = 0;
-  jobTitle: string = '';
-  employerName: string | null = null;
-}
-
 export class JobCreateEdit {
   jobTitle: string = '';
   employerName: string = '';
@@ -45,4 +35,20 @@ export class JobCreateEdit {
 export class ValidPaySpan {
   startDate: string = '';
   endDate: string = '';
+}
+
+export class HoursWorkedView {
+  startDateTime: string = '';
+  endDateTime: string = '';
+}
+
+export class PayPeriodView {
+  assignmentDescription: string = '';
+  dragonName: string = '';
+  assignmentId: number = 0;
+  dragonId: number = 0;
+  startDate: string = '';
+  endDate: string = '';
+  submissionStatus: string = '';
+  hoursWorked: HoursWorkedView[] = [];
 }

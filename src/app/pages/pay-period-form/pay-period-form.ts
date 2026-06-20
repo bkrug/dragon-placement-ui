@@ -1,4 +1,4 @@
-import { DatePipe, DecimalPipe } from '@angular/common';
+import { DecimalPipe } from '@angular/common';
 import { Component, inject, input, OnChanges, OnInit, signal } from '@angular/core';
 import { FormArray, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
@@ -6,7 +6,7 @@ import { Effect } from 'effect';
 import { TableModule } from 'primeng/table';
 import { HoursWorkedClient } from '../../../httpClients/hours-worked-http-client';
 import { getDateStringFromUnixSeconds, getTimeStringFromUnixSeconds, getUnixSeconds, parseTimeToSeconds } from '../../../misc/transformers';
-import { HoursWorkedCreateEdit, PayPeriodCreateEdit } from '../../../poco/endpoint-request-bodies';
+import { HoursWorkedCreateEdit, HoursWorkedView, PayPeriodCreateEdit, PayPeriodView } from '../../../poco/endpoint-request-bodies';
 import { PayPeriod } from '../../../poco/models';
 import { ValidatedForm, ValidatedPayload } from '../../../poco/standard-responses';
 import { PayPeriodValidationFailures } from '../../../poco/validation-failures';
@@ -19,7 +19,7 @@ const SECONDS_PER_DAY = 24 * 60 * 60;
   selector: 'app-pay-period-form',
   imports: [
     ReactiveFormsModule,
-    DatePipe, DecimalPipe,
+    DecimalPipe,
     TableModule,
     LocalStringDateField,
     LocalStringTimeField,
@@ -36,7 +36,7 @@ export class PayPeriodForm extends EntityFormBase<PayPeriod, PayPeriodValidation
   minDate = signal('');
   maxDate = signal('');
 
-  formGroup = signal(this.createFormGroup(new PayPeriod()));
+  formGroup = signal(this.createFormGroup(new PayPeriodView()));
 
   hoursWorkedRows = signal<FormGroup[]>([]);
 
@@ -61,28 +61,45 @@ export class PayPeriodForm extends EntityFormBase<PayPeriod, PayPeriodValidation
   ngOnChanges() {
     const pp = this.dataFromParentComponent();
     if (pp)
-      this.initializeForm(pp);
+      this.initializeForm(Object.assign(new PayPeriodView(), {
+        dragonId: pp.dragonId,
+        assignmentId: pp.assignmentId,
+        startDate: getDateStringFromUnixSeconds(pp.startDateUnix),
+        endDate: getDateStringFromUnixSeconds(pp.endDateUnix)
+      }));
   }
 
-  private initializeForm(pp: PayPeriod) {
+  private initializeForm(pp: PayPeriodView) {
     this.formGroup.set(this.createFormGroup(pp));
     this.hoursWorkedRows.set(this.cloneHoursWorkedArray());
-    this.minDate.set(getDateStringFromUnixSeconds(pp.startDateUnix));
-    this.maxDate.set(getDateStringFromUnixSeconds(pp.endDateUnix));
+    this.minDate.set(pp.startDate);
+    this.maxDate.set(pp.endDate);
   }
 
-  private createFormGroup(existingRecord: PayPeriod) {
+  private createFormGroup(existingRecord: PayPeriodView) {
     return new FormGroup({
       dragonId: new FormControl<number>(existingRecord.dragonId),
       assignmentId: new FormControl<number>(existingRecord.assignmentId),
-      startDateUnix: new FormControl<number | null>(existingRecord.startDateUnix, [Validators.required]),
-      endDateUnix: new FormControl<number | null>(existingRecord.endDateUnix, [Validators.required]),
+      //TODO: rename this field to remove the "unix" suffix
+      startDateUnix: new FormControl<string | null>(existingRecord.startDate, [Validators.required]),
+      endDateUnix: new FormControl<string | null>(existingRecord.endDate, [Validators.required]),
       hoursWorked: new FormArray<FormGroup>(existingRecord.hoursWorked.map(hw => new FormGroup({
-        workDate: new FormControl<string | null>(getDateStringFromUnixSeconds(hw.startDateTimeUnix), [Validators.required]),
-        startDateTime: new FormControl<string | null>(getTimeStringFromUnixSeconds(hw.startDateTimeUnix), [Validators.required]),
-        endDateTime: new FormControl<string | null>(getTimeStringFromUnixSeconds(hw.endDateTimeUnix), [Validators.required]),
+        //TODO: Add some sort of safety check in case the string format isn't what we expect
+        workDate: new FormControl<string | null>(hw.startDateTime.split('T')[0], [Validators.required]),
+        startDateTime: new FormControl<string | null>(this.getTimePortion(hw.startDateTime), [Validators.required]),
+        endDateTime: new FormControl<string | null>(this.getTimePortion(hw.endDateTime) , [Validators.required]),
       }))),
     });
+  }
+
+  private getTimePortion(dateTimeString: string): string {
+    const parts = dateTimeString.split('T');
+    if (parts.length < 2)
+      return '';
+    const parts2 = parts[1].split(':');
+    if (parts2.length < 2)
+      return '';
+    return parts2[0] + ':' + parts2[1];
   }
 
   addRow() {
@@ -128,8 +145,8 @@ export class PayPeriodForm extends EntityFormBase<PayPeriod, PayPeriodValidation
     return {
       assignmentId: fg.value.assignmentId!,
       dragonId: fg.value.dragonId!,
-      startDateUnix: fg.value.startDateUnix!,
-      endDateUnix: fg.value.endDateUnix!,
+      startDateUnix: getUnixSeconds(fg.value.startDateUnix!),
+      endDateUnix: getUnixSeconds(fg.value.endDateUnix!),
       submissionStatus: '',
       hoursWorked: this.hoursWorkedArray.controls.map(row => {
         const v = row.value;

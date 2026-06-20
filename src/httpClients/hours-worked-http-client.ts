@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HoursWorkedCreateEdit, HoursWorkedWithJob, PayPeriodCreateEdit, ValidPaySpan } from '../poco/endpoint-request-bodies';
-import { HoursWorked, PayPeriod } from '../poco/models';
-import { HoursWorkedValidationFailures, PayPeriodValidationFailures } from '../poco/validation-failures';
+import { PayPeriodCreateEdit, PayPeriodView, ValidPaySpan } from '../poco/endpoint-request-bodies';
+import { PayPeriod } from '../poco/models';
+import { PayPeriodValidationFailures } from '../poco/validation-failures';
 import { apiUrl } from './api-url';
 import { HttpHelpers } from './http-helpers';
 
@@ -18,7 +18,7 @@ export class HoursWorkedClient {
   }
 
   async getPayPeriod(payPeriodId: number) {
-    return await HttpHelpers.requestValidatedPayload<PayPeriod>(`${apiUrl}payperiod/${payPeriodId}`);
+    return await HttpHelpers.requestValidatedPayload<PayPeriodView>(`${apiUrl}v2/payperiod/${payPeriodId}`);
   }
 
   async postPayPeriodForm(body: PayPeriodCreateEdit) {

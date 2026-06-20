@@ -1,5 +1,10 @@
 <div [formGroup]="formGroup()">
   <label for="{{fieldName()}}">{{label()}}</label>
-  <input pInputText type="time" id="{{fieldName()}}" formControlName="{{fieldName()}}" [invalid]="isInvalid()" />
+  <input
+    pInputText
+    type="time"
+    id="{{fieldName()}}"
+    formControlName="{{fieldName()}}"
+    [invalid]="isInvalid()" />
   <app-local-field-errors [errors]="getErrors()" [shouldDisplay]="shouldDisplayError()" />
 </div>
