@@ -1,15 +1,21 @@
 <h2>Pay Period</h2>
 
 <div class="card flex justify-center">
-  <form [formGroup]="formGroup()">
-    <app-local-select-field
-      id="start-date-unix"
-      label="Pay Period:"
-      fieldName="startDateUnix"
-      [formGroup]="formGroup()"
-      [fieldControl]="formGroup().get('startDateUnix')"
-      [options]="candidateOptions()" />
-    @if (selectedCandidate(); as candidate) {
+  <div>
+    <label for="pay-period-select">Pay Period:</label>
+    <p-select
+      inputId="pay-period-select"
+      [options]="candidateOptions()"
+      optionLabel="display"
+      optionValue="value"
+      placeholder="Select new pay period..."
+      (onChange)="onCandidateSelect($event)"
+      class="w-full md:w-56" />
+  </div>
+  @if (selectedCandidate(); as candidate) {
+    <form [formGroup]="formGroup()">
+      <input type="hidden" formControlName="dragonId" />
+      <input type="hidden" formControlName="assignmentId" />
       <div class="date-display">
         <label>Start Date:</label>
         <span>{{ candidate.startDateUnix * 1000 | date:'mediumDate':'+0' }}</span>
@@ -18,6 +24,6 @@
         <label>End Date:</label>
         <span>{{ candidate.endDateUnix * 1000 | date:'mediumDate':'+0' }}</span>
       </div>
-    }
-  </form>
+    </form>
+  }
 </div>
