@@ -11,6 +11,7 @@ import { JobForm } from './pages/job-form/job-form';
 import { JobList } from './pages/job-list/job-list';
 import { ManageJob } from './pages/manage-job/manage-job';
 import { PayPeriodCreate } from './pages/pay-period-create/pay-period-create';
+import { PayPeriodForm } from './pages/pay-period-form/pay-period-form';
 import { PayPeriodList } from './pages/pay-period-list/pay-period-list';
 
 export const routes: Routes = [
@@ -65,6 +66,10 @@ export const routes: Routes = [
   {
     path: 'dragons/:dragonId/assignments/:assignmentId/pay-period-create',
     component: PayPeriodCreate
+  },
+  {
+    path: 'pay-periods-form/:payPeriodId',
+    component: PayPeriodForm
   },
   {
     path: 'dragons/:dragonId',

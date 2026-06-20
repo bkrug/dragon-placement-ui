@@ -1,6 +1,7 @@
 import { DatePipe, DecimalPipe } from '@angular/common';
 import { Component, computed, inject, input, OnInit, signal } from '@angular/core';
 import { FormArray, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 import { Effect } from 'effect';
 import { TableModule } from 'primeng/table';
 import { HoursWorkedClient } from '../../../httpClients/hours-worked-http-client';
@@ -28,11 +29,12 @@ const SECONDS_PER_DAY = 24 * 60 * 60;
 })
 export class PayPeriodForm extends EntityFormBase<PayPeriod, PayPeriodValidationFailures> implements OnInit {
   httpClient = inject(HoursWorkedClient);
+  private route = inject(ActivatedRoute);
 
-  dataFromParentComponent = input.required<PayPeriod>();
+  dataFromParentComponent = input<PayPeriod>();
 
-  minDate = computed(() => getDateStringFromUnixSeconds(this.dataFromParentComponent().startDateUnix));
-  maxDate = computed(() => getDateStringFromUnixSeconds(this.dataFromParentComponent().endDateUnix));
+  minDate = signal('');
+  maxDate = signal('');
 
   formGroup = signal(this.createFormGroup(new PayPeriod()));
 
@@ -44,16 +46,29 @@ export class PayPeriodForm extends EntityFormBase<PayPeriod, PayPeriodValidation
 
   constructor() {
     super('payPeriodId');
+    this.route.params.subscribe(params => {
+      this.entityId = params['payPeriodId'] || 0;
+    });    
   }
 
   ngOnInit(): void {
     if (this.entityId) {
       this.httpClient.getPayPeriod(this.entityId)
-        .then(r => {
-          this.formGroup.set(this.createFormGroup(r.payload));
-          this.hoursWorkedRows.set(this.cloneHoursWorkedArray());          
-        });
+        .then(r => this.initializeForm(r.payload));
     }
+  }
+
+  ngOnChanges() {
+    const pp = this.dataFromParentComponent();
+    if (pp)
+      this.initializeForm(pp);
+  }  
+
+  private initializeForm(pp: PayPeriod) {
+    this.formGroup.set(this.createFormGroup(pp));
+    this.hoursWorkedRows.set(this.cloneHoursWorkedArray());
+    this.minDate.set(getDateStringFromUnixSeconds(pp.startDateUnix));
+    this.maxDate.set(getDateStringFromUnixSeconds(pp.endDateUnix));
   }
 
   private createFormGroup(existingRecord: PayPeriod) {
@@ -68,18 +83,6 @@ export class PayPeriodForm extends EntityFormBase<PayPeriod, PayPeriodValidation
         endDateTimeUnix: new FormControl<string | null>(getTimeStringFromUnixSeconds(hw.endDateTimeUnix), [Validators.required]),
       }))),
     });
-  }
-
-  ngOnChanges() {
-    const pp = this.dataFromParentComponent();
-    this.formGroup().patchValue({
-      dragonId: pp.dragonId,
-      assignmentId: pp.assignmentId,
-      startDateUnix: pp.startDateUnix,
-      endDateUnix: pp.endDateUnix,
-    });
-    this.hoursWorkedArray.clear();
-    this.hoursWorkedRows.set([]);
   }
 
   addRow() {
@@ -139,7 +142,6 @@ export class PayPeriodForm extends EntityFormBase<PayPeriod, PayPeriodValidation
 
   protected override async makeSubmissionRequest(): Promise<Effect.Effect<ValidatedPayload<PayPeriod>, ValidatedForm<PayPeriodValidationFailures>, never>> {
     const body = this.buildBody();
-    console.log(body);
     return this.entityId
       ? this.httpClient.putPayPeriodForm(this.entityId, body)
       : this.httpClient.postPayPeriodForm(body);

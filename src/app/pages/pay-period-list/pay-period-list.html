@@ -26,7 +26,7 @@
   </ng-template>
   <ng-template #body let-pp>
     <tr>
-      <td><a href="#">Edit</a></td>
+      <td><a [routerLink]="['/pay-periods-form', pp.payPeriodId]">Edit</a></td>
       <td>{{ pp.startDateUnix * 1000 | date:'mediumDate':'+0' }}</td>
       <td>{{ pp.endDateUnix * 1000 | date:'mediumDate':'+0' }}</td>
       <td>{{ pp.submissionStatus }}</td>
