@@ -73,6 +73,5 @@ export class JobForm extends EntityFormBase<Job, JobValidationFailures> implemen
 
   protected override handleSubmissionSuccess(payload: Job) {
     this.entityId = payload.jobId;
-    //this.job.set(payload);
   }
 }

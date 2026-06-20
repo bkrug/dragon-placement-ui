@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HoursWorkedCreateEdit, HoursWorkedWithJob } from '../poco/endpointRequestBodies';
+import { HoursWorkedCreateEdit, HoursWorkedWithJob, PayPeriodCreateEdit } from '../poco/endpointRequestBodies';
 import { HoursWorked, PayPeriod } from '../poco/models';
-import { HoursWorkedValidationFailures } from '../poco/validationFailures';
+import { HoursWorkedValidationFailures, PayPeriodValidationFailures } from '../poco/validationFailures';
 import { apiUrl } from './api-url';
 import { HttpHelpers } from './http-helpers';
 
@@ -32,4 +32,12 @@ export class HoursWorkedClient {
   async getPayPeriodCandidates(dragonId: number, assignmentId: number) {
     return await HttpHelpers.requestValidatedPayload<PayPeriod[]>(`${apiUrl}dragon/${dragonId}/assignment/${assignmentId}/payperiodcandidate`);
   }
+
+  async postPayPeriodForm(body: PayPeriodCreateEdit) {
+    return await HttpHelpers.submitForm<PayPeriod, PayPeriodValidationFailures>(`${apiUrl}payperiod`, 'POST', body);
+  }
+
+  async putPayPeriodForm(payPeriodId: number, body: PayPeriodCreateEdit) {
+    return await HttpHelpers.submitForm<PayPeriod, PayPeriodValidationFailures>(`${apiUrl}payperiod/${payPeriodId}`, 'PUT', body);
+  }  
 }

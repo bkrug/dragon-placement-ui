@@ -1,21 +1,34 @@
 import { DatePipe, DecimalPipe } from '@angular/common';
-import { Component, computed, input, signal } from '@angular/core';
+import { Component, computed, inject, input, signal } from '@angular/core';
 import { FormArray, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Effect } from 'effect';
 import { TableModule } from 'primeng/table';
+import { HoursWorkedClient } from '../../../httpClients/hours-worked-http-client';
 import { getDateStringFromUnixSeconds, getUnixSeconds, parseTimeToSeconds } from '../../../misc/transformers';
 import { HoursWorkedCreateEdit, PayPeriodCreateEdit } from '../../../poco/endpointRequestBodies';
 import { PayPeriod } from '../../../poco/models';
+import { ValidatedForm, ValidatedPayload } from '../../../poco/standard-responses';
+import { PayPeriodValidationFailures } from '../../../poco/validationFailures';
+import { EntityFormBase } from '../../local-form/entity-form-base';
 import { LocalStringDateField, LocalStringTimeField, LocalSubmitButton } from '../../local-form/local-fields';
 
 const SECONDS_PER_DAY = 24 * 60 * 60;
 
 @Component({
   selector: 'app-pay-period-form',
-  imports: [ReactiveFormsModule, DatePipe, DecimalPipe, TableModule, LocalStringDateField, LocalStringTimeField, LocalSubmitButton],
+  imports: [
+    ReactiveFormsModule,
+    DatePipe, DecimalPipe,
+    TableModule,
+    LocalStringDateField,
+    LocalStringTimeField,
+    LocalSubmitButton],
   templateUrl: './pay-period-form.html',
   styleUrl: './pay-period-form.scss',
 })
-export class PayPeriodForm {
+export class PayPeriodForm extends EntityFormBase<PayPeriod, PayPeriodValidationFailures> {
+  httpClient = inject(HoursWorkedClient);
+
   payPeriod = input.required<PayPeriod>();
   dragonId = input.required<number>();
   assignmentId = input.required<number>();
@@ -35,6 +48,10 @@ export class PayPeriodForm {
 
   get hoursWorkedArray() {
     return this.formGroup().get('hoursWorked') as FormArray;
+  }
+
+  constructor() {
+    super('payPeriodId');
   }
 
   ngOnChanges() {
@@ -68,9 +85,20 @@ export class PayPeriodForm {
     return [...this.hoursWorkedArray.controls as FormGroup[]];
   }
 
-  onSubmit() {
+  getTotalHours(rowGroup: FormGroup): number {
+    const start = rowGroup.get('startDateTimeUnix')?.value;
+    const end = rowGroup.get('endDateTimeUnix')?.value;
+    if (!start || !end) return 0;
+    const startSecs = parseTimeToSeconds(start);
+    const endSecs = parseTimeToSeconds(end);
+    return endSecs > startSecs
+      ? (endSecs - startSecs) / 3600
+      : (endSecs + SECONDS_PER_DAY - startSecs) / 3600;
+  }  
+
+  private buildBody(): PayPeriodCreateEdit {
     const fg = this.formGroup();
-    const body: PayPeriodCreateEdit = {
+    return {
       assignmentId: fg.value.assignmentId!,
       dragonId: fg.value.dragonId!,
       startDateUnix: fg.value.startDateUnix!,
@@ -91,17 +119,17 @@ export class PayPeriodForm {
         } as HoursWorkedCreateEdit;
       }),
     };
-    console.log(body);
   }
 
-  getTotalHours(rowGroup: FormGroup): number {
-    const start = rowGroup.get('startDateTimeUnix')?.value;
-    const end = rowGroup.get('endDateTimeUnix')?.value;
-    if (!start || !end) return 0;
-    const startSecs = parseTimeToSeconds(start);
-    const endSecs = parseTimeToSeconds(end);
-    return endSecs > startSecs
-      ? (endSecs - startSecs) / 3600
-      : (endSecs + SECONDS_PER_DAY - startSecs) / 3600;
+  protected override async makeSubmissionRequest(): Promise<Effect.Effect<ValidatedPayload<PayPeriod>, ValidatedForm<PayPeriodValidationFailures>, never>> {
+    const body = this.buildBody();
+    console.log(body);
+    return this.entityId
+      ? this.httpClient.putPayPeriodForm(this.entityId, body)
+      : this.httpClient.postPayPeriodForm(body);
+  }
+
+  protected override handleSubmissionSuccess(payload: PayPeriod) {
+    this.entityId = payload.payPeriodId;
   }
 }
