@@ -162,23 +162,6 @@ describe('Pay Period Create Tests', () => {
       payload: [candidate]
     } as ValidatedPayload<PayPeriod[]>);
 
-    let postWasCalled = false;
-    mockHttpClient.postPayPeriodForm = async (body: PayPeriodCreateEdit) => {
-      postWasCalled = true;
-      return Effect.succeed({
-        isInternalError: false,
-        isSuccess: true,
-        validationFailures: [],
-        payload: Object.assign(new PayPeriod(), {
-          payPeriodId: postResponsePayPeriodId,
-          dragonId: body.dragonId,
-          assignmentId: body.assignmentId,
-          startDateUnix: body.startDateUnix,
-          endDateUnix: body.endDateUnix,
-        })
-      } as ValidatedPayload<PayPeriod>) as Effect.Effect<ValidatedPayload<PayPeriod>, ValidatedForm<PayPeriodValidationFailures>, never>;
-    };
-
     const mockActivatedRoute = new MockActivatedRoute();
     mockActivatedRoute.setParams({ dragonId, assignmentId });
     TestBed.configureTestingModule({
