@@ -3,7 +3,7 @@ import { Component, inject, signal } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { TableLazyLoadEvent, TableModule } from 'primeng/table';
 import { PAGE_SIZE } from '../../../global-consts';
-import { HoursWorkedClient } from '../../../httpClients/assignment-http-client';
+import { HoursWorkedClient } from '../../../httpClients/hours-worked-http-client';
 import { HoursWorkedWithJob } from '../../../poco/endpointRequestBodies';
 
 @Component({

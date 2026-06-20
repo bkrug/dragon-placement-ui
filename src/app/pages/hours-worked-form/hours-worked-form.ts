@@ -2,7 +2,7 @@ import { DecimalPipe } from '@angular/common';
 import { Component, effect, inject, OnInit, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { HoursWorkedClient } from '../../../httpClients/assignment-http-client';
+import { HoursWorkedClient } from '../../../httpClients/hours-worked-http-client';
 import { getDateStringFromUnixSeconds, getTimeStringFromUnixSeconds, getUnixSeconds } from '../../../misc/transformers';
 import { HoursWorkedCreateEdit } from '../../../poco/endpointRequestBodies';
 import { HoursWorked, HoursWorkedValidationFailures } from '../../../poco/models';

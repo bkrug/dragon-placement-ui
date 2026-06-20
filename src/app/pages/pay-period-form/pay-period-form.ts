@@ -3,7 +3,7 @@ import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { SelectModule } from 'primeng/select';
-import { HoursWorkedClient } from '../../../httpClients/assignment-http-client';
+import { HoursWorkedClient } from '../../../httpClients/hours-worked-http-client';
 import { getDateStringFromUnixSeconds } from '../../../misc/transformers';
 import { PayPeriod } from '../../../poco/models';
 import { SelectListOption } from '../../local-form/local-fields';

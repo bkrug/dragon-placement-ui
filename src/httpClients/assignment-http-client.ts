@@ -1,13 +1,9 @@
 import { Injectable } from '@angular/core';
-import { environment } from '../environments/environment';
-import { DragonCreateEdit, HoursWorkedCreateEdit, HoursWorkedWithJob, JobCreateEdit } from '../poco/endpointRequestBodies';
+import { DragonCreateEdit, JobCreateEdit } from '../poco/endpointRequestBodies';
 import { JobInclusions } from '../poco/enums';
-import { Dragon, DragonValidationFailures, HoursWorked, HoursWorkedValidationFailures, Job, JobValidationFailures, PayPeriod, SkillTag } from '../poco/models';
+import { Dragon, DragonValidationFailures, Job, JobValidationFailures, SkillTag } from '../poco/models';
+import { apiUrl } from './api-url';
 import { HttpHelpers } from './http-helpers';
-
-const apiUrl = environment.backendApi.endsWith('/')
-  ? environment.backendApi
-  : environment.backendApi + '/'
 
 @Injectable({
   providedIn: 'root',
@@ -67,33 +63,4 @@ export class AssignmentHttpClient {
     const limit = 1*1000*1000*1000;
     return await HttpHelpers.getOnePage<SkillTag>(`${apiUrl}skill-tag?offset=0&limit=${limit}`);
   };
-}
-
-@Injectable({
-  providedIn: 'root',
-})
-export class HoursWorkedClient {
-  async getOnePageOfHoursWorked(dragonId: number, assignmentId: number, offset: number, limit: number) {
-    return await HttpHelpers.getOnePage<HoursWorkedWithJob>(`${apiUrl}dragon/${dragonId}/assignment/${assignmentId}/hoursworked?offset=${offset}&limit=${limit}`);
-  }
-
-  async getHoursWorked(hoursWorkedId: number) {
-    return await HttpHelpers.requestValidatedPayload<HoursWorked>(`${apiUrl}hoursworked/${hoursWorkedId}`);
-  }
-
-  async postHoursWorkedForm(body: HoursWorkedCreateEdit) {
-    return await HttpHelpers.submitForm<HoursWorked, HoursWorkedValidationFailures>(`${apiUrl}hoursworked`, 'POST', body);
-  }
-
-  async putHoursWorkedForm(hoursWorkedId: number, body: HoursWorkedCreateEdit) {
-    return await HttpHelpers.submitForm<HoursWorked, HoursWorkedValidationFailures>(`${apiUrl}hoursworked/${hoursWorkedId}`, 'PUT', body);
-  }  
-
-  async getOnePageOfPayPeriods(dragonId: number, assignmentId: number, offset: number, limit: number) {
-    return await HttpHelpers.getOnePage<PayPeriod>(`${apiUrl}dragon/${dragonId}/assignment/${assignmentId}/payperiod?offset=${offset}&limit=${limit}`);
-  }
-
-  async getPayPeriodCandidates(dragonId: number, assignmentId: number) {
-    return await HttpHelpers.requestValidatedPayload<PayPeriod[]>(`${apiUrl}dragon/${dragonId}/assignment/${assignmentId}/payperiodcandidate`);
-  }  
 }
