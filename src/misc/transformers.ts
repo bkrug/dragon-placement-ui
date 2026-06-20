@@ -83,6 +83,11 @@ export function getDateStringFromUnixSeconds(unixSeconds: number | null | undefi
   return `${ourDate.getUTCFullYear()}-${month}-${date}`;
 }
 
+export function parseTimeToSeconds(timeStr: string): number {
+  const [hours, minutes] = timeStr.split(':').map(Number);
+  return hours * 3600 + minutes * 60;
+}
+
 export function getTimeStringFromUnixSeconds(unixSeconds: number | null | undefined) {
   if (unixSeconds === null || unixSeconds === undefined)
     return '';

@@ -1,16 +1,19 @@
-import { DatePipe } from '@angular/common';
+import { DatePipe, DecimalPipe } from '@angular/common';
 import { Component, computed, inject, OnInit, signal } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormArray, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { SelectModule } from 'primeng/select';
+import { TableModule } from 'primeng/table';
 import { HoursWorkedClient } from '../../../httpClients/hours-worked-http-client';
-import { getDateStringFromUnixSeconds } from '../../../misc/transformers';
+import { getDateStringFromUnixSeconds, parseTimeToSeconds } from '../../../misc/transformers';
 import { PayPeriod } from '../../../poco/models';
-import { SelectListOption } from '../../local-form/local-fields';
+import { LocalStringDateField, LocalStringTimeField, SelectListOption } from '../../local-form/local-fields';
+
+const SECONDS_PER_DAY = 24 * 60 * 60;
 
 @Component({
   selector: 'app-pay-period-form',
-  imports: [ReactiveFormsModule, SelectModule, DatePipe],
+  imports: [ReactiveFormsModule, SelectModule, DatePipe, DecimalPipe, TableModule, LocalStringDateField, LocalStringTimeField],
   templateUrl: './pay-period-form.html',
   styleUrl: './pay-period-form.scss',
 })
@@ -33,9 +36,15 @@ export class PayPeriodForm implements OnInit {
     assignmentId: new FormControl<number>(0),
     startDateUnix: new FormControl<number | null>(null, [Validators.required]),
     endDateUnix: new FormControl<number | null>(null, [Validators.required]),
+    hoursWorked: new FormArray<FormGroup>([]),
   }));
 
+  hoursWorkedRows = signal<FormGroup[]>([]);
   selectedCandidate = signal<PayPeriod | null>(null);
+
+  get hoursWorkedArray() {
+    return this.formGroup().get('hoursWorked') as FormArray;
+  }
 
   constructor() {
     this.route.params.subscribe(params => {
@@ -61,6 +70,38 @@ export class PayPeriodForm implements OnInit {
         startDateUnix: match.startDateUnix,
         endDateUnix: match.endDateUnix,
       });
+      this.hoursWorkedArray.clear();
+      this.hoursWorkedRows.set(this.cloneHoursWorkedArray());
     }
+  }
+
+  addRow() {
+    const row = new FormGroup({
+      workDateUnix: new FormControl<string | null>(null, [Validators.required]),
+      startDateTimeUnix: new FormControl<string | null>(null, [Validators.required]),
+      endDateTimeUnix: new FormControl<string | null>(null, [Validators.required]),
+    });
+    this.hoursWorkedArray.push(row);
+    this.hoursWorkedRows.set(this.cloneHoursWorkedArray());
+  }
+
+  removeRow(index: number) {
+    this.hoursWorkedArray.removeAt(index);
+    this.hoursWorkedRows.set(this.cloneHoursWorkedArray());
+  }
+
+  private cloneHoursWorkedArray(): FormGroup<any>[] {
+    return [...this.hoursWorkedArray.controls as FormGroup[]];
+  }
+
+  getTotalHours(rowGroup: FormGroup): number {
+    const start = rowGroup.get('startDateTimeUnix')?.value;
+    const end = rowGroup.get('endDateTimeUnix')?.value;
+    if (!start || !end) return 0;
+    const startSecs = parseTimeToSeconds(start);
+    const endSecs = parseTimeToSeconds(end);
+    return endSecs > startSecs
+      ? (endSecs - startSecs) / 3600
+      : (endSecs + SECONDS_PER_DAY - startSecs) / 3600;
   }
 }

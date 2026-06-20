@@ -3,7 +3,7 @@ import { Component, effect, inject, OnInit, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { HoursWorkedClient } from '../../../httpClients/hours-worked-http-client';
-import { getDateStringFromUnixSeconds, getTimeStringFromUnixSeconds, getUnixSeconds } from '../../../misc/transformers';
+import { getDateStringFromUnixSeconds, getTimeStringFromUnixSeconds, getUnixSeconds, parseTimeToSeconds } from '../../../misc/transformers';
 import { HoursWorkedCreateEdit } from '../../../poco/endpointRequestBodies';
 import { HoursWorked, HoursWorkedValidationFailures } from '../../../poco/models';
 import { EntityFormBase } from '../../local-form/entity-form-base';
@@ -70,11 +70,6 @@ export class HoursWorkedForm extends EntityFormBase<HoursWorked, HoursWorkedVali
     });
   }
 
-  private parseTimeToSeconds(timeStr: string): number {
-    const [hours, minutes] = timeStr.split(':').map(Number);
-    return hours * 3600 + minutes * 60;
-  }
-
   private calcTotalHours(values: { startDateTimeUnix?: string | null, endDateTimeUnix?: string | null }) {
     const start = values.startDateTimeUnix;
     const end = values.endDateTimeUnix;
@@ -82,8 +77,8 @@ export class HoursWorkedForm extends EntityFormBase<HoursWorked, HoursWorkedVali
       this.totalHours.set(0);
       return;
     }
-    const startSecs = this.parseTimeToSeconds(start);
-    const endSecs = this.parseTimeToSeconds(end);
+    const startSecs = parseTimeToSeconds(start);
+    const endSecs = parseTimeToSeconds(end);
     this.totalHours.set(endSecs > startSecs
       ? (endSecs - startSecs) / 3600
       : (endSecs + SECONDS_PER_DAY - startSecs) / 3600
@@ -93,8 +88,8 @@ export class HoursWorkedForm extends EntityFormBase<HoursWorked, HoursWorkedVali
   protected override makeSubmissionRequest() {
     const values = this.formGroup().value;
     const workDateUnixSeconds = getUnixSeconds(values.workDateUnix);
-    const startTimeUnixSeconds = this.parseTimeToSeconds(values.startDateTimeUnix!);
-    const endTimeUnixSeconds = this.parseTimeToSeconds(values.endDateTimeUnix!);
+    const startTimeUnixSeconds = parseTimeToSeconds(values.startDateTimeUnix!);
+    const endTimeUnixSeconds = parseTimeToSeconds(values.endDateTimeUnix!);
 
     const body: HoursWorkedCreateEdit = {
       assignmentId: this.assignmentId,

@@ -24,6 +24,45 @@
         <label>End Date:</label>
         <span>{{ candidate.endDateUnix * 1000 | date:'mediumDate':'+0' }}</span>
       </div>
+      <p-table [value]="hoursWorkedRows()" [tableStyle]="{ 'min-width': '40rem' }">
+        <ng-template #header>
+          <tr>
+            <th>Work Date</th>
+            <th>Start Time</th>
+            <th>End Time</th>
+            <th>Total Hours</th>
+            <th></th>
+          </tr>
+        </ng-template>
+        <ng-template #body let-rowGroup let-i="rowIndex">
+          <tr>
+            <td>
+              <app-local-string-date-field
+                label=""
+                fieldName="workDateUnix"
+                [formGroup]="rowGroup"
+                [fieldControl]="rowGroup.get('workDateUnix')" />
+            </td>
+            <td>
+              <app-local-string-time-field
+                label=""
+                fieldName="startDateTimeUnix"
+                [formGroup]="rowGroup"
+                [fieldControl]="rowGroup.get('startDateTimeUnix')" />
+            </td>
+            <td>
+              <app-local-string-time-field
+                label=""
+                fieldName="endDateTimeUnix"
+                [formGroup]="rowGroup"
+                [fieldControl]="rowGroup.get('endDateTimeUnix')" />
+            </td>
+            <td>{{ getTotalHours(rowGroup) | number:'1.2-2' }}</td>
+            <td><button type="button" (click)="removeRow(i)">Remove</button></td>
+          </tr>
+        </ng-template>
+      </p-table>
+      <button type="button" (click)="addRow()">Add Row</button>
     </form>
   }
 </div>
