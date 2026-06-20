@@ -1,7 +1,7 @@
 <h3>Pay Periods</h3>
 
 <div class="right-link"><span class="attention">⨮ </span>
-  <a href="#">Create</a>
+  <a [routerLink]="['/dragon', dragonId(), 'assignment', assignmentId(), 'pay-period-form']">Create</a>
 </div>
 <p-table
   [value]="payPeriods()"
