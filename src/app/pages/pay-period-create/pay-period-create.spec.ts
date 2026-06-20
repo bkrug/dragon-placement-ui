@@ -8,8 +8,8 @@ import { PayPeriod } from '../../../poco/models';
 import { ValidatedForm, ValidatedPayload } from '../../../poco/standard-responses';
 import { PayPeriodValidationFailures } from '../../../poco/validation-failures';
 import { MockActivatedRoute } from '../../../testHelpers/MockActivatedRoute';
-import { PayPeriodCreate } from './pay-period-create';
 import { PayPeriodForm } from '../pay-period-form/pay-period-form';
+import { PayPeriodCreate } from './pay-period-create';
 
 describe('Pay Period Create Tests', () => {
   const dragonId = 5;
@@ -150,5 +150,94 @@ describe('Pay Period Create Tests', () => {
     expect(actualPutBody.dragonId).toEqual(dragonId);
     expect(actualPutBody.assignmentId).toEqual(assignmentId);
     expect(actualPutBody.hoursWorked.length).toEqual(3);
+  });
+
+  it('should disable submit and show error styling when hours-worked fields are empty', async () => {
+    const candidate = Object.assign(new PayPeriod(), {
+      dragonId,
+      assignmentId,
+      startDateUnix: payPeriodStartUnix,
+      endDateUnix: payPeriodEndUnix,
+    });
+
+    const mockHttpClient = new HoursWorkedClient();
+    mockHttpClient.getPayPeriodCandidates = async () => ({
+      isInternalError: false,
+      isSuccess: true,
+      validationFailures: [],
+      payload: [candidate]
+    } as ValidatedPayload<PayPeriod[]>);
+
+    let postWasCalled = false;
+    mockHttpClient.postPayPeriodForm = async (body: PayPeriodCreateEdit) => {
+      postWasCalled = true;
+      return Effect.succeed({
+        isInternalError: false,
+        isSuccess: true,
+        validationFailures: [],
+        payload: Object.assign(new PayPeriod(), {
+          payPeriodId: postResponsePayPeriodId,
+          dragonId: body.dragonId,
+          assignmentId: body.assignmentId,
+          startDateUnix: body.startDateUnix,
+          endDateUnix: body.endDateUnix,
+        })
+      } as ValidatedPayload<PayPeriod>) as Effect.Effect<ValidatedPayload<PayPeriod>, ValidatedForm<PayPeriodValidationFailures>, never>;
+    };
+
+    const mockActivatedRoute = new MockActivatedRoute();
+    mockActivatedRoute.setParams({ dragonId, assignmentId });
+    TestBed.configureTestingModule({
+      providers: [
+        { provide: HoursWorkedClient, useValue: mockHttpClient },
+        { provide: ActivatedRoute, useValue: mockActivatedRoute }
+      ]
+    });
+
+    await TestBed.configureTestingModule({ imports: [PayPeriodCreate] }).compileComponents();
+    const fixture = TestBed.createComponent(PayPeriodCreate);
+    const component = fixture.componentInstance;
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    //Act: select a candidate and add a row with empty fields
+    component.onCandidateSelect({ value: payPeriodStartUnix.toString() });
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    const payPeriodFormDebugEl = fixture.debugElement.query(By.directive(PayPeriodForm));
+    const payPeriodForm = payPeriodFormDebugEl.componentInstance as PayPeriodForm;
+
+    payPeriodForm.addRow();
+    fixture.detectChanges();
+
+    //Assert: form is invalid because row fields are empty
+    expect(payPeriodForm.formGroup().valid).toEqual(false);
+
+    //Assert: submit button is disabled
+    const submitButton = fixture.nativeElement.querySelector('button[type="submit"]') as HTMLButtonElement;
+    expect(submitButton.disabled).toEqual(true);
+
+    //Act: mark all fields as touched so error styling appears
+    payPeriodForm.formGroup().markAllAsTouched();
+    fixture.detectChanges();
+
+    //Assert: inputs show invalid styling
+    const invalidInputs = fixture.nativeElement.querySelectorAll('input.p-invalid');
+    expect(invalidInputs.length).toEqual(3);
+
+    //Assert: error messages are displayed
+    const errorMessages = fixture.nativeElement.querySelectorAll('app-pay-period-form p-message');
+    expect(errorMessages.length).toEqual(3);
+
+    //Act: fill in only the work date, leaving times empty
+    payPeriodForm.hoursWorkedArray.at(0).patchValue({ workDate: '2010-01-02' });
+    payPeriodForm.formGroup().markAllAsTouched();
+    fixture.detectChanges();
+
+    //Assert: still invalid — time fields are required
+    expect(payPeriodForm.formGroup().valid).toEqual(false);
+    expect(submitButton.disabled).toEqual(true);
   });
 });
