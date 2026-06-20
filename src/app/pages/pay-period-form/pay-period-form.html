@@ -13,7 +13,7 @@
       class="w-full md:w-56" />
   </div>
   @if (selectedCandidate(); as candidate) {
-    <form [formGroup]="formGroup()">
+    <form [formGroup]="formGroup()" (ngSubmit)="onSubmit()">
       <input type="hidden" formControlName="dragonId" />
       <input type="hidden" formControlName="assignmentId" />
       <div class="date-display">
@@ -63,6 +63,13 @@
         </ng-template>
       </p-table>
       <button type="button" (click)="addRow()">Add Row</button>
+      <p>
+        <app-local-submit-button
+          [isSubmitDisabled]="!formGroup().valid"
+          [isSubmitting]="false"
+          [showSaved]="false"
+          [submissionError]="''" />
+      </p>
     </form>
   }
 </div>

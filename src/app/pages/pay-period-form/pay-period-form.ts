@@ -5,15 +5,16 @@ import { ActivatedRoute } from '@angular/router';
 import { SelectModule } from 'primeng/select';
 import { TableModule } from 'primeng/table';
 import { HoursWorkedClient } from '../../../httpClients/hours-worked-http-client';
-import { getDateStringFromUnixSeconds, parseTimeToSeconds } from '../../../misc/transformers';
+import { getDateStringFromUnixSeconds, getUnixSeconds, parseTimeToSeconds } from '../../../misc/transformers';
+import { HoursWorkedCreateEdit, PayPeriodCreateEdit } from '../../../poco/endpointRequestBodies';
 import { PayPeriod } from '../../../poco/models';
-import { LocalStringDateField, LocalStringTimeField, SelectListOption } from '../../local-form/local-fields';
+import { LocalStringDateField, LocalStringTimeField, LocalSubmitButton, SelectListOption } from '../../local-form/local-fields';
 
 const SECONDS_PER_DAY = 24 * 60 * 60;
 
 @Component({
   selector: 'app-pay-period-form',
-  imports: [ReactiveFormsModule, SelectModule, DatePipe, DecimalPipe, TableModule, LocalStringDateField, LocalStringTimeField],
+  imports: [ReactiveFormsModule, SelectModule, DatePipe, DecimalPipe, TableModule, LocalStringDateField, LocalStringTimeField, LocalSubmitButton],
   templateUrl: './pay-period-form.html',
   styleUrl: './pay-period-form.scss',
 })
@@ -92,6 +93,32 @@ export class PayPeriodForm implements OnInit {
 
   private cloneHoursWorkedArray(): FormGroup<any>[] {
     return [...this.hoursWorkedArray.controls as FormGroup[]];
+  }
+
+  onSubmit() {
+    const fg = this.formGroup();
+    const body: PayPeriodCreateEdit = {
+      assignmentId: fg.value.assignmentId!,
+      dragonId: fg.value.dragonId!,
+      startDateUnix: fg.value.startDateUnix!,
+      endDateUnix: fg.value.endDateUnix!,
+      submissionStatus: '',
+      hoursWorked: this.hoursWorkedArray.controls.map(row => {
+        const v = row.value;
+        const workDateSecs = getUnixSeconds(v.workDateUnix);
+        const startSecs = parseTimeToSeconds(v.startDateTimeUnix!);
+        const endSecs = parseTimeToSeconds(v.endDateTimeUnix!);
+        return {
+          assignmentId: fg.value.assignmentId!,
+          dragonId: fg.value.dragonId!,
+          startDateTimeUnix: workDateSecs + startSecs,
+          endDateTimeUnix: endSecs > startSecs
+            ? workDateSecs + endSecs
+            : workDateSecs + SECONDS_PER_DAY + endSecs,
+        } as HoursWorkedCreateEdit;
+      }),
+    };
+    console.log(body);
   }
 
   getTotalHours(rowGroup: FormGroup): number {
