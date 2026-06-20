@@ -101,7 +101,15 @@ export class PayPeriodForm extends EntityFormBase<PayPeriod, PayPeriodValidation
   }
 
   private cloneHoursWorkedArray(): FormGroup<any>[] {
-    return [...this.hoursWorkedArray.controls as FormGroup[]];
+    const sortedGroup = [...this.hoursWorkedArray.controls as FormGroup[]]
+      .sort((fg1, fg2) => {
+        const startTime1 = getUnixSeconds(fg1.get('workDateUnix')?.value || '')
+          + parseTimeToSeconds(fg1.get('startDateTimeUnix')?.value || '');
+        const startTime2 = getUnixSeconds(fg2.get('workDateUnix')?.value || '')
+          + parseTimeToSeconds(fg2.get('startDateTimeUnix')?.value || '');
+        return startTime1 - startTime2;
+      });
+    return sortedGroup;
   }
 
   getTotalHours(rowGroup: FormGroup): number {
