@@ -205,8 +205,9 @@ describe('Pay Period Create Tests', () => {
     expect(invalidInputs.length).toEqual(3);
 
     //Assert: error messages are displayed
-    const errorMessages = fixture.nativeElement.querySelectorAll('app-pay-period-form p-message');
-    expect(errorMessages.length).toEqual(3);
+    const errorMessages = [...fixture.nativeElement.querySelectorAll('app-pay-period-form p-message')]
+      .map((el: HTMLElement) => el.textContent?.trim());
+    expect(errorMessages).toMatchObject(['required', 'required', 'required']);
 
     //Act: fill in only the work date, leaving times empty
     payPeriodForm.hoursWorkedArray.at(0).patchValue({ workDate: '2010-01-02' });
