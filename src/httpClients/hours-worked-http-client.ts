@@ -13,7 +13,7 @@ export class HoursWorkedClient {
     return await HttpHelpers.getOnePage<PayPeriod>(`${apiUrl}dragon/${dragonId}/assignment/${assignmentId}/payperiod?offset=${offset}&limit=${limit}`);
   }
 
-  async getPayPeriodCandidatesV2(dragonId: number, assignmentId: number) {
+  async getPayPeriodCandidates(dragonId: number, assignmentId: number) {
     return await HttpHelpers.requestValidatedPayload<ValidPaySpan[]>(`${apiUrl}v2/dragon/${dragonId}/assignment/${assignmentId}/payperiodcandidate`);
   }
 

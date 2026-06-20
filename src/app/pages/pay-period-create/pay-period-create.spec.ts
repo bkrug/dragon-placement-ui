@@ -27,7 +27,7 @@ describe('Pay Period Create Tests', () => {
     });
 
     const mockHttpClient = new HoursWorkedClient();
-    mockHttpClient.getPayPeriodCandidatesV2 = async () => ({
+    mockHttpClient.getPayPeriodCandidates = async () => ({
       isInternalError: false,
       isSuccess: true,
       validationFailures: [],
@@ -157,7 +157,7 @@ describe('Pay Period Create Tests', () => {
     });
 
     const mockHttpClient = new HoursWorkedClient();
-    mockHttpClient.getPayPeriodCandidatesV2 = async () => ({
+    mockHttpClient.getPayPeriodCandidates = async () => ({
       isInternalError: false,
       isSuccess: true,
       validationFailures: [],
@@ -228,7 +228,7 @@ describe('Pay Period Create Tests', () => {
     });
 
     const mockHttpClient = new HoursWorkedClient();
-    mockHttpClient.getPayPeriodCandidatesV2 = async () => ({
+    mockHttpClient.getPayPeriodCandidates = async () => ({
       isInternalError: false,
       isSuccess: true,
       validationFailures: [],
