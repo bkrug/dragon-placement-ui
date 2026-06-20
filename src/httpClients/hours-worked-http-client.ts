@@ -33,6 +33,10 @@ export class HoursWorkedClient {
     return await HttpHelpers.requestValidatedPayload<PayPeriod[]>(`${apiUrl}dragon/${dragonId}/assignment/${assignmentId}/payperiodcandidate`);
   }
 
+  async getPayPeriod(payPeriodId: number) {
+    return await HttpHelpers.requestValidatedPayload<PayPeriod>(`${apiUrl}payperiod/${payPeriodId}`);
+  }
+
   async postPayPeriodForm(body: PayPeriodCreateEdit) {
     return await HttpHelpers.submitForm<PayPeriod, PayPeriodValidationFailures>(`${apiUrl}payperiod`, 'POST', body);
   }

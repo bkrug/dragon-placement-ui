@@ -26,7 +26,7 @@ const SECONDS_PER_DAY = 24 * 60 * 60;
   templateUrl: './pay-period-form.html',
   styleUrl: './pay-period-form.scss',
 })
-export class PayPeriodForm extends EntityFormBase<PayPeriod, PayPeriodValidationFailures> {
+export class PayPeriodForm extends EntityFormBase<PayPeriod, PayPeriodValidationFailures> implements OnInit {
   httpClient = inject(HoursWorkedClient);
 
   payPeriod = input.required<PayPeriod>();
@@ -36,13 +36,7 @@ export class PayPeriodForm extends EntityFormBase<PayPeriod, PayPeriodValidation
   minDate = computed(() => getDateStringFromUnixSeconds(this.payPeriod().startDateUnix));
   maxDate = computed(() => getDateStringFromUnixSeconds(this.payPeriod().endDateUnix));
 
-  formGroup = signal(new FormGroup({
-    dragonId: new FormControl<number>(0),
-    assignmentId: new FormControl<number>(0),
-    startDateUnix: new FormControl<number | null>(null, [Validators.required]),
-    endDateUnix: new FormControl<number | null>(null, [Validators.required]),
-    hoursWorked: new FormArray<FormGroup>([]),
-  }));
+  formGroup = signal(this.createFormGroup(new PayPeriod()));
 
   hoursWorkedRows = signal<FormGroup[]>([]);
 
@@ -52,6 +46,26 @@ export class PayPeriodForm extends EntityFormBase<PayPeriod, PayPeriodValidation
 
   constructor() {
     super('payPeriodId');
+  }
+
+  ngOnInit(): void {
+    if (this.entityId) {
+      this.httpClient.getPayPeriod(this.entityId)
+        .then(r => {
+          this.formGroup.set(this.createFormGroup(r.payload));
+          this.hoursWorkedRows.set(this.cloneHoursWorkedArray());          
+        });
+    }
+  }
+
+  private createFormGroup(existingRecord: PayPeriod) {
+    return new FormGroup({
+      dragonId: new FormControl<number>(existingRecord.dragonId),
+      assignmentId: new FormControl<number>(existingRecord.assignmentId),
+      startDateUnix: new FormControl<number | null>(existingRecord.startDateUnix, [Validators.required]),
+      endDateUnix: new FormControl<number | null>(existingRecord.endDateUnix, [Validators.required]),
+      hoursWorked: new FormArray<FormGroup>([]),
+    });
   }
 
   ngOnChanges() {
