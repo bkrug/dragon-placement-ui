@@ -1,10 +1,10 @@
 import { DatePipe, DecimalPipe } from '@angular/common';
-import { Component, computed, inject, input, signal } from '@angular/core';
+import { Component, computed, inject, input, OnInit, signal } from '@angular/core';
 import { FormArray, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Effect } from 'effect';
 import { TableModule } from 'primeng/table';
 import { HoursWorkedClient } from '../../../httpClients/hours-worked-http-client';
-import { getDateStringFromUnixSeconds, getUnixSeconds, parseTimeToSeconds } from '../../../misc/transformers';
+import { getDateStringFromUnixSeconds, getTimeStringFromUnixSeconds, getUnixSeconds, parseTimeToSeconds } from '../../../misc/transformers';
 import { HoursWorkedCreateEdit, PayPeriodCreateEdit } from '../../../poco/endpointRequestBodies';
 import { PayPeriod } from '../../../poco/models';
 import { ValidatedForm, ValidatedPayload } from '../../../poco/standard-responses';
@@ -29,12 +29,10 @@ const SECONDS_PER_DAY = 24 * 60 * 60;
 export class PayPeriodForm extends EntityFormBase<PayPeriod, PayPeriodValidationFailures> implements OnInit {
   httpClient = inject(HoursWorkedClient);
 
-  payPeriod = input.required<PayPeriod>();
-  dragonId = input.required<number>();
-  assignmentId = input.required<number>();
+  dataFromParentComponent = input.required<PayPeriod>();
 
-  minDate = computed(() => getDateStringFromUnixSeconds(this.payPeriod().startDateUnix));
-  maxDate = computed(() => getDateStringFromUnixSeconds(this.payPeriod().endDateUnix));
+  minDate = computed(() => getDateStringFromUnixSeconds(this.dataFromParentComponent().startDateUnix));
+  maxDate = computed(() => getDateStringFromUnixSeconds(this.dataFromParentComponent().endDateUnix));
 
   formGroup = signal(this.createFormGroup(new PayPeriod()));
 
@@ -64,15 +62,19 @@ export class PayPeriodForm extends EntityFormBase<PayPeriod, PayPeriodValidation
       assignmentId: new FormControl<number>(existingRecord.assignmentId),
       startDateUnix: new FormControl<number | null>(existingRecord.startDateUnix, [Validators.required]),
       endDateUnix: new FormControl<number | null>(existingRecord.endDateUnix, [Validators.required]),
-      hoursWorked: new FormArray<FormGroup>([]),
+      hoursWorked: new FormArray<FormGroup>(existingRecord.hoursWorked.map(hw => new FormGroup({
+        workDateUnix: new FormControl<string | null>(getDateStringFromUnixSeconds(hw.startDateTimeUnix), [Validators.required]),
+        startDateTimeUnix: new FormControl<string | null>(getTimeStringFromUnixSeconds(hw.startDateTimeUnix), [Validators.required]),
+        endDateTimeUnix: new FormControl<string | null>(getTimeStringFromUnixSeconds(hw.endDateTimeUnix), [Validators.required]),
+      }))),
     });
   }
 
   ngOnChanges() {
-    const pp = this.payPeriod();
+    const pp = this.dataFromParentComponent();
     this.formGroup().patchValue({
-      dragonId: this.dragonId(),
-      assignmentId: this.assignmentId(),
+      dragonId: pp.dragonId,
+      assignmentId: pp.assignmentId,
       startDateUnix: pp.startDateUnix,
       endDateUnix: pp.endDateUnix,
     });

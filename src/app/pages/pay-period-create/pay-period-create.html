@@ -13,9 +13,6 @@
       class="w-full md:w-56" />
   </div>
   @if (selectedCandidate(); as candidate) {
-    <app-pay-period-form
-      [payPeriod]="candidate"
-      [dragonId]="dragonId()"
-      [assignmentId]="assignmentId()" />
+    <app-pay-period-form [dataFromParentComponent]="candidate" />
   }
 </div>
