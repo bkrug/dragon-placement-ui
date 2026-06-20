@@ -33,6 +33,8 @@ export class PayPeriodForm extends EntityFormBase<PayPeriod, PayPeriodValidation
 
   dataFromParentComponent = input<PayPeriod>();
 
+  dragonName = signal('');
+  assignmentDescription = signal('');
   minDate = signal('');
   maxDate = signal('');
 
@@ -72,6 +74,8 @@ export class PayPeriodForm extends EntityFormBase<PayPeriod, PayPeriodValidation
   private initializeForm(pp: PayPeriodView) {
     this.formGroup.set(this.createFormGroup(pp));
     this.hoursWorkedRows.set(this.cloneHoursWorkedArray());
+    this.dragonName.set(pp.dragonName);
+    this.assignmentDescription.set(pp.assignmentDescription);
     this.minDate.set(pp.startDate);
     this.maxDate.set(pp.endDate);
   }

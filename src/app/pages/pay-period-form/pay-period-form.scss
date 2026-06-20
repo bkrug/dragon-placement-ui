@@ -6,3 +6,7 @@
     font-weight: bold;
   }
 }
+
+td + td {
+  padding-left: 1em;
+}

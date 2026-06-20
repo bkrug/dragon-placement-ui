@@ -1,14 +1,24 @@
 <form [formGroup]="formGroup()" (ngSubmit)="onSubmit()" (focusin)="onFormFocus()">
   <input type="hidden" formControlName="dragonId" />
   <input type="hidden" formControlName="assignmentId" />
-  <div class="date-display">
-    <h4>Timesheet Period:</h4>
-    <span>
-      {{ minDate() }}
-      to
-      {{ maxDate() }}
-    </span>
-  </div>
+  <table class="date-display">
+    <tr>
+      <td>Dragon</td>
+      <td>{{ dragonName() }}</td>
+    </tr>
+    <tr>
+      <td>Assignment</td>
+      <td>{{ assignmentDescription() }}</td>
+    </tr>
+    <tr>
+      <td>Timesheet Period</td>
+      <td>
+        {{ minDate() }}
+        to
+        {{ maxDate() }}
+      </td>
+    </tr>
+  </table>
   <p-table [value]="hoursWorkedRows()" [tableStyle]="{ 'min-width': '40rem' }">
     <ng-template #header>
       <tr>
