@@ -118,28 +118,20 @@ describe('Pay Period Create Tests', () => {
     await fixture.whenStable();
 
     //Assert: POST body matches form contents
-    expect(actualPostBody.dragonId).toEqual(dragonId);
-    expect(actualPostBody.assignmentId).toEqual(assignmentId);
-    expect(actualPostBody.startDateUnix).toEqual(payPeriodStartUnix);
-    expect(actualPostBody.endDateUnix).toEqual(payPeriodEndUnix);
-    expect(actualPostBody.hoursWorked.length).toEqual(3);
-
-    // Row 0: 2010-01-02 08:00-16:00
     const jan2Unix = 1262390400;
-    expect(actualPostBody.hoursWorked[0].dragonId).toEqual(dragonId);
-    expect(actualPostBody.hoursWorked[0].assignmentId).toEqual(assignmentId);
-    expect(actualPostBody.hoursWorked[0].startDateTimeUnix).toEqual(jan2Unix + 8 * 3600);
-    expect(actualPostBody.hoursWorked[0].endDateTimeUnix).toEqual(jan2Unix + 16 * 3600);
-
-    // Row 1: 2010-01-05 09:00-17:00
     const jan5Unix = 1262649600;
-    expect(actualPostBody.hoursWorked[1].startDateTimeUnix).toEqual(jan5Unix + 9 * 3600);
-    expect(actualPostBody.hoursWorked[1].endDateTimeUnix).toEqual(jan5Unix + 17 * 3600);
-
-    // Row 2: 2010-01-08 10:00-14:00
     const jan8Unix = 1262908800;
-    expect(actualPostBody.hoursWorked[2].startDateTimeUnix).toEqual(jan8Unix + 10 * 3600);
-    expect(actualPostBody.hoursWorked[2].endDateTimeUnix).toEqual(jan8Unix + 14 * 3600);
+    expect(actualPostBody).toMatchObject({
+      dragonId,
+      assignmentId,
+      startDateUnix: payPeriodStartUnix,
+      endDateUnix: payPeriodEndUnix,
+      hoursWorked: [
+        { dragonId, assignmentId, startDateTimeUnix: jan2Unix + 8 * 3600, endDateTimeUnix: jan2Unix + 16 * 3600 },
+        { dragonId, assignmentId, startDateTimeUnix: jan5Unix + 9 * 3600, endDateTimeUnix: jan5Unix + 17 * 3600 },
+        { dragonId, assignmentId, startDateTimeUnix: jan8Unix + 10 * 3600, endDateTimeUnix: jan8Unix + 14 * 3600 },
+      ],
+    });
 
     //Act: second submit (should PUT using payPeriodId from POST response)
     payPeriodForm.onSubmit();
@@ -147,9 +139,11 @@ describe('Pay Period Create Tests', () => {
 
     //Assert: PUT used the payPeriodId returned by the POST
     expect(actualPutId).toEqual(postResponsePayPeriodId);
-    expect(actualPutBody.dragonId).toEqual(dragonId);
-    expect(actualPutBody.assignmentId).toEqual(assignmentId);
-    expect(actualPutBody.hoursWorked.length).toEqual(3);
+    expect(actualPutBody).toMatchObject({
+      dragonId,
+      assignmentId,
+      hoursWorked: [{}, {}, {}],
+    });
   });
 
   it('should disable submit and show error styling when hours-worked fields are empty', async () => {
