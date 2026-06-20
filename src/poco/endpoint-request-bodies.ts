@@ -41,3 +41,8 @@ export class JobCreateEdit {
   endDateUnix: number = 0;
   skillTagIds: number[] = [];
 }
+
+export class ValidPaySpan {
+  startDate: string = '';
+  endDate: string = '';
+}

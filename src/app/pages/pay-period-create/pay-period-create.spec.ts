@@ -3,7 +3,7 @@ import { By } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { Effect } from 'effect';
 import { HoursWorkedClient } from '../../../httpClients/hours-worked-http-client';
-import { PayPeriodCreateEdit } from '../../../poco/endpoint-request-bodies';
+import { PayPeriodCreateEdit, ValidPaySpan } from '../../../poco/endpoint-request-bodies';
 import { PayPeriod } from '../../../poco/models';
 import { ValidatedForm, ValidatedPayload } from '../../../poco/standard-responses';
 import { PayPeriodValidationFailures } from '../../../poco/validation-failures';
@@ -16,23 +16,23 @@ describe('Pay Period Create Tests', () => {
   const assignmentId = 10;
   const payPeriodStartUnix = 1262304000; // 2010-01-01
   const payPeriodEndUnix = 1263513600;   // 2010-01-15
+  const payPeriodStart = '2010-01-01';
+  const payPeriodEnd = '2010-01-15';
   const postResponsePayPeriodId = 42;
 
   it('should show no form initially, then create via POST and update via PUT', async () => {
-    const candidate = Object.assign(new PayPeriod(), {
-      dragonId,
-      assignmentId,
-      startDateUnix: payPeriodStartUnix,
-      endDateUnix: payPeriodEndUnix,
+    const candidate = Object.assign(new ValidPaySpan(), {
+      startDate: payPeriodStart,
+      endDate: payPeriodEnd,
     });
 
     const mockHttpClient = new HoursWorkedClient();
-    mockHttpClient.getPayPeriodCandidates = async () => ({
+    mockHttpClient.getPayPeriodCandidatesV2 = async () => ({
       isInternalError: false,
       isSuccess: true,
       validationFailures: [],
       payload: [candidate]
-    } as ValidatedPayload<PayPeriod[]>);
+    } as ValidatedPayload<ValidPaySpan[]>);
 
     let actualPostBody = new PayPeriodCreateEdit();
     mockHttpClient.postPayPeriodForm = async (body: PayPeriodCreateEdit) => {
@@ -91,7 +91,7 @@ describe('Pay Period Create Tests', () => {
     expect(fixture.nativeElement.querySelector('app-pay-period-form')).toBeNull();
 
     //Act: select a pay period candidate
-    component.onCandidateSelect({ value: payPeriodStartUnix.toString() });
+    component.onCandidateSelect({ value: payPeriodStart });
     fixture.detectChanges();
     await fixture.whenStable();
     fixture.detectChanges();
@@ -151,20 +151,18 @@ describe('Pay Period Create Tests', () => {
   });
 
   it('should disable submit and show error styling when hours-worked fields are empty', async () => {
-    const candidate = Object.assign(new PayPeriod(), {
-      dragonId,
-      assignmentId,
-      startDateUnix: payPeriodStartUnix,
-      endDateUnix: payPeriodEndUnix,
+    const candidate = Object.assign(new ValidPaySpan(), {
+      startDate: payPeriodStart,
+      endDate: payPeriodEnd,
     });
 
     const mockHttpClient = new HoursWorkedClient();
-    mockHttpClient.getPayPeriodCandidates = async () => ({
+    mockHttpClient.getPayPeriodCandidatesV2 = async () => ({
       isInternalError: false,
       isSuccess: true,
       validationFailures: [],
       payload: [candidate]
-    } as ValidatedPayload<PayPeriod[]>);
+    } as ValidatedPayload<ValidPaySpan[]>);
 
     const mockActivatedRoute = new MockActivatedRoute();
     mockActivatedRoute.setParams({ dragonId, assignmentId });
@@ -182,7 +180,7 @@ describe('Pay Period Create Tests', () => {
     fixture.detectChanges();
 
     //Act: select a candidate and add a row with empty fields
-    component.onCandidateSelect({ value: payPeriodStartUnix.toString() });
+    component.onCandidateSelect({ value: payPeriodStart });
     fixture.detectChanges();
     await fixture.whenStable();
     fixture.detectChanges();
@@ -224,20 +222,18 @@ describe('Pay Period Create Tests', () => {
   });
 
   it('should sort hours-worked rows in ascending order by date and time', async () => {
-    const candidate = Object.assign(new PayPeriod(), {
-      dragonId,
-      assignmentId,
-      startDateUnix: payPeriodStartUnix,
-      endDateUnix: payPeriodEndUnix,
+    const candidate = Object.assign(new ValidPaySpan(), {
+      startDate: payPeriodStart,
+      endDate: payPeriodEnd,
     });
 
     const mockHttpClient = new HoursWorkedClient();
-    mockHttpClient.getPayPeriodCandidates = async () => ({
+    mockHttpClient.getPayPeriodCandidatesV2 = async () => ({
       isInternalError: false,
       isSuccess: true,
       validationFailures: [],
       payload: [candidate]
-    } as ValidatedPayload<PayPeriod[]>);
+    } as ValidatedPayload<ValidPaySpan[]>);
 
     const mockActivatedRoute = new MockActivatedRoute();
     mockActivatedRoute.setParams({ dragonId, assignmentId });
@@ -254,7 +250,7 @@ describe('Pay Period Create Tests', () => {
     await fixture.whenStable();
     fixture.detectChanges();
 
-    component.onCandidateSelect({ value: payPeriodStartUnix.toString() });
+    component.onCandidateSelect({ value: payPeriodStart });
     fixture.detectChanges();
     await fixture.whenStable();
     fixture.detectChanges();

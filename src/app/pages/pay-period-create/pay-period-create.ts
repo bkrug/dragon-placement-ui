@@ -2,7 +2,8 @@ import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { SelectModule } from 'primeng/select';
 import { HoursWorkedClient } from '../../../httpClients/hours-worked-http-client';
-import { getDateStringFromUnixSeconds } from '../../../misc/transformers';
+import { getUnixSeconds } from '../../../misc/transformers';
+import { ValidPaySpan } from '../../../poco/endpoint-request-bodies';
 import { PayPeriod } from '../../../poco/models';
 import { SelectListOption } from '../../local-form/local-fields';
 import { PayPeriodForm } from '../pay-period-form/pay-period-form';
@@ -20,11 +21,11 @@ export class PayPeriodCreate implements OnInit {
   dragonId = signal(0);
   assignmentId = signal(0);
 
-  candidates = signal<PayPeriod[]>([]);
+  candidates = signal<ValidPaySpan[]>([]);
   candidateOptions = computed<SelectListOption[]>(() =>
     this.candidates().map(c => ({
-      display: `${getDateStringFromUnixSeconds(c.startDateUnix)} - ${getDateStringFromUnixSeconds(c.endDateUnix)}`,
-      value: c.startDateUnix.toString(),
+      display: `${c.startDate} - ${c.endDate}`,
+      value: c.startDate.toString(),
     }))
   );
 
@@ -38,24 +39,19 @@ export class PayPeriodCreate implements OnInit {
   }
 
   ngOnInit() {
-    this.httpClient.getPayPeriodCandidates(this.dragonId(), this.assignmentId())
+    this.httpClient.getPayPeriodCandidatesV2(this.dragonId(), this.assignmentId())
       .then(r => this.candidates.set(r.payload));
   }
 
-  getNewPayPeriod() {
-    const payPeriod = this.selectedCandidate();
-    return payPeriod
-      ? Object.assign(new PayPeriod(), {
-          dragonId: this.dragonId,
-          assignmentId: this.assignmentId,
-          startDateUnix: payPeriod.startDateUnix,
-          endDateUnix: payPeriod.endDateUnix
-        })
-      : null;
-  }
-
   onCandidateSelect(event: { value: string }) {
-    const match = this.candidates().find(c => c.startDateUnix.toString() === event.value);
-    this.selectedCandidate.set(match ?? null);
+    const match = this.candidates().find(c => c.startDate === event.value);
+    this.selectedCandidate.set(match
+      ? Object.assign(new PayPeriod(), {
+          dragonId: this.dragonId(),
+          assignmentId: this.assignmentId(),
+          startDateUnix: getUnixSeconds(match.startDate),
+          endDateUnix: getUnixSeconds(match.endDate)
+        })
+      : null);
   }
 }

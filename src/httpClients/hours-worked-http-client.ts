@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HoursWorkedCreateEdit, HoursWorkedWithJob, PayPeriodCreateEdit } from '../poco/endpoint-request-bodies';
+import { HoursWorkedCreateEdit, HoursWorkedWithJob, PayPeriodCreateEdit, ValidPaySpan } from '../poco/endpoint-request-bodies';
 import { HoursWorked, PayPeriod } from '../poco/models';
 import { HoursWorkedValidationFailures, PayPeriodValidationFailures } from '../poco/validation-failures';
 import { apiUrl } from './api-url';
@@ -15,6 +15,10 @@ export class HoursWorkedClient {
 
   async getPayPeriodCandidates(dragonId: number, assignmentId: number) {
     return await HttpHelpers.requestValidatedPayload<PayPeriod[]>(`${apiUrl}dragon/${dragonId}/assignment/${assignmentId}/payperiodcandidate`);
+  }
+
+  async getPayPeriodCandidatesV2(dragonId: number, assignmentId: number) {
+    return await HttpHelpers.requestValidatedPayload<ValidPaySpan[]>(`${apiUrl}v2/dragon/${dragonId}/assignment/${assignmentId}/payperiodcandidate`);
   }
 
   async getPayPeriod(payPeriodId: number) {
