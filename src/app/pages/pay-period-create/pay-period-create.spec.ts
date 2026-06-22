@@ -116,18 +116,15 @@ describe('Pay Period Create Tests', () => {
     await fixture.whenStable();
 
     //Assert: POST body matches form contents
-    const jan2Unix = 1262390400;
-    const jan5Unix = 1262649600;
-    const jan8Unix = 1262908800;
     expect(actualPostBody).toMatchObject({
       dragonId,
       assignmentId,
       startDate: payPeriodStart,
       endDate: payPeriodEnd,
       hoursWorked: [
-        { startDateTime: "2010-01-02T08:00", endDateTime: "2010-01-02T16:00" },
-        { startDateTime: "2010-01-05T09:00", endDateTime: "2010-01-05T17:00" },
-        { startDateTime: "2010-01-08T10:00", endDateTime: "2010-01-08T14:00" },
+        { startDateTime: '2010-01-02T08:00', endDateTime: '2010-01-02T16:00' },
+        { startDateTime: '2010-01-05T09:00', endDateTime: '2010-01-05T17:00' },
+        { startDateTime: '2010-01-08T10:00', endDateTime: '2010-01-08T14:00' },
       ],
     });
 
@@ -143,9 +140,9 @@ describe('Pay Period Create Tests', () => {
       startDate: payPeriodStart,
       endDate: payPeriodEnd,
       hoursWorked: [
-        { startDateTime: "2010-01-02T08:00", endDateTime: "2010-01-02T16:00" },
-        { startDateTime: "2010-01-05T09:00", endDateTime: "2010-01-05T17:00" },
-        { startDateTime: "2010-01-08T10:00", endDateTime: "2010-01-08T14:00" }
+        { startDateTime: '2010-01-02T08:00', endDateTime: '2010-01-02T16:00' },
+        { startDateTime: '2010-01-05T09:00', endDateTime: '2010-01-05T17:00' },
+        { startDateTime: '2010-01-08T10:00', endDateTime: '2010-01-08T14:00' }
       ],
     });
   });
@@ -223,10 +220,10 @@ describe('Pay Period Create Tests', () => {
       startDate: payPeriodStart,
       endDate: payPeriodEnd,
       hoursWorked: [
-        { startDateTime: "2010-01-03T22:00", endDateTime: "2010-01-04T03:50" },
+        { startDateTime: '2010-01-03T22:00', endDateTime: '2010-01-04T03:50' },
       ],
     });
-  });  
+  });
 
   it('should disable submit and show error styling when hours-worked fields are empty', async () => {
     const candidate = Object.assign(new ValidPaySpan(), {
