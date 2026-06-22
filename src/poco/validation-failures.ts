@@ -16,3 +16,14 @@ export class PayPeriodValidationFailures {
   hoursWorkedStartDateTimeUnix: string = '';
   hoursWorkedEndDateTimeUnix: string = '';
 }
+
+export class HoursWorkedValidationFailures {
+  startDateTime: string = '';
+  endDateTime: string = '';
+}
+
+export class PayPeriodValidationFailuresNew {
+  startDate: string = '';
+  endDate: string = '';
+  hoursWorked: HoursWorkedValidationFailures[] = [];
+}

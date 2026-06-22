@@ -37,6 +37,20 @@ export class ValidPaySpan {
   endDate: string = '';
 }
 
+export class HoursWorkedCreateEditNew {
+  startDateTime: string = '';
+  endDateTime: string = '';
+}
+
+export class PayPeriodCreateEditNew {
+  assignmentId: number = 0;
+  dragonId: number = 0;
+  startDate: string = '';
+  endDate: string = '';
+  submissionStatus: string = '';
+  hoursWorked: HoursWorkedCreateEditNew[] = [];
+}
+
 export class HoursWorkedView {
   startDateTime: string = '';
   endDateTime: string = '';
