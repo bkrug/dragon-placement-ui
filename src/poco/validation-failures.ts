@@ -18,6 +18,7 @@ export class PayPeriodValidationFailures {
 }
 
 export class HoursWorkedValidationFailures {
+  index: number = -1;
   startDateTime: string = '';
   endDateTime: string = '';
 }
