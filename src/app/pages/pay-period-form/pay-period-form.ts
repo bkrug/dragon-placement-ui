@@ -51,6 +51,8 @@ export class PayPeriodForm extends EntityFormBase<PayPeriod, PayPeriodValidation
     this.route.params.subscribe(params => {
       this.entityId = params['payPeriodId'] || 0;
     });
+    //See comment on hasNonOverlapErrors()
+    this.overrideInvalidForm.set(true);
   }
 
   ngOnInit(): void {
@@ -123,6 +125,32 @@ export class PayPeriodForm extends EntityFormBase<PayPeriod, PayPeriodValidation
     return sortedGroup;
   }
 
+  isSubmitDisabled(): boolean {
+    const isDisabled = this.isSubmitting() || this.hasNonOverlapErrors(this.formGroup());
+    return isDisabled;
+  }
+
+  //Some server-side validations can detect overlapping work periods and notify the user of an error.
+  //The validation message shows up on the start-time-of-day,
+  //but sometimes the real error is on the end-time or the calendar-date.
+  //When the user fixes the error, the validation won't go away.
+  //So if the only error that we can find has the word "overlap" in it, enable form submission.
+  private hasNonOverlapErrors(group: FormGroup | FormArray): boolean {
+    return Object.values(group.controls).some(control => {
+      if (control.errors) {
+        const hasNonOverlap = Object.values(control.errors)
+          .some(err => typeof err !== 'string' || !err.toLocaleLowerCase().includes('overlap'));
+        if (hasNonOverlap) {
+          console.log(Object.values(control.errors));
+          return true;
+        }
+      }
+      if (control instanceof FormGroup || control instanceof FormArray)
+        return this.hasNonOverlapErrors(control);
+      return false;
+    });
+  }
+
   getTotalHours(rowGroup: FormGroup): number {
     const start = rowGroup.get('startDateTime')?.value;
     const end = rowGroup.get('endDateTime')?.value;
@@ -168,5 +196,13 @@ export class PayPeriodForm extends EntityFormBase<PayPeriod, PayPeriodValidation
 
   protected override handleSubmissionSuccess(payload: PayPeriod) {
     this.entityId = payload.payPeriodId;
+
+    // //Clear old server-side errors. See comment on hasNonOverlapErrors().
+    // Object.values(this.formGroup().controls)
+    //   .forEach(c => {
+    //     c.updateValueAndValidity();
+    //     if (c instanceof FormArray || c instanceof FormGroup)
+    //       Object.values(c.controls).forEach(cc => cc.updateValueAndValidity());
+    //   });
   }
 }

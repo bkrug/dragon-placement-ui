@@ -62,7 +62,7 @@
   <button type="button" (click)="addRow()">Add Entry</button>
   <p>
     <app-local-submit-button
-      [isSubmitDisabled]="!formGroup().valid || isSubmitting()"
+      [isSubmitDisabled]="isSubmitDisabled()"
       [isSubmitting]="isSubmitting()"
       [showSaved]="showSaved()"
       [submissionError]="submissionError()" />

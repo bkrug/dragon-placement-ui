@@ -13,6 +13,7 @@ export abstract class EntityFormBase<TDb extends object, TValidationFailures ext
   isSubmitting = signal(false);
   showSaved = signal(false);
   submissionError = signal('');
+  overrideInvalidForm = signal(false);
 
   constructor(idParamName: string) {
     this.activatedRoute.params.subscribe(params => {
@@ -31,7 +32,7 @@ export abstract class EntityFormBase<TDb extends object, TValidationFailures ext
   }
 
   onSubmit() {
-    if (this.formGroup().valid) {
+    if (this.formGroup().valid || this.overrideInvalidForm()) {
       this.isSubmitting.set(true);
       this.showSaved.set(false);
       this.makeSubmissionRequest()
