@@ -14,8 +14,6 @@ import { PayPeriodCreate } from './pay-period-create';
 describe('Pay Period Create Tests', () => {
   const dragonId = 5;
   const assignmentId = 10;
-  const payPeriodStartUnix = 1262304000; // 2010-01-01
-  const payPeriodEndUnix = 1263513600;   // 2010-01-15
   const payPeriodStart = '2010-01-01';
   const payPeriodEnd = '2010-01-15';
   const postResponsePayPeriodId = 42;
@@ -151,6 +149,84 @@ describe('Pay Period Create Tests', () => {
       ],
     });
   });
+
+  it('when the clock-out time is earlier than the clock-in time, assume that the clock out time is the next day', async () => {
+    const candidate = Object.assign(new ValidPaySpan(), {
+      startDate: payPeriodStart,
+      endDate: payPeriodEnd,
+    });
+
+    const mockHttpClient = new HoursWorkedClient();
+    mockHttpClient.getPayPeriodCandidates = async () => ({
+      isInternalError: false,
+      isSuccess: true,
+      validationFailures: [],
+      payload: [candidate]
+    } as ValidatedPayload<ValidPaySpan[]>);
+
+    let actualPostBody = new PayPeriodCreateEditNew();
+    mockHttpClient.postPayPeriodForm = async (body: PayPeriodCreateEditNew) => {
+      actualPostBody = body;
+      const responsePayload = Object.assign(new PayPeriod(), {
+        payPeriodId: postResponsePayPeriodId,
+        dragonId: body.dragonId,
+        assignmentId: body.assignmentId,
+        startDate: body.startDate,
+        endDate: body.endDate,
+      });
+      return Effect.succeed({
+        isInternalError: false,
+        isSuccess: true,
+        validationFailures: [],
+        payload: responsePayload
+      } as ValidatedPayload<PayPeriod>) as Effect.Effect<ValidatedPayload<PayPeriod>, ValidatedForm<PayPeriodValidationFailuresNew>, never>;
+    };
+
+    const mockActivatedRoute = new MockActivatedRoute();
+    mockActivatedRoute.setParams({ dragonId, assignmentId });
+    TestBed.configureTestingModule({
+      providers: [
+        { provide: HoursWorkedClient, useValue: mockHttpClient },
+        { provide: ActivatedRoute, useValue: mockActivatedRoute }
+      ]
+    });
+
+    await TestBed.configureTestingModule({ imports: [PayPeriodCreate] }).compileComponents();
+    const fixture = TestBed.createComponent(PayPeriodCreate);
+    const component = fixture.componentInstance;
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    //Act: select a pay period candidate
+    component.onCandidateSelect({ value: payPeriodStart });
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    //Act: get the child PayPeriodForm and add a work period that overlapped with midnight
+    const payPeriodFormDebugEl = fixture.debugElement.query(By.directive(PayPeriodForm));
+    const payPeriodForm = payPeriodFormDebugEl.componentInstance as PayPeriodForm;
+
+    payPeriodForm.addRow();
+    const rows = payPeriodForm.hoursWorkedArray;
+    rows.at(0).patchValue({ workDate: '2010-01-03', startDateTime: '22:00', endDateTime: '03:50' });
+    fixture.detectChanges();
+
+    //Act: first submit (should POST)
+    payPeriodForm.onSubmit();
+    await fixture.whenStable();
+
+    //Assert: POST body matches form contents
+    expect(actualPostBody).toMatchObject({
+      dragonId,
+      assignmentId,
+      startDate: payPeriodStart,
+      endDate: payPeriodEnd,
+      hoursWorked: [
+        { startDateTime: "2010-01-03T22:00", endDateTime: "2010-01-04T03:50" },
+      ],
+    });
+  });  
 
   it('should disable submit and show error styling when hours-worked fields are empty', async () => {
     const candidate = Object.assign(new ValidPaySpan(), {
