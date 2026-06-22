@@ -6,7 +6,7 @@ import { HoursWorkedClient } from '../../../httpClients/hours-worked-http-client
 import { PayPeriodCreateEditNew, ValidPaySpan } from '../../../poco/endpoint-request-bodies';
 import { PayPeriod } from '../../../poco/models';
 import { ValidatedForm, ValidatedPayload } from '../../../poco/standard-responses';
-import { PayPeriodValidationFailuresNew } from '../../../poco/validation-failures';
+import { HoursWorkedValidationFailures, PayPeriodValidationFailuresNew } from '../../../poco/validation-failures';
 import { MockActivatedRoute } from '../../../testHelpers/MockActivatedRoute';
 import { PayPeriodForm } from '../pay-period-form/pay-period-form';
 import { PayPeriodCreate } from './pay-period-create';
@@ -355,5 +355,101 @@ describe('Pay Period Create Tests', () => {
       { workDate: '2010-01-05', startDateTime: '14:00', endDateTime: '18:00' },
       { workDate: null, startDateTime: null, endDateTime: null },
     ]);
+  });
+
+  it('should show server-side validation errors on the correct hours-worked rows', async () => {
+    const candidate = Object.assign(new ValidPaySpan(), {
+      startDate: payPeriodStart,
+      endDate: payPeriodEnd,
+    });
+
+    const row0Error = 'Start time overlaps with another entry';
+    const row2Error = 'End time must be before pay-period end date';
+
+    const mockHttpClient = new HoursWorkedClient();
+    mockHttpClient.getPayPeriodCandidates = async () => ({
+      isInternalError: false,
+      isSuccess: true,
+      validationFailures: [],
+      payload: [candidate]
+    } as ValidatedPayload<ValidPaySpan[]>);
+
+    mockHttpClient.postPayPeriodForm = async () => {
+      const failures: PayPeriodValidationFailuresNew = {
+        startDate: '',
+        endDate: '',
+        hoursWorked: [
+          Object.assign(new HoursWorkedValidationFailures(), { index: 0, startDateTime: row0Error }),
+          Object.assign(new HoursWorkedValidationFailures(), { index: 2, endDateTime: row2Error }),
+        ],
+      };
+      const failBody = {
+        isInternalError: false,
+        isSuccess: false,
+        validationFailures: failures
+      } as ValidatedForm<PayPeriodValidationFailuresNew>;
+      return Effect.fail(failBody) as Effect.Effect<ValidatedPayload<PayPeriod>, ValidatedForm<PayPeriodValidationFailuresNew>, never>;
+    };
+
+    const mockActivatedRoute = new MockActivatedRoute();
+    mockActivatedRoute.setParams({ dragonId, assignmentId });
+    TestBed.configureTestingModule({
+      providers: [
+        { provide: HoursWorkedClient, useValue: mockHttpClient },
+        { provide: ActivatedRoute, useValue: mockActivatedRoute }
+      ]
+    });
+
+    await TestBed.configureTestingModule({ imports: [PayPeriodCreate] }).compileComponents();
+    const fixture = TestBed.createComponent(PayPeriodCreate);
+    const component = fixture.componentInstance;
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    component.onCandidateSelect({ value: payPeriodStart });
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    const payPeriodFormDebugEl = fixture.debugElement.query(By.directive(PayPeriodForm));
+    const payPeriodForm = payPeriodFormDebugEl.componentInstance as PayPeriodForm;
+
+    //Arrange: add 4 rows with valid data
+    for (let i = 0; i < 4; i++) payPeriodForm.addRow();
+    const rows = payPeriodForm.hoursWorkedArray;
+    rows.at(0).patchValue({ workDate: '2010-01-02', startDateTime: '08:00', endDateTime: '12:00' });
+    rows.at(1).patchValue({ workDate: '2010-01-03', startDateTime: '09:00', endDateTime: '17:00' });
+    rows.at(2).patchValue({ workDate: '2010-01-04', startDateTime: '10:00', endDateTime: '18:00' });
+    rows.at(3).patchValue({ workDate: '2010-01-05', startDateTime: '07:00', endDateTime: '15:00' });
+    fixture.detectChanges();
+
+    //Act: submit — server returns validation failures
+    payPeriodForm.formGroup().markAllAsTouched();
+    payPeriodForm.onSubmit();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    //Assert: row 0 has a startDateTime error
+    expect(rows.at(0).get('startDateTime')?.errors).toMatchObject({ 'server-side': row0Error });
+    expect(rows.at(0).get('endDateTime')?.errors).toBeNull();
+
+    //Assert: row 1 has no errors
+    expect(rows.at(1).get('startDateTime')?.errors).toBeNull();
+    expect(rows.at(1).get('endDateTime')?.errors).toBeNull();
+
+    //Assert: row 2 has an endDateTime error
+    expect(rows.at(2).get('startDateTime')?.errors).toBeNull();
+    expect(rows.at(2).get('endDateTime')?.errors).toMatchObject({ 'server-side': row2Error });
+
+    //Assert: row 3 has no errors
+    expect(rows.at(3).get('startDateTime')?.errors).toBeNull();
+    expect(rows.at(3).get('endDateTime')?.errors).toBeNull();
+
+    //Assert: error messages appear in the rendered HTML at the correct rows
+    const tableRows = fixture.nativeElement.querySelectorAll('p-table tr');
+    expect(tableRows[1].querySelector('p-message')?.textContent).toContain(row0Error);
+    expect(tableRows[2].querySelector('p-message')).toBeNull();
+    expect(tableRows[3].querySelector('p-message')?.textContent).toContain(row2Error);
+    expect(tableRows[4].querySelector('p-message')).toBeNull();
   });
 });
