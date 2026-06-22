@@ -74,15 +74,6 @@ export function getDateFromUnixSeconds(unixSeconds: number | null | undefined) {
   return new Date(unixSeconds * 1000);
 }
 
-export function getDateStringFromUnixSeconds(unixSeconds: number | null | undefined) {
-  if (unixSeconds === null || unixSeconds === undefined)
-    return '';
-  const ourDate = new Date(unixSeconds * 1000);
-  const month = (ourDate.getUTCMonth() + 1).toString().padStart(2, '0');
-  const date = ourDate.getUTCDate().toString().padStart(2, '0');
-  return `${ourDate.getUTCFullYear()}-${month}-${date}`;
-}
-
 export function parseTimeToSeconds(timeStr: string): number {
   const [hours, minutes] = timeStr.split(':').map(Number);
   return hours * 3600 + minutes * 60;
@@ -93,6 +84,15 @@ export function getTimeFromDateTimeString(dateTimeString: string): string {
   return match ? match[1] : '';
 }
 
+export function getDateStringFromUnixSeconds(unixSeconds: number | null | undefined) {
+  if (unixSeconds === null || unixSeconds === undefined)
+    return '';
+  const ourDate = new Date(unixSeconds * 1000);
+  const month = (ourDate.getUTCMonth() + 1).toString().padStart(2, '0');
+  const date = ourDate.getUTCDate().toString().padStart(2, '0');
+  return `${ourDate.getUTCFullYear()}-${month}-${date}`;
+}
+
 export function getTimeStringFromUnixSeconds(unixSeconds: number | null | undefined) {
   if (unixSeconds === null || unixSeconds === undefined)
     return '';
@@ -100,4 +100,10 @@ export function getTimeStringFromUnixSeconds(unixSeconds: number | null | undefi
   const hours = d.getUTCHours().toString().padStart(2, '0');
   const minutes = d.getUTCMinutes().toString().padStart(2, '0');
   return `${hours}:${minutes}`;
+}
+
+export function getDateTimeStringFromUnixSeconds(unixSeconds: number | null | undefined) {
+  return getDateStringFromUnixSeconds(unixSeconds)
+    + 'T'
+    + getTimeStringFromUnixSeconds(unixSeconds);
 }

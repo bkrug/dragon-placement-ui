@@ -5,11 +5,11 @@ import { ActivatedRoute } from '@angular/router';
 import { Effect } from 'effect';
 import { TableModule } from 'primeng/table';
 import { HoursWorkedClient } from '../../../httpClients/hours-worked-http-client';
-import { getDateStringFromUnixSeconds, getTimeFromDateTimeString, getUnixSeconds, parseTimeToSeconds } from '../../../misc/transformers';
-import { HoursWorkedCreateEdit, HoursWorkedView, PayPeriodCreateEdit, PayPeriodView } from '../../../poco/endpoint-request-bodies';
+import { getDateStringFromUnixSeconds, getDateTimeStringFromUnixSeconds, getTimeFromDateTimeString, getUnixSeconds, parseTimeToSeconds } from '../../../misc/transformers';
+import { PayPeriodCreateEditNew, PayPeriodView } from '../../../poco/endpoint-request-bodies';
 import { PayPeriod } from '../../../poco/models';
 import { ValidatedForm, ValidatedPayload } from '../../../poco/standard-responses';
-import { PayPeriodValidationFailures } from '../../../poco/validation-failures';
+import { PayPeriodValidationFailuresNew } from '../../../poco/validation-failures';
 import { EntityFormBase } from '../../local-form/entity-form-base';
 import { LocalStringDateField, LocalStringTimeField, LocalSubmitButton } from '../../local-form/local-fields';
 
@@ -27,7 +27,7 @@ const SECONDS_PER_DAY = 24 * 60 * 60;
   templateUrl: './pay-period-form.html',
   styleUrl: './pay-period-form.scss',
 })
-export class PayPeriodForm extends EntityFormBase<PayPeriod, PayPeriodValidationFailures> implements OnInit, OnChanges {
+export class PayPeriodForm extends EntityFormBase<PayPeriod, PayPeriodValidationFailuresNew> implements OnInit, OnChanges {
   httpClient = inject(HoursWorkedClient);
   private route = inject(ActivatedRoute);
 
@@ -134,13 +134,13 @@ export class PayPeriodForm extends EntityFormBase<PayPeriod, PayPeriodValidation
       : (endSecs + SECONDS_PER_DAY - startSecs) / 3600;
   }
 
-  private buildBody(): PayPeriodCreateEdit {
+  private buildBody(): PayPeriodCreateEditNew {
     const fg = this.formGroup();
     return {
       assignmentId: fg.value.assignmentId!,
       dragonId: fg.value.dragonId!,
-      startDateUnix: getUnixSeconds(fg.value.startDateUnix!),
-      endDateUnix: getUnixSeconds(fg.value.endDateUnix!),
+      startDate: fg.value.startDateUnix!,
+      endDate: fg.value.endDateUnix!,
       submissionStatus: '',
       hoursWorked: this.hoursWorkedArray.controls.map(row => {
         const v = row.value;
@@ -148,18 +148,18 @@ export class PayPeriodForm extends EntityFormBase<PayPeriod, PayPeriodValidation
         const startSecs = parseTimeToSeconds(v.startDateTime!);
         const endSecs = parseTimeToSeconds(v.endDateTime!);
         return {
-          assignmentId: fg.value.assignmentId!,
-          dragonId: fg.value.dragonId!,
-          startDateTimeUnix: workDateSecs + startSecs,
-          endDateTimeUnix: endSecs > startSecs
+          startDateTime: getDateTimeStringFromUnixSeconds(workDateSecs + startSecs),
+          endDateTime: getDateTimeStringFromUnixSeconds(
+            endSecs > startSecs
             ? workDateSecs + endSecs
-            : workDateSecs + SECONDS_PER_DAY + endSecs,
-        } as HoursWorkedCreateEdit;
+            : workDateSecs + SECONDS_PER_DAY + endSecs),
+        };
       }),
     };
   }
 
-  protected override async makeSubmissionRequest(): Promise<Effect.Effect<ValidatedPayload<PayPeriod>, ValidatedForm<PayPeriodValidationFailures>, never>> {
+  protected override async makeSubmissionRequest()
+    : Promise<Effect.Effect<ValidatedPayload<PayPeriod>, ValidatedForm<PayPeriodValidationFailuresNew>, never>> {
     const body = this.buildBody();
     return this.entityId
       ? this.httpClient.putPayPeriodForm(this.entityId, body)

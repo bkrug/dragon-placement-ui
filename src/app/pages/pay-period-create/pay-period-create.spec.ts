@@ -3,10 +3,10 @@ import { By } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { Effect } from 'effect';
 import { HoursWorkedClient } from '../../../httpClients/hours-worked-http-client';
-import { PayPeriodCreateEdit, ValidPaySpan } from '../../../poco/endpoint-request-bodies';
+import { PayPeriodCreateEditNew, ValidPaySpan } from '../../../poco/endpoint-request-bodies';
 import { PayPeriod } from '../../../poco/models';
 import { ValidatedForm, ValidatedPayload } from '../../../poco/standard-responses';
-import { PayPeriodValidationFailures } from '../../../poco/validation-failures';
+import { PayPeriodValidationFailuresNew } from '../../../poco/validation-failures';
 import { MockActivatedRoute } from '../../../testHelpers/MockActivatedRoute';
 import { PayPeriodForm } from '../pay-period-form/pay-period-form';
 import { PayPeriodCreate } from './pay-period-create';
@@ -34,42 +34,42 @@ describe('Pay Period Create Tests', () => {
       payload: [candidate]
     } as ValidatedPayload<ValidPaySpan[]>);
 
-    let actualPostBody = new PayPeriodCreateEdit();
-    mockHttpClient.postPayPeriodForm = async (body: PayPeriodCreateEdit) => {
+    let actualPostBody = new PayPeriodCreateEditNew();
+    mockHttpClient.postPayPeriodForm = async (body: PayPeriodCreateEditNew) => {
       actualPostBody = body;
       const responsePayload = Object.assign(new PayPeriod(), {
         payPeriodId: postResponsePayPeriodId,
         dragonId: body.dragonId,
         assignmentId: body.assignmentId,
-        startDateUnix: body.startDateUnix,
-        endDateUnix: body.endDateUnix,
+        startDate: body.startDate,
+        endDate: body.endDate,
       });
       return Effect.succeed({
         isInternalError: false,
         isSuccess: true,
         validationFailures: [],
         payload: responsePayload
-      } as ValidatedPayload<PayPeriod>) as Effect.Effect<ValidatedPayload<PayPeriod>, ValidatedForm<PayPeriodValidationFailures>, never>;
+      } as ValidatedPayload<PayPeriod>) as Effect.Effect<ValidatedPayload<PayPeriod>, ValidatedForm<PayPeriodValidationFailuresNew>, never>;
     };
 
     let actualPutId = 0;
-    let actualPutBody = new PayPeriodCreateEdit();
-    mockHttpClient.putPayPeriodForm = async (payPeriodId: number, body: PayPeriodCreateEdit) => {
+    let actualPutBody = new PayPeriodCreateEditNew();
+    mockHttpClient.putPayPeriodForm = async (payPeriodId: number, body: PayPeriodCreateEditNew) => {
       actualPutId = payPeriodId;
       actualPutBody = body;
       const responsePayload = Object.assign(new PayPeriod(), {
         payPeriodId,
         dragonId: body.dragonId,
         assignmentId: body.assignmentId,
-        startDateUnix: body.startDateUnix,
-        endDateUnix: body.endDateUnix,
+        startDate: body.startDate,
+        endDate: body.endDate,
       });
       return Effect.succeed({
         isInternalError: false,
         isSuccess: true,
         validationFailures: [],
         payload: responsePayload
-      } as ValidatedPayload<PayPeriod>) as Effect.Effect<ValidatedPayload<PayPeriod>, ValidatedForm<PayPeriodValidationFailures>, never>;
+      } as ValidatedPayload<PayPeriod>) as Effect.Effect<ValidatedPayload<PayPeriod>, ValidatedForm<PayPeriodValidationFailuresNew>, never>;
     };
 
     const mockActivatedRoute = new MockActivatedRoute();
@@ -124,12 +124,12 @@ describe('Pay Period Create Tests', () => {
     expect(actualPostBody).toMatchObject({
       dragonId,
       assignmentId,
-      startDateUnix: payPeriodStartUnix,
-      endDateUnix: payPeriodEndUnix,
+      startDate: payPeriodStart,
+      endDate: payPeriodEnd,
       hoursWorked: [
-        { dragonId, assignmentId, startDateTimeUnix: jan2Unix + 8 * 3600, endDateTimeUnix: jan2Unix + 16 * 3600 },
-        { dragonId, assignmentId, startDateTimeUnix: jan5Unix + 9 * 3600, endDateTimeUnix: jan5Unix + 17 * 3600 },
-        { dragonId, assignmentId, startDateTimeUnix: jan8Unix + 10 * 3600, endDateTimeUnix: jan8Unix + 14 * 3600 },
+        { startDateTime: "2010-01-02T08:00", endDateTime: "2010-01-02T16:00" },
+        { startDateTime: "2010-01-05T09:00", endDateTime: "2010-01-05T17:00" },
+        { startDateTime: "2010-01-08T10:00", endDateTime: "2010-01-08T14:00" },
       ],
     });
 
@@ -142,10 +142,12 @@ describe('Pay Period Create Tests', () => {
     expect(actualPutBody).toMatchObject({
       dragonId,
       assignmentId,
+      startDate: payPeriodStart,
+      endDate: payPeriodEnd,
       hoursWorked: [
-        { dragonId, assignmentId, startDateTimeUnix: jan2Unix + 8 * 3600, endDateTimeUnix: jan2Unix + 16 * 3600 },
-        { dragonId, assignmentId, startDateTimeUnix: jan5Unix + 9 * 3600, endDateTimeUnix: jan5Unix + 17 * 3600 },
-        { dragonId, assignmentId, startDateTimeUnix: jan8Unix + 10 * 3600, endDateTimeUnix: jan8Unix + 14 * 3600 },
+        { startDateTime: "2010-01-02T08:00", endDateTime: "2010-01-02T16:00" },
+        { startDateTime: "2010-01-05T09:00", endDateTime: "2010-01-05T17:00" },
+        { startDateTime: "2010-01-08T10:00", endDateTime: "2010-01-08T14:00" }
       ],
     });
   });
