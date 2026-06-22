@@ -1,5 +1,5 @@
 import { Component, computed, Directive, input, signal } from '@angular/core';
-import { AbstractControl, FormGroup, ReactiveFormsModule, ValidationErrors } from '@angular/forms';
+import { AbstractControl, FormArray, FormGroup, ReactiveFormsModule, ValidationErrors } from '@angular/forms';
 import { AutoCompleteCompleteEvent, AutoCompleteModule } from 'primeng/autocomplete';
 import { ButtonModule } from 'primeng/button';
 import { CheckboxModule } from 'primeng/checkbox';
@@ -25,14 +25,26 @@ export interface TagOption {
 }
 
 export function applyServerSideValidations<T extends object>(failures: ValidatedForm<T>, formGroup: FormGroup) {
-  const vFail = failures.validationFailures;
+  applyValidationObject(failures.validationFailures, formGroup);
+};
+
+function applyValidationObject(vFail: object, formGroup: FormGroup) {
   const keys = Object.keys(vFail);
   keys.forEach((key: string) => {
-    const failMsg = (vFail as any)[key] as string;
-    if (failMsg)
-      formGroup.get(key)?.setErrors({ 'server-side': failMsg });
+    const value = (vFail as any)[key];
+    if (typeof value === 'string' && value)
+      formGroup.get(key)?.setErrors({ 'server-side': value });
+    else if (Array.isArray(value)) {
+      const formArray = formGroup.get(key);
+      if (formArray instanceof FormArray)
+        value.forEach((item: any) => {
+          const rowGroup = formArray.at(item.index);
+          if (rowGroup instanceof FormGroup)
+            applyValidationObject(item, rowGroup);
+        });
+    }
   });
-};
+}
 
 @Directive()
 abstract class LocalFieldBase<T extends (boolean | string | number | Date | TagOption[])> {
