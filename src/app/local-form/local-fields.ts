@@ -8,6 +8,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { MessageModule } from 'primeng/message';
 import { SelectModule } from 'primeng/select';
 import { ValidatedForm } from '../../poco/standard-responses';
+import { GridValidationFailures } from '../../poco/validation-failures';
 
 export interface FieldError {
   errorType: string;
@@ -32,16 +33,15 @@ function applyValidationObject(vFail: object, formGroup: FormGroup) {
   const keys = Object.keys(vFail);
   keys.forEach((key: string) => {
     const value = (vFail as any)[key];
+    const abstractControl = formGroup.get(key);
     if (typeof value === 'string' && value)
-      formGroup.get(key)?.setErrors({ 'server-side': value });
-    else if (Array.isArray(value)) {
-      const formArray = formGroup.get(key);
-      if (formArray instanceof FormArray)
-        value.forEach((item: any) => {
-          const rowGroup = formArray.at(item.index);
-          if (rowGroup instanceof FormGroup)
-            applyValidationObject(item, rowGroup);
-        });
+      abstractControl?.setErrors({ 'server-side': value });
+    else if (Array.isArray(value) && abstractControl instanceof FormArray) {
+      value.forEach((item: GridValidationFailures) => {
+        const rowGroup = abstractControl.at(item.index);
+        if (rowGroup instanceof FormGroup)
+          applyValidationObject(item, rowGroup);
+      });
     }
   });
 }

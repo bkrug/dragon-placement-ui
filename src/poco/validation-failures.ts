@@ -1,3 +1,7 @@
+export class GridValidationFailures {
+  index: number = -1;
+}
+
 export class DragonValidationFailures {
   givenName: string = '';
   weightInKg: string = '';
@@ -17,8 +21,7 @@ export class PayPeriodValidationFailures {
   hoursWorkedEndDateTimeUnix: string = '';
 }
 
-export class HoursWorkedValidationFailures {
-  index: number = -1;
+export class HoursWorkedValidationFailures extends GridValidationFailures {
   startDateTime: string = '';
   endDateTime: string = '';
 }
