@@ -52,7 +52,7 @@ abstract class LocalFieldBase<T extends (boolean | string | number | Date | TagO
   fieldName = input.required<string>();
   label = input.required<string>();
 
-  abstract getFieldControl(): AbstractControl<T|null, T|null, any> | null;
+  abstract getFieldControl(): AbstractControl<T|null, T|null, string> | null;
   isInvalid(): boolean {
     return this.getFieldControl()?.valid === false;
   };
@@ -117,7 +117,7 @@ export class LocalFieldErrors {
 export class LocalTextField extends LocalFieldBase<string> {
   inputType = signal('text');
 
-  fieldControl = input.required<AbstractControl<string|null, string|null, any> | null>();
+  fieldControl = input.required<AbstractControl<string|null, string|null, string> | null>();
   override getFieldControl() {
     return this.fieldControl();
   }
@@ -132,7 +132,7 @@ export class LocalTextField extends LocalFieldBase<string> {
 export class LocalNumberField extends LocalFieldBase<number> {
   inputType = signal('number');
 
-  fieldControl = input.required<AbstractControl<number|null, number|null, any> | null>();
+  fieldControl = input.required<AbstractControl<number|null, number|null, string> | null>();
   override getFieldControl() {
     return this.fieldControl();
   }
@@ -148,7 +148,7 @@ export class LocalStringDateField extends LocalFieldBase<string> {
   min = input<string | null>(null);
   max = input<string | null>(null);
 
-  fieldControl = input.required<AbstractControl<string|null, string|null, any> | null>();
+  fieldControl = input.required<AbstractControl<string|null, string|null, string> | null>();
   override getFieldControl() {
     return this.fieldControl();
   }
@@ -161,7 +161,7 @@ export class LocalStringDateField extends LocalFieldBase<string> {
   styleUrl: './local-field.scss',
 })
 export class LocalStringTimeField extends LocalFieldBase<string> {
-  fieldControl = input.required<AbstractControl<string|null, string|null, any> | null>();
+  fieldControl = input.required<AbstractControl<string|null, string|null, string> | null>();
   override getFieldControl() {
     return this.fieldControl();
   }
@@ -174,7 +174,7 @@ export class LocalStringTimeField extends LocalFieldBase<string> {
   styleUrl: './local-field.scss',
 })
 export class LocalCheckbox extends LocalFieldBase<boolean> {
-  fieldControl = input.required<AbstractControl<boolean|null, boolean|null, any> | null>();
+  fieldControl = input.required<AbstractControl<boolean|null, boolean|null, string> | null>();
   override getFieldControl() {
     return this.fieldControl();
   }
@@ -189,7 +189,7 @@ export class LocalCheckbox extends LocalFieldBase<boolean> {
 export class LocalSelectField extends LocalFieldBase<string> {
   options = input.required<SelectListOption[]>();
 
-  fieldControl = input.required<AbstractControl<string|null, string|null, any> | null>();
+  fieldControl = input.required<AbstractControl<string|null, string|null, string> | null>();
   override getFieldControl() {
     return this.fieldControl();
   }
@@ -210,7 +210,7 @@ export class LocalTagField extends LocalFieldBase<TagOption[]> {
     this.filter.set(event.query);
   }
 
-  fieldControl = input.required<AbstractControl<TagOption[] | null, TagOption[] | null, any> | null>();
+  fieldControl = input.required<AbstractControl<TagOption[] | null, TagOption[] | null, string> | null>();
   override getFieldControl() {
     return this.fieldControl();
   }
