@@ -8,6 +8,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { MessageModule } from 'primeng/message';
 import { SelectModule } from 'primeng/select';
 import { ValidatedForm } from '../../poco/standard-responses';
+import { GridValidationFailures } from '../../poco/validation-failures';
 
 export interface FieldError {
   errorType: string;
@@ -28,19 +29,19 @@ export function applyServerSideValidations<T extends object>(failures: Validated
   applyValidationObject(failures.validationFailures as Record<string, unknown>, formGroup);
 };
 
-function applyValidationObject(vFail: Record<string, unknown>, formGroup: FormGroup) {
-  const keys = Object.keys(vFail);
+function applyValidationObject(objectValidations: Record<string, unknown>, formGroup: FormGroup) {
+  const keys = Object.keys(objectValidations);
   keys.forEach((key: string) => {
-    const propValue = vFail[key];
+    const propValue = objectValidations[key];
     const abstractControl = formGroup.get(key);
     if (typeof propValue === 'string' && propValue)
       abstractControl?.setErrors({ 'server-side': propValue });
     else if (Array.isArray(propValue) && abstractControl instanceof FormArray) {
       propValue.forEach((item) => {
-        const row = item as Record<string, unknown>;
-        const rowGroup = abstractControl.at(row['index'] as number);
+        const rowValidations = item as GridValidationFailures;
+        const rowGroup = abstractControl.at(rowValidations.index);
         if (rowGroup instanceof FormGroup)
-          applyValidationObject(row, rowGroup);
+          applyValidationObject(item as Record<string, unknown>, rowGroup);
       });
     }
   });
