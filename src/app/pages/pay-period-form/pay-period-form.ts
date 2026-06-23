@@ -126,8 +126,7 @@ export class PayPeriodForm extends EntityFormBase<PayPeriod, PayPeriodValidation
   }
 
   isSubmitDisabled(): boolean {
-    const isDisabled = this.isSubmitting() || this.hasNonOverlapErrors(this.formGroup());
-    return isDisabled;
+    return this.isSubmitting() || this.hasNonOverlapErrors(this.formGroup());
   }
 
   //Some server-side validations can detect overlapping work periods and notify the user of an error.
@@ -141,7 +140,6 @@ export class PayPeriodForm extends EntityFormBase<PayPeriod, PayPeriodValidation
         const hasNonOverlap = Object.values(control.errors)
           .some(err => typeof err !== 'string' || !err.toLocaleLowerCase().includes('overlap'));
         if (hasNonOverlap) {
-          console.log(Object.values(control.errors));
           return true;
         }
       }
@@ -150,6 +148,17 @@ export class PayPeriodForm extends EntityFormBase<PayPeriod, PayPeriodValidation
       return false;
     });
   }
+
+  //Since we are allowing submision of forms despite the existance of validation failures on screen,
+  //it is possible that a PUT request could succeed despite those errors.
+  //Remove them here to avoid confusion.
+  private clearServerSideValidations(group: FormGroup | FormArray) {
+    Object.values(group.controls).forEach(control => {
+      control.updateValueAndValidity();
+      if (control instanceof FormGroup || control instanceof FormArray)
+        this.clearServerSideValidations(control);
+    });
+  }  
 
   getTotalHours(rowGroup: FormGroup): number {
     const start = rowGroup.get('startDateTime')?.value;
@@ -196,13 +205,6 @@ export class PayPeriodForm extends EntityFormBase<PayPeriod, PayPeriodValidation
 
   protected override handleSubmissionSuccess(payload: PayPeriod) {
     this.entityId = payload.payPeriodId;
-
-    // //Clear old server-side errors. See comment on hasNonOverlapErrors().
-    // Object.values(this.formGroup().controls)
-    //   .forEach(c => {
-    //     c.updateValueAndValidity();
-    //     if (c instanceof FormArray || c instanceof FormGroup)
-    //       Object.values(c.controls).forEach(cc => cc.updateValueAndValidity());
-    //   });
+    this.clearServerSideValidations(this.formGroup());
   }
 }
