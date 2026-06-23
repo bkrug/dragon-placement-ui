@@ -9,12 +9,12 @@ import { HttpHelpers } from './http-helpers';
   providedIn: 'root',
 })
 export class HoursWorkedClient {
-  async getOnePageOfPayPeriods(dragonId: number, assignmentId: number, offset: number, limit: number) {
-    return await HttpHelpers.getOnePage<PayPeriod>(`${apiUrl}dragon/${dragonId}/assignment/${assignmentId}/payperiod?offset=${offset}&limit=${limit}`);
+  async getOnePageOfPayPeriods(assignmentId: number, offset: number, limit: number) {
+    return await HttpHelpers.getOnePage<PayPeriod>(`${apiUrl}dragon/0/assignment/${assignmentId}/payperiod?offset=${offset}&limit=${limit}`);
   }
 
-  async getPayPeriodCandidates(dragonId: number, assignmentId: number) {
-    return await HttpHelpers.requestValidatedPayload<ValidPaySpan[]>(`${apiUrl}v2/dragon/${dragonId}/assignment/${assignmentId}/payperiodcandidate`);
+  async getPayPeriodCandidates(assignmentId: number) {
+    return await HttpHelpers.requestValidatedPayload<ValidPaySpan[]>(`${apiUrl}v2/dragon/0/assignment/${assignmentId}/payperiodcandidate`);
   }
 
   async getPayPeriod(payPeriodId: number) {

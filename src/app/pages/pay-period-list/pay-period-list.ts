@@ -32,7 +32,7 @@ export class PayPeriodList {
   onPageChange(event: TableLazyLoadEvent) {
     const offset = event.first || 0;
     this.httpClient
-      .getOnePageOfPayPeriods(this.dragonId(), this.assignmentId(), offset, this.pageSize)
+      .getOnePageOfPayPeriods(this.assignmentId(), offset, this.pageSize)
       .then(pagedData => {
         this.payPeriods.set(pagedData.data);
         this.totalRecords.set(pagedData.totalRecords);

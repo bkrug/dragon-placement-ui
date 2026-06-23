@@ -39,7 +39,7 @@ export class PayPeriodCreate implements OnInit {
   }
 
   ngOnInit() {
-    this.httpClient.getPayPeriodCandidates(this.dragonId(), this.assignmentId())
+    this.httpClient.getPayPeriodCandidates(this.assignmentId())
       .then(r => this.candidates.set(r.payload));
   }
 
