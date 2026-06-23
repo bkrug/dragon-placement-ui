@@ -52,7 +52,7 @@ export class PayPeriodForm extends EntityFormBase<PayPeriod, PayPeriodValidation
     this.route.params.subscribe(params => {
       this.entityId = params['payPeriodId'] || 0;
     });
-    //See comment on hasNonOverlapErrors()
+    //See comment on hasFieldValidationErrors()
     this.overrideInvalidForm.set(true);
   }
 
@@ -126,37 +126,31 @@ export class PayPeriodForm extends EntityFormBase<PayPeriod, PayPeriodValidation
   }
 
   isSubmitDisabled(): boolean {
-    return this.isSubmitting() || this.hasNonOverlapErrors(this.formGroup());
+    return this.isSubmitting() || this.hasFieldValidationErrors(this.formGroup());
   }
 
-  //Some server-side validations can detect overlapping work periods and notify the user of an error.
-  //The validation message shows up on the start-time-of-day,
-  //but sometimes the real error is on the end-time or the calendar-date.
-  //When the user fixes the error, the validation won't go away.
-  //So if the only error that we can find has the word "overlap" in it, enable form submission.
-  private hasNonOverlapErrors(group: FormGroup | FormArray): boolean {
+  //Some server-side validations are based on more than one field.
+  //When the user fixes the error, the validation message isn't necessarily removed.
+  //If the only remaining validation failures are on a FormGroup (an hours-worked-row)
+  //and not on an individual field, then enable the submit button.
+  private hasFieldValidationErrors(group: FormGroup | FormArray): boolean {
     return Object.values(group.controls).some(control => {
-      if (control.errors) {
-        const hasNonOverlap = Object.values(control.errors)
-          .some(err => typeof err !== 'string' || !err.toLocaleLowerCase().includes('overlap'));
-        if (hasNonOverlap) {
-          return true;
-        }
-      }
       if (control instanceof FormGroup || control instanceof FormArray)
-        return this.hasNonOverlapErrors(control);
+        return this.hasFieldValidationErrors(control);
+      if (control.errors)
+        return Object.values(control.errors).length > 0;
       return false;
     });
   }
 
-  //Since we are allowing submision of forms despite the existance of validation failures on screen,
-  //it is possible that a PUT request could succeed despite those errors.
-  //Remove them here to avoid confusion.
+  //Since we are allowing submision of forms despite the existance of row-level validation failures,
+  //remove those failures when the user clicks the submit button.
   private clearServerSideValidations(group: FormGroup | FormArray) {
     Object.values(group.controls).forEach(control => {
-      control.updateValueAndValidity();
-      if (control instanceof FormGroup || control instanceof FormArray)
+      if (control instanceof FormGroup || control instanceof FormArray) {
+        control.updateValueAndValidity();
         this.clearServerSideValidations(control);
+      }
     });
   }  
 
@@ -197,6 +191,7 @@ export class PayPeriodForm extends EntityFormBase<PayPeriod, PayPeriodValidation
 
   protected override async makeSubmissionRequest()
     : Promise<Effect.Effect<ValidatedPayload<PayPeriod>, ValidatedForm<PayPeriodValidationFailuresNew>, never>> {
+    this.clearServerSideValidations(this.formGroup());
     const body = this.buildBody();
     return this.entityId
       ? this.httpClient.putPayPeriodForm(this.entityId, body)
@@ -205,7 +200,6 @@ export class PayPeriodForm extends EntityFormBase<PayPeriod, PayPeriodValidation
 
   protected override handleSubmissionSuccess(payload: PayPeriod) {
     this.entityId = payload.payPeriodId;
-    this.clearServerSideValidations(this.formGroup());
   }
 
   //TODO: This is duplicate code with methods in local-field.ts. Refactor this.
