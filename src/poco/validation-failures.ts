@@ -1,4 +1,4 @@
-export class GridValidationFailures {
+export class GridRowValidationFailures {
   index: number = -1;
   rowValidationMessage: string = '';
 }
@@ -22,7 +22,7 @@ export class PayPeriodValidationFailures {
   hoursWorkedEndDateTimeUnix: string = '';
 }
 
-export class HoursWorkedValidationFailures extends GridValidationFailures {
+export class HoursWorkedValidationFailures extends GridRowValidationFailures {
   startDateTime: string = '';
   endDateTime: string = '';
 }

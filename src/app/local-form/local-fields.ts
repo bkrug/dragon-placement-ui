@@ -8,7 +8,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { MessageModule } from 'primeng/message';
 import { SelectModule } from 'primeng/select';
 import { ValidatedForm } from '../../poco/standard-responses';
-import { GridValidationFailures } from '../../poco/validation-failures';
+import { GridRowValidationFailures } from '../../poco/validation-failures';
 
 export interface FieldError {
   errorType: string;
@@ -38,7 +38,7 @@ function applyValidationObject(objectValidations: Record<string, unknown>, formG
       abstractControl?.setErrors({ 'server-side': propValue });
     else if (Array.isArray(propValue) && abstractControl instanceof FormArray) {
       propValue.forEach((item) => {
-        const rowValidations = item as GridValidationFailures;
+        const rowValidations = item as GridRowValidationFailures;
         const rowGroup = abstractControl.at(rowValidations.index);
         if (rowValidations.rowValidationMessage)
           rowGroup.setErrors({ 'server-side': rowValidations.rowValidationMessage });
