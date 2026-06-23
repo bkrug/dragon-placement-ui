@@ -1,6 +1,6 @@
 import { DecimalPipe } from '@angular/common';
 import { Component, inject, input, OnChanges, OnInit, signal } from '@angular/core';
-import { FormArray, FormControl, FormGroup, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
+import { FormArray, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Effect } from 'effect';
 import { TableModule } from 'primeng/table';
@@ -11,7 +11,7 @@ import { PayPeriod } from '../../../poco/models';
 import { ValidatedForm, ValidatedPayload } from '../../../poco/standard-responses';
 import { PayPeriodValidationFailuresNew } from '../../../poco/validation-failures';
 import { EntityFormBase } from '../../local-form/entity-form-base';
-import { FieldError, LocalFieldErrors, LocalStringDateField, LocalStringTimeField, LocalSubmitButton } from '../../local-form/local-fields';
+import { getErrorsFromControl, LocalFieldErrors, LocalStringDateField, LocalStringTimeField, LocalSubmitButton } from '../../local-form/local-fields';
 
 const SECONDS_PER_DAY = 24 * 60 * 60;
 
@@ -202,32 +202,7 @@ export class PayPeriodForm extends EntityFormBase<PayPeriod, PayPeriodValidation
     this.entityId = payload.payPeriodId;
   }
 
-  //TODO: This is duplicate code with methods in local-field.ts. Refactor this.
-  getRowErrors(index: number): FieldError[] {
-    const hoursWorkedArray = this.formGroup().get('hoursWorked') as FormArray;
-    const hoursWorkedRow = hoursWorkedArray.at(index);
-    if (hoursWorkedRow === null || hoursWorkedRow.errors === null)
-      return [];
-    const errors = hoursWorkedRow.errors;
-    const keys = Object.keys(errors);
-    return keys
-      .map(key => { return {
-        errorType: key,
-        errorMsg: this.getErrorMsg(key, errors)
-      }});
+  getRowErrors(index: number) {
+    return getErrorsFromControl(this.hoursWorkedArray.at(index));
   }
-
-  private getErrorMsg(errorType: string, validationErrors: ValidationErrors) {
-    const errObj = validationErrors[errorType];
-    switch (errorType) {
-      case 'server-side':
-        return errObj as string;
-      case 'required':
-        return 'required';
-      case 'minlength':
-        return `minimum length is ${errObj.requiredLength} instead of ${errObj.actualLength}`;
-      default:
-        return JSON.stringify(errObj);
-    }
-  }  
 }

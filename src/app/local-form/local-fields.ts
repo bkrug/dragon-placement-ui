@@ -25,6 +25,30 @@ export interface TagOption {
   value: number;
 }
 
+export function getErrorsFromControl(control: AbstractControl | null): FieldError[] {
+  if (control === null || control.errors === null)
+    return [];
+  const errors = control.errors;
+  return Object.keys(errors).map(key => ({
+    errorType: key,
+    errorMsg: getErrorMsg(key, errors)
+  }));
+}
+
+function getErrorMsg(errorType: string, validationErrors: ValidationErrors): string {
+  const errObj = validationErrors[errorType];
+  switch (errorType) {
+    case 'server-side':
+      return errObj as string;
+    case 'required':
+      return 'required';
+    case 'minlength':
+      return `minimum length is ${errObj.requiredLength} instead of ${errObj.actualLength}`;
+    default:
+      return JSON.stringify(errObj);
+  }
+}
+
 export function applyServerSideValidations<T extends object>(failures: ValidatedForm<T>, formGroup: FormGroup) {
   applyValidationObject(failures.validationFailures as Record<string, unknown>, formGroup);
 };
@@ -66,30 +90,7 @@ abstract class LocalFieldBase<T extends (boolean | string | number | Date | TagO
   };
 
   getErrors(): FieldError[] {
-    const field = this.getFieldControl();
-    if (field === null || field.errors === null)
-      return [];
-    const errors = field.errors;
-    const keys = Object.keys(errors);
-    return keys
-      .map(key => { return {
-        errorType: key,
-        errorMsg: this.getErrorMsg(key, errors)
-      }});
-  }
-
-  private getErrorMsg(errorType: string, validationErrors: ValidationErrors) {
-    const errObj = validationErrors[errorType];
-    switch (errorType) {
-      case 'server-side':
-        return errObj as string;
-      case 'required':
-        return 'required';
-      case 'minlength':
-        return `minimum length is ${errObj.requiredLength} instead of ${errObj.actualLength}`;
-      default:
-        return JSON.stringify(errObj);
-    }
+    return getErrorsFromControl(this.getFieldControl());
   }
 }
 
