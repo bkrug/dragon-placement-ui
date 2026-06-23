@@ -1,5 +1,6 @@
 export class GridValidationFailures {
   index: number = -1;
+  rowValidationMessage: string = '';
 }
 
 export class DragonValidationFailures {

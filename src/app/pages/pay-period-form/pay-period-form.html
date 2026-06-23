@@ -57,6 +57,7 @@
         <td>{{ getTotalHours(rowGroup) | number:'1.2-2' }}</td>
         <td><button type="button" (click)="removeRow(i)">Remove</button></td>
       </tr>
+      <app-local-field-errors [errors]="getRowErrors(i)" [shouldDisplay]="true" />
     </ng-template>
   </p-table>
   <button type="button" (click)="addRow()">Add Entry</button>

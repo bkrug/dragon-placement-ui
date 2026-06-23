@@ -40,6 +40,8 @@ function applyValidationObject(objectValidations: Record<string, unknown>, formG
       propValue.forEach((item) => {
         const rowValidations = item as GridValidationFailures;
         const rowGroup = abstractControl.at(rowValidations.index);
+        if (rowValidations.rowValidationMessage)
+          rowGroup.setErrors({ 'server-side': rowValidations.rowValidationMessage });
         if (rowGroup instanceof FormGroup)
           applyValidationObject(item as Record<string, unknown>, rowGroup);
       });
