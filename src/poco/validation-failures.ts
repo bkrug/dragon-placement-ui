@@ -15,13 +15,6 @@ export class JobValidationFailures {
   numberOfPositions: string = '';
 }
 
-export class PayPeriodValidationFailures {
-  startDateUnix: string = '';
-  endDateUnix: string = '';
-  hoursWorkedStartDateTimeUnix: string = '';
-  hoursWorkedEndDateTimeUnix: string = '';
-}
-
 export class HoursWorkedValidationFailures extends GridRowValidationFailures {
   startDateTime: string = '';
   endDateTime: string = '';

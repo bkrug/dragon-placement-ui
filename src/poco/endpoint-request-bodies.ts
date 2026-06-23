@@ -7,22 +7,6 @@ export class DragonCreateEdit {
   skillTagIds: number[] = [];
 }
 
-export class HoursWorkedCreateEdit {
-  assignmentId: number = 0;
-  dragonId: number = 0;
-  startDateTimeUnix: number = 0;
-  endDateTimeUnix: number = 0;
-}
-
-export class PayPeriodCreateEdit {
-  assignmentId: number = 0;
-  dragonId: number = 0;
-  startDateUnix: number = 0;
-  endDateUnix: number = 0;
-  submissionStatus: string = '';
-  hoursWorked: HoursWorkedCreateEdit[] = [];
-}
-
 export class JobCreateEdit {
   jobTitle: string = '';
   employerName: string = '';
