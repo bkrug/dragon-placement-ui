@@ -208,6 +208,7 @@ export class PayPeriodForm extends EntityFormBase<PayPeriod, PayPeriodValidation
     this.clearServerSideValidations(this.formGroup());
   }
 
+  //TODO: This is duplicate code with methods in local-field.ts. Refactor this.
   getRowErrors(index: number): FieldError[] {
     const hoursWorkedArray = this.formGroup().get('hoursWorked') as FormArray;
     const hoursWorkedRow = hoursWorkedArray.at(index);
