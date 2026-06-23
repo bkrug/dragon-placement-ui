@@ -6,7 +6,7 @@ import { Effect } from 'effect';
 import { TableModule } from 'primeng/table';
 import { HoursWorkedClient } from '../../../httpClients/hours-worked-http-client';
 import { getDateFromDateTimeString, getDateStringFromUnixSeconds, getDateTimeStringFromUnixSeconds, getTimeFromDateTimeString, getUnixSeconds, parseTimeToSeconds } from '../../../misc/transformers';
-import { PayPeriodCreateEditNew, PayPeriodView } from '../../../poco/endpoint-request-bodies';
+import { PayPeriodCreateEdit, PayPeriodView } from '../../../poco/endpoint-request-bodies';
 import { PayPeriod } from '../../../poco/models';
 import { ValidatedForm, ValidatedPayload } from '../../../poco/standard-responses';
 import { PayPeriodValidationFailuresNew } from '../../../poco/validation-failures';
@@ -67,7 +67,6 @@ export class PayPeriodForm extends EntityFormBase<PayPeriod, PayPeriodValidation
     const pp = this.dataFromParentComponent();
     if (pp)
       this.initializeForm(Object.assign(new PayPeriodView(), {
-        dragonId: pp.dragonId,
         assignmentId: pp.assignmentId,
         startDate: getDateStringFromUnixSeconds(pp.startDateUnix),
         endDate: getDateStringFromUnixSeconds(pp.endDateUnix)
@@ -85,7 +84,6 @@ export class PayPeriodForm extends EntityFormBase<PayPeriod, PayPeriodValidation
 
   private createFormGroup(existingRecord: PayPeriodView) {
     return new FormGroup({
-      dragonId: new FormControl<number>(existingRecord.dragonId),
       assignmentId: new FormControl<number>(existingRecord.assignmentId),
       startDate: new FormControl<string | null>(existingRecord.startDate, [Validators.required]),
       endDate: new FormControl<string | null>(existingRecord.endDate, [Validators.required]),
@@ -164,11 +162,10 @@ export class PayPeriodForm extends EntityFormBase<PayPeriod, PayPeriodValidation
       : (endSecs + SECONDS_PER_DAY - startSecs) / 3600;
   }
 
-  private buildBody(): PayPeriodCreateEditNew {
+  private buildBody(): PayPeriodCreateEdit {
     const fg = this.formGroup();
     return {
       assignmentId: fg.value.assignmentId!,
-      dragonId: fg.value.dragonId!,
       startDate: fg.value.startDate!,
       endDate: fg.value.endDate!,
       submissionStatus: '',

@@ -3,7 +3,7 @@ import { By } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { Effect } from 'effect';
 import { HoursWorkedClient } from '../../../httpClients/hours-worked-http-client';
-import { PayPeriodCreateEditNew, ValidPaySpan } from '../../../poco/endpoint-request-bodies';
+import { PayPeriodCreateEdit, ValidPaySpan } from '../../../poco/endpoint-request-bodies';
 import { PayPeriod } from '../../../poco/models';
 import { ValidatedForm, ValidatedPayload } from '../../../poco/standard-responses';
 import { HoursWorkedValidationFailures, PayPeriodValidationFailuresNew } from '../../../poco/validation-failures';
@@ -34,12 +34,11 @@ describe('Pay Period Create Tests', () => {
       payload: [candidate]
     } as ValidatedPayload<ValidPaySpan[]>);
 
-    let actualPostBody = new PayPeriodCreateEditNew();
-    mockHttpClient.postPayPeriodForm = async (body: PayPeriodCreateEditNew) => {
+    let actualPostBody = new PayPeriodCreateEdit();
+    mockHttpClient.postPayPeriodForm = async (body: PayPeriodCreateEdit) => {
       actualPostBody = body;
       const responsePayload = Object.assign(new PayPeriod(), {
         payPeriodId: postResponsePayPeriodId,
-        dragonId: body.dragonId,
         assignmentId: body.assignmentId,
         startDate: body.startDate,
         endDate: body.endDate,
@@ -53,13 +52,12 @@ describe('Pay Period Create Tests', () => {
     };
 
     let actualPutId = 0;
-    let actualPutBody = new PayPeriodCreateEditNew();
-    mockHttpClient.putPayPeriodForm = async (payPeriodId: number, body: PayPeriodCreateEditNew) => {
+    let actualPutBody = new PayPeriodCreateEdit();
+    mockHttpClient.putPayPeriodForm = async (payPeriodId: number, body: PayPeriodCreateEdit) => {
       actualPutId = payPeriodId;
       actualPutBody = body;
       const responsePayload = Object.assign(new PayPeriod(), {
         payPeriodId,
-        dragonId: body.dragonId,
         assignmentId: body.assignmentId,
         startDate: body.startDate,
         endDate: body.endDate,
@@ -73,7 +71,7 @@ describe('Pay Period Create Tests', () => {
     };
 
     const mockActivatedRoute = new MockActivatedRoute();
-    mockActivatedRoute.setParams({ dragonId, assignmentId });
+    mockActivatedRoute.setParams({ assignmentId });
     TestBed.configureTestingModule({
       providers: [
         { provide: HoursWorkedClient, useValue: mockHttpClient },
@@ -119,7 +117,6 @@ describe('Pay Period Create Tests', () => {
 
     //Assert: POST body matches form contents
     expect(actualPostBody).toMatchObject({
-      dragonId,
       assignmentId,
       startDate: payPeriodStart,
       endDate: payPeriodEnd,
@@ -137,7 +134,6 @@ describe('Pay Period Create Tests', () => {
     //Assert: PUT used the payPeriodId returned by the POST
     expect(actualPutId).toEqual(postResponsePayPeriodId);
     expect(actualPutBody).toMatchObject({
-      dragonId,
       assignmentId,
       startDate: payPeriodStart,
       endDate: payPeriodEnd,
@@ -163,12 +159,11 @@ describe('Pay Period Create Tests', () => {
       payload: [candidate]
     } as ValidatedPayload<ValidPaySpan[]>);
 
-    let actualPostBody = new PayPeriodCreateEditNew();
-    mockHttpClient.postPayPeriodForm = async (body: PayPeriodCreateEditNew) => {
+    let actualPostBody = new PayPeriodCreateEdit();
+    mockHttpClient.postPayPeriodForm = async (body: PayPeriodCreateEdit) => {
       actualPostBody = body;
       const responsePayload = Object.assign(new PayPeriod(), {
         payPeriodId: postResponsePayPeriodId,
-        dragonId: body.dragonId,
         assignmentId: body.assignmentId,
         startDate: body.startDate,
         endDate: body.endDate,
@@ -217,7 +212,6 @@ describe('Pay Period Create Tests', () => {
 
     //Assert: POST body matches form contents
     expect(actualPostBody).toMatchObject({
-      dragonId,
       assignmentId,
       startDate: payPeriodStart,
       endDate: payPeriodEnd,

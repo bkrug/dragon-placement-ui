@@ -47,7 +47,6 @@ export class PayPeriodCreate implements OnInit {
     const match = this.candidates().find(c => c.startDate === event.value);
     this.selectedCandidate.set(match
       ? Object.assign(new PayPeriod(), {
-          dragonId: this.dragonId(),
           assignmentId: this.assignmentId(),
           startDateUnix: getUnixSeconds(match.startDate),
           endDateUnix: getUnixSeconds(match.endDate)
