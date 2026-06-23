@@ -90,7 +90,6 @@ export class PayPeriodForm extends EntityFormBase<PayPeriod, PayPeriodValidation
       startDate: new FormControl<string | null>(existingRecord.startDate, [Validators.required]),
       endDate: new FormControl<string | null>(existingRecord.endDate, [Validators.required]),
       hoursWorked: new FormArray<FormGroup>(existingRecord.hoursWorked.map(hw => new FormGroup({
-        //TODO: Add some sort of safety check in case the string format isn't what we expect
         workDate: new FormControl<string | null>(getDateFromDateTimeString(hw.startDateTime), [Validators.required]),
         startDateTime: new FormControl<string | null>(getTimeFromDateTimeString(hw.startDateTime), [Validators.required]),
         endDateTime: new FormControl<string | null>(getTimeFromDateTimeString(hw.endDateTime), [Validators.required]),
