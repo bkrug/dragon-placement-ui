@@ -86,9 +86,8 @@ export class PayPeriodForm extends EntityFormBase<PayPeriod, PayPeriodValidation
     return new FormGroup({
       dragonId: new FormControl<number>(existingRecord.dragonId),
       assignmentId: new FormControl<number>(existingRecord.assignmentId),
-      //TODO: rename this field to remove the "unix" suffix
-      startDateUnix: new FormControl<string | null>(existingRecord.startDate, [Validators.required]),
-      endDateUnix: new FormControl<string | null>(existingRecord.endDate, [Validators.required]),
+      startDate: new FormControl<string | null>(existingRecord.startDate, [Validators.required]),
+      endDate: new FormControl<string | null>(existingRecord.endDate, [Validators.required]),
       hoursWorked: new FormArray<FormGroup>(existingRecord.hoursWorked.map(hw => new FormGroup({
         //TODO: Add some sort of safety check in case the string format isn't what we expect
         workDate: new FormControl<string | null>(hw.startDateTime.split('T')[0], [Validators.required]),
@@ -176,8 +175,8 @@ export class PayPeriodForm extends EntityFormBase<PayPeriod, PayPeriodValidation
     return {
       assignmentId: fg.value.assignmentId!,
       dragonId: fg.value.dragonId!,
-      startDate: fg.value.startDateUnix!,
-      endDate: fg.value.endDateUnix!,
+      startDate: fg.value.startDate!,
+      endDate: fg.value.endDate!,
       submissionStatus: '',
       hoursWorked: this.hoursWorkedArray.controls.map(row => {
         const v = row.value;
