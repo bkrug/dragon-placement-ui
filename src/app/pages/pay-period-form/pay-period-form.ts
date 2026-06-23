@@ -5,7 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Effect } from 'effect';
 import { TableModule } from 'primeng/table';
 import { HoursWorkedClient } from '../../../httpClients/hours-worked-http-client';
-import { getDateStringFromUnixSeconds, getDateTimeStringFromUnixSeconds, getTimeFromDateTimeString, getUnixSeconds, parseTimeToSeconds } from '../../../misc/transformers';
+import { getDateFromDateTimeString, getDateStringFromUnixSeconds, getDateTimeStringFromUnixSeconds, getTimeFromDateTimeString, getUnixSeconds, parseTimeToSeconds } from '../../../misc/transformers';
 import { PayPeriodCreateEditNew, PayPeriodView } from '../../../poco/endpoint-request-bodies';
 import { PayPeriod } from '../../../poco/models';
 import { ValidatedForm, ValidatedPayload } from '../../../poco/standard-responses';
@@ -91,7 +91,7 @@ export class PayPeriodForm extends EntityFormBase<PayPeriod, PayPeriodValidation
       endDate: new FormControl<string | null>(existingRecord.endDate, [Validators.required]),
       hoursWorked: new FormArray<FormGroup>(existingRecord.hoursWorked.map(hw => new FormGroup({
         //TODO: Add some sort of safety check in case the string format isn't what we expect
-        workDate: new FormControl<string | null>(hw.startDateTime.split('T')[0], [Validators.required]),
+        workDate: new FormControl<string | null>(getDateFromDateTimeString(hw.startDateTime), [Validators.required]),
         startDateTime: new FormControl<string | null>(getTimeFromDateTimeString(hw.startDateTime), [Validators.required]),
         endDateTime: new FormControl<string | null>(getTimeFromDateTimeString(hw.endDateTime), [Validators.required]),
       }))),

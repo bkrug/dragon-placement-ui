@@ -79,6 +79,11 @@ export function parseTimeToSeconds(timeStr: string): number {
   return hours * 3600 + minutes * 60;
 }
 
+export function getDateFromDateTimeString(dateTimeString: string): string {
+  const match = dateTimeString.match(isoDateRegex);
+  return match ? match[0] : '';
+}
+
 export function getTimeFromDateTimeString(dateTimeString: string): string {
   const match = dateTimeString.match(/T(\d{2}:\d{2})/);
   return match ? match[1] : '';
