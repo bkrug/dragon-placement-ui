@@ -68,8 +68,8 @@ export class PayPeriodForm extends EntityFormBase<PayPeriod, PayPeriodValidation
     if (pp)
       this.initializeForm(Object.assign(new PayPeriodView(), {
         assignmentId: pp.assignmentId,
-        startDate: getDateStringFromUnixSeconds(pp.startDateUnix),
-        endDate: getDateStringFromUnixSeconds(pp.endDateUnix)
+        startDate: getDateFromDateTimeString(pp.startDate),
+        endDate: getDateFromDateTimeString(pp.endDate)
       }));
   }
 
