@@ -48,8 +48,8 @@ export class PayPeriodCreate implements OnInit {
     this.selectedCandidate.set(match
       ? Object.assign(new PayPeriod(), {
           assignmentId: this.assignmentId(),
-          startDateUnix: getUnixSeconds(match.startDate),
-          endDateUnix: getUnixSeconds(match.endDate)
+          startDate: match.startDate,
+          endDate: match.endDate
         })
       : null);
   }

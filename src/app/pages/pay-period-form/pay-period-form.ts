@@ -65,12 +65,13 @@ export class PayPeriodForm extends EntityFormBase<PayPeriod, PayPeriodValidation
 
   ngOnChanges() {
     const pp = this.dataFromParentComponent();
-    if (pp)
+    if (pp) {
       this.initializeForm(Object.assign(new PayPeriodView(), {
         assignmentId: pp.assignmentId,
         startDate: getDateFromDateTimeString(pp.startDate),
         endDate: getDateFromDateTimeString(pp.endDate)
       }));
+    }
   }
 
   private initializeForm(pp: PayPeriodView) {
