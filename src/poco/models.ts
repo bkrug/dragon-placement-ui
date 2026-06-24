@@ -68,10 +68,8 @@ export class SkillTag {
 
 export class HoursWorked {
   hoursWorkedId: number = 0;
-  assignmentId: number = 0;
-  dragonId: number = 0;
-  startDateTimeUnix: number = 0;
-  endDateTimeUnix: number = 0;
+  startDateTime: string = '';
+  endDateTime: string = '';
   payPeriodId: number = 0;
 }
 
