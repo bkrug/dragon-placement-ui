@@ -1,7 +1,7 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AssignmentHttpClient } from '../../../httpClients/assignment-http-client';
-import { getDateStringFromUnixSeconds, getUnixSeconds } from '../../../misc/transformers';
+import { getDateFromDateTimeString } from '../../../misc/transformers';
 import { JobCreateEdit } from '../../../poco/endpoint-request-bodies';
 import { Job, SkillTag } from '../../../poco/models';
 import { JobValidationFailures } from '../../../poco/validation-failures';
@@ -48,8 +48,8 @@ export class JobForm extends EntityFormBase<Job, JobValidationFailures> implemen
       jobTitle: new FormControl(payload.jobTitle, [ Validators.required ]),
       employerName: new FormControl(payload.employerName),
       numberOfPositions: new FormControl(payload.numberOfPositions, [ Validators.required ]),
-      startDate: new FormControl<string | null>(this.entityId ? payload.startDateUnix : null),
-      endDate: new FormControl<string | null>(this.entityId ? payload.endDateUnix : null),
+      startDate: new FormControl<string | null>(this.entityId ? getDateFromDateTimeString(payload.startDate) : null),
+      endDate: new FormControl<string | null>(this.entityId ? getDateFromDateTimeString(payload.endDate) : null),
       skillTags: new FormControl(payload.skillTags.map(this.toTagOption))
     })
   }
@@ -62,8 +62,8 @@ export class JobForm extends EntityFormBase<Job, JobValidationFailures> implemen
       jobTitle: values.jobTitle!,
       employerName: values.employerName || '',
       numberOfPositions: values.numberOfPositions!,
-      startDateUnix: getUnixSeconds(values.startDate),
-      endDateUnix: getUnixSeconds(values.endDate),
+      startDate: values.startDate,
+      endDate: values.endDate,
       skillTagIds: values.skillTags?.map(this.toSkillTagId) || []
     } as JobCreateEdit;
     return this.entityId

@@ -17,8 +17,8 @@ describe('ManageJob', () => {
     employerName: 'Royal Games',
     numberOfPositions: 5,
     filledPositions: 0,
-    startDateUnix: Math.floor(new Date(2026, 6, 15).getTime() / 1000),
-    endDateUnix: Math.floor(new Date(2026, 6, 25).getTime() / 1000),
+    startDate: '2026-06-15',
+    endDate: '2026-06-25',
     skillTags: []
   };
   const mockDragon: Dragon = {

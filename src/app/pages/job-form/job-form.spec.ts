@@ -2,6 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
 import { Effect } from 'effect';
 import { AssignmentHttpClient } from '../../../httpClients/assignment-http-client';
+import { getDateFromUnixSeconds } from '../../../misc/transformers';
 import { JobCreateEdit } from '../../../poco/endpoint-request-bodies';
 import { Job, SkillTag } from '../../../poco/models';
 import { PagedData, ValidatedForm, ValidatedPayload } from '../../../poco/standard-responses';
@@ -14,9 +15,7 @@ describe('Job Form Tests', () => {
     return nativeElement.querySelector(css) as HTMLInputElement;
   }
 
-  const beginDateUnix = 1262304000;
   const beginDateString = '2010-01-01';
-  const endDateUnix = 1293753600;
   const endDateString = '2010-12-31';
 
   it('Load a blank Job Form for creation of a job', async () => {
@@ -90,8 +89,8 @@ describe('Job Form Tests', () => {
     //Assert record changed
     expect(actualModelInPostRequest.jobTitle).toEqual('Dragon Wrangler');
     expect(actualModelInPostRequest.numberOfPositions).toEqual(3);
-    expect(actualModelInPostRequest.startDateUnix).toEqual(beginDateUnix);
-    expect(actualModelInPostRequest.endDateUnix).toEqual(endDateUnix);
+    expect(actualModelInPostRequest.startDate).toEqual(beginDateString);
+    expect(actualModelInPostRequest.endDate).toEqual(endDateString);
   });
 
   it('Load an existing job to be edited from this form', async () => {
@@ -102,8 +101,8 @@ describe('Job Form Tests', () => {
       employerName: 'City of Dragonford',
       filledPositions: 1,
       numberOfPositions: 4,
-      startDateUnix: beginDateUnix,
-      endDateUnix: endDateUnix,
+      startDate: beginDateString,
+      endDate: endDateString,
     });
 
     const mockHttpClient = new AssignmentHttpClient();
@@ -185,8 +184,8 @@ describe('Job Form Tests', () => {
       employerName: 'City of Dragonford',
       filledPositions: 1,
       numberOfPositions: 4,
-      startDateUnix: beginDateUnix,
-      endDateUnix: endDateUnix,
+      startDate: beginDateString,
+      endDate: endDateString,
     });
 
     const mockHttpClient = new AssignmentHttpClient();

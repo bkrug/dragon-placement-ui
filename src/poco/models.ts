@@ -24,8 +24,8 @@ export class Job {
   employerName: string = '';
   filledPositions: number = 0;
   numberOfPositions: number = 0;
-  startDateUnix: string = '';
-  endDateUnix: string = '';
+  startDate: string = '';
+  endDate: string = '';
   skillTags: SkillTag[] = [];
 }
 

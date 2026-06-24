@@ -11,8 +11,8 @@ export class JobCreateEdit {
   jobTitle: string = '';
   employerName: string = '';
   numberOfPositions: number = 0;
-  startDateUnix: number = 0;
-  endDateUnix: number = 0;
+  startDate: string = '';
+  endDate: string = '';
   skillTagIds: number[] = [];
 }
 

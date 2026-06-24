@@ -21,8 +21,8 @@ describe('JobList', () => {
         employerName: 'The Ocean',
         filledPositions: 1,
         numberOfPositions: 3,
-        startDateUnix: 0,
-        endDateUnix: 1
+        startDate: '1970-01-01',
+        endDate: '1970-01-02'
       },
       {
         jobId: 2,
@@ -30,8 +30,8 @@ describe('JobList', () => {
         employerName: 'The Sky',
         filledPositions: 2,
         numberOfPositions: 2,
-        startDateUnix: 2,
-        endDateUnix: 3
+        startDate: '1970-01-03',
+        endDate: '1970-01-04'
       }
     ];
     const mockHttpClient = new AssignmentHttpClient();
