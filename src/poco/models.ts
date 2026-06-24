@@ -3,8 +3,8 @@ export class Assignment {
   jobId: number = 0;
   dragonId: number = 0;
   job: Job = new Job();
-  startDateUnix: string = '';
-  endDateUnix: string = '';
+  startDate: string = '';
+  endDate: string = '';
 }
 
 export class Dragon {

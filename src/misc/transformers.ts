@@ -35,8 +35,8 @@ export const mapDragonToDisplayDragon = (source: Dragon) => {
 }
 
 export const mapAssigmentToDisplayAssignment = (source: Assignment) => {
-  const startDate = new Date(getUnixSeconds(source.startDateUnix) * 1000);
-  const endDate = source.endDateUnix == null ? null : new Date(getUnixSeconds(source.endDateUnix) * 1000);
+  const startDate = new Date(getUnixSeconds(source.startDate) * 1000);
+  const endDate = source.endDate == null ? null : new Date(getUnixSeconds(source.endDate) * 1000);
   return {
     assignmentId: source.assignmentId,
     jobId: source.jobId,
