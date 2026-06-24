@@ -48,8 +48,8 @@ export class JobForm extends EntityFormBase<Job, JobValidationFailures> implemen
       jobTitle: new FormControl(payload.jobTitle, [ Validators.required ]),
       employerName: new FormControl(payload.employerName),
       numberOfPositions: new FormControl(payload.numberOfPositions, [ Validators.required ]),
-      startDate: new FormControl<string | null>(this.entityId ? getDateStringFromUnixSeconds(payload.startDateUnix) : null),
-      endDate: new FormControl<string | null>(this.entityId ? getDateStringFromUnixSeconds(payload.endDateUnix) : null),
+      startDate: new FormControl<string | null>(this.entityId ? payload.startDateUnix : null),
+      endDate: new FormControl<string | null>(this.entityId ? payload.endDateUnix : null),
       skillTags: new FormControl(payload.skillTags.map(this.toTagOption))
     })
   }

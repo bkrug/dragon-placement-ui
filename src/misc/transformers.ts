@@ -1,8 +1,8 @@
 import { Assignment, DisplayAssignment, DisplayDragon, DisplayJob, Dragon, Job } from '../poco/models';
 
 export const mapJobToDisplayJob = (source: Job) => {
-  const startDate = new Date(source.startDateUnix * 1000);
-  const endDate = new Date(source.endDateUnix * 1000);
+  const startDate = new Date(getUnixSeconds(source.startDateUnix) * 1000);
+  const endDate = new Date(getUnixSeconds(source.endDateUnix) * 1000);
   const openPositions = source.numberOfPositions - source.filledPositions;
   const openDescription =
     openPositions === 0 ? 'Filled'
@@ -35,8 +35,8 @@ export const mapDragonToDisplayDragon = (source: Dragon) => {
 }
 
 export const mapAssigmentToDisplayAssignment = (source: Assignment) => {
-  const startDate = new Date(source.startDateUnix * 1000);
-  const endDate = source.endDateUnix == null ? null : new Date(source.endDateUnix * 1000);
+  const startDate = new Date(getUnixSeconds(source.startDateUnix) * 1000);
+  const endDate = source.endDateUnix == null ? null : new Date(getUnixSeconds(source.endDateUnix) * 1000);
   return {
     assignmentId: source.assignmentId,
     jobId: source.jobId,

@@ -3,8 +3,8 @@ export class Assignment {
   jobId: number = 0;
   dragonId: number = 0;
   job: Job = new Job();
-  startDateUnix: number = 0;
-  endDateUnix: number | null = null;
+  startDateUnix: string = '';
+  endDateUnix: string = '';
 }
 
 export class Dragon {
@@ -24,8 +24,8 @@ export class Job {
   employerName: string = '';
   filledPositions: number = 0;
   numberOfPositions: number = 0;
-  startDateUnix: number = 0;
-  endDateUnix: number = 0;
+  startDateUnix: string = '';
+  endDateUnix: string = '';
   skillTags: SkillTag[] = [];
 }
 
