@@ -16,7 +16,6 @@ import { LocalNumberField, LocalStringDateField, LocalSubmitButton, LocalTagFiel
 })
 export class JobForm extends EntityFormBase<Job, JobValidationFailures> implements OnInit {
   httpClient = inject(AssignmentHttpClient);
-  //job = signal(new JobCreateEdit());
 
   constructor() {
     super('jobId');
@@ -28,7 +27,6 @@ export class JobForm extends EntityFormBase<Job, JobValidationFailures> implemen
     if (this.entityId)
       this.httpClient.getJob(this.entityId)
         .then(validatedResponse => {
-          //this.job.set(transformedPayload);
           this.formGroup.set(this.getFormGroup(validatedResponse.payload));
         });
   }
