@@ -2,7 +2,6 @@ import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { SelectModule } from 'primeng/select';
 import { HoursWorkedClient } from '../../../httpClients/hours-worked-http-client';
-import { getUnixSeconds } from '../../../misc/transformers';
 import { ValidPaySpan } from '../../../poco/endpoint-request-bodies';
 import { PayPeriod } from '../../../poco/models';
 import { SelectListOption } from '../../local-form/local-fields';

@@ -68,12 +68,6 @@ export function getUnixSeconds(sourceDate: string | Date | null | undefined) {
   }
 }
 
-export function getDateFromUnixSeconds(unixSeconds: number | null | undefined) {
-  if (unixSeconds === null || unixSeconds === undefined)
-    return null;
-  return new Date(unixSeconds * 1000);
-}
-
 export function parseTimeToSeconds(timeStr: string): number {
   const [hours, minutes] = timeStr.split(':').map(Number);
   return hours * 3600 + minutes * 60;
