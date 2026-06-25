@@ -117,13 +117,11 @@ export class PayPeriodForm extends EntityFormBase<PayPeriod, PayPeriodValidation
       const time = fg.get('startDateTime')?.value || '00:00';
       return Temporal.PlainDate.from(date).toPlainDateTime(Temporal.PlainTime.from(time));
     };
+    const maxDate = Temporal.PlainDateTime.from('9999-12-31T23:59');
     return [...this.hoursWorkedArray.controls as FormGroup[]]
       .sort((fg1, fg2) => {
-        const dt1 = toDateTime(fg1);
-        const dt2 = toDateTime(fg2);
-        if (!dt1 && !dt2) return 0;
-        if (!dt1) return 1;
-        if (!dt2) return -1;
+        const dt1 = toDateTime(fg1) || maxDate;
+        const dt2 = toDateTime(fg2) || maxDate;
         return Temporal.PlainDateTime.compare(dt1, dt2);
       });
   }
@@ -161,13 +159,11 @@ export class PayPeriodForm extends EntityFormBase<PayPeriod, PayPeriodValidation
     const start = rowGroup.get('startDateTime')?.value;
     const end = rowGroup.get('endDateTime')?.value;
     if (!start || !end) return 0;
-    const startTime = Temporal.PlainTime.from(start);
-    const endTime = Temporal.PlainTime.from(end);
-    const ref = Temporal.PlainDate.from('2000-01-01');
-    const startDT = ref.toPlainDateTime(startTime);
-    const endDT = Temporal.PlainTime.compare(endTime, startTime) > 0
-      ? ref.toPlainDateTime(endTime)
-      : ref.add({ days: 1 }).toPlainDateTime(endTime);
+    const startDT = Temporal.PlainDateTime.from('2000-01-01T' + start);
+    const endTime = Temporal.PlainDateTime.from('2000-01-01T' + end);
+    const endDT = Temporal.PlainDateTime.compare(endTime, startDT) > 0
+      ? endTime
+      : endTime.add({ days: 1 });
     return startDT.until(endDT, { largestUnit: 'hours' }).total('hours');
   }
 
