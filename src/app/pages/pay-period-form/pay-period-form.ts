@@ -2,18 +2,17 @@ import { DecimalPipe } from '@angular/common';
 import { Component, inject, input, OnChanges, OnInit, signal } from '@angular/core';
 import { FormArray, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { Temporal } from '@js-temporal/polyfill';
 import { Effect } from 'effect';
 import { TableModule } from 'primeng/table';
 import { HoursWorkedClient } from '../../../httpClients/hours-worked-http-client';
-import { getDateFromDateTimeString, getDateTimeStringFromUnixSeconds, getTimeFromDateTimeString, getUnixSeconds, parseTimeToSeconds } from '../../../misc/transformers';
+import { getDateFromDateTimeString, getTimeFromDateTimeString } from '../../../misc/transformers';
 import { PayPeriodCreateEdit, PayPeriodView } from '../../../poco/endpoint-request-bodies';
 import { PayPeriod } from '../../../poco/models';
 import { ValidatedForm, ValidatedPayload } from '../../../poco/standard-responses';
 import { PayPeriodValidationFailuresNew } from '../../../poco/validation-failures';
 import { EntityFormBase } from '../../local-form/entity-form-base';
 import { getErrorsFromControl, LocalFieldErrors, LocalStringDateField, LocalStringTimeField, LocalSubmitButton } from '../../local-form/local-fields';
-
-const SECONDS_PER_DAY = 24 * 60 * 60;
 
 @Component({
   selector: 'app-pay-period-form',
@@ -112,15 +111,21 @@ export class PayPeriodForm extends EntityFormBase<PayPeriod, PayPeriodValidation
   }
 
   private cloneHoursWorkedArray(): FormGroup<any>[] {
-    const sortedGroup = [...this.hoursWorkedArray.controls as FormGroup[]]
+    const toDateTime = (fg: FormGroup): Temporal.PlainDateTime | null => {
+      const date = fg.get('workDate')?.value;
+      if (!date) return null;
+      const time = fg.get('startDateTime')?.value || '00:00';
+      return Temporal.PlainDate.from(date).toPlainDateTime(Temporal.PlainTime.from(time));
+    };
+    return [...this.hoursWorkedArray.controls as FormGroup[]]
       .sort((fg1, fg2) => {
-        const startTime1 = getUnixSeconds(fg1.get('workDate')?.value || '')
-          + parseTimeToSeconds(fg1.get('startDateTime')?.value || '');
-        const startTime2 = getUnixSeconds(fg2.get('workDate')?.value || '')
-          + parseTimeToSeconds(fg2.get('startDateTime')?.value || '');
-        return startTime1 - startTime2;
+        const dt1 = toDateTime(fg1);
+        const dt2 = toDateTime(fg2);
+        if (!dt1 && !dt2) return 0;
+        if (!dt1) return 1;
+        if (!dt2) return -1;
+        return Temporal.PlainDateTime.compare(dt1, dt2);
       });
-    return sortedGroup;
   }
 
   isSubmitDisabled(): boolean {
@@ -156,11 +161,14 @@ export class PayPeriodForm extends EntityFormBase<PayPeriod, PayPeriodValidation
     const start = rowGroup.get('startDateTime')?.value;
     const end = rowGroup.get('endDateTime')?.value;
     if (!start || !end) return 0;
-    const startSecs = parseTimeToSeconds(start);
-    const endSecs = parseTimeToSeconds(end);
-    return endSecs > startSecs
-      ? (endSecs - startSecs) / 3600
-      : (endSecs + SECONDS_PER_DAY - startSecs) / 3600;
+    const startTime = Temporal.PlainTime.from(start);
+    const endTime = Temporal.PlainTime.from(end);
+    const ref = Temporal.PlainDate.from('2000-01-01');
+    const startDT = ref.toPlainDateTime(startTime);
+    const endDT = Temporal.PlainTime.compare(endTime, startTime) > 0
+      ? ref.toPlainDateTime(endTime)
+      : ref.add({ days: 1 }).toPlainDateTime(endTime);
+    return startDT.until(endDT, { largestUnit: 'hours' }).total('hours');
   }
 
   private buildBody(): PayPeriodCreateEdit {
@@ -172,15 +180,16 @@ export class PayPeriodForm extends EntityFormBase<PayPeriod, PayPeriodValidation
       submissionStatus: '',
       hoursWorked: this.hoursWorkedArray.controls.map(row => {
         const v = row.value;
-        const workDateSecs = getUnixSeconds(v.workDate);
-        const startSecs = parseTimeToSeconds(v.startDateTime!);
-        const endSecs = parseTimeToSeconds(v.endDateTime!);
+        const workDate = Temporal.PlainDate.from(v.workDate);
+        const startTime = Temporal.PlainTime.from(v.startDateTime!);
+        const endTime = Temporal.PlainTime.from(v.endDateTime!);
+        const startDT = workDate.toPlainDateTime(startTime);
+        const endDT = Temporal.PlainTime.compare(endTime, startTime) > 0
+          ? workDate.toPlainDateTime(endTime)
+          : workDate.add({ days: 1 }).toPlainDateTime(endTime);
         return {
-          startDateTime: getDateTimeStringFromUnixSeconds(workDateSecs + startSecs),
-          endDateTime: getDateTimeStringFromUnixSeconds(
-            endSecs > startSecs
-            ? workDateSecs + endSecs
-            : workDateSecs + SECONDS_PER_DAY + endSecs),
+          startDateTime: startDT.toString({ smallestUnit: 'minute' }),
+          endDateTime: endDT.toString({ smallestUnit: 'minute' }),
         };
       }),
     };
