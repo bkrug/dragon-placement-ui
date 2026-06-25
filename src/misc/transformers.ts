@@ -48,6 +48,7 @@ export const mapAssigmentToDisplayAssignment = (source: Assignment) => {
 };
 
 const isoDateRegex = /^(?:\d{4})-(?:\d{1,2})-(?:\d{1,2})/
+const hourAndMinuteRegex = /T(\d{2}:\d{2})/
 
 export function getUnixSeconds(sourceDate: string | Date | null | undefined) {
   if (sourceDate instanceof Date) {
@@ -74,6 +75,6 @@ export function getDateFromDateTimeString(dateTimeString: string): string {
 }
 
 export function getTimeFromDateTimeString(dateTimeString: string): string {
-  const match = dateTimeString.match(/T(\d{2}:\d{2})/);
+  const match = dateTimeString.match(hourAndMinuteRegex);
   return match ? match[1] : '';
 }
