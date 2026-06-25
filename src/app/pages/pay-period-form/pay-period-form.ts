@@ -113,9 +113,10 @@ export class PayPeriodForm extends EntityFormBase<PayPeriod, PayPeriodValidation
   private cloneHoursWorkedArray(): FormGroup<any>[] {
     const toDateTime = (fg: FormGroup): Temporal.PlainDateTime | null => {
       const date = fg.get('workDate')?.value;
-      if (!date) return null;
-      const time = fg.get('startDateTime')?.value || '00:00';
-      return Temporal.PlainDate.from(date).toPlainDateTime(Temporal.PlainTime.from(time));
+      const time = fg.get('startDateTime')?.value;
+      return date && time
+        ? Temporal.PlainDateTime.from(date + 'T' + time)
+        : null;
     };
     const maxDate = Temporal.PlainDateTime.from('9999-12-31T23:59');
     return [...this.hoursWorkedArray.controls as FormGroup[]]
