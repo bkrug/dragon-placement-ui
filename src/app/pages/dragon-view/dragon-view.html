@@ -52,8 +52,8 @@
         <tr [pSelectableRow]="assignment">
           <td>{{ assignment.job.employerName  }}</td>
           <td>{{ assignment.job.jobTitle }}</td>
-          <td>{{ assignment.startDate | date:'fullDate':'+0' }}</td>
-          <td>{{ assignment.endDate === null ? 'not specified' : assignment.endDate | date:'fullDate':'+0' }}</td>
+          <td>{{ assignment.startDate }}</td>
+          <td>{{ assignment.endDate === null ? 'not specified' : assignment.endDate }}</td>
           <td><a [routerLink]="['/dragons', assignment.dragonId, 'assignments', assignment.assignmentId, 'pay-periods']">Log Hours</a></td>
         </tr>
       </ng-template>

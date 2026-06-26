@@ -1,4 +1,3 @@
-import { DatePipe } from '@angular/common';
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { TableModule } from 'primeng/table';
@@ -10,7 +9,7 @@ import { Assignment, DisplayDragon } from '../../../poco/models';
 
 @Component({
   selector: 'app-dragon-view',
-  imports: [ DatePipe, TableModule, RouterLink ],
+  imports: [ TableModule, RouterLink ],
   templateUrl: './dragon-view.html',
   styleUrl: './dragon-view.scss',
 })

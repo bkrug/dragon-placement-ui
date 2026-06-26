@@ -45,8 +45,8 @@ export class DisplayAssignment {
   jobId: number = 0;
   dragonId: number = 0;
   job: DisplayJob = new DisplayJob();
-  startDate: Date = new Date(0);
-  endDate: Date | null = null;
+  startDate: string = '';
+  endDate: string | null = null;
 }
 
 export class DisplayJob {
