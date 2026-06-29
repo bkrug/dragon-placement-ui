@@ -47,25 +47,6 @@ export const mapAssigmentToDisplayAssignment = (source: Assignment) => {
 const isoDateRegex = /^(?:\d{4})-(?:\d{1,2})-(?:\d{1,2})/
 const hourAndMinuteRegex = /T(\d{2}:\d{2})/
 
-export function getUnixSeconds(sourceDate: string | Date | null | undefined) {
-  if (sourceDate instanceof Date) {
-    return Math.floor(sourceDate.getTime() / 1000)
-  }
-  else if (typeof sourceDate === 'string') {
-    const matches = sourceDate.match(isoDateRegex);
-    if (matches === null || matches.length === 0) {
-      return 0;
-    }
-    else {
-      const parts = matches[0].split('-').map(s => parseInt(s, 10));
-      return Math.floor(Date.UTC(parts[0], parts[1] - 1, parts[2]) / 1000);
-    }
-  }
-  else {
-    return 0;
-  }
-}
-
 export function getDateFromDateTimeString(dateTimeString: string): string {
   const match = dateTimeString.match(isoDateRegex);
   return match ? match[0] : '';
