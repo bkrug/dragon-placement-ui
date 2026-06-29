@@ -8,7 +8,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { MessageModule } from 'primeng/message';
 import { SelectModule } from 'primeng/select';
 import { ValidatedForm } from '../../poco/standard-responses';
-import { GridRowValidationFailures, ValidationFailures } from '../../poco/validation-failures';
+import { ValidationFailures } from '../../poco/validation-failures';
 
 export interface FieldError {
   errorType: string;

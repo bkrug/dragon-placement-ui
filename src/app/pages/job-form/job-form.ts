@@ -4,7 +4,6 @@ import { AssignmentHttpClient } from '../../../httpClients/assignment-http-clien
 import { getDateFromDateTimeString } from '../../../misc/transformers';
 import { JobCreateEdit } from '../../../poco/endpoint-request-bodies';
 import { Job, SkillTag } from '../../../poco/models';
-import { ValidationFailures } from '../../../poco/validation-failures';
 import { EntityFormBase } from '../../local-form/entity-form-base';
 import { LocalNumberField, LocalStringDateField, LocalSubmitButton, LocalTagField, LocalTextField, TagOption } from '../../local-form/local-fields';
 
@@ -14,7 +13,7 @@ import { LocalNumberField, LocalStringDateField, LocalSubmitButton, LocalTagFiel
   templateUrl: './job-form.html',
   styleUrl: './job-form.scss',
 })
-export class JobForm extends EntityFormBase<Job, ValidationFailures> implements OnInit {
+export class JobForm extends EntityFormBase<Job> implements OnInit {
   httpClient = inject(AssignmentHttpClient);
 
   constructor() {

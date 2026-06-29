@@ -3,10 +3,12 @@ import { FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Effect } from 'effect';
 import { ValidatedForm, ValidatedPayload } from '../../poco/standard-responses';
+import { ValidationFailures } from '../../poco/validation-failures';
 import { applyServerSideValidations } from './local-fields';
 
+// TDb is the response body type returned by PUT/POST endpoints, not the request body type submitted to them.
 @Directive()
-export abstract class EntityFormBase<TDb extends object, TValidationFailures extends object> {
+export abstract class EntityFormBase<TDb extends object> {
   private activatedRoute = inject(ActivatedRoute);
   protected entityId: number | null = null;
 
@@ -23,7 +25,7 @@ export abstract class EntityFormBase<TDb extends object, TValidationFailures ext
 
   abstract formGroup: WritableSignal<FormGroup>;
 
-  protected abstract makeSubmissionRequest(): Promise<Effect.Effect<ValidatedPayload<TDb>, ValidatedForm<TValidationFailures>, never>>;
+  protected abstract makeSubmissionRequest(): Promise<Effect.Effect<ValidatedPayload<TDb>, ValidatedForm<ValidationFailures>, never>>;
   protected abstract handleSubmissionSuccess(payload: TDb): void;
 
   onFormFocus() {

@@ -27,7 +27,7 @@ import { getErrorsFromControl, LocalFieldErrors, LocalStringDateField, LocalStri
   templateUrl: './pay-period-form.html',
   styleUrl: './pay-period-form.scss',
 })
-export class PayPeriodForm extends EntityFormBase<PayPeriod, ValidationFailures> implements OnInit, OnChanges {
+export class PayPeriodForm extends EntityFormBase<PayPeriod> implements OnInit, OnChanges {
   httpClient = inject(HoursWorkedClient);
   private route = inject(ActivatedRoute);
 

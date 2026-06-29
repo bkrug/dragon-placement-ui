@@ -5,7 +5,6 @@ import { JobInclusions } from '../../../misc/enums';
 import { globalFightingSkillOptions } from '../../../misc/skillLevels';
 import { DragonCreateEdit } from '../../../poco/endpoint-request-bodies';
 import { Dragon, SkillTag } from '../../../poco/models';
-import { ValidationFailures } from '../../../poco/validation-failures';
 import { EntityFormBase } from '../../local-form/entity-form-base';
 import { LocalNumberField, LocalSelectField, LocalSubmitButton, LocalTagField, LocalTextField, TagOption } from '../../local-form/local-fields';
 
@@ -15,7 +14,7 @@ import { LocalNumberField, LocalSelectField, LocalSubmitButton, LocalTagField, L
   templateUrl: './dragon-form.html',
   styleUrl: './dragon-form.scss',
 })
-export class DragonForm extends EntityFormBase<Dragon, ValidationFailures> implements OnInit {
+export class DragonForm extends EntityFormBase<Dragon> implements OnInit {
   httpClient = inject(AssignmentHttpClient);
 
   constructor() {
