@@ -51,10 +51,7 @@ function getErrorMsg(errorType: string, validationErrors: ValidationErrors): str
 
 export function applyServerSideValidations<T extends object>(failures: ValidatedForm<T>, formGroup: FormGroup) {
   const validationFailures = failures.validationFailures as ValidationFailures;
-  if (validationFailures.fieldFailures || validationFailures.gridRowFailures)
-    applyValidationFailures(validationFailures, formGroup);
-  else
-    applyValidationObject(failures.validationFailures as Record<string, unknown>, formGroup);
+  applyValidationFailures(validationFailures, formGroup);
 };
 
 function applyValidationFailures(validationFailures: ValidationFailures, formGroup: FormGroup) {
@@ -82,26 +79,6 @@ function toCamelCase(fieldName: string): string {
   return fieldName.length > 0
     ? fieldName[0].toLowerCase() + fieldName.slice(1)
     : '';
-}
-
-function applyValidationObject(objectValidations: Record<string, unknown>, formGroup: FormGroup) {
-  const keys = Object.keys(objectValidations);
-  keys.forEach((key: string) => {
-    const propValue = objectValidations[key];
-    const abstractControl = formGroup.get(key);
-    if (typeof propValue === 'string' && propValue)
-      abstractControl?.setErrors({ 'server-side': propValue });
-    else if (Array.isArray(propValue) && abstractControl instanceof FormArray) {
-      propValue.forEach((item) => {
-        const rowValidations = item as GridRowValidationFailures;
-        const rowGroup = abstractControl.at(rowValidations.index);
-        if (rowValidations.rowValidationMessage)
-          rowGroup.setErrors({ 'server-side': rowValidations.rowValidationMessage });
-        if (rowGroup instanceof FormGroup)
-          applyValidationObject(item as Record<string, unknown>, rowGroup);
-      });
-    }
-  });
 }
 
 @Directive()
