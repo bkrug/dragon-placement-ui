@@ -2,9 +2,9 @@ export type ValidationFailures = {
   fieldFailures: { [key: string]: string };
 }
 
-export class GridRowValidationFailures {
-  index: number = -1;
-  rowValidationMessage: string = '';
+export type GridRowValidationFailures = {
+  index: number;
+  rowValidationMessage: string;
 }
 
 export class DragonValidationFailures {
@@ -14,9 +14,9 @@ export class DragonValidationFailures {
   fightingSkills: string = '';
 }
 
-export class HoursWorkedValidationFailures extends GridRowValidationFailures {
-  startDateTime: string = '';
-  endDateTime: string = '';
+export type HoursWorkedValidationFailures = GridRowValidationFailures & {
+  startDateTime: string;
+  endDateTime: string;
 }
 
 export class PayPeriodValidationFailuresNew {

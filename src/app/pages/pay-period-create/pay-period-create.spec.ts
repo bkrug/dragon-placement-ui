@@ -375,8 +375,8 @@ describe('Pay Period Create Tests', () => {
         startDate: '',
         endDate: '',
         hoursWorked: [
-          Object.assign(new HoursWorkedValidationFailures(), { index: 0, startDateTime: row0Error }),
-          Object.assign(new HoursWorkedValidationFailures(), { index: 2, endDateTime: row2Error }),
+          Object.assign({ index: 0, startDateTime: row0Error } as HoursWorkedValidationFailures),
+          Object.assign({ index: 2, endDateTime: row2Error } as HoursWorkedValidationFailures),
         ],
       };
       const failBody = {
