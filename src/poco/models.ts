@@ -56,8 +56,8 @@ export class DisplayJob {
   openPositions: number = 0;
   numberOfPositions: number = 0;
   openDescription: string = '';
-  startDate: Date = new Date(0);
-  endDate: Date = new Date(0);
+  startDate: string = '';
+  endDate: string = '';
   skillTags: SkillTag[] = [];
 }
 
