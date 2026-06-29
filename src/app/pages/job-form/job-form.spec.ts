@@ -202,6 +202,8 @@ describe('Job Form Tests', () => {
         //this comes from the server as a dictionary, so the field names are Pascal Case
         JobTitle: 'Job title is too short',
         NumberOfPositions: 'Number of positions must be positive',
+      },
+      gridRowFailures: {
       }
     };
 

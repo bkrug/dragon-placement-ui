@@ -6,7 +6,7 @@ import { HoursWorkedClient } from '../../../httpClients/hours-worked-http-client
 import { PayPeriodCreateEdit, ValidPaySpan } from '../../../poco/endpoint-request-bodies';
 import { PayPeriod } from '../../../poco/models';
 import { ValidatedForm, ValidatedPayload } from '../../../poco/standard-responses';
-import { HoursWorkedValidationFailures, PayPeriodValidationFailuresNew } from '../../../poco/validation-failures';
+import { GridRowValidationFailures, ValidationFailures } from '../../../poco/validation-failures';
 import { MockActivatedRoute } from '../../../testHelpers/MockActivatedRoute';
 import { PayPeriodForm } from '../pay-period-form/pay-period-form';
 import { PayPeriodCreate } from './pay-period-create';
@@ -48,7 +48,7 @@ describe('Pay Period Create Tests', () => {
         isSuccess: true,
         validationFailures: [],
         payload: responsePayload
-      } as ValidatedPayload<PayPeriod>) as Effect.Effect<ValidatedPayload<PayPeriod>, ValidatedForm<PayPeriodValidationFailuresNew>, never>;
+      } as ValidatedPayload<PayPeriod>) as Effect.Effect<ValidatedPayload<PayPeriod>, ValidatedForm<ValidationFailures>, never>;
     };
 
     let actualPutId = 0;
@@ -67,7 +67,7 @@ describe('Pay Period Create Tests', () => {
         isSuccess: true,
         validationFailures: [],
         payload: responsePayload
-      } as ValidatedPayload<PayPeriod>) as Effect.Effect<ValidatedPayload<PayPeriod>, ValidatedForm<PayPeriodValidationFailuresNew>, never>;
+      } as ValidatedPayload<PayPeriod>) as Effect.Effect<ValidatedPayload<PayPeriod>, ValidatedForm<ValidationFailures>, never>;
     };
 
     const mockActivatedRoute = new MockActivatedRoute();
@@ -173,7 +173,7 @@ describe('Pay Period Create Tests', () => {
         isSuccess: true,
         validationFailures: [],
         payload: responsePayload
-      } as ValidatedPayload<PayPeriod>) as Effect.Effect<ValidatedPayload<PayPeriod>, ValidatedForm<PayPeriodValidationFailuresNew>, never>;
+      } as ValidatedPayload<PayPeriod>) as Effect.Effect<ValidatedPayload<PayPeriod>, ValidatedForm<ValidationFailures>, never>;
     };
 
     const mockActivatedRoute = new MockActivatedRoute();
@@ -371,20 +371,21 @@ describe('Pay Period Create Tests', () => {
     } as ValidatedPayload<ValidPaySpan[]>);
 
     mockHttpClient.postPayPeriodForm = async () => {
-      const failures: PayPeriodValidationFailuresNew = {
-        startDate: '',
-        endDate: '',
-        hoursWorked: [
-          Object.assign({ index: 0, startDateTime: row0Error } as HoursWorkedValidationFailures),
-          Object.assign({ index: 2, endDateTime: row2Error } as HoursWorkedValidationFailures),
-        ],
+      const failures: ValidationFailures = {
+        fieldFailures: {},
+        gridRowFailures: {
+          hoursWorked: [
+            { index: 0, rowValidationMessage: '', fieldFailures: { startDateTime: row0Error }, gridRowFailures: {} } as GridRowValidationFailures,
+            { index: 2, rowValidationMessage: '', fieldFailures: { endDateTime: row2Error }, gridRowFailures: {} } as GridRowValidationFailures,
+          ],
+        },
       };
       const failBody = {
         isInternalError: false,
         isSuccess: false,
         validationFailures: failures
-      } as ValidatedForm<PayPeriodValidationFailuresNew>;
-      return Effect.fail(failBody) as Effect.Effect<ValidatedPayload<PayPeriod>, ValidatedForm<PayPeriodValidationFailuresNew>, never>;
+      } as ValidatedForm<ValidationFailures>;
+      return Effect.fail(failBody) as Effect.Effect<ValidatedPayload<PayPeriod>, ValidatedForm<ValidationFailures>, never>;
     };
 
     const mockActivatedRoute = new MockActivatedRoute();

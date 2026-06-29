@@ -1,8 +1,9 @@
 export type ValidationFailures = {
   fieldFailures: { [key: string]: string };
+  gridRowFailures: { [key: string]: GridRowValidationFailures[] };
 }
 
-export type GridRowValidationFailures = {
+export type GridRowValidationFailures = ValidationFailures & {
   index: number;
   rowValidationMessage: string;
 }
@@ -14,13 +15,3 @@ export class DragonValidationFailures {
   fightingSkills: string = '';
 }
 
-export type HoursWorkedValidationFailures = GridRowValidationFailures & {
-  startDateTime: string;
-  endDateTime: string;
-}
-
-export class PayPeriodValidationFailuresNew {
-  startDate: string = '';
-  endDate: string = '';
-  hoursWorked: HoursWorkedValidationFailures[] = [];
-}

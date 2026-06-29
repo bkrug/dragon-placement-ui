@@ -10,7 +10,7 @@ import { getDateFromDateTimeString, getTimeFromDateTimeString } from '../../../m
 import { PayPeriodCreateEdit, PayPeriodView } from '../../../poco/endpoint-request-bodies';
 import { PayPeriod } from '../../../poco/models';
 import { ValidatedForm, ValidatedPayload } from '../../../poco/standard-responses';
-import { PayPeriodValidationFailuresNew } from '../../../poco/validation-failures';
+import { ValidationFailures } from '../../../poco/validation-failures';
 import { EntityFormBase } from '../../local-form/entity-form-base';
 import { getErrorsFromControl, LocalFieldErrors, LocalStringDateField, LocalStringTimeField, LocalSubmitButton } from '../../local-form/local-fields';
 
@@ -27,7 +27,7 @@ import { getErrorsFromControl, LocalFieldErrors, LocalStringDateField, LocalStri
   templateUrl: './pay-period-form.html',
   styleUrl: './pay-period-form.scss',
 })
-export class PayPeriodForm extends EntityFormBase<PayPeriod, PayPeriodValidationFailuresNew> implements OnInit, OnChanges {
+export class PayPeriodForm extends EntityFormBase<PayPeriod, ValidationFailures> implements OnInit, OnChanges {
   httpClient = inject(HoursWorkedClient);
   private route = inject(ActivatedRoute);
 
@@ -193,7 +193,7 @@ export class PayPeriodForm extends EntityFormBase<PayPeriod, PayPeriodValidation
   }
 
   protected override async makeSubmissionRequest()
-    : Promise<Effect.Effect<ValidatedPayload<PayPeriod>, ValidatedForm<PayPeriodValidationFailuresNew>, never>> {
+    : Promise<Effect.Effect<ValidatedPayload<PayPeriod>, ValidatedForm<ValidationFailures>, never>> {
     this.clearServerSideValidations(this.formGroup());
     const body = this.buildBody();
     return this.entityId

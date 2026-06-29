@@ -51,18 +51,29 @@ function getErrorMsg(errorType: string, validationErrors: ValidationErrors): str
 
 export function applyServerSideValidations<T extends object>(failures: ValidatedForm<T>, formGroup: FormGroup) {
   const validationFailures = failures.validationFailures as ValidationFailures;
-  if (validationFailures.fieldFailures)
+  if (validationFailures.fieldFailures || validationFailures.gridRowFailures)
     applyValidationFailures(validationFailures, formGroup);
   else
     applyValidationObject(failures.validationFailures as Record<string, unknown>, formGroup);
 };
 
 function applyValidationFailures(validationFailures: ValidationFailures, formGroup: FormGroup) {
-  const entries = Object.entries(validationFailures.fieldFailures);
-  entries.forEach(([fieldName, validationMessage]) => {
+  Object.entries(validationFailures.fieldFailures).forEach(([fieldName, validationMessage]) => {
     if (validationMessage) {
       const control = formGroup.get(toCamelCase(fieldName));
       control?.setErrors({ 'server-side': validationMessage });
+    }
+  });
+  Object.entries(validationFailures.gridRowFailures).forEach(([fieldName, rows]) => {
+    const formArray = formGroup.get(toCamelCase(fieldName));
+    if (formArray instanceof FormArray) {
+      rows.forEach((row) => {
+        const rowGroup = formArray.at(row.index);
+        if (row.rowValidationMessage)
+          rowGroup.setErrors({ 'server-side': row.rowValidationMessage });
+        if (rowGroup instanceof FormGroup)
+          applyValidationFailures(row, rowGroup);
+      });
     }
   });
 }
