@@ -374,9 +374,10 @@ describe('Pay Period Create Tests', () => {
       const failures: ValidationFailures = {
         fieldFailures: {},
         gridRowFailures: {
-          hoursWorked: [
-            { index: 0, rowValidationMessage: '', fieldFailures: { startDateTime: row0Error }, gridRowFailures: {} } as GridRowValidationFailures,
-            { index: 2, rowValidationMessage: '', fieldFailures: { endDateTime: row2Error }, gridRowFailures: {} } as GridRowValidationFailures,
+          HoursWorked: [
+            //this comes from the server as a dictionary, so the field names are Pascal Case
+            { index: 0, rowValidationMessage: '', fieldFailures: { StartDateTime: row0Error }, gridRowFailures: {} } as GridRowValidationFailures,
+            { index: 2, rowValidationMessage: '', fieldFailures: { EndDateTime: row2Error }, gridRowFailures: {} } as GridRowValidationFailures,
           ],
         },
       };

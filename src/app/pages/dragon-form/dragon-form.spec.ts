@@ -209,10 +209,11 @@ describe('Dragon Form Tests', () => {
 
     const validationFailures: ValidationFailures = {
       fieldFailures: {
-        givenName: 'Given name is too short',
-        weightInKg: 'Weight must be positive',
-        lengthInMeters: 'Length must be positive',
-        fightingSkills: 'Fighting skill level is not recognized'
+        //this comes from the server as a dictionary, so the field names are Pascal Case
+        GivenName: 'Given name is too short',
+        WeightInKg: 'Weight must be positive',
+        LengthInMeters: 'Length must be positive',
+        FightingSkills: 'Fighting skill level is not recognized'
       },
       gridRowFailures: {},
     };
@@ -259,10 +260,10 @@ describe('Dragon Form Tests', () => {
 
     //Assert: each field with a server-side failure displays its error message
     const nativeElement: HTMLDivElement = fixture.nativeElement;
-    expect(nativeElement.querySelector('#given-name p-message')?.textContent).toContain(validationFailures.fieldFailures['givenName']);
-    expect(nativeElement.querySelector('#weight-in-kg p-message')?.textContent).toContain(validationFailures.fieldFailures['weightInKg']);
-    expect(nativeElement.querySelector('#length-in-meters p-message')?.textContent).toContain(validationFailures.fieldFailures['lengthInMeters']);
-    expect(nativeElement.querySelector('#fighting-skills p-message')?.textContent).toContain(validationFailures.fieldFailures['fightingSkills']);
+    expect(nativeElement.querySelector('#given-name p-message')?.textContent).toContain(validationFailures.fieldFailures['GivenName']);
+    expect(nativeElement.querySelector('#weight-in-kg p-message')?.textContent).toContain(validationFailures.fieldFailures['WeightInKg']);
+    expect(nativeElement.querySelector('#length-in-meters p-message')?.textContent).toContain(validationFailures.fieldFailures['LengthInMeters']);
+    expect(nativeElement.querySelector('#fighting-skills p-message')?.textContent).toContain(validationFailures.fieldFailures['FightingSkills']);
   });
 
   it('Show a general error message after a failed edit submission with an internal server error', async () => {
