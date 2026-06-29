@@ -8,7 +8,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { MessageModule } from 'primeng/message';
 import { SelectModule } from 'primeng/select';
 import { ValidatedForm } from '../../poco/standard-responses';
-import { GridRowValidationFailures } from '../../poco/validation-failures';
+import { GridRowValidationFailures, ValidationFailures } from '../../poco/validation-failures';
 
 export interface FieldError {
   errorType: string;
@@ -50,8 +50,28 @@ function getErrorMsg(errorType: string, validationErrors: ValidationErrors): str
 }
 
 export function applyServerSideValidations<T extends object>(failures: ValidatedForm<T>, formGroup: FormGroup) {
-  applyValidationObject(failures.validationFailures as Record<string, unknown>, formGroup);
+  const validationFailures = failures.validationFailures as ValidationFailures;
+  if (validationFailures.fieldFailures)
+    applyValidationFailures(validationFailures, formGroup);
+  else
+    applyValidationObject(failures.validationFailures as Record<string, unknown>, formGroup);
 };
+
+function applyValidationFailures(validationFailures: ValidationFailures, formGroup: FormGroup) {
+  const entries = Object.entries(validationFailures.fieldFailures);
+  entries.forEach(([fieldName, validationMessage]) => {
+    if (validationMessage) {
+      const control = formGroup.get(toCamelCase(fieldName));
+      control?.setErrors({ 'server-side': validationMessage });
+    }
+  });
+}
+
+function toCamelCase(fieldName: string): string {
+  return fieldName.length > 0
+    ? fieldName[0].toLowerCase() + fieldName.slice(1)
+    : '';
+}
 
 function applyValidationObject(objectValidations: Record<string, unknown>, formGroup: FormGroup) {
   const keys = Object.keys(objectValidations);

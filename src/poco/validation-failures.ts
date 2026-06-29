@@ -1,3 +1,7 @@
+export type ValidationFailures = {
+  fieldFailures: { [key: string]: string };
+}
+
 export class GridRowValidationFailures {
   index: number = -1;
   rowValidationMessage: string = '';
@@ -8,11 +12,6 @@ export class DragonValidationFailures {
   weightInKg: string = '';
   lengthInMeters: string = '';
   fightingSkills: string = '';
-}
-
-export class JobValidationFailures {
-  jobTitle: string = '';
-  numberOfPositions: string = '';
 }
 
 export class HoursWorkedValidationFailures extends GridRowValidationFailures {

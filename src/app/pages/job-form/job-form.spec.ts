@@ -5,7 +5,7 @@ import { AssignmentHttpClient } from '../../../httpClients/assignment-http-clien
 import { JobCreateEdit } from '../../../poco/endpoint-request-bodies';
 import { Job, SkillTag } from '../../../poco/models';
 import { PagedData, ValidatedForm, ValidatedPayload } from '../../../poco/standard-responses';
-import { JobValidationFailures } from '../../../poco/validation-failures';
+import { ValidationFailures } from '../../../poco/validation-failures';
 import { MockActivatedRoute } from '../../../testHelpers/MockActivatedRoute';
 import { JobForm } from './job-form';
 
@@ -39,7 +39,7 @@ describe('Job Form Tests', () => {
         validationFailures: [],
         payload: JSON.parse(JSON.stringify(job))
       } as ValidatedPayload<Job>;
-      return Effect.succeed(validatedPayload) as Effect.Effect<ValidatedPayload<Job>, ValidatedForm<JobValidationFailures>, never>;
+      return Effect.succeed(validatedPayload) as Effect.Effect<ValidatedPayload<Job>, ValidatedForm<ValidationFailures>, never>;
     };
 
     mockHttpClient.getAllSkills = async () => {
@@ -125,7 +125,7 @@ describe('Job Form Tests', () => {
         validationFailures: [],
         payload: JSON.parse(JSON.stringify(initialDbRecord))
       } as ValidatedPayload<Job>;
-      return Effect.succeed(validatedPayload) as Effect.Effect<ValidatedPayload<Job>, ValidatedForm<JobValidationFailures>, never>;
+      return Effect.succeed(validatedPayload) as Effect.Effect<ValidatedPayload<Job>, ValidatedForm<ValidationFailures>, never>;
     };
 
     mockHttpClient.getAllSkills = async () => {
@@ -197,18 +197,21 @@ describe('Job Form Tests', () => {
       } as ValidatedPayload<Job>;
     };
 
-    const validationFailures: JobValidationFailures = {
-      jobTitle: 'Job title is too short',
-      numberOfPositions: 'Number of positions must be positive',
+    const validationFailures: ValidationFailures = {
+      fieldFailures: {
+        //this comes from the server as a dictionary, so the field names are Pascal Case
+        JobTitle: 'Job title is too short',
+        NumberOfPositions: 'Number of positions must be positive',
+      }
     };
 
     mockHttpClient.putJobForm = async () => {
-      const failedForm: ValidatedForm<JobValidationFailures> = {
+      const failedForm: ValidatedForm<ValidationFailures> = {
         isInternalError: false,
         isSuccess: false,
         validationFailures
       };
-      return Effect.fail(failedForm) as Effect.Effect<ValidatedPayload<Job>, ValidatedForm<JobValidationFailures>, never>;
+      return Effect.fail(failedForm) as Effect.Effect<ValidatedPayload<Job>, ValidatedForm<ValidationFailures>, never>;
     };
 
     mockHttpClient.getAllSkills = async () => {
@@ -244,7 +247,7 @@ describe('Job Form Tests', () => {
 
     //Assert: each field with a server-side failure displays its error message
     const nativeElement: HTMLDivElement = fixture.nativeElement;
-    expect(nativeElement.querySelector('#job-title p-message')?.textContent || '').toContain(validationFailures.jobTitle);
-    expect(nativeElement.querySelector('#number-of-positions p-message')?.textContent || '').toContain(validationFailures.numberOfPositions);
+    expect(nativeElement.querySelector('#job-title p-message')?.textContent || '').toContain(validationFailures.fieldFailures["JobTitle"]);
+    expect(nativeElement.querySelector('#number-of-positions p-message')?.textContent || '').toContain(validationFailures.fieldFailures["NumberOfPositions"]);
   });
 });

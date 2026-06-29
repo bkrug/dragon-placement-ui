@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { JobInclusions } from '../misc/enums';
 import { DragonCreateEdit, JobCreateEdit } from '../poco/endpoint-request-bodies';
 import { Dragon, Job, SkillTag } from '../poco/models';
-import { DragonValidationFailures, JobValidationFailures } from '../poco/validation-failures';
+import { DragonValidationFailures, ValidationFailures } from '../poco/validation-failures';
 import { apiUrl } from './api-url';
 import { HttpHelpers } from './http-helpers';
 
@@ -53,11 +53,11 @@ export class AssignmentHttpClient {
   };
 
   async postJobForm(job: JobCreateEdit) {
-    return await HttpHelpers.submitForm<Job, JobValidationFailures>(`${apiUrl}job`, 'POST', job);
+    return await HttpHelpers.submitForm<Job, ValidationFailures>(`${apiUrl}job`, 'POST', job);
   };
 
   async putJobForm(jobId: number, job: JobCreateEdit) {
-    return await HttpHelpers.submitForm<Job, JobValidationFailures>(`${apiUrl}job/${jobId}`, 'PUT', job);
+    return await HttpHelpers.submitForm<Job, ValidationFailures>(`${apiUrl}job/${jobId}`, 'PUT', job);
   };
 
   async getAllSkills() {
