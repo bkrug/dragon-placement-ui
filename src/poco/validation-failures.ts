@@ -8,10 +8,3 @@ export type GridRowValidationFailures = ValidationFailures & {
   rowValidationMessage: string;
 }
 
-export class DragonValidationFailures {
-  givenName: string = '';
-  weightInKg: string = '';
-  lengthInMeters: string = '';
-  fightingSkills: string = '';
-}
-

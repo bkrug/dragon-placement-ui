@@ -5,7 +5,7 @@ import { AssignmentHttpClient } from '../../../httpClients/assignment-http-clien
 import { DragonCreateEdit } from '../../../poco/endpoint-request-bodies';
 import { Dragon, SkillTag } from '../../../poco/models';
 import { PagedData, ValidatedForm, ValidatedPayload } from '../../../poco/standard-responses';
-import { DragonValidationFailures } from '../../../poco/validation-failures';
+import { ValidationFailures } from '../../../poco/validation-failures';
 import { MockActivatedRoute } from '../../../testHelpers/MockActivatedRoute';
 import { DragonForm } from './dragon-form';
 
@@ -44,7 +44,7 @@ describe('Dragon Form Tests', () => {
           skillTags: dragon.skillTagIds.map(stId => ({ skillTageId: stId, skillTageName: '' }))
         })
       } as ValidatedPayload<Dragon>;
-      return Effect.succeed(validatedPayload) as Effect.Effect<ValidatedPayload<Dragon>, ValidatedForm<DragonValidationFailures>, never>;
+      return Effect.succeed(validatedPayload) as Effect.Effect<ValidatedPayload<Dragon>, ValidatedForm<ValidationFailures>, never>;
     };
 
     mockHttpClient.getAllSkills = async () => {
@@ -132,7 +132,7 @@ describe('Dragon Form Tests', () => {
         validationFailures: [],
         payload: JSON.parse(JSON.stringify(initialDbRecord))
       } as ValidatedPayload<Dragon>;
-      return Effect.succeed(validatedPayload) as Effect.Effect<ValidatedPayload<Dragon>, ValidatedForm<DragonValidationFailures>, never>;
+      return Effect.succeed(validatedPayload) as Effect.Effect<ValidatedPayload<Dragon>, ValidatedForm<ValidationFailures>, never>;
     };
 
     mockHttpClient.getAllSkills = async () => {
@@ -207,20 +207,23 @@ describe('Dragon Form Tests', () => {
       } as ValidatedPayload<Dragon>;
     };
 
-    const validationFailures: DragonValidationFailures = {
-      givenName: 'Given name is too short',
-      weightInKg: 'Weight must be positive',
-      lengthInMeters: 'Length must be positive',
-      fightingSkills: 'Fighting skill level is not recognized'
+    const validationFailures: ValidationFailures = {
+      fieldFailures: {
+        givenName: 'Given name is too short',
+        weightInKg: 'Weight must be positive',
+        lengthInMeters: 'Length must be positive',
+        fightingSkills: 'Fighting skill level is not recognized'
+      },
+      gridRowFailures: {},
     };
 
     mockHttpClient.putDragonForm = async () => {
-      const failedForm: ValidatedForm<DragonValidationFailures> = {
+      const failedForm: ValidatedForm<ValidationFailures> = {
         isInternalError: false,
         isSuccess: false,
         validationFailures
       };
-      return Effect.fail(failedForm) as Effect.Effect<ValidatedPayload<Dragon>, ValidatedForm<DragonValidationFailures>, never>;
+      return Effect.fail(failedForm) as Effect.Effect<ValidatedPayload<Dragon>, ValidatedForm<ValidationFailures>, never>;
     };
 
     mockHttpClient.getAllSkills = async () => {
@@ -256,10 +259,10 @@ describe('Dragon Form Tests', () => {
 
     //Assert: each field with a server-side failure displays its error message
     const nativeElement: HTMLDivElement = fixture.nativeElement;
-    expect(nativeElement.querySelector('#given-name p-message')?.textContent).toContain(validationFailures.givenName);
-    expect(nativeElement.querySelector('#weight-in-kg p-message')?.textContent).toContain(validationFailures.weightInKg);
-    expect(nativeElement.querySelector('#length-in-meters p-message')?.textContent).toContain(validationFailures.lengthInMeters);
-    expect(nativeElement.querySelector('#fighting-skills p-message')?.textContent).toContain(validationFailures.fightingSkills);
+    expect(nativeElement.querySelector('#given-name p-message')?.textContent).toContain(validationFailures.fieldFailures['givenName']);
+    expect(nativeElement.querySelector('#weight-in-kg p-message')?.textContent).toContain(validationFailures.fieldFailures['weightInKg']);
+    expect(nativeElement.querySelector('#length-in-meters p-message')?.textContent).toContain(validationFailures.fieldFailures['lengthInMeters']);
+    expect(nativeElement.querySelector('#fighting-skills p-message')?.textContent).toContain(validationFailures.fieldFailures['fightingSkills']);
   });
 
   it('Show a general error message after a failed edit submission with an internal server error', async () => {
@@ -287,9 +290,9 @@ describe('Dragon Form Tests', () => {
       const failedForm = {
         isInternalError: true,
         isSuccess: false,
-        validationFailures: new DragonValidationFailures()
-      } as ValidatedForm<DragonValidationFailures>;
-      return Effect.fail(failedForm) as Effect.Effect<ValidatedPayload<Dragon>, ValidatedForm<DragonValidationFailures>, never>;
+        validationFailures: { fieldFailures: {}, gridRowFailures: {} }
+      } as ValidatedForm<ValidationFailures>;
+      return Effect.fail(failedForm) as Effect.Effect<ValidatedPayload<Dragon>, ValidatedForm<ValidationFailures>, never>;
     };
 
     mockHttpClient.getAllSkills = async () => {
@@ -340,7 +343,7 @@ describe('Dragon Form Tests', () => {
         isSuccess: false,
         payload: new Dragon()
       } as ValidatedPayload<Dragon>;
-      return Effect.succeed(failedForm) as Effect.Effect<ValidatedPayload<Dragon>, ValidatedForm<DragonValidationFailures>, never>;
+      return Effect.succeed(failedForm) as Effect.Effect<ValidatedPayload<Dragon>, ValidatedForm<ValidationFailures>, never>;
     };
 
     mockHttpClient.getAllSkills = async () => {
