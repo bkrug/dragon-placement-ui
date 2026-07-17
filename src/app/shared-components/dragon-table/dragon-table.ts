@@ -20,6 +20,7 @@ export class DragonTable implements OnInit {
   selectedJob = input<DisplayJob | null>();
   dragonTableType = input<DragonTableType>();
 
+  //TODO: Why not use output() here instead of @Output()?
   @Output() assignedDragon = new EventEmitter();
   @Output() unassignedDragon = new EventEmitter();
 

@@ -22,6 +22,7 @@ export class CandidateTable implements OnInit {
 
   selectedJob = input<DisplayJob | null>();
 
+  //TODO: Why not use output() here instead of @Output()?
   @Output() assignedDragon = new EventEmitter();
 
   dragons = signal<Dragon[]>([]);

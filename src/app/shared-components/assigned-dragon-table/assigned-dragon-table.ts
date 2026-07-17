@@ -18,6 +18,7 @@ export class AssignedDragonTable implements OnInit {
 
   selectedJob = input<DisplayJob | null>();
 
+  //TODO: Why not use output() here instead of @Output()?
   @Output() unassignedDragon = new EventEmitter();
 
   dragons = signal<Dragon[]>([]);
