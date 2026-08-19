@@ -35,7 +35,7 @@ describe('ManageJob', () => {
 
   it('When a dragon from the list of candidates is assigned, a request should be made for both dragon tables to reload data.', async () => {
     const mockHttpClient = new AssignmentHttpClient();
-    mockHttpClient.getJob = async () => mockValidatedJob(mockJob);
+    mockHttpClient.getJob = () => of(mockValidatedJob(mockJob));
 
     let getCandidateCount = 0;
     let getAssignedCount = 0;
@@ -53,7 +53,7 @@ describe('ManageJob', () => {
       return of({ isSuccess: true, isInternalError: false, validationFailures: [] } as ValidatedResponse);
     };
 
-    mockHttpClient.getAllSkills = async () => { return { offset: 0, limit: 0, totalRecords: 0, data: [] } as PagedData<SkillTag>; }
+    mockHttpClient.getAllSkills = () => of({ offset: 0, limit: 0, totalRecords: 0, data: [] } as PagedData<SkillTag>);
 
     const mockActivatedRoute = new MockActivatedRoute();
     const mockParams : Record<string, number> = { ['jobId'] : jobId };
@@ -92,7 +92,7 @@ describe('ManageJob', () => {
 
   it('When a dragon from the list of assigned individuals is unassigned, a request should be made for both dragon tables to reload data.', async () => {
     const mockHttpClient = new AssignmentHttpClient();
-    mockHttpClient.getJob = async () => mockValidatedJob(mockJob);
+    mockHttpClient.getJob = () => of(mockValidatedJob(mockJob));
 
     let getCandidateCount = 0;
     let getAssignedCount = 0;
@@ -110,7 +110,7 @@ describe('ManageJob', () => {
       return of({ isSuccess: true, isInternalError: false, validationFailures: [] } as ValidatedResponse);
     };
 
-    mockHttpClient.getAllSkills = async () => { return { offset: 0, limit: 0, totalRecords: 0, data: [] } as PagedData<SkillTag>; }
+    mockHttpClient.getAllSkills = () => of({ offset: 0, limit: 0, totalRecords: 0, data: [] } as PagedData<SkillTag>);
 
     const mockActivatedRoute = new MockActivatedRoute();
     const mockParams : Record<string, number> = { ['jobId'] : jobId };

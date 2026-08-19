@@ -49,8 +49,8 @@ export class AssignmentHttpClient extends BaseHttpClient {
     return await HttpHelpers.submitForm<Dragon, ValidationFailures>(`${apiUrl}dragon/${dragonId}`, 'PUT', dragon);
   };
 
-  async getJob(jobId: number) {
-    return await HttpHelpers.requestValidatedPayload<Job>(`${apiUrl}job/${jobId}`);
+  getJob(jobId: number) {
+    return this.requestValidatedPayload<Job>(`${apiUrl}job/${jobId}`);
   };
 
   async postJobForm(job: JobCreateEdit) {
@@ -61,8 +61,8 @@ export class AssignmentHttpClient extends BaseHttpClient {
     return await HttpHelpers.submitForm<Job, ValidationFailures>(`${apiUrl}job/${jobId}`, 'PUT', job);
   };
 
-  async getAllSkills() {
+  getAllSkills() {
     const limit = 1*1000*1000*1000;
-    return await HttpHelpers.getOnePage<SkillTag>(`${apiUrl}skill-tag?offset=0&limit=${limit}`);
+    return this.getOnePage<SkillTag>(`${apiUrl}skill-tag?offset=0&limit=${limit}`);
   };
 }

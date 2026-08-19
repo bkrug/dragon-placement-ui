@@ -26,7 +26,7 @@ export class ManageJob implements OnInit, OnDestroy {
   ngOnInit() {
     this.activatedRoute.params.subscribe(params => {
       const jobId = params['jobId'] || null;
-      this.httpClient.getJob(jobId).then(validatedPayload => {
+      this.httpClient.getJob(jobId).subscribe(validatedPayload => {
         this.selectedJob.set(mapJobToDisplayJob(validatedPayload.payload));
       });
     });

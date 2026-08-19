@@ -22,10 +22,10 @@ export class JobForm extends EntityFormBase<Job> implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.httpClient.getAllSkills()
-      .then(pagedData => this.skillTags.set(pagedData.data.map(this.toTagOption)));
+      .subscribe(pagedData => this.skillTags.set(pagedData.data.map(this.toTagOption)));
     if (this.entityId)
       this.httpClient.getJob(this.entityId)
-        .then(validatedResponse => {
+        .subscribe(validatedResponse => {
           this.formGroup.set(this.getFormGroup(validatedResponse.payload));
         });
   }

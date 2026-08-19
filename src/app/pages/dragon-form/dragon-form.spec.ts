@@ -48,8 +48,8 @@ describe('Dragon Form Tests', () => {
       return Effect.succeed(validatedPayload) as Effect.Effect<ValidatedPayload<Dragon>, ValidatedForm<ValidationFailures>, never>;
     };
 
-    mockHttpClient.getAllSkills = async () => {
-      return {
+    mockHttpClient.getAllSkills = () => {
+      return of({
         offset: 0,
         limit: 20,
         totalRecords: 2,
@@ -57,7 +57,7 @@ describe('Dragon Form Tests', () => {
           { skillTagId: 5, skillName: 'Camouflage' },
           { skillTagId: 8, skillName: 'Stealth' }
         ]
-      } as PagedData<SkillTag>;
+      } as PagedData<SkillTag>);
     };
 
     const mockActivatedRoute = new MockActivatedRoute();
@@ -136,8 +136,8 @@ describe('Dragon Form Tests', () => {
       return Effect.succeed(validatedPayload) as Effect.Effect<ValidatedPayload<Dragon>, ValidatedForm<ValidationFailures>, never>;
     };
 
-    mockHttpClient.getAllSkills = async () => {
-      return {
+    mockHttpClient.getAllSkills = () => {
+      return of({
         offset: 0,
         limit: 20,
         totalRecords: 2,
@@ -145,7 +145,7 @@ describe('Dragon Form Tests', () => {
           { skillTagId: 3, skillName: 'Roar' },
           { skillTagId: 7, skillName: 'Flight' }
         ]
-      } as PagedData<SkillTag>;
+      } as PagedData<SkillTag>);
     };
 
     const mockActivatedRoute = new MockActivatedRoute();
@@ -228,13 +228,13 @@ describe('Dragon Form Tests', () => {
       return Effect.fail(failedForm) as Effect.Effect<ValidatedPayload<Dragon>, ValidatedForm<ValidationFailures>, never>;
     };
 
-    mockHttpClient.getAllSkills = async () => {
-      return {
+    mockHttpClient.getAllSkills = () => {
+      return of({
         offset: 0,
         limit: 20,
         totalRecords: 0,
         data: []
-      } as PagedData<SkillTag>;
+      } as PagedData<SkillTag>);
     };
 
     const mockActivatedRoute = new MockActivatedRoute();
@@ -297,13 +297,13 @@ describe('Dragon Form Tests', () => {
       return Effect.fail(failedForm) as Effect.Effect<ValidatedPayload<Dragon>, ValidatedForm<ValidationFailures>, never>;
     };
 
-    mockHttpClient.getAllSkills = async () => {
-      return {
+    mockHttpClient.getAllSkills = () => {
+      return of({
         offset: 0,
         limit: 20,
         totalRecords: 0,
         data: []
-      } as PagedData<SkillTag>;
+      } as PagedData<SkillTag>);
     };
 
     const mockActivatedRoute = new MockActivatedRoute();
@@ -348,13 +348,13 @@ describe('Dragon Form Tests', () => {
       return Effect.succeed(failedForm) as Effect.Effect<ValidatedPayload<Dragon>, ValidatedForm<ValidationFailures>, never>;
     };
 
-    mockHttpClient.getAllSkills = async () => {
-      return {
+    mockHttpClient.getAllSkills = () => {
+      return of({
         offset: 0,
         limit: 20,
         totalRecords: 0,
         data: []
-      } as PagedData<SkillTag>;
+      } as PagedData<SkillTag>);
     };
 
     const mockActivatedRoute = new MockActivatedRoute();

@@ -23,7 +23,7 @@ export class DragonForm extends EntityFormBase<Dragon> implements OnInit, OnDest
 
   ngOnInit(): void {
     this.httpClient.getAllSkills()
-      .then(pagedData => this.skillTags.set(pagedData.data.map(this.toTagOption)));
+      .subscribe(pagedData => this.skillTags.set(pagedData.data.map(this.toTagOption)));
     if (this.entityId)
       this.httpClient.getDragonWithJobs(this.entityId, JobInclusions.None)
         .subscribe(validatedResponse => {

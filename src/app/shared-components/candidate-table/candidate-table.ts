@@ -40,7 +40,7 @@ export class CandidateTable implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.forcePageLoad();
     this.httpClient.getAllSkills()
-      .then(pageData => {
+      .subscribe(pageData => {
         const options = pageData.data.map(d => (
           { display: d.skillName, value: d.skillTagId.toString() } as SelectListOption
         ));

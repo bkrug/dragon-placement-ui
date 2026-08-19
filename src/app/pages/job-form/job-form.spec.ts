@@ -1,6 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
 import { Effect } from 'effect';
+import { of } from 'rxjs';
 import { AssignmentHttpClient } from '../../../httpClients/assignment-http-client';
 import { JobCreateEdit } from '../../../poco/endpoint-request-bodies';
 import { Job, SkillTag } from '../../../poco/models';
@@ -20,14 +21,14 @@ describe('Job Form Tests', () => {
   it('Load a blank Job Form for creation of a job', async () => {
     const mockHttpClient = new AssignmentHttpClient();
     let getMethodWasCalled = false;
-    mockHttpClient.getJob = async () => {
+    mockHttpClient.getJob = () => {
       getMethodWasCalled = true;
-      return {
+      return of({
         isInternalError: false,
         isSuccess: true,
         validationFailures: [],
         payload: new Job()
-      } as ValidatedPayload<Job>;
+      } as ValidatedPayload<Job>);
     };
 
     let actualModelInPostRequest = new JobCreateEdit();
@@ -42,13 +43,13 @@ describe('Job Form Tests', () => {
       return Effect.succeed(validatedPayload) as Effect.Effect<ValidatedPayload<Job>, ValidatedForm<ValidationFailures>, never>;
     };
 
-    mockHttpClient.getAllSkills = async () => {
-      return {
+    mockHttpClient.getAllSkills = () => {
+      return of({
         offset: 0,
         limit: 20,
         totalRecords: 0,
         data: []
-      } as PagedData<SkillTag>;
+      } as PagedData<SkillTag>);
     };
 
     const mockActivatedRoute = new MockActivatedRoute();
@@ -105,13 +106,13 @@ describe('Job Form Tests', () => {
     });
 
     const mockHttpClient = new AssignmentHttpClient();
-    mockHttpClient.getJob = async () => {
-      return {
+    mockHttpClient.getJob = () => {
+      return of({
         isInternalError: false,
         isSuccess: true,
         validationFailures: [],
         payload: JSON.parse(JSON.stringify(initialDbRecord))
-      } as ValidatedPayload<Job>;
+      } as ValidatedPayload<Job>);
     };
 
     let actualRecordIdInPutRequest: number = 0;
@@ -128,13 +129,13 @@ describe('Job Form Tests', () => {
       return Effect.succeed(validatedPayload) as Effect.Effect<ValidatedPayload<Job>, ValidatedForm<ValidationFailures>, never>;
     };
 
-    mockHttpClient.getAllSkills = async () => {
-      return {
+    mockHttpClient.getAllSkills = () => {
+      return of({
         offset: 0,
         limit: 20,
         totalRecords: 0,
         data: []
-      } as PagedData<SkillTag>;
+      } as PagedData<SkillTag>);
     };
 
     const mockActivatedRoute = new MockActivatedRoute();
@@ -188,13 +189,13 @@ describe('Job Form Tests', () => {
     });
 
     const mockHttpClient = new AssignmentHttpClient();
-    mockHttpClient.getJob = async () => {
-      return {
+    mockHttpClient.getJob = () => {
+      return of({
         isInternalError: false,
         isSuccess: true,
         validationFailures: [],
         payload: JSON.parse(JSON.stringify(initialDbRecord))
-      } as ValidatedPayload<Job>;
+      } as ValidatedPayload<Job>);
     };
 
     const validationFailures: ValidationFailures = {
@@ -216,13 +217,13 @@ describe('Job Form Tests', () => {
       return Effect.fail(failedForm) as Effect.Effect<ValidatedPayload<Job>, ValidatedForm<ValidationFailures>, never>;
     };
 
-    mockHttpClient.getAllSkills = async () => {
-      return {
+    mockHttpClient.getAllSkills = () => {
+      return of({
         offset: 0,
         limit: 20,
         totalRecords: 0,
         data: []
-      } as PagedData<SkillTag>;
+      } as PagedData<SkillTag>);
     };
 
     const mockActivatedRoute = new MockActivatedRoute();
