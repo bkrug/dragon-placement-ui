@@ -31,7 +31,7 @@ export class DragonView implements OnInit {
 
   ngOnInit(): void {
     this.dragonHttpClient.getDragonWithJobs(this.dragonId, JobInclusions.CurrentAndFuture)
-      .then(validatedResponse => {
+      .subscribe(validatedResponse => {
         this.dragon.set(mapDragonToDisplayDragon(validatedResponse.payload));
         this.haveDragon.set(true);
       });

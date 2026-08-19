@@ -4,12 +4,13 @@ import { DragonCreateEdit, JobCreateEdit } from '../poco/endpoint-request-bodies
 import { Dragon, Job, SkillTag } from '../poco/models';
 import { ValidationFailures } from '../poco/validation-failures';
 import { apiUrl } from './api-url';
+import { BaseHttpClient } from './base-http-client';
 import { HttpHelpers } from './http-helpers';
 
 @Injectable({
   providedIn: 'root',
 })
-export class AssignmentHttpClient {
+export class AssignmentHttpClient extends BaseHttpClient {
   async getOnePageOfJobs(offset: number, limit: number, jobInclusions: JobInclusions) {
     return await HttpHelpers.getOnePage<Job>(`${apiUrl}job?offset=${offset}&limit=${limit}&jobInclusions=${jobInclusions}`);
   }
@@ -36,8 +37,8 @@ export class AssignmentHttpClient {
     return await HttpHelpers.requestValidatedResponse(`${apiUrl}job/${jobId}/assigned-dragon/${dragonId}`, 'DELETE');
   };
 
-  async getDragonWithJobs(dragonId: number, jobInclusions: JobInclusions) {
-    return await HttpHelpers.requestValidatedPayload<Dragon>(`${apiUrl}dragon/${dragonId}?jobInclusions=${jobInclusions}`);
+  getDragonWithJobs(dragonId: number, jobInclusions: JobInclusions) {
+    return this.requestValidatedPayload<Dragon>(`${apiUrl}dragon/${dragonId}?jobInclusions=${jobInclusions}`);
   };
 
   async postDragonForm(dragon: DragonCreateEdit) {

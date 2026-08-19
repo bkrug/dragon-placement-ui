@@ -26,7 +26,7 @@ export class DragonForm extends EntityFormBase<Dragon> implements OnInit {
       .then(pagedData => this.skillTags.set(pagedData.data.map(this.toTagOption)));
     if (this.entityId)
       this.httpClient.getDragonWithJobs(this.entityId, JobInclusions.None)
-        .then(validatedResponse => {
+        .subscribe(validatedResponse => {
           this.formGroup.set(this.createDragonFormGroup(validatedResponse.payload));
         });
   }

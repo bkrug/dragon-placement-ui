@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute, provideRouter } from '@angular/router';
+import { of } from 'rxjs';
 import { AssignmentHttpClient } from '../../../httpClients/assignment-http-client';
 import { Dragon } from '../../../poco/models';
 import { ValidatedPayload } from '../../../poco/standard-responses';
@@ -19,8 +20,8 @@ describe('DragonView', () => {
 
   it('should create', async () => {
     const mockHttpClient = new AssignmentHttpClient();
-    mockHttpClient.getDragonWithJobs = async (dragonId: number) => {
-      return {
+    mockHttpClient.getDragonWithJobs = (dragonId: number) => {
+      return of({
         isInternalError: false,
         isSuccess: true,
         validationFailures: [],
@@ -34,7 +35,7 @@ describe('DragonView', () => {
           assignments: [],
           skillTags: []
         } as Dragon
-      } as ValidatedPayload<Dragon>;
+      } as ValidatedPayload<Dragon>);
     };
     const mockActivatedRoute = new MockActivatedRoute();
     mockActivatedRoute.setParams({ dragonId: 15 });

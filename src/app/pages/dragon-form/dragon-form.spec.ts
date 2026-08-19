@@ -1,6 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
 import { Effect } from 'effect';
+import { of } from 'rxjs';
 import { AssignmentHttpClient } from '../../../httpClients/assignment-http-client';
 import { DragonCreateEdit } from '../../../poco/endpoint-request-bodies';
 import { Dragon, SkillTag } from '../../../poco/models';
@@ -17,14 +18,14 @@ describe('Dragon Form Tests', () => {
   it('Load a blank Dragon Form for creation of a dragon', async () => {
     const mockHttpClient = new AssignmentHttpClient();
     let getMethodWasCalled = false;
-    mockHttpClient.getDragonWithJobs = async () => {
+    mockHttpClient.getDragonWithJobs = () => {
       getMethodWasCalled = true;
-      return {
+      return of({
         isInternalError: false,
         isSuccess: true,
         validationFailures: [],
         payload: new Dragon()
-      } as ValidatedPayload<Dragon>;
+      } as ValidatedPayload<Dragon>);
     };
 
     let actualModelInPostRequest = new DragonCreateEdit();
@@ -112,13 +113,13 @@ describe('Dragon Form Tests', () => {
     });
 
     const mockHttpClient = new AssignmentHttpClient();
-    mockHttpClient.getDragonWithJobs = async () => {
-      return {
+    mockHttpClient.getDragonWithJobs = () => {
+      return of({
         isInternalError: false,
         isSuccess: true,
         validationFailures: [],
         payload: JSON.parse(JSON.stringify(initialDbRecord))
-      } as ValidatedPayload<Dragon>;
+      } as ValidatedPayload<Dragon>);
     };
 
     let actualRecordIdInPutRequest: number = 0;
@@ -198,13 +199,13 @@ describe('Dragon Form Tests', () => {
     });
 
     const mockHttpClient = new AssignmentHttpClient();
-    mockHttpClient.getDragonWithJobs = async () => {
-      return {
+    mockHttpClient.getDragonWithJobs = () => {
+      return of({
         isInternalError: false,
         isSuccess: true,
         validationFailures: [],
         payload: JSON.parse(JSON.stringify(initialDbRecord))
-      } as ValidatedPayload<Dragon>;
+      } as ValidatedPayload<Dragon>);
     };
 
     const validationFailures: ValidationFailures = {
@@ -278,13 +279,13 @@ describe('Dragon Form Tests', () => {
     });
 
     const mockHttpClient = new AssignmentHttpClient();
-    mockHttpClient.getDragonWithJobs = async () => {
-      return {
+    mockHttpClient.getDragonWithJobs = () => {
+      return of({
         isInternalError: false,
         isSuccess: true,
         validationFailures: [],
         payload: JSON.parse(JSON.stringify(initialDbRecord))
-      } as ValidatedPayload<Dragon>;
+      } as ValidatedPayload<Dragon>);
     };
 
     mockHttpClient.putDragonForm = async () => {
@@ -331,7 +332,7 @@ describe('Dragon Form Tests', () => {
 
   it('Submit button shows "Submitting..." while waiting for a server response', async () => {
     const mockHttpClient = new AssignmentHttpClient();
-    mockHttpClient.getDragonWithJobs = async () => ({
+    mockHttpClient.getDragonWithJobs = () => of({
       isInternalError: false,
       isSuccess: true,
       validationFailures: [],
