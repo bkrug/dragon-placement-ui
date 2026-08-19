@@ -31,6 +31,11 @@ export class DragonForm extends EntityFormBase<Dragon> implements OnInit {
         });
   }
 
+  ngOnDestroy(): void {
+    console.log('destroying');
+    this.httpClient.unsubscribe();
+  }
+
   toTagOption(skillTag: SkillTag) { return { value: skillTag.skillTagId, display: skillTag.skillName } as TagOption; }
   toSkillTagId(tagOption: TagOption) {
     //HACK: Despite the strict typing of typescript, testing reveals "tagOption" be a number.
