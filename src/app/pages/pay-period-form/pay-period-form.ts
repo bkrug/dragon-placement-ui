@@ -1,5 +1,5 @@
 import { DecimalPipe } from '@angular/common';
-import { Component, inject, input, OnChanges, OnInit, signal } from '@angular/core';
+import { Component, inject, input, OnChanges, OnDestroy, OnInit, signal } from '@angular/core';
 import { FormArray, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Temporal } from '@js-temporal/polyfill';
@@ -27,7 +27,7 @@ import { getErrorsFromControl, LocalFieldErrors, LocalStringDateField, LocalStri
   templateUrl: './pay-period-form.html',
   styleUrl: './pay-period-form.scss',
 })
-export class PayPeriodForm extends EntityFormBase<PayPeriod> implements OnInit, OnChanges {
+export class PayPeriodForm extends EntityFormBase<PayPeriod> implements OnInit, OnChanges, OnDestroy {
   httpClient = inject(HoursWorkedClient);
   private route = inject(ActivatedRoute);
 
@@ -58,8 +58,12 @@ export class PayPeriodForm extends EntityFormBase<PayPeriod> implements OnInit, 
   ngOnInit(): void {
     if (this.entityId) {
       this.httpClient.getPayPeriod(this.entityId)
-        .then(r => this.initializeForm(r.payload));
+        .subscribe(r => this.initializeForm(r.payload));
     }
+  }
+
+  ngOnDestroy(): void {
+    this.httpClient.unsubscribe();
   }
 
   ngOnChanges() {

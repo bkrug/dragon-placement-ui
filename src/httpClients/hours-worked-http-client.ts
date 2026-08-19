@@ -3,22 +3,23 @@ import { PayPeriodCreateEdit, PayPeriodView, ValidPaySpan } from '../poco/endpoi
 import { PayPeriod } from '../poco/models';
 import { ValidationFailures } from '../poco/validation-failures';
 import { apiUrl } from './api-url';
+import { BaseHttpClient } from './base-http-client';
 import { HttpHelpers } from './http-helpers';
 
 @Injectable({
   providedIn: 'root',
 })
-export class HoursWorkedClient {
-  async getOnePageOfPayPeriods(assignmentId: number, offset: number, limit: number) {
-    return await HttpHelpers.getOnePage<PayPeriod>(`${apiUrl}dragon/0/assignment/${assignmentId}/payperiod?offset=${offset}&limit=${limit}`);
+export class HoursWorkedClient extends BaseHttpClient {
+  getOnePageOfPayPeriods(assignmentId: number, offset: number, limit: number) {
+    return this.getOnePage<PayPeriod>(`${apiUrl}dragon/0/assignment/${assignmentId}/payperiod?offset=${offset}&limit=${limit}`);
   }
 
-  async getPayPeriodCandidates(assignmentId: number) {
-    return await HttpHelpers.requestValidatedPayload<ValidPaySpan[]>(`${apiUrl}v2/dragon/0/assignment/${assignmentId}/payperiodcandidate`);
+  getPayPeriodCandidates(assignmentId: number) {
+    return this.requestValidatedPayload<ValidPaySpan[]>(`${apiUrl}v2/dragon/0/assignment/${assignmentId}/payperiodcandidate`);
   }
 
-  async getPayPeriod(payPeriodId: number) {
-    return await HttpHelpers.requestValidatedPayload<PayPeriodView>(`${apiUrl}v2/payperiod/${payPeriodId}`);
+  getPayPeriod(payPeriodId: number) {
+    return this.requestValidatedPayload<PayPeriodView>(`${apiUrl}v2/payperiod/${payPeriodId}`);
   }
 
   async postPayPeriodForm(body: PayPeriodCreateEdit) {

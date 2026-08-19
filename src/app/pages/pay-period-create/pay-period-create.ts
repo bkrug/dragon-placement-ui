@@ -1,4 +1,4 @@
-import { Component, computed, inject, OnInit, signal } from '@angular/core';
+import { Component, computed, inject, OnDestroy, OnInit, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { SelectModule } from 'primeng/select';
 import { HoursWorkedClient } from '../../../httpClients/hours-worked-http-client';
@@ -13,7 +13,7 @@ import { PayPeriodForm } from '../pay-period-form/pay-period-form';
   templateUrl: './pay-period-create.html',
   styleUrl: './pay-period-create.scss',
 })
-export class PayPeriodCreate implements OnInit {
+export class PayPeriodCreate implements OnInit, OnDestroy {
   private httpClient = inject(HoursWorkedClient);
   private route = inject(ActivatedRoute);
 
@@ -39,7 +39,11 @@ export class PayPeriodCreate implements OnInit {
 
   ngOnInit() {
     this.httpClient.getPayPeriodCandidates(this.assignmentId())
-      .then(r => this.candidates.set(r.payload));
+      .subscribe(r => this.candidates.set(r.payload));
+  }
+
+  ngOnDestroy(): void {
+    this.httpClient.unsubscribe();
   }
 
   onCandidateSelect(event: { value: string }) {

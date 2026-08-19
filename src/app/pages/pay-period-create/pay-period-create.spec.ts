@@ -2,6 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { Effect } from 'effect';
+import { of } from 'rxjs';
 import { HoursWorkedClient } from '../../../httpClients/hours-worked-http-client';
 import { PayPeriodCreateEdit, ValidPaySpan } from '../../../poco/endpoint-request-bodies';
 import { PayPeriod } from '../../../poco/models';
@@ -27,7 +28,7 @@ describe('Pay Period Create Tests', () => {
     });
 
     const mockHttpClient = new HoursWorkedClient();
-    mockHttpClient.getPayPeriodCandidates = async () => ({
+    mockHttpClient.getPayPeriodCandidates = () => of({
       isInternalError: false,
       isSuccess: true,
       validationFailures: [],
@@ -152,7 +153,7 @@ describe('Pay Period Create Tests', () => {
     });
 
     const mockHttpClient = new HoursWorkedClient();
-    mockHttpClient.getPayPeriodCandidates = async () => ({
+    mockHttpClient.getPayPeriodCandidates = () => of({
       isInternalError: false,
       isSuccess: true,
       validationFailures: [],
@@ -228,7 +229,7 @@ describe('Pay Period Create Tests', () => {
     });
 
     const mockHttpClient = new HoursWorkedClient();
-    mockHttpClient.getPayPeriodCandidates = async () => ({
+    mockHttpClient.getPayPeriodCandidates = () => of({
       isInternalError: false,
       isSuccess: true,
       validationFailures: [],
@@ -299,7 +300,7 @@ describe('Pay Period Create Tests', () => {
     });
 
     const mockHttpClient = new HoursWorkedClient();
-    mockHttpClient.getPayPeriodCandidates = async () => ({
+    mockHttpClient.getPayPeriodCandidates = () => of({
       isInternalError: false,
       isSuccess: true,
       validationFailures: [],
@@ -363,7 +364,7 @@ describe('Pay Period Create Tests', () => {
     const row2Error = 'End time must be before pay-period end date';
 
     const mockHttpClient = new HoursWorkedClient();
-    mockHttpClient.getPayPeriodCandidates = async () => ({
+    mockHttpClient.getPayPeriodCandidates = () => of({
       isInternalError: false,
       isSuccess: true,
       validationFailures: [],

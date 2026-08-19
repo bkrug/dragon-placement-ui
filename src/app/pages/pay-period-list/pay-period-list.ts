@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, OnDestroy, signal } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { TableLazyLoadEvent, TableModule } from 'primeng/table';
 import { PAGE_SIZE } from '../../../global-consts';
@@ -11,7 +11,7 @@ import { PayPeriod } from '../../../poco/models';
   templateUrl: './pay-period-list.html',
   styleUrl: './pay-period-list.scss',
 })
-export class PayPeriodList {
+export class PayPeriodList implements OnDestroy {
   httpClient = inject(HoursWorkedClient);
   private activatedRoute = inject(ActivatedRoute);
 
@@ -28,11 +28,15 @@ export class PayPeriodList {
     });
   }
 
+  ngOnDestroy(): void {
+    this.httpClient.unsubscribe();
+  }
+
   onPageChange(event: TableLazyLoadEvent) {
     const offset = event.first || 0;
     this.httpClient
       .getOnePageOfPayPeriods(this.assignmentId(), offset, this.pageSize)
-      .then(pagedData => {
+      .subscribe(pagedData => {
         this.payPeriods.set(pagedData.data);
         this.totalRecords.set(pagedData.totalRecords);
       });
