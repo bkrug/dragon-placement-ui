@@ -16,8 +16,8 @@ export class BaseHttpClient {
   }
 
   protected getOnePage<T extends object>(url: string): Observable<PagedData<T>> {
-    return this
-      .register(fromFetch(url)
+    return this.register(
+      fromFetch(url)
       .pipe(
         switchMap(response => response.json() as Promise<PagedData<T>>)
       ));
@@ -25,8 +25,8 @@ export class BaseHttpClient {
 
   protected requestValidatedResponse(url: string, httpVerb: 'GET' | 'POST' | 'PUT' | 'DELETE')
       : Observable<ValidatedResponse> {
-    return this
-      .register(fromFetch(url, { method: httpVerb })
+    return this.register(
+      fromFetch(url, { method: httpVerb })
       .pipe(
         switchMap(response => response.json() as Promise<ValidatedResponse>),
         catchError(ex => of({
@@ -39,8 +39,8 @@ export class BaseHttpClient {
 
   protected requestValidatedPayload<T extends object>(url: string, httpVerb: 'GET' | 'POST' | 'PUT' | 'DELETE' = 'GET')
       : Observable<ValidatedPayload<T>> {
-    return this
-      .register(fromFetch(url, { method: httpVerb })
+    return this.register(
+      fromFetch(url, { method: httpVerb })
       .pipe(
         switchMap(response => response.json() as Promise<ValidatedPayload<T>>),
         catchError(ex => of({
@@ -60,8 +60,8 @@ export class BaseHttpClient {
       headers: headers,
       body: JSON.stringify(requestBody)
     };
-    return this
-      .register(fromFetch(url, requestInit)
+    return this.register(
+      fromFetch(url, requestInit)
       .pipe(
         switchMap(async response => {
           const json = await response.json();
