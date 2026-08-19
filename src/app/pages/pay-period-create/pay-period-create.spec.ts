@@ -36,7 +36,7 @@ describe('Pay Period Create Tests', () => {
     } as ValidatedPayload<ValidPaySpan[]>);
 
     let actualPostBody = new PayPeriodCreateEdit();
-    mockHttpClient.postPayPeriodForm = async (body: PayPeriodCreateEdit) => {
+    mockHttpClient.postPayPeriodForm = (body: PayPeriodCreateEdit) => {
       actualPostBody = body;
       const responsePayload = Object.assign(new PayPeriod(), {
         payPeriodId: postResponsePayPeriodId,
@@ -44,17 +44,17 @@ describe('Pay Period Create Tests', () => {
         startDate: body.startDate,
         endDate: body.endDate,
       });
-      return Effect.succeed({
+      return of(Effect.succeed({
         isInternalError: false,
         isSuccess: true,
         validationFailures: [],
         payload: responsePayload
-      } as ValidatedPayload<PayPeriod>) as Effect.Effect<ValidatedPayload<PayPeriod>, ValidatedForm<ValidationFailures>, never>;
+      } as ValidatedPayload<PayPeriod>) as Effect.Effect<ValidatedPayload<PayPeriod>, ValidatedForm<ValidationFailures>, never>);
     };
 
     let actualPutId = 0;
     let actualPutBody = new PayPeriodCreateEdit();
-    mockHttpClient.putPayPeriodForm = async (payPeriodId: number, body: PayPeriodCreateEdit) => {
+    mockHttpClient.putPayPeriodForm = (payPeriodId: number, body: PayPeriodCreateEdit) => {
       actualPutId = payPeriodId;
       actualPutBody = body;
       const responsePayload = Object.assign(new PayPeriod(), {
@@ -63,12 +63,12 @@ describe('Pay Period Create Tests', () => {
         startDate: body.startDate,
         endDate: body.endDate,
       });
-      return Effect.succeed({
+      return of(Effect.succeed({
         isInternalError: false,
         isSuccess: true,
         validationFailures: [],
         payload: responsePayload
-      } as ValidatedPayload<PayPeriod>) as Effect.Effect<ValidatedPayload<PayPeriod>, ValidatedForm<ValidationFailures>, never>;
+      } as ValidatedPayload<PayPeriod>) as Effect.Effect<ValidatedPayload<PayPeriod>, ValidatedForm<ValidationFailures>, never>);
     };
 
     const mockActivatedRoute = new MockActivatedRoute();
@@ -161,7 +161,7 @@ describe('Pay Period Create Tests', () => {
     } as ValidatedPayload<ValidPaySpan[]>);
 
     let actualPostBody = new PayPeriodCreateEdit();
-    mockHttpClient.postPayPeriodForm = async (body: PayPeriodCreateEdit) => {
+    mockHttpClient.postPayPeriodForm = (body: PayPeriodCreateEdit) => {
       actualPostBody = body;
       const responsePayload = Object.assign(new PayPeriod(), {
         payPeriodId: postResponsePayPeriodId,
@@ -169,12 +169,12 @@ describe('Pay Period Create Tests', () => {
         startDate: body.startDate,
         endDate: body.endDate,
       });
-      return Effect.succeed({
+      return of(Effect.succeed({
         isInternalError: false,
         isSuccess: true,
         validationFailures: [],
         payload: responsePayload
-      } as ValidatedPayload<PayPeriod>) as Effect.Effect<ValidatedPayload<PayPeriod>, ValidatedForm<ValidationFailures>, never>;
+      } as ValidatedPayload<PayPeriod>) as Effect.Effect<ValidatedPayload<PayPeriod>, ValidatedForm<ValidationFailures>, never>);
     };
 
     const mockActivatedRoute = new MockActivatedRoute();
@@ -371,7 +371,7 @@ describe('Pay Period Create Tests', () => {
       payload: [candidate]
     } as ValidatedPayload<ValidPaySpan[]>);
 
-    mockHttpClient.postPayPeriodForm = async () => {
+    mockHttpClient.postPayPeriodForm = () => {
       const failures: ValidationFailures = {
         fieldFailures: {},
         gridRowFailures: {
@@ -387,7 +387,7 @@ describe('Pay Period Create Tests', () => {
         isSuccess: false,
         validationFailures: failures
       } as ValidatedForm<ValidationFailures>;
-      return Effect.fail(failBody) as Effect.Effect<ValidatedPayload<PayPeriod>, ValidatedForm<ValidationFailures>, never>;
+      return of(Effect.fail(failBody) as Effect.Effect<ValidatedPayload<PayPeriod>, ValidatedForm<ValidationFailures>, never>);
     };
 
     const mockActivatedRoute = new MockActivatedRoute();

@@ -2,6 +2,7 @@ import { Directive, WritableSignal, inject, signal } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Effect } from 'effect';
+import { finalize, Observable } from 'rxjs';
 import { ValidatedForm, ValidatedPayload } from '../../poco/standard-responses';
 import { ValidationFailures } from '../../poco/validation-failures';
 import { applyServerSideValidations } from './local-fields';
@@ -25,7 +26,7 @@ export abstract class EntityFormBase<TDb extends object> {
 
   abstract formGroup: WritableSignal<FormGroup>;
 
-  protected abstract makeSubmissionRequest(): Promise<Effect.Effect<ValidatedPayload<TDb>, ValidatedForm<ValidationFailures>, never>>;
+  protected abstract makeSubmissionRequest(): Observable<Effect.Effect<ValidatedPayload<TDb>, ValidatedForm<ValidationFailures>, never>>;
   protected abstract handleSubmissionSuccess(payload: TDb): void;
 
   onFormFocus() {
@@ -38,8 +39,9 @@ export abstract class EntityFormBase<TDb extends object> {
       this.isSubmitting.set(true);
       this.showSaved.set(false);
       this.makeSubmissionRequest()
-        .then(result =>
-          Effect.runPromise(Effect.match(result, {
+        .pipe(finalize(() => this.isSubmitting.set(false)))
+        .subscribe(result =>
+          Effect.runSync(Effect.match(result, {
             onSuccess: successResponse => {
               this.handleSubmissionSuccess(successResponse.payload);
               this.showSaved.set(true);
@@ -48,8 +50,7 @@ export abstract class EntityFormBase<TDb extends object> {
               ? this.submissionError.set('failed communication with the remote server')
               : applyServerSideValidations(failureResponse, this.formGroup())
           }))
-        )
-        .finally(() => this.isSubmitting.set(false));
+        );
     }
   }
 }

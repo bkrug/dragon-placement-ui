@@ -5,7 +5,6 @@ import { Dragon, Job, SkillTag } from '../poco/models';
 import { ValidationFailures } from '../poco/validation-failures';
 import { apiUrl } from './api-url';
 import { BaseHttpClient } from './base-http-client';
-import { HttpHelpers } from './http-helpers';
 
 @Injectable({
   providedIn: 'root',
@@ -41,24 +40,24 @@ export class AssignmentHttpClient extends BaseHttpClient {
     return this.requestValidatedPayload<Dragon>(`${apiUrl}dragon/${dragonId}?jobInclusions=${jobInclusions}`);
   };
 
-  async postDragonForm(dragon: DragonCreateEdit) {
-    return await HttpHelpers.submitForm<Dragon, ValidationFailures>(`${apiUrl}dragon`, 'POST', dragon);
+  postDragonForm(dragon: DragonCreateEdit) {
+    return this.submitForm<Dragon, ValidationFailures>(`${apiUrl}dragon`, 'POST', dragon);
   };
 
-  async putDragonForm(dragonId: number, dragon: DragonCreateEdit) {
-    return await HttpHelpers.submitForm<Dragon, ValidationFailures>(`${apiUrl}dragon/${dragonId}`, 'PUT', dragon);
+  putDragonForm(dragonId: number, dragon: DragonCreateEdit) {
+    return this.submitForm<Dragon, ValidationFailures>(`${apiUrl}dragon/${dragonId}`, 'PUT', dragon);
   };
 
   getJob(jobId: number) {
     return this.requestValidatedPayload<Job>(`${apiUrl}job/${jobId}`);
   };
 
-  async postJobForm(job: JobCreateEdit) {
-    return await HttpHelpers.submitForm<Job, ValidationFailures>(`${apiUrl}job`, 'POST', job);
+  postJobForm(job: JobCreateEdit) {
+    return this.submitForm<Job, ValidationFailures>(`${apiUrl}job`, 'POST', job);
   };
 
-  async putJobForm(jobId: number, job: JobCreateEdit) {
-    return await HttpHelpers.submitForm<Job, ValidationFailures>(`${apiUrl}job/${jobId}`, 'PUT', job);
+  putJobForm(jobId: number, job: JobCreateEdit) {
+    return this.submitForm<Job, ValidationFailures>(`${apiUrl}job/${jobId}`, 'PUT', job);
   };
 
   getAllSkills() {

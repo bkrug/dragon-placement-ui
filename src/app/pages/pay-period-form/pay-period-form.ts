@@ -5,6 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Temporal } from '@js-temporal/polyfill';
 import { Effect } from 'effect';
 import { TableModule } from 'primeng/table';
+import { Observable } from 'rxjs';
 import { HoursWorkedClient } from '../../../httpClients/hours-worked-http-client';
 import { getDateFromDateTimeString, getTimeFromDateTimeString } from '../../../misc/transformers';
 import { PayPeriodCreateEdit, PayPeriodView } from '../../../poco/endpoint-request-bodies';
@@ -196,8 +197,8 @@ export class PayPeriodForm extends EntityFormBase<PayPeriod> implements OnInit, 
     };
   }
 
-  protected override async makeSubmissionRequest()
-    : Promise<Effect.Effect<ValidatedPayload<PayPeriod>, ValidatedForm<ValidationFailures>, never>> {
+  protected override makeSubmissionRequest()
+    : Observable<Effect.Effect<ValidatedPayload<PayPeriod>, ValidatedForm<ValidationFailures>, never>> {
     this.clearServerSideValidations(this.formGroup());
     const body = this.buildBody();
     return this.entityId

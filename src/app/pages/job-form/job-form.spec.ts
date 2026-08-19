@@ -32,7 +32,7 @@ describe('Job Form Tests', () => {
     };
 
     let actualModelInPostRequest = new JobCreateEdit();
-    mockHttpClient.postJobForm = async (job: JobCreateEdit) => {
+    mockHttpClient.postJobForm = (job: JobCreateEdit) => {
       actualModelInPostRequest = job;
       const validatedPayload = {
         isInternalError: false,
@@ -40,7 +40,7 @@ describe('Job Form Tests', () => {
         validationFailures: [],
         payload: JSON.parse(JSON.stringify(job))
       } as ValidatedPayload<Job>;
-      return Effect.succeed(validatedPayload) as Effect.Effect<ValidatedPayload<Job>, ValidatedForm<ValidationFailures>, never>;
+      return of(Effect.succeed(validatedPayload) as Effect.Effect<ValidatedPayload<Job>, ValidatedForm<ValidationFailures>, never>);
     };
 
     mockHttpClient.getAllSkills = () => {
@@ -117,7 +117,7 @@ describe('Job Form Tests', () => {
 
     let actualRecordIdInPutRequest: number = 0;
     let actualModelInPutRequest = new JobCreateEdit();
-    mockHttpClient.putJobForm = async (jobId: number, job: JobCreateEdit) => {
+    mockHttpClient.putJobForm = (jobId: number, job: JobCreateEdit) => {
       actualRecordIdInPutRequest = jobId;
       actualModelInPutRequest = job;
       const validatedPayload = {
@@ -126,7 +126,7 @@ describe('Job Form Tests', () => {
         validationFailures: [],
         payload: JSON.parse(JSON.stringify(initialDbRecord))
       } as ValidatedPayload<Job>;
-      return Effect.succeed(validatedPayload) as Effect.Effect<ValidatedPayload<Job>, ValidatedForm<ValidationFailures>, never>;
+      return of(Effect.succeed(validatedPayload) as Effect.Effect<ValidatedPayload<Job>, ValidatedForm<ValidationFailures>, never>);
     };
 
     mockHttpClient.getAllSkills = () => {
@@ -208,13 +208,13 @@ describe('Job Form Tests', () => {
       }
     };
 
-    mockHttpClient.putJobForm = async () => {
+    mockHttpClient.putJobForm = () => {
       const failedForm: ValidatedForm<ValidationFailures> = {
         isInternalError: false,
         isSuccess: false,
         validationFailures
       };
-      return Effect.fail(failedForm) as Effect.Effect<ValidatedPayload<Job>, ValidatedForm<ValidationFailures>, never>;
+      return of(Effect.fail(failedForm) as Effect.Effect<ValidatedPayload<Job>, ValidatedForm<ValidationFailures>, never>);
     };
 
     mockHttpClient.getAllSkills = () => {

@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
 import { Effect } from 'effect';
-import { of } from 'rxjs';
+import { from, of } from 'rxjs';
 import { AssignmentHttpClient } from '../../../httpClients/assignment-http-client';
 import { DragonCreateEdit } from '../../../poco/endpoint-request-bodies';
 import { Dragon, SkillTag } from '../../../poco/models';
@@ -29,7 +29,7 @@ describe('Dragon Form Tests', () => {
     };
 
     let actualModelInPostRequest = new DragonCreateEdit();
-    mockHttpClient.postDragonForm = async (dragon: DragonCreateEdit) => {
+    mockHttpClient.postDragonForm = (dragon: DragonCreateEdit) => {
       actualModelInPostRequest = dragon;
       const validatedPayload = {
         isInternalError: false,
@@ -45,7 +45,7 @@ describe('Dragon Form Tests', () => {
           skillTags: dragon.skillTagIds.map(stId => ({ skillTageId: stId, skillTageName: '' }))
         })
       } as ValidatedPayload<Dragon>;
-      return Effect.succeed(validatedPayload) as Effect.Effect<ValidatedPayload<Dragon>, ValidatedForm<ValidationFailures>, never>;
+      return of(Effect.succeed(validatedPayload) as Effect.Effect<ValidatedPayload<Dragon>, ValidatedForm<ValidationFailures>, never>);
     };
 
     mockHttpClient.getAllSkills = () => {
@@ -124,7 +124,7 @@ describe('Dragon Form Tests', () => {
 
     let actualRecordIdInPutRequest: number = 0;
     let actualModelInPutRequest = new DragonCreateEdit();
-    mockHttpClient.putDragonForm = async (dragonId: number, dragon: DragonCreateEdit) => {
+    mockHttpClient.putDragonForm = (dragonId: number, dragon: DragonCreateEdit) => {
       actualRecordIdInPutRequest = dragonId;
       actualModelInPutRequest = dragon;
       const validatedPayload = {
@@ -133,7 +133,7 @@ describe('Dragon Form Tests', () => {
         validationFailures: [],
         payload: JSON.parse(JSON.stringify(initialDbRecord))
       } as ValidatedPayload<Dragon>;
-      return Effect.succeed(validatedPayload) as Effect.Effect<ValidatedPayload<Dragon>, ValidatedForm<ValidationFailures>, never>;
+      return of(Effect.succeed(validatedPayload) as Effect.Effect<ValidatedPayload<Dragon>, ValidatedForm<ValidationFailures>, never>);
     };
 
     mockHttpClient.getAllSkills = () => {
@@ -219,13 +219,13 @@ describe('Dragon Form Tests', () => {
       gridRowFailures: {},
     };
 
-    mockHttpClient.putDragonForm = async () => {
+    mockHttpClient.putDragonForm = () => {
       const failedForm: ValidatedForm<ValidationFailures> = {
         isInternalError: false,
         isSuccess: false,
         validationFailures
       };
-      return Effect.fail(failedForm) as Effect.Effect<ValidatedPayload<Dragon>, ValidatedForm<ValidationFailures>, never>;
+      return of(Effect.fail(failedForm) as Effect.Effect<ValidatedPayload<Dragon>, ValidatedForm<ValidationFailures>, never>);
     };
 
     mockHttpClient.getAllSkills = () => {
@@ -288,13 +288,13 @@ describe('Dragon Form Tests', () => {
       } as ValidatedPayload<Dragon>);
     };
 
-    mockHttpClient.putDragonForm = async () => {
+    mockHttpClient.putDragonForm = () => {
       const failedForm = {
         isInternalError: true,
         isSuccess: false,
         validationFailures: { fieldFailures: {}, gridRowFailures: {} }
       } as ValidatedForm<ValidationFailures>;
-      return Effect.fail(failedForm) as Effect.Effect<ValidatedPayload<Dragon>, ValidatedForm<ValidationFailures>, never>;
+      return of(Effect.fail(failedForm) as Effect.Effect<ValidatedPayload<Dragon>, ValidatedForm<ValidationFailures>, never>);
     };
 
     mockHttpClient.getAllSkills = () => {
@@ -339,13 +339,15 @@ describe('Dragon Form Tests', () => {
       payload: new Dragon()
     } as ValidatedPayload<Dragon>);
 
-    mockHttpClient.postDragonForm = async () => {
+    mockHttpClient.postDragonForm = () => {
       const failedForm = {
         isInternalError: false,
         isSuccess: false,
         payload: new Dragon()
       } as ValidatedPayload<Dragon>;
-      return Effect.succeed(failedForm) as Effect.Effect<ValidatedPayload<Dragon>, ValidatedForm<ValidationFailures>, never>;
+      //Wrapped in a resolved Promise (rather than of(...)) so the emission is asynchronous,
+      //matching the previous Promise-based mock and letting this test observe the mid-flight "Submitting..." state.
+      return from(Promise.resolve(Effect.succeed(failedForm) as Effect.Effect<ValidatedPayload<Dragon>, ValidatedForm<ValidationFailures>, never>));
     };
 
     mockHttpClient.getAllSkills = () => {
