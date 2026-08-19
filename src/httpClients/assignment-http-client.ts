@@ -15,18 +15,18 @@ export class AssignmentHttpClient extends BaseHttpClient {
     return this.getOnePage<Job>(`${apiUrl}job?offset=${offset}&limit=${limit}&jobInclusions=${jobInclusions}`);
   }
 
-  async getOnePageOfDragons(offset: number, limit: number) {
-    return await HttpHelpers.getOnePage<Dragon>(`${apiUrl}dragon?offset=${offset}&limit=${limit}`);
+  getOnePageOfDragons(offset: number, limit: number) {
+    return this.getOnePage<Dragon>(`${apiUrl}dragon?offset=${offset}&limit=${limit}`);
   };
 
-  async getOnePageOfCandidates(jobId: number, skillTagIds: number[], fightingSkill: string | null, offset: number, limit: number) {
+  getOnePageOfCandidates(jobId: number, skillTagIds: number[], fightingSkill: string | null, offset: number, limit: number) {
     const skillTagQuery = skillTagIds.map(id => `&skillTagId=${id}`).join('');
     const fightingSkillQuery = fightingSkill == null ? '' : `&fightingSkill=${fightingSkill}`;
-    return await HttpHelpers.getOnePage<Dragon>(`${apiUrl}dragon?jobId=${jobId}&offset=${offset}&limit=${limit}${fightingSkillQuery}${skillTagQuery}`);
+    return this.getOnePage<Dragon>(`${apiUrl}dragon?jobId=${jobId}&offset=${offset}&limit=${limit}${fightingSkillQuery}${skillTagQuery}`);
   };
 
-  async getOnePageOfAssignees(jobId: number, offset: number, limit: number) {
-    return await HttpHelpers.getOnePage<Dragon>(`${apiUrl}job/${jobId}/assigned-dragon?offset=${offset}&limit=${limit}`);
+  getOnePageOfAssignees(jobId: number, offset: number, limit: number) {
+    return this.getOnePage<Dragon>(`${apiUrl}job/${jobId}/assigned-dragon?offset=${offset}&limit=${limit}`);
   };
 
   async assignDragonToJob(dragonId: number, jobId: number) {

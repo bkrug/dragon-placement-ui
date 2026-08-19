@@ -69,7 +69,7 @@ export class CandidateTable implements OnInit, OnDestroy {
     const offset = event.first || 0;
     const skillTagIds = this.skillTagFilter().map(f => parseInt(f));
     this.httpClient.getOnePageOfCandidates(this.selectedJob()!.jobId, skillTagIds, this.fightingSkillFilter(), offset, this.pageSize)
-      .then(pagedData => {
+      .subscribe(pagedData => {
         this.dragons.set(pagedData.data);
         this.totalRecords.set(pagedData.totalRecords);
       });

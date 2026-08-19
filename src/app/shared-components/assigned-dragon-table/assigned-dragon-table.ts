@@ -37,7 +37,7 @@ export class AssignedDragonTable implements OnInit, OnDestroy {
   forcePageLoad() {
     if (this.selectedJob() === null) return;
     this.httpClient.getOnePageOfAssignees(this.selectedJob()!.jobId, this.first(), this.pageSize)
-      .then(pagedData => {
+      .subscribe(pagedData => {
         this.dragons.set(pagedData.data);
         this.totalRecords.set(pagedData.totalRecords);
       });

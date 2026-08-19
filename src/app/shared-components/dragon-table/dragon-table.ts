@@ -2,11 +2,12 @@ import { Component, EventEmitter, inject, input, OnDestroy, OnInit, Output, sign
 import { RouterLink } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { TableLazyLoadEvent, TableModule } from 'primeng/table';
+import { Observable } from 'rxjs';
 import { PAGE_SIZE } from '../../../global-consts';
 import { AssignmentHttpClient } from '../../../httpClients/assignment-http-client';
 import { DragonTableType } from '../../../misc/enums';
 import { DisplayJob, Dragon } from '../../../poco/models';
-import { ValidatedResponse } from '../../../poco/standard-responses';
+import { PagedData, ValidatedResponse } from '../../../poco/standard-responses';
 
 @Component({
   selector: 'app-dragon-table',
@@ -49,13 +50,13 @@ export class DragonTable implements OnInit, OnDestroy {
 
     const offset = event.first || 0;
     this.getPageOfDragons(offset)
-      .then(pagedData => {
+      .subscribe(pagedData => {
         this.dragons.set(pagedData.data);
         this.totalRecords.set(pagedData.totalRecords);
       });
   }
 
-  private getPageOfDragons(offset: number) {
+  private getPageOfDragons(offset: number): Observable<PagedData<Dragon>> {
     switch (this.dragonTableType()) {
       case DragonTableType.AllDragons:
         return this.httpClient.getOnePageOfDragons(offset, this.pageSize);
