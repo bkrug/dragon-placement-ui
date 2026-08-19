@@ -70,27 +70,27 @@ export class DragonTable implements OnInit, OnDestroy {
   assignDragon(dragonId: number) {
     this.executeDragonAction(
       dragonId,
-      this.httpClient.assignDragonToJob,
+      (id, jobId) => this.httpClient.assignDragonToJob(id, jobId),
       this.assignedDragon);
   }
 
   unassignDragon(dragonId: number) {
     this.executeDragonAction(
       dragonId,
-      this.httpClient.unassignDragonToJob,
+      (id, jobId) => this.httpClient.unassignDragonToJob(id, jobId),
       this.unassignedDragon);
   }
 
   private executeDragonAction(
     dragonId: number,
-    httpFunction: (dragonId: number, jobId: number) => Promise<ValidatedResponse>,
+    httpFunction: (dragonId: number, jobId: number) => Observable<ValidatedResponse>,
     eventToEmit: EventEmitter<any>
   ) {
     if (this.selectedJob() === null)
       return;
 
     httpFunction(dragonId, this.selectedJob()!.jobId)
-      .then(validatedResponse => {
+      .subscribe(validatedResponse => {
         if (validatedResponse.isSuccess) {
           eventToEmit.emit();
         }

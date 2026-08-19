@@ -80,7 +80,7 @@ export class CandidateTable implements OnInit, OnDestroy {
       return;
 
     this.httpClient.assignDragonToJob(dragonId, this.selectedJob()!.jobId)
-      .then(validatedResponse => {
+      .subscribe(validatedResponse => {
         if (validatedResponse.isSuccess) {
           this.assignedDragon.emit();
         }

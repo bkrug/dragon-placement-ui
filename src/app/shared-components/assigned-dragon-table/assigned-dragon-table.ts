@@ -53,7 +53,7 @@ export class AssignedDragonTable implements OnInit, OnDestroy {
   unassignDragon(dragonId: number) {
     if (this.selectedJob() === null) return;
     this.httpClient.unassignDragonToJob(dragonId, this.selectedJob()!.jobId)
-      .then((validatedResponse: ValidatedResponse) => {
+      .subscribe((validatedResponse: ValidatedResponse) => {
         if (validatedResponse.isSuccess) {
           this.unassignedDragon.emit();
         } else {

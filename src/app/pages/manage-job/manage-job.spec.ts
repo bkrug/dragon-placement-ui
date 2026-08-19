@@ -48,9 +48,9 @@ describe('ManageJob', () => {
       ++getAssignedCount;
       return of({ offset, limit, totalRecords: 0, data: [] } as PagedData<Dragon>);
     };
-    mockHttpClient.assignDragonToJob = async () => {
+    mockHttpClient.assignDragonToJob = () => {
       ++postAssignmentCount;
-      return { isSuccess: true, isInternalError: false, validationFailures: [] } as ValidatedResponse;
+      return of({ isSuccess: true, isInternalError: false, validationFailures: [] } as ValidatedResponse);
     };
 
     mockHttpClient.getAllSkills = async () => { return { offset: 0, limit: 0, totalRecords: 0, data: [] } as PagedData<SkillTag>; }
@@ -105,9 +105,9 @@ describe('ManageJob', () => {
       ++getAssignedCount;
       return of({ offset, limit, totalRecords: 0, data: [mockDragon] } as PagedData<Dragon>);
     };
-    mockHttpClient.unassignDragonToJob = async () => {
+    mockHttpClient.unassignDragonToJob = () => {
       ++deleteAssignmentCount;
-      return { isSuccess: true, isInternalError: false, validationFailures: [] } as ValidatedResponse;
+      return of({ isSuccess: true, isInternalError: false, validationFailures: [] } as ValidatedResponse);
     };
 
     mockHttpClient.getAllSkills = async () => { return { offset: 0, limit: 0, totalRecords: 0, data: [] } as PagedData<SkillTag>; }

@@ -29,12 +29,12 @@ export class AssignmentHttpClient extends BaseHttpClient {
     return this.getOnePage<Dragon>(`${apiUrl}job/${jobId}/assigned-dragon?offset=${offset}&limit=${limit}`);
   };
 
-  async assignDragonToJob(dragonId: number, jobId: number) {
-    return await HttpHelpers.requestValidatedResponse(`${apiUrl}job/${jobId}/assigned-dragon/${dragonId}`, 'POST');
+  assignDragonToJob(dragonId: number, jobId: number) {
+    return this.requestValidatedResponse(`${apiUrl}job/${jobId}/assigned-dragon/${dragonId}`, 'POST');
   };
 
-  async unassignDragonToJob(dragonId: number, jobId: number) {
-    return await HttpHelpers.requestValidatedResponse(`${apiUrl}job/${jobId}/assigned-dragon/${dragonId}`, 'DELETE');
+  unassignDragonToJob(dragonId: number, jobId: number) {
+    return this.requestValidatedResponse(`${apiUrl}job/${jobId}/assigned-dragon/${dragonId}`, 'DELETE');
   };
 
   getDragonWithJobs(dragonId: number, jobInclusions: JobInclusions) {
