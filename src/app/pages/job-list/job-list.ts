@@ -55,7 +55,7 @@ export class JobList implements OnInit, OnDestroy {
     const offset = event.first || 0;
     this.httpClient
       .getOnePageOfJobs(offset, this.pageSize, this.jobInclusionsFilter())
-      .then(pagedData => {
+      .subscribe(pagedData => {
         this.jobs.set(pagedData.data.map(mapJobToDisplayJob));
         this.totalRecords.set(pagedData.totalRecords);
       });

@@ -11,8 +11,8 @@ import { HttpHelpers } from './http-helpers';
   providedIn: 'root',
 })
 export class AssignmentHttpClient extends BaseHttpClient {
-  async getOnePageOfJobs(offset: number, limit: number, jobInclusions: JobInclusions) {
-    return await HttpHelpers.getOnePage<Job>(`${apiUrl}job?offset=${offset}&limit=${limit}&jobInclusions=${jobInclusions}`);
+  getOnePageOfJobs(offset: number, limit: number, jobInclusions: JobInclusions) {
+    return this.getOnePage<Job>(`${apiUrl}job?offset=${offset}&limit=${limit}&jobInclusions=${jobInclusions}`);
   }
 
   async getOnePageOfDragons(offset: number, limit: number) {

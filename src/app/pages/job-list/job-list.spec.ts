@@ -1,5 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
+import { of } from 'rxjs';
 import { AssignmentHttpClient } from '../../../httpClients/assignment-http-client';
 import { Job } from '../../../poco/models';
 import { PagedData } from '../../../poco/standard-responses';
@@ -35,13 +36,13 @@ describe('JobList', () => {
       }
     ];
     const mockHttpClient = new AssignmentHttpClient();
-    mockHttpClient.getOnePageOfJobs = async (offset: number, limit: number) => {
-      return {
+    mockHttpClient.getOnePageOfJobs = (offset: number, limit: number) => {
+      return of({
         offset: offset,
         limit: limit,
         totalRecords: 2,
         data: payloadData
-      } as PagedData<Job>;
+      } as PagedData<Job>);
     };
 
     TestBed.configureTestingModule({
