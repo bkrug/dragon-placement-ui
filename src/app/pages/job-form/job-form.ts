@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AssignmentHttpClient } from '../../../httpClients/assignment-http-client';
 import { getDateFromDateTimeString } from '../../../misc/transformers';
@@ -13,7 +13,7 @@ import { LocalNumberField, LocalStringDateField, LocalSubmitButton, LocalTagFiel
   templateUrl: './job-form.html',
   styleUrl: './job-form.scss',
 })
-export class JobForm extends EntityFormBase<Job> implements OnInit {
+export class JobForm extends EntityFormBase<Job> implements OnInit, OnDestroy {
   httpClient = inject(AssignmentHttpClient);
 
   constructor() {
@@ -28,6 +28,10 @@ export class JobForm extends EntityFormBase<Job> implements OnInit {
         .then(validatedResponse => {
           this.formGroup.set(this.getFormGroup(validatedResponse.payload));
         });
+  }
+
+  ngOnDestroy(): void {
+    this.httpClient.unsubscribe();
   }
 
   toTagOption(skillTag: SkillTag) { return { value: skillTag.skillTagId, display: skillTag.skillName } as TagOption; }

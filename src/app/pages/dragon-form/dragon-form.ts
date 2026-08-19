@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AssignmentHttpClient } from '../../../httpClients/assignment-http-client';
 import { JobInclusions } from '../../../misc/enums';
@@ -14,7 +14,7 @@ import { LocalNumberField, LocalSelectField, LocalSubmitButton, LocalTagField, L
   templateUrl: './dragon-form.html',
   styleUrl: './dragon-form.scss',
 })
-export class DragonForm extends EntityFormBase<Dragon> implements OnInit {
+export class DragonForm extends EntityFormBase<Dragon> implements OnInit, OnDestroy {
   httpClient = inject(AssignmentHttpClient);
 
   constructor() {
@@ -32,7 +32,6 @@ export class DragonForm extends EntityFormBase<Dragon> implements OnInit {
   }
 
   ngOnDestroy(): void {
-    console.log('destroying');
     this.httpClient.unsubscribe();
   }
 

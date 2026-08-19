@@ -1,4 +1,4 @@
-import { Component, EventEmitter, inject, input, OnInit, Output, signal } from '@angular/core';
+import { Component, EventEmitter, inject, input, OnDestroy, OnInit, Output, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { TableModule } from 'primeng/table';
@@ -13,7 +13,7 @@ import { ValidatedResponse } from '../../../poco/standard-responses';
   templateUrl: './assigned-dragon-table.html',
   styleUrl: './assigned-dragon-table.scss',
 })
-export class AssignedDragonTable implements OnInit {
+export class AssignedDragonTable implements OnInit, OnDestroy {
   httpClient = inject(AssignmentHttpClient);
 
   selectedJob = input<DisplayJob | null>();
@@ -28,6 +28,10 @@ export class AssignedDragonTable implements OnInit {
 
   ngOnInit(): void {
     this.forcePageLoad();
+  }
+
+  ngOnDestroy(): void {
+    this.httpClient.unsubscribe();
   }
 
   forcePageLoad() {

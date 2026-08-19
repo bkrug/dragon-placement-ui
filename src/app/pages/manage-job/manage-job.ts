@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component, inject, OnInit, signal, viewChild } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, signal, viewChild } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { AssignmentHttpClient } from '../../../httpClients/assignment-http-client';
 import { DragonTableType } from '../../../misc/enums';
@@ -14,7 +14,7 @@ import { CandidateTable } from '../../shared-components/candidate-table/candidat
   templateUrl: './manage-job.html',
   styleUrl: './manage-job.scss',
 })
-export class ManageJob implements OnInit {
+export class ManageJob implements OnInit, OnDestroy {
   private activatedRoute = inject(ActivatedRoute);
   private httpClient = inject(AssignmentHttpClient);
 
@@ -30,6 +30,10 @@ export class ManageJob implements OnInit {
         this.selectedJob.set(mapJobToDisplayJob(validatedPayload.payload));
       });
     });
+  }
+
+  ngOnDestroy(): void {
+    this.httpClient.unsubscribe();
   }
 
   reloadDragonTables() {

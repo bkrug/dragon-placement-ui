@@ -1,4 +1,4 @@
-import { Component, EventEmitter, inject, input, OnInit, Output, signal } from '@angular/core';
+import { Component, EventEmitter, inject, input, OnDestroy, OnInit, Output, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
@@ -17,7 +17,7 @@ import { SelectListOption } from '../../local-form/local-fields';
   templateUrl: './candidate-table.html',
   styleUrl: './candidate-table.scss',
 })
-export class CandidateTable implements OnInit {
+export class CandidateTable implements OnInit, OnDestroy {
   httpClient = inject(AssignmentHttpClient);
 
   selectedJob = input<DisplayJob | null>();
@@ -46,6 +46,10 @@ export class CandidateTable implements OnInit {
         ));
         this.skillTagOptions.set(options);
       })
+  }
+
+  ngOnDestroy(): void {
+    this.httpClient.unsubscribe();
   }
 
   clearFilter() {

@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { SelectModule } from 'primeng/select';
@@ -16,7 +16,7 @@ import { DisplayJob } from '../../../poco/models';
   templateUrl: './job-list.html',
   styleUrl: './job-list.scss',
 })
-export class JobList implements OnInit {
+export class JobList implements OnInit, OnDestroy {
   httpClient = inject(AssignmentHttpClient);
 
   jobs = signal<DisplayJob[]>([]);
@@ -40,6 +40,10 @@ export class JobList implements OnInit {
         this.jobInclusionsFilter.set(parsed);
       }
     }
+  }
+
+  ngOnDestroy(): void {
+    this.httpClient.unsubscribe();
   }
 
   onJobInclusionChange() {

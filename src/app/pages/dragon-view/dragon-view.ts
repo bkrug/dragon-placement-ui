@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { TableModule } from 'primeng/table';
 import { PAGE_SIZE } from '../../../global-consts';
@@ -13,7 +13,7 @@ import { Assignment, DisplayDragon } from '../../../poco/models';
   templateUrl: './dragon-view.html',
   styleUrl: './dragon-view.scss',
 })
-export class DragonView implements OnInit {
+export class DragonView implements OnInit, OnDestroy {
   dragonHttpClient = inject(AssignmentHttpClient);
   private activatedRoute = inject(ActivatedRoute);
 
@@ -35,5 +35,9 @@ export class DragonView implements OnInit {
         this.dragon.set(mapDragonToDisplayDragon(validatedResponse.payload));
         this.haveDragon.set(true);
       });
+  }
+
+  ngOnDestroy(): void {
+    this.dragonHttpClient.unsubscribe();
   }
 }
