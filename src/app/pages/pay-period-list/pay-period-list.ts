@@ -1,3 +1,4 @@
+import { DatePipe } from '@angular/common';
 import { Component, inject, OnDestroy, signal } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { TableLazyLoadEvent, TableModule } from 'primeng/table';
@@ -7,7 +8,7 @@ import { PayPeriod } from '../../../poco/models';
 
 @Component({
   selector: 'app-pay-period-list',
-  imports: [TableModule, RouterLink],
+  imports: [TableModule, RouterLink, DatePipe],
   templateUrl: './pay-period-list.html',
   styleUrl: './pay-period-list.scss',
 })
