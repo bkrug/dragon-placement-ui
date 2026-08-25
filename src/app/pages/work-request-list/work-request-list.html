@@ -1,0 +1,36 @@
+<h3>Work Requests</h3>
+
+<p-table
+  [value]="workRequests()"
+  [tableStyle]="{ 'min-width': '50rem' }"
+  paginator="true"
+  [rows]="this.pageSize"
+  [totalRecords]="totalRecords()"
+  showCurrentPageReport="true"
+  currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+  showLoader="true"
+  lazy="true"
+  (onLazyLoad)="onPageChange($event)"
+  size="small"
+  >
+  <ng-template #header>
+    <tr>
+      <th>Name</th>
+      <th>Customer</th>
+      <th>Status</th>
+      <th>Estimated Start Date</th>
+      <th>Estimated End Date</th>
+      <th>Estimated Workforce Size</th>
+    </tr>
+  </ng-template>
+  <ng-template #body let-workRequest>
+    <tr>
+      <td>{{ workRequest.name }}</td>
+      <td>{{ workRequest.customer.name }}</td>
+      <td>{{ statusLabels[workRequest.workRequestStatus] }}</td>
+      <td>{{ workRequest.estimatedStartDate | date:'fullDate':'+0' }}</td>
+      <td>{{ workRequest.estimatedEndDate | date:'fullDate':'+0' }}</td>
+      <td>{{ workRequest.estimatedWorkforceSize }}</td>
+    </tr>
+  </ng-template>
+</p-table>

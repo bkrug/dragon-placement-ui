@@ -11,6 +11,7 @@ import { ManageJob } from './pages/manage-job/manage-job';
 import { PayPeriodCreate } from './pages/pay-period-create/pay-period-create';
 import { PayPeriodForm } from './pages/pay-period-form/pay-period-form';
 import { PayPeriodList } from './pages/pay-period-list/pay-period-list';
+import { WorkRequestList } from './pages/work-request-list/work-request-list';
 
 export const routes: Routes = [
   {
@@ -24,6 +25,10 @@ export const routes: Routes = [
   {
     path: 'jobs',
     component: JobList
+  },
+  {
+    path: 'work-requests',
+    component: WorkRequestList
   },
   {
     path: 'jobs-manage/:jobId',
