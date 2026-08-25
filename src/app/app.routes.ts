@@ -27,15 +27,15 @@ export const routes: Routes = [
     component: WorkRequestList
   },
   {
+    path: 'work-request-form/create/:customerId/:customerName',
+    component: WorkRequestForm
+  },
+  {
+    path: 'work-request-form/create',
+    component: WorkRequestForm
+  },
+  {
     path: 'work-request-form/:workRequestId',
-    component: WorkRequestForm
-  },
-  {
-    path: 'work-request-form/create/:createCustomer/:customerId/:customerName',
-    component: WorkRequestForm
-  },
-  {
-    path: 'work-request-form/create/:createCustomer',
     component: WorkRequestForm
   },
   {

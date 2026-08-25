@@ -20,7 +20,6 @@ export class WorkRequestForm extends EntityFormBase<WorkRequest> implements OnIn
   private routeParams: Params = {};
   private routeParamsSubscription = this.route.params.subscribe(params => this.routeParams = params);
 
-  get createCustomer(): boolean { return this.routeParams['createCustomer'] === 'true'; }
   get customerId(): number | null { return this.routeParams['customerId'] || null; }
   get urlCustomerName(): string { return this.routeParams['customerName'] || ''; }
 
@@ -41,7 +40,7 @@ export class WorkRequestForm extends EntityFormBase<WorkRequest> implements OnIn
   }
 
   get isCustomerNameEditable(): boolean {
-    return this.createCustomer && !this.entityId;
+    return !this.customerId && !this.entityId;
   }
 
   private getFormGroup(payload: WorkRequest) {
@@ -72,7 +71,7 @@ export class WorkRequestForm extends EntityFormBase<WorkRequest> implements OnIn
       return this.httpClient.putWorkRequestForm(this.entityId, body);
     }
 
-    if (this.createCustomer) {
+    if (!this.customerId) {
       const body = {
         customerName: values.customerName!,
         workRequestName: values.name!,

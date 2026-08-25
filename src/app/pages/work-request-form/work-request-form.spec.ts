@@ -30,7 +30,7 @@ describe('Work Request Form Tests', () => {
     };
 
     const mockActivatedRoute = new MockActivatedRoute();
-    mockActivatedRoute.setParams({ createCustomer: 'true' });
+    mockActivatedRoute.setParams({});
     TestBed.configureTestingModule({
       providers: [
         { provide: WorkRequestClient, useValue: mockHttpClient },
@@ -77,7 +77,7 @@ describe('Work Request Form Tests', () => {
     };
 
     const mockActivatedRoute = new MockActivatedRoute();
-    mockActivatedRoute.setParams({ createCustomer: 'false', customerId: 5, customerName: 'The Sky' });
+    mockActivatedRoute.setParams({ customerId: 5, customerName: 'The Sky' });
     TestBed.configureTestingModule({
       providers: [
         { provide: WorkRequestClient, useValue: mockHttpClient },
