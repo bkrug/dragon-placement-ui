@@ -82,15 +82,17 @@ export class WorkRequestForm extends EntityFormBase<WorkRequest> implements OnIn
       } as CreateCustomerAndWorkRequest;
       return this.httpClient.postCustomerWithWorkRequestForm(body);
     }
-
-    const body = {
-      name: values.name!,
-      description: values.description || '',
-      estimatedStartDate: values.estimatedStartDate,
-      estimatedEndDate: values.estimatedEndDate,
-      estimatedWorkforceSize: values.estimatedWorkforceSize!,
-    } as WorkRequestCreateEdit;
-    return this.httpClient.postWorkRequestForm(this.customerId!, body);
+    
+    else {
+      const body = {
+        name: values.name!,
+        description: values.description || '',
+        estimatedStartDate: values.estimatedStartDate,
+        estimatedEndDate: values.estimatedEndDate,
+        estimatedWorkforceSize: values.estimatedWorkforceSize!,
+      } as WorkRequestCreateEdit;
+      return this.httpClient.postWorkRequestForm(this.customerId!, body);
+    }
   }
 
   protected override handleSubmissionSuccess(payload: WorkRequest) {
