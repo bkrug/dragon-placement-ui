@@ -7,6 +7,7 @@ import { InputNumberModule } from 'primeng/inputnumber';
 import { InputTextModule } from 'primeng/inputtext';
 import { MessageModule } from 'primeng/message';
 import { SelectModule } from 'primeng/select';
+import { TextareaModule } from 'primeng/textarea';
 import { ValidatedForm } from '../../poco/standard-responses';
 import { ValidationFailures } from '../../poco/validation-failures';
 
@@ -129,6 +130,19 @@ export class LocalFieldErrors {
 export class LocalTextField extends LocalFieldBase<string> {
   inputType = signal('text');
 
+  fieldControl = input.required<AbstractControl<string|null, string|null, string> | null>();
+  override getFieldControl() {
+    return this.fieldControl();
+  }
+}
+
+@Component({
+  selector: 'app-local-text-area-field',
+  imports: [ ReactiveFormsModule, TextareaModule, LocalFieldErrors ],
+  templateUrl: './local-text-area-field.html',
+  styleUrl: './local-field.scss',
+})
+export class LocalTextAreaField extends LocalFieldBase<string> {
   fieldControl = input.required<AbstractControl<string|null, string|null, string> | null>();
   override getFieldControl() {
     return this.fieldControl();

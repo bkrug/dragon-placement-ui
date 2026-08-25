@@ -5,11 +5,11 @@ import { WorkRequestClient } from '../../../httpClients/work-request-http-client
 import { CreateCustomerAndWorkRequest, WorkRequestCreateEdit } from '../../../poco/endpoint-request-bodies';
 import { WorkRequest } from '../../../poco/models';
 import { EntityFormBase } from '../../local-form/entity-form-base';
-import { LocalNumberField, LocalStringDateField, LocalSubmitButton, LocalTextField } from '../../local-form/local-fields';
+import { LocalNumberField, LocalStringDateField, LocalSubmitButton, LocalTextAreaField, LocalTextField } from '../../local-form/local-fields';
 
 @Component({
   selector: 'app-work-request-form',
-  imports: [ ReactiveFormsModule, LocalTextField, LocalStringDateField, LocalNumberField, LocalSubmitButton ],
+  imports: [ ReactiveFormsModule, LocalTextField, LocalTextAreaField, LocalStringDateField, LocalNumberField, LocalSubmitButton ],
   templateUrl: './work-request-form.html',
   styleUrl: './work-request-form.scss',
 })
