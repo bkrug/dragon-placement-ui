@@ -1,5 +1,6 @@
 <h3>Work Requests</h3>
 
+<div class="right-link"><span class="attention">⨮ </span><a routerLink="/work-request-form">Create Customer</a></div>
 <p-table
   [value]="workRequests()"
   [tableStyle]="{ 'min-width': '50rem' }"
@@ -15,6 +16,7 @@
   >
   <ng-template #header>
     <tr>
+      <th></th>
       <th>Name</th>
       <th>Customer</th>
       <th>Status</th>
@@ -25,6 +27,7 @@
   </ng-template>
   <ng-template #body let-workRequest>
     <tr>
+      <td><a [routerLink]="['/work-request-form', workRequest.workRequestId]">Edit</a></td>
       <td>{{ workRequest.name }}</td>
       <td>{{ workRequest.customer.name }}</td>
       <td>{{ statusLabels[workRequest.workRequestStatus] }}</td>

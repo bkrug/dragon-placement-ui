@@ -1,4 +1,5 @@
 import { TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
 import { of } from 'rxjs';
 import { WorkRequestClient } from '../../../httpClients/work-request-http-client';
 import { WorkRequestStatus } from '../../../misc/enums';
@@ -10,6 +11,7 @@ describe('WorkRequestList', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [WorkRequestList],
+      providers: [provideRouter([])],
     }).compileComponents();
   });
 
@@ -63,7 +65,7 @@ describe('WorkRequestList', () => {
     const htmlTableRows = workRequestList.querySelectorAll('tr');
     const headerRowCount = 1;
     expect(htmlTableRows.length).toBe(headerRowCount + payloadData.length);
-    expect(htmlTableRows[1].cells[0].textContent).toBe(payloadData[0].name);
-    expect(htmlTableRows[2].cells[0].textContent).toBe(payloadData[1].name);
+    expect(htmlTableRows[1].cells[1].textContent).toBe(payloadData[0].name);
+    expect(htmlTableRows[2].cells[1].textContent).toBe(payloadData[1].name);
   });
 });

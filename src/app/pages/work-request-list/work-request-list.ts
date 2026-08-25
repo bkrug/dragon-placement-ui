@@ -1,5 +1,6 @@
 import { DatePipe } from '@angular/common';
 import { Component, inject, OnDestroy, signal } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { TableLazyLoadEvent, TableModule } from 'primeng/table';
 import { PAGE_SIZE } from '../../../global-consts';
 import { WorkRequestClient } from '../../../httpClients/work-request-http-client';
@@ -8,7 +9,7 @@ import { WorkRequest } from '../../../poco/models';
 
 @Component({
   selector: 'app-work-request-list',
-  imports: [TableModule, DatePipe],
+  imports: [TableModule, DatePipe, RouterLink],
   templateUrl: './work-request-list.html',
   styleUrl: './work-request-list.scss',
 })
