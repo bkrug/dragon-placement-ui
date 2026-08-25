@@ -10,6 +10,7 @@ import { ManageJob } from './pages/manage-job/manage-job';
 import { PayPeriodCreate } from './pages/pay-period-create/pay-period-create';
 import { PayPeriodForm } from './pages/pay-period-form/pay-period-form';
 import { PayPeriodList } from './pages/pay-period-list/pay-period-list';
+import { WorkRequestForm } from './pages/work-request-form/work-request-form';
 import { WorkRequestList } from './pages/work-request-list/work-request-list';
 
 export const routes: Routes = [
@@ -24,6 +25,18 @@ export const routes: Routes = [
   {
     path: 'work-requests',
     component: WorkRequestList
+  },
+  {
+    path: 'work-request-form/:workRequestId',
+    component: WorkRequestForm
+  },
+  {
+    path: 'work-request-form/create/:createCustomer/:customerId/:customerName',
+    component: WorkRequestForm
+  },
+  {
+    path: 'work-request-form/create/:createCustomer',
+    component: WorkRequestForm
   },
   {
     path: 'jobs-manage/:jobId',

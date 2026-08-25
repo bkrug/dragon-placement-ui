@@ -1,0 +1,24 @@
+<h2>Work Request Form</h2>
+
+<div class="card flex justify-center">
+  <form [formGroup]="formGroup()" (ngSubmit)="onSubmit()" (focusin)="onFormFocus()">
+    @if (isCustomerNameEditable) {
+      <app-local-text-field id="customer-name" label="Customer Name:" fieldName="customerName" [formGroup]="formGroup()" [fieldControl]="formGroup().get('customerName')" />
+    } @else {
+      <div id="customer-name-display" class="local-field-display">
+        <label>Customer Name:</label>
+        <span>{{ formGroup().get('customerName')?.value }}</span>
+      </div>
+    }
+    <app-local-text-field id="work-request-name" label="Work Request Name:" fieldName="name" [formGroup]="formGroup()" [fieldControl]="formGroup().get('name')" />
+    <app-local-text-field id="description" label="Description:" fieldName="description" [formGroup]="formGroup()" [fieldControl]="formGroup().get('description')" />
+    <app-local-string-date-field id="estimated-start-date" label="Estimated Start Date:" fieldName="estimatedStartDate" [formGroup]="formGroup()" [fieldControl]="formGroup().get('estimatedStartDate')" />
+    <app-local-string-date-field id="estimated-end-date" label="Estimated End Date:" fieldName="estimatedEndDate" [formGroup]="formGroup()" [fieldControl]="formGroup().get('estimatedEndDate')" />
+    <app-local-number-field id="estimated-workforce-size" label="Estimated Workforce Size:" fieldName="estimatedWorkforceSize" [formGroup]="formGroup()" [fieldControl]="formGroup().get('estimatedWorkforceSize')" />
+    <app-local-submit-button
+      [isSubmitDisabled]="!formGroup().valid || isSubmitting()"
+      [isSubmitting]="isSubmitting()"
+      [showSaved]="showSaved()"
+      [submissionError]="submissionError()" />
+  </form>
+</div>
