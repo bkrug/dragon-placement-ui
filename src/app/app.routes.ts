@@ -1,5 +1,4 @@
 import { Routes } from '@angular/router';
-import { AbilityTable } from './pages/ability-table/ability-table';
 import { Counter } from './pages/counter/counter';
 import { DragonForm } from './pages/dragon-form/dragon-form';
 import { DragonList } from './pages/dragon-list/dragon-list';
@@ -17,10 +16,6 @@ export const routes: Routes = [
   {
     path: 'counter',
     component: Counter
-  },
-  {
-    path: 'ability-table',
-    component: AbilityTable
   },
   {
     path: 'jobs',
