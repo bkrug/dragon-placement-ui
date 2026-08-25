@@ -10,3 +10,10 @@ export enum DragonTableType {
   Candidates = 1,
   AlreadyAssigned = 2
 }
+
+export enum WorkRequestStatus {
+  Unspecified = 0,
+  Draft,
+  Approved,
+  Completed
+}

@@ -1,3 +1,5 @@
+import { WorkRequestStatus } from '../misc/enums';
+
 export class Assignment {
   assignmentId: number = 0;
   jobId: number = 0;
@@ -81,4 +83,21 @@ export class PayPeriod {
   endDate: string = '';
   submissionStatus: string = '';
   hoursWorked: HoursWorked[] = [];
+}
+
+export class Customer {
+  customerId: number = 0;
+  name: string = '';
+}
+
+export class WorkRequest {
+  workRequestId: number = 0;
+  customerId: number = 0;
+  name: string = '';
+  description: string = '';
+  workRequestStatus: WorkRequestStatus = WorkRequestStatus.Draft;
+  estimatedStartDate: string | null = null;
+  estimatedEndDate: string | null = null;
+  estimatedWorkforceSize: number = 0;
+  customer: Customer = new Customer();
 }

@@ -48,3 +48,20 @@ export class PayPeriodView {
   submissionStatus: string = '';
   hoursWorked: HoursWorkedView[] = [];
 }
+
+export class WorkRequestCreateEdit {
+  name: string = '';
+  description: string = '';
+  estimatedStartDate: string = '';
+  estimatedEndDate: string = '';
+  estimatedWorkforceSize: number = 0;
+}
+
+export class CreateCustomerAndWorkRequest {
+  customerName: string = '';
+  workRequestName: string = '';
+  description: string = '';
+  estimatedStartDate: string = '';
+  estimatedEndDate: string = '';
+  estimatedWorkforceSize: number = 0;
+}
