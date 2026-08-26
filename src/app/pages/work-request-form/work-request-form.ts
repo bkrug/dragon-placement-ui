@@ -5,7 +5,7 @@ import { WorkRequestClient } from '../../../httpClients/work-request-http-client
 import { CreateCustomerAndWorkRequest, WorkRequestCreateEdit } from '../../../poco/endpoint-request-bodies';
 import { Customer, WorkRequest } from '../../../poco/models';
 import { EntityFormBase } from '../../local-form/entity-form-base';
-import { LocalCustomerIdField, LocalNumberField, LocalSelectField, LocalStringDateField, LocalSubmitButton, LocalTextAreaField, LocalTextField, SelectListOption } from '../../local-form/local-fields';
+import { LocalCustomerIdField, LocalNumberField, LocalStringDateField, LocalSubmitButton, LocalTextAreaField, LocalTextField, SelectListOption } from '../../local-form/local-fields';
 
 @Component({
   selector: 'app-work-request-form',
@@ -15,7 +15,6 @@ import { LocalCustomerIdField, LocalNumberField, LocalSelectField, LocalStringDa
     LocalTextAreaField,
     LocalStringDateField,
     LocalNumberField,
-    LocalSelectField,
     LocalSubmitButton,
     LocalCustomerIdField
   ],
@@ -31,17 +30,7 @@ export class WorkRequestForm extends EntityFormBase<WorkRequest> implements OnIn
     super('workRequestId');
   }
 
-  customers = signal<SelectListOption[]>([]);
-
   ngOnInit(): void {
-    this.httpClient.searchCustomers('', 20)
-      .subscribe(validatedResponse => {
-        let loadedOptions =
-          ([ { display: '<New Cutomer>', value: null } ] as SelectListOption[])
-          .concat(validatedResponse.payload.map(this.toSelectOption));
-        this.customers.set(loadedOptions);
-      });
-
     if (this.entityId)
       this.httpClient.getWorkRequest(this.entityId)
         .subscribe(validatedResponse => {
@@ -59,12 +48,15 @@ export class WorkRequestForm extends EntityFormBase<WorkRequest> implements OnIn
   }
 
   get isCustomerNameEditable(): boolean {
-    return !this.formGroup().get('customerId')?.value && !this.entityId;
+    return this.formGroup().get('customerId')?.value === this.NEW_CUSTOMER_ID && !this.entityId;
   }
 
   get isCustomerChangeable(): boolean {
     return !this.entityId;
   }
+
+  NEW_CUSTOMER_ID = 'new_customer_id' as string | null;
+  defaultOptions = [ { display: '<New Customer>', value: this.NEW_CUSTOMER_ID } ] as SelectListOption[];
 
   //Use the arrow pattern here so that we can pass this function as a delegate to another component
   requeryCustomers = (partialName: string) => {
@@ -77,8 +69,8 @@ export class WorkRequestForm extends EntityFormBase<WorkRequest> implements OnIn
   private getFormGroup(payload: WorkRequest) {
     const initialCustomerName = this.entityId ? payload.customer.name : '';
     return new FormGroup({
+      customerId: new FormControl<string | null>(this.NEW_CUSTOMER_ID),
       customerName: new FormControl<string>(initialCustomerName),
-      customerId: new FormControl<string | null>(null),
       name: new FormControl(payload.name, [ Validators.required ]),
       description: new FormControl(payload.description),
       estimatedStartDate: new FormControl<string | null>(payload.estimatedStartDate),

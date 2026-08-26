@@ -9,7 +9,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { MessageModule } from 'primeng/message';
 import { SelectModule } from 'primeng/select';
 import { TextareaModule } from 'primeng/textarea';
-import { debounceTime, distinctUntilChanged, Observable, Subject, switchMap } from 'rxjs';
+import { debounceTime, distinctUntilChanged, map, Observable, Subject, switchMap } from 'rxjs';
 import { ValidatedForm } from '../../poco/standard-responses';
 import { ValidationFailures } from '../../poco/validation-failures';
 
@@ -252,15 +252,17 @@ export class LocalTagField extends LocalFieldBase<TagOption[]> {
 })
 export class LocalCustomerIdField extends LocalFieldBase<string> {
   searchDelegate = input.required<(partialName: string) => Observable<SelectListOption[]>>();
+  defaultOptions = input<SelectListOption[]>([]);
 
   private querySubject = new Subject<string>();
   options = toSignal(
     this.querySubject.pipe(
       debounceTime(200),
       distinctUntilChanged(),
-      switchMap(query => this.searchDelegate()(query))
+      switchMap(query => this.searchDelegate()(query)),
+      map(loadedOptions => this.defaultOptions().concat(loadedOptions))
     ),
-    { initialValue: [] as SelectListOption[] }
+    { initialValue: this.defaultOptions() }
   );
 
   search(event: AutoCompleteCompleteEvent) {

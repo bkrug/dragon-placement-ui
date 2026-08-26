@@ -3,8 +3,11 @@
 <div class="card flex justify-center">
   <form [formGroup]="formGroup()" (ngSubmit)="onSubmit()" (focusin)="onFormFocus()">
     @if (isCustomerChangeable) {
-      <app-local-select-field id="customer-id" label="Customer:" fieldName="customerId" [formGroup]="formGroup()" [fieldControl]="formGroup().get('customerId')" [options]="customers()" />
-      <app-local-customer-id-field id="customer-id" label="Customer:" fieldName="customerId" [formGroup]="formGroup()" [fieldControl]="formGroup().get('customerId')" [searchDelegate]="requeryCustomers"/>
+      <app-local-customer-id-field id="customer-id" label="Selected Customer:" fieldName="customerId" 
+        [formGroup]="formGroup()"
+        [fieldControl]="formGroup().get('customerId')"
+        [defaultOptions]="defaultOptions"
+        [searchDelegate]="requeryCustomers"/>
     }
     @else {
       <div id="customer-name-display" class="local-field-display">
