@@ -1,5 +1,6 @@
 import { Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { map, switchMap } from 'rxjs';
 import { WorkRequestClient } from '../../../httpClients/work-request-http-client';
 import { CreateCustomerAndWorkRequest, WorkRequestCreateEdit } from '../../../poco/endpoint-request-bodies';
 import { Customer, WorkRequest } from '../../../poco/models';
@@ -64,6 +65,14 @@ export class WorkRequestForm extends EntityFormBase<WorkRequest> implements OnIn
   get isCustomerChangeable(): boolean {
     return !this.entityId;
   }
+
+  //Use the arrow pattern here so that we can pass this function as a delegate to another component
+  requeryCustomers = (partialName: string) => {
+    return this.httpClient.searchCustomers(partialName, 10)
+      .pipe(
+        map(validatedPayload => validatedPayload.payload.map(this.toSelectOption))
+      );
+  } 
 
   private getFormGroup(payload: WorkRequest) {
     const initialCustomerName = this.entityId ? payload.customer.name : '';
