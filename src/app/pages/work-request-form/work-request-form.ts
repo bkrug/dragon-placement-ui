@@ -33,7 +33,10 @@ export class WorkRequestForm extends EntityFormBase<WorkRequest> implements OnIn
 
     this.httpClient.searchCustomers('', 20)
       .subscribe(validatedResponse => {
-        this.customers.set(validatedResponse.payload.map(this.toSelectOption));
+        let loadedOptions =
+          ([ { display: '<New Cutomer>', value: null } ] as SelectListOption[])
+          .concat(validatedResponse.payload.map(this.toSelectOption));
+        this.customers.set(loadedOptions);
         this.setCutomerIdField();
       });
 
@@ -41,6 +44,7 @@ export class WorkRequestForm extends EntityFormBase<WorkRequest> implements OnIn
       this.httpClient.getWorkRequest(this.entityId)
         .subscribe(validatedResponse => {
           this.formGroup.set(this.getFormGroup(validatedResponse.payload));
+          this.formGroup().get('customerId')?.setValue(this.customerId);
         });
   }
 
@@ -59,6 +63,10 @@ export class WorkRequestForm extends EntityFormBase<WorkRequest> implements OnIn
 
   get isCustomerNameEditable(): boolean {
     return !this.formGroup().get('customerId')?.value && !this.entityId;
+  }
+
+  get isCustomerChangeable(): boolean {
+    return !this.entityId;
   }
 
   private getFormGroup(payload: WorkRequest) {
