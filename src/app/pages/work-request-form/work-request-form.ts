@@ -1,6 +1,6 @@
 import { Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { map, switchMap } from 'rxjs';
+import { map } from 'rxjs';
 import { WorkRequestClient } from '../../../httpClients/work-request-http-client';
 import { CreateCustomerAndWorkRequest, WorkRequestCreateEdit } from '../../../poco/endpoint-request-bodies';
 import { Customer, WorkRequest } from '../../../poco/models';
@@ -24,14 +24,25 @@ import { LocalCustomerIdField, LocalNumberField, LocalStringDateField, LocalSubm
 export class WorkRequestForm extends EntityFormBase<WorkRequest> implements OnInit, OnDestroy {
   httpClient = inject(WorkRequestClient);
 
-  get customerId(): string | null { return this.customerField()?.value?.id || null; }
+  NEW_CUSTOMER_ID = null as string | null;
+  defaultOptions = [ { display: '<New Customer>', id: this.NEW_CUSTOMER_ID } ] as SelectListOption[];
+
+  formGroup = signal(this.getFormGroup(new WorkRequest()));
+
+  get customerId(): string | null {
+    return this.customerField()?.value?.id || null;
+  }
+
+  get isCustomerNameEditable(): boolean {
+    return this.customerField()?.value?.id === this.NEW_CUSTOMER_ID && !this.entityId;
+  }
+
+  get isCustomerChangeable(): boolean {
+    return !this.entityId;
+  }
 
   constructor() {
     super('workRequestId');
-  }
-
-  private customerField() {
-    return this.formGroup().get('customerId');
   }
 
   ngOnInit(): void {
@@ -43,24 +54,17 @@ export class WorkRequestForm extends EntityFormBase<WorkRequest> implements OnIn
         });
   }
 
-  toSelectOption(customer: Customer): SelectListOption {
-    return { display: customer.name, id: String(customer.customerId) };
-  }
-
   ngOnDestroy(): void {
     this.httpClient.unsubscribe();
   }
 
-  get isCustomerNameEditable(): boolean {
-    return this.customerField()?.value?.id === this.NEW_CUSTOMER_ID && !this.entityId;
+  private customerField() {
+    return this.formGroup().get('customerId');
   }
 
-  get isCustomerChangeable(): boolean {
-    return !this.entityId;
+  private toSelectOption(customer: Customer): SelectListOption {
+    return { display: customer.name, id: String(customer.customerId) };
   }
-
-  NEW_CUSTOMER_ID = null as string | null;
-  defaultOptions = [ { display: '<New Customer>', id: this.NEW_CUSTOMER_ID } ] as SelectListOption[];
 
   //Use the arrow pattern here so that we can pass this function as a delegate to another component
   requeryCustomers = (partialName: string) => {
@@ -82,8 +86,6 @@ export class WorkRequestForm extends EntityFormBase<WorkRequest> implements OnIn
       estimatedWorkforceSize: new FormControl(payload.estimatedWorkforceSize),
     });
   }
-
-  formGroup = signal(this.getFormGroup(new WorkRequest()));
 
   protected override makeSubmissionRequest() {
     const values = this.formGroup().value;
