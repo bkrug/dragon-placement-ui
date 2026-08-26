@@ -27,10 +27,6 @@ export const routes: Routes = [
     component: WorkRequestList
   },
   {
-    path: 'work-request-form/existing-customer/:customerId/name/:customerName',
-    component: WorkRequestForm
-  },
-  {
     path: 'work-request-form/:workRequestId',
     component: WorkRequestForm
   },

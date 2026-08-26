@@ -1,6 +1,6 @@
 import { Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ActivatedRoute, Params } from '@angular/router';
+import { Params } from '@angular/router';
 import { WorkRequestClient } from '../../../httpClients/work-request-http-client';
 import { CreateCustomerAndWorkRequest, WorkRequestCreateEdit } from '../../../poco/endpoint-request-bodies';
 import { Customer, WorkRequest } from '../../../poco/models';
@@ -15,7 +15,6 @@ import { LocalNumberField, LocalSelectField, LocalStringDateField, LocalSubmitBu
 })
 export class WorkRequestForm extends EntityFormBase<WorkRequest> implements OnInit, OnDestroy {
   httpClient = inject(WorkRequestClient);
-  private route = inject(ActivatedRoute);
 
   private routeParams: Params = {};
 
@@ -72,7 +71,7 @@ export class WorkRequestForm extends EntityFormBase<WorkRequest> implements OnIn
   private getFormGroup(payload: WorkRequest) {
     const initialCustomerName = this.entityId ? payload.customer.name : this.urlCustomerName;
     return new FormGroup({
-      customerName: new FormControl(initialCustomerName, [ Validators.required ]),
+      customerName: new FormControl(initialCustomerName),
       customerId: new FormControl<string | null>(null),
       name: new FormControl(payload.name, [ Validators.required ]),
       description: new FormControl(payload.description),
