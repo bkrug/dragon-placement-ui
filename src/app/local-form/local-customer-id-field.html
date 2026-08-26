@@ -5,6 +5,7 @@
     (completeMethod)="search($event)"
     [addOnBlur]="true"
     [addOnTab]="true"
-    optionLabel="display" />
+    optionLabel="display"
+    [optionValue]="identity" />
   <app-local-field-errors [errors]="getErrors()" [shouldDisplay]="shouldDisplayError()" />
 </div>

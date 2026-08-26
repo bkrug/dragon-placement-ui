@@ -95,6 +95,7 @@ export class WorkRequestForm extends EntityFormBase<WorkRequest> implements OnIn
       return this.httpClient.putWorkRequestForm(this.entityId, body);
     }
 
+    console.log('customerId', this.customerId);
     if (!this.customerId) {
       const body = {
         customerName: values.customerName!,
