@@ -9,7 +9,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { MessageModule } from 'primeng/message';
 import { SelectModule } from 'primeng/select';
 import { TextareaModule } from 'primeng/textarea';
-import { Observable, of, Subject, switchMap } from 'rxjs';
+import { debounceTime, distinctUntilChanged, Observable, Subject, switchMap } from 'rxjs';
 import { ValidatedForm } from '../../poco/standard-responses';
 import { ValidationFailures } from '../../poco/validation-failures';
 
@@ -256,14 +256,13 @@ export class LocalCustomerIdField extends LocalFieldBase<string> {
   private querySubject = new Subject<string>();
   options = toSignal(
     this.querySubject.pipe(
+      debounceTime(200),
+      distinctUntilChanged(),
       switchMap(query => this.searchDelegate()(query))
     ),
     { initialValue: [] as SelectListOption[] }
   );
 
-  //TODO: Limit the number of requests a bit more.
-  //Only requery when at least three characters are used.
-  //Have a minimum delay between keystrokes.
   search(event: AutoCompleteCompleteEvent) {
     this.querySubject.next(event.query);
   }
