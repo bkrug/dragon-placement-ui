@@ -3,13 +3,13 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { ActivatedRoute, Params } from '@angular/router';
 import { WorkRequestClient } from '../../../httpClients/work-request-http-client';
 import { CreateCustomerAndWorkRequest, WorkRequestCreateEdit } from '../../../poco/endpoint-request-bodies';
-import { WorkRequest } from '../../../poco/models';
+import { Customer, WorkRequest } from '../../../poco/models';
 import { EntityFormBase } from '../../local-form/entity-form-base';
-import { LocalNumberField, LocalStringDateField, LocalSubmitButton, LocalTextAreaField, LocalTextField } from '../../local-form/local-fields';
+import { LocalNumberField, LocalSelectField, LocalStringDateField, LocalSubmitButton, LocalTextAreaField, LocalTextField, SelectListOption } from '../../local-form/local-fields';
 
 @Component({
   selector: 'app-work-request-form',
-  imports: [ ReactiveFormsModule, LocalTextField, LocalTextAreaField, LocalStringDateField, LocalNumberField, LocalSubmitButton ],
+  imports: [ ReactiveFormsModule, LocalTextField, LocalTextAreaField, LocalStringDateField, LocalNumberField, LocalSelectField, LocalSubmitButton ],
   templateUrl: './work-request-form.html',
   styleUrl: './work-request-form.scss',
 })
@@ -27,12 +27,21 @@ export class WorkRequestForm extends EntityFormBase<WorkRequest> implements OnIn
     super('workRequestId');
   }
 
+  customers = signal<SelectListOption[]>([]);
+
   ngOnInit(): void {
+    this.httpClient.searchCustomers('', 20)
+      .subscribe(validatedResponse => this.customers.set(validatedResponse.payload.map(this.toSelectOption)));
+
     if (this.entityId)
       this.httpClient.getWorkRequest(this.entityId)
         .subscribe(validatedResponse => {
           this.formGroup.set(this.getFormGroup(validatedResponse.payload));
         });
+  }
+
+  toSelectOption(customer: Customer): SelectListOption {
+    return { display: customer.name, value: String(customer.customerId) };
   }
 
   ngOnDestroy(): void {
@@ -47,6 +56,7 @@ export class WorkRequestForm extends EntityFormBase<WorkRequest> implements OnIn
     const initialCustomerName = this.entityId ? payload.customer.name : this.urlCustomerName;
     return new FormGroup({
       customerName: new FormControl(initialCustomerName, [ Validators.required ]),
+      customerId: new FormControl<string | null>(null),
       name: new FormControl(payload.name, [ Validators.required ]),
       description: new FormControl(payload.description),
       estimatedStartDate: new FormControl<string | null>(payload.estimatedStartDate),

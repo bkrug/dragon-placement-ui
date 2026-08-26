@@ -4,7 +4,7 @@ import { Effect } from 'effect';
 import { of } from 'rxjs';
 import { WorkRequestClient } from '../../../httpClients/work-request-http-client';
 import { CreateCustomerAndWorkRequest, WorkRequestCreateEdit } from '../../../poco/endpoint-request-bodies';
-import { WorkRequest } from '../../../poco/models';
+import { Customer, WorkRequest } from '../../../poco/models';
 import { ValidatedForm, ValidatedPayload } from '../../../poco/standard-responses';
 import { ValidationFailures } from '../../../poco/validation-failures';
 import { MockActivatedRoute } from '../../../testHelpers/MockActivatedRoute';
@@ -15,8 +15,20 @@ describe('Work Request Form Tests', () => {
     return nativeElement.querySelector(css) as HTMLInputElement;
   }
 
+  function mockSearchCustomers(mockHttpClient: WorkRequestClient) {
+    mockHttpClient.searchCustomers = () => {
+      return of({
+        isInternalError: false,
+        isSuccess: true,
+        validationFailures: [],
+        payload: [] as Customer[]
+      } as ValidatedPayload<Customer[]>);
+    };
+  }
+
   it('Create a work request along with a new customer', async () => {
     const mockHttpClient = new WorkRequestClient();
+    mockSearchCustomers(mockHttpClient);
     let actualBody = new CreateCustomerAndWorkRequest();
     mockHttpClient.postCustomerWithWorkRequestForm = (body: CreateCustomerAndWorkRequest) => {
       actualBody = body;
@@ -62,6 +74,7 @@ describe('Work Request Form Tests', () => {
 
   it('Create a work request for an existing customer identified in the URL', async () => {
     const mockHttpClient = new WorkRequestClient();
+    mockSearchCustomers(mockHttpClient);
     let actualCustomerId = 0;
     let actualBody = new WorkRequestCreateEdit();
     mockHttpClient.postWorkRequestForm = (customerId: number, body: WorkRequestCreateEdit) => {
@@ -121,6 +134,7 @@ describe('Work Request Form Tests', () => {
     });
 
     const mockHttpClient = new WorkRequestClient();
+    mockSearchCustomers(mockHttpClient);
     mockHttpClient.getWorkRequest = () => {
       return of({
         isInternalError: false,

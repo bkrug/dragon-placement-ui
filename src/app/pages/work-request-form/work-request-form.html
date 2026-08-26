@@ -10,6 +10,7 @@
         <span>{{ formGroup().get('customerName')?.value }}</span>
       </div>
     }
+    <app-local-select-field id="customer-id" label="Customer:" fieldName="customerId" [formGroup]="formGroup()" [fieldControl]="formGroup().get('customerId')" [options]="customers()" />
     <app-local-text-field id="work-request-name" label="Work Request Name:" fieldName="name" [formGroup]="formGroup()" [fieldControl]="formGroup().get('name')" />
     <app-local-text-area-field id="description" label="Description:" fieldName="description" [formGroup]="formGroup()" [fieldControl]="formGroup().get('description')" />
     <app-local-string-date-field id="estimated-start-date" label="Estimated Start Date:" fieldName="estimatedStartDate" [formGroup]="formGroup()" [fieldControl]="formGroup().get('estimatedStartDate')" />
