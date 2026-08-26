@@ -1,4 +1,5 @@
 import { Component, computed, Directive, input, signal } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { AbstractControl, FormArray, FormGroup, ReactiveFormsModule, ValidationErrors } from '@angular/forms';
 import { AutoCompleteCompleteEvent, AutoCompleteModule } from 'primeng/autocomplete';
 import { ButtonModule } from 'primeng/button';
@@ -8,6 +9,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { MessageModule } from 'primeng/message';
 import { SelectModule } from 'primeng/select';
 import { TextareaModule } from 'primeng/textarea';
+import { of, Subject, switchMap } from 'rxjs';
 import { ValidatedForm } from '../../poco/standard-responses';
 import { ValidationFailures } from '../../poco/validation-failures';
 
@@ -83,7 +85,7 @@ function toCamelCase(fieldName: string): string {
 }
 
 @Directive()
-abstract class LocalFieldBase<T extends (boolean | string | number | Date | TagOption[])> {
+abstract class LocalFieldBase<T extends (boolean | string | number | Date | TagOption[] | SelectListOption)> {
   formGroup = input.required<FormGroup>();
   fieldName = input.required<string>();
   label = input.required<string>();
@@ -237,6 +239,33 @@ export class LocalTagField extends LocalFieldBase<TagOption[]> {
   }
 
   fieldControl = input.required<AbstractControl<TagOption[] | null, TagOption[] | null, string> | null>();
+  override getFieldControl() {
+    return this.fieldControl();
+  }
+}
+
+@Component({
+  selector: 'app-local-customer-id-field',
+  imports: [ ReactiveFormsModule, AutoCompleteModule, LocalFieldErrors ],
+  templateUrl: './local-customer-id-field.html',
+  styleUrl: './local-field.scss',
+})
+export class LocalCustomerIdField extends LocalFieldBase<string> {
+  private querySubject = new Subject<string>();
+  options = toSignal(
+    this.querySubject.pipe(
+      switchMap(query => {
+        return of([{ value: '5', display: query }] as SelectListOption[])
+      })
+    ),
+    { initialValue: [] as SelectListOption[] }
+  );
+
+  search(event: AutoCompleteCompleteEvent) {
+    this.querySubject.next(event.query);
+  }
+
+  fieldControl = input.required<AbstractControl<string | null, string | null, string> | null>();
   override getFieldControl() {
     return this.fieldControl();
   }

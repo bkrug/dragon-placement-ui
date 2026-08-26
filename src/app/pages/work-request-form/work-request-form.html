@@ -4,7 +4,9 @@
   <form [formGroup]="formGroup()" (ngSubmit)="onSubmit()" (focusin)="onFormFocus()">
     @if (isCustomerChangeable) {
       <app-local-select-field id="customer-id" label="Customer:" fieldName="customerId" [formGroup]="formGroup()" [fieldControl]="formGroup().get('customerId')" [options]="customers()" />
-    } @else {
+      <app-local-customer-id-field id="customer-id" label="Customer:" fieldName="customerId" [formGroup]="formGroup()" [fieldControl]="formGroup().get('customerId')" />
+    }
+    @else {
       <div id="customer-name-display" class="local-field-display">
         <label>Customer Name:</label>
         <span>{{ formGroup().get('customerName')?.value }}</span>

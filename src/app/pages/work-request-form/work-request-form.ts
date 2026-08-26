@@ -4,11 +4,20 @@ import { WorkRequestClient } from '../../../httpClients/work-request-http-client
 import { CreateCustomerAndWorkRequest, WorkRequestCreateEdit } from '../../../poco/endpoint-request-bodies';
 import { Customer, WorkRequest } from '../../../poco/models';
 import { EntityFormBase } from '../../local-form/entity-form-base';
-import { LocalNumberField, LocalSelectField, LocalStringDateField, LocalSubmitButton, LocalTextAreaField, LocalTextField, SelectListOption } from '../../local-form/local-fields';
+import { LocalCustomerIdField, LocalNumberField, LocalSelectField, LocalStringDateField, LocalSubmitButton, LocalTextAreaField, LocalTextField, SelectListOption } from '../../local-form/local-fields';
 
 @Component({
   selector: 'app-work-request-form',
-  imports: [ ReactiveFormsModule, LocalTextField, LocalTextAreaField, LocalStringDateField, LocalNumberField, LocalSelectField, LocalSubmitButton ],
+  imports: [
+    ReactiveFormsModule,
+    LocalTextField,
+    LocalTextAreaField,
+    LocalStringDateField,
+    LocalNumberField,
+    LocalSelectField,
+    LocalSubmitButton,
+    LocalCustomerIdField
+  ],
   templateUrl: './work-request-form.html',
   styleUrl: './work-request-form.scss',
 })
