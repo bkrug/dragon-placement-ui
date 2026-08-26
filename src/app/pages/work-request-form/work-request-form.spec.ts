@@ -199,4 +199,89 @@ describe('Work Request Form Tests', () => {
     expect(actualRecordIdInPutRequest).toEqual(recordId);
     expect(actualBody.name).toEqual('Senior Egg Sitting');
   });
+
+  it('Create a work request for an existing customer, then edit and resave it', async () => {
+    const mockHttpClient = new WorkRequestClient();
+    const createdWorkRequestId = 42;
+
+    let postCallCount = 0;
+    let actualPostCustomerId = 0;
+    let actualPostBody = new WorkRequestCreateEdit();
+    mockHttpClient.postWorkRequestForm = (customerId: number, body: WorkRequestCreateEdit) => {
+      postCallCount++;
+      actualPostCustomerId = customerId;
+      actualPostBody = body;
+      const validatedPayload = {
+        isInternalError: false,
+        isSuccess: true,
+        validationFailures: [],
+        payload: JSON.parse(JSON.stringify(Object.assign(new WorkRequest(), { workRequestId: createdWorkRequestId, customerId })))
+      } as ValidatedPayload<WorkRequest>;
+      return of(Effect.succeed(validatedPayload) as Effect.Effect<ValidatedPayload<WorkRequest>, ValidatedForm<ValidationFailures>, never>);
+    };
+
+    let putCallCount = 0;
+    let actualPutWorkRequestId = 0;
+    let actualPutBody = new WorkRequestCreateEdit();
+    mockHttpClient.putWorkRequestForm = (workRequestId: number, body: WorkRequestCreateEdit) => {
+      putCallCount++;
+      actualPutWorkRequestId = workRequestId;
+      actualPutBody = body;
+      const validatedPayload = {
+        isInternalError: false,
+        isSuccess: true,
+        validationFailures: [],
+        payload: JSON.parse(JSON.stringify(Object.assign(new WorkRequest(), { workRequestId })))
+      } as ValidatedPayload<WorkRequest>;
+      return of(Effect.succeed(validatedPayload) as Effect.Effect<ValidatedPayload<WorkRequest>, ValidatedForm<ValidationFailures>, never>);
+    };
+
+    mockHttpClient.searchCustomers = (name: string, count: number) => {
+      const validatedPayload = {
+        isInternalError: false,
+        isSuccess: true,
+        validationFailures: [],
+        payload: [ { customerId: 4, name: 'The Ocean' } ] as Customer[]
+      } as ValidatedPayload<Customer[]>;
+      return of(validatedPayload as ValidatedPayload<Customer[]>);
+    }
+
+    const mockActivatedRoute = new MockActivatedRoute();
+    mockActivatedRoute.setParams({});
+    TestBed.configureTestingModule({
+      providers: [
+        { provide: WorkRequestClient, useValue: mockHttpClient },
+        { provide: ActivatedRoute, useValue: mockActivatedRoute }
+      ]
+    });
+
+    //Act
+    await TestBed.configureTestingModule({ imports: [WorkRequestForm] }).compileComponents();
+    const fixture = TestBed.createComponent(WorkRequestForm);
+    const component = fixture.componentInstance;
+    await fixture.whenStable();
+
+    //Act: select an existing customer and submit
+    component.formGroup().get('customerId')?.setValue({ display: 'The Ocean', value: '4' });
+    component.formGroup().get('name')?.setValue('Dragon Wrangling');
+    component.onSubmit();
+    await fixture.whenStable();
+
+    //Assert: POST was called to create the work request
+    expect(postCallCount).toEqual(1);
+    expect(putCallCount).toEqual(0);
+    expect(actualPostCustomerId).toEqual(4);
+    expect(actualPostBody.name).toEqual('Dragon Wrangling');
+
+    //Act: edit a field and submit again
+    component.formGroup().get('name')?.setValue('Dragon Wrangling, Advanced');
+    component.onSubmit();
+    await fixture.whenStable();
+
+    //Assert: PUT was called to update the existing work request
+    expect(putCallCount).toEqual(1);
+    expect(postCallCount).toEqual(1);  //Unchanged
+    expect(actualPutWorkRequestId).toEqual(createdWorkRequestId);
+    expect(actualPutBody.name).toEqual('Dragon Wrangling, Advanced');
+  });
 });
