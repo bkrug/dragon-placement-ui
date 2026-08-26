@@ -250,7 +250,7 @@ export class LocalTagField extends LocalFieldBase<TagOption[]> {
   templateUrl: './local-customer-id-field.html',
   styleUrl: './local-field.scss',
 })
-export class LocalCustomerIdField extends LocalFieldBase<string> {
+export class LocalCustomerIdField extends LocalFieldBase<SelectListOption> {
   searchDelegate = input.required<(partialName: string) => Observable<SelectListOption[]>>();
   defaultOptions = input<SelectListOption[]>([]);
 
@@ -269,7 +269,7 @@ export class LocalCustomerIdField extends LocalFieldBase<string> {
     this.querySubject.next(event.query);
   }
 
-  fieldControl = input.required<AbstractControl<string | null, string | null, string> | null>();
+  fieldControl = input.required<AbstractControl<SelectListOption | null, SelectListOption | null, string> | null>();
   override getFieldControl() {
     return this.fieldControl();
   }

@@ -24,7 +24,7 @@ import { LocalCustomerIdField, LocalNumberField, LocalStringDateField, LocalSubm
 export class WorkRequestForm extends EntityFormBase<WorkRequest> implements OnInit, OnDestroy {
   httpClient = inject(WorkRequestClient);
 
-  get customerId(): string | null { return this.formGroup().get('customerId')?.value || null; }
+  get customerId(): string | null { return this.formGroup().get('customerId')?.value?.value || null; }
 
   constructor() {
     super('workRequestId');
@@ -35,7 +35,7 @@ export class WorkRequestForm extends EntityFormBase<WorkRequest> implements OnIn
       this.httpClient.getWorkRequest(this.entityId)
         .subscribe(validatedResponse => {
           this.formGroup.set(this.getFormGroup(validatedResponse.payload));
-          this.formGroup().get('customerId')?.setValue(this.customerId);
+          this.formGroup().get('customerId')?.setValue(null);
         });
   }
 
@@ -48,14 +48,14 @@ export class WorkRequestForm extends EntityFormBase<WorkRequest> implements OnIn
   }
 
   get isCustomerNameEditable(): boolean {
-    return this.formGroup().get('customerId')?.value === this.NEW_CUSTOMER_ID && !this.entityId;
+    return this.formGroup().get('customerId')?.value?.value === this.NEW_CUSTOMER_ID && !this.entityId;
   }
 
   get isCustomerChangeable(): boolean {
     return !this.entityId;
   }
 
-  NEW_CUSTOMER_ID = 'new_customer_id' as string | null;
+  NEW_CUSTOMER_ID = null as string | null;
   defaultOptions = [ { display: '<New Customer>', value: this.NEW_CUSTOMER_ID } ] as SelectListOption[];
 
   //Use the arrow pattern here so that we can pass this function as a delegate to another component
@@ -69,7 +69,7 @@ export class WorkRequestForm extends EntityFormBase<WorkRequest> implements OnIn
   private getFormGroup(payload: WorkRequest) {
     const initialCustomerName = this.entityId ? payload.customer.name : '';
     return new FormGroup({
-      customerId: new FormControl<string | null>(this.NEW_CUSTOMER_ID),
+      customerId: new FormControl<SelectListOption | null>(this.defaultOptions[0] ?? null),
       customerName: new FormControl<string>(initialCustomerName),
       name: new FormControl(payload.name, [ Validators.required ]),
       description: new FormControl(payload.description),
