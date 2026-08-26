@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { CreateCustomerAndWorkRequest, WorkRequestCreateEdit } from '../poco/endpoint-request-bodies';
-import { WorkRequest } from '../poco/models';
+import { Customer, WorkRequest } from '../poco/models';
 import { ValidationFailures } from '../poco/validation-failures';
 import { apiUrl } from './api-url';
 import { BaseHttpClient } from './base-http-client';
@@ -15,6 +15,10 @@ export class WorkRequestClient extends BaseHttpClient {
 
   getWorkRequest(workRequestId: number) {
     return this.requestValidatedPayload<WorkRequest>(`${apiUrl}workrequest/${workRequestId}`);
+  }
+
+  searchCustomers(name: string, count: number) {
+    return this.requestValidatedPayload<Customer[]>(`${apiUrl}customer?name=${encodeURIComponent(name)}&count=${count}`);
   }
 
   postCustomerWithWorkRequestForm(body: CreateCustomerAndWorkRequest) {
