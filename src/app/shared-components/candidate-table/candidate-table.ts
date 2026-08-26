@@ -42,7 +42,7 @@ export class CandidateTable implements OnInit, OnDestroy {
     this.httpClient.getAllSkills()
       .subscribe(pageData => {
         const options = pageData.data.map(d => (
-          { display: d.skillName, value: d.skillTagId.toString() } as SelectListOption
+          { display: d.skillName, id: d.skillTagId.toString() } as SelectListOption
         ));
         this.skillTagOptions.set(options);
       })

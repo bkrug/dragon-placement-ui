@@ -1,8 +1,8 @@
 import { SelectListOption } from '../app/local-form/local-fields';
 
 export const globalFightingSkillOptions = [
-  { value: null, display: 'Select Skill Level...' },
-  { value: 'b',  display: 'Basic' },
-  { value: 'm',  display: 'Medium' },
-  { value: 'a',  display: 'Advanced' }
+  { id: null, display: 'Select Skill Level...' },
+  { id: 'b',  display: 'Basic' },
+  { id: 'm',  display: 'Medium' },
+  { id: 'a',  display: 'Advanced' }
 ] as SelectListOption[];

@@ -20,7 +20,7 @@ export interface FieldError {
 
 export interface SelectListOption {
   display: string;
-  value: string | null;
+  id: string | null;
 }
 
 export interface TagOption {
@@ -268,11 +268,6 @@ export class LocalCustomerIdField extends LocalFieldBase<SelectListOption> {
   search(event: AutoCompleteCompleteEvent) {
     this.querySubject.next(event.query);
   }
-
-  //PrimeNG's AutoComplete unwraps an option to its own "value" property when no optionValue is bound,
-  //which collides with SelectListOption's "value" field. Binding an identity function keeps the whole option.
-  //PrimeNG's optionValue type is typed as returning a string, but at runtime it accepts any resolved value.
-  identity = (option: SelectListOption) => option as unknown as string;
 
   fieldControl = input.required<AbstractControl<SelectListOption | null, SelectListOption | null, string> | null>();
   override getFieldControl() {

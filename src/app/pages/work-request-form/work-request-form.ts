@@ -24,7 +24,7 @@ import { LocalCustomerIdField, LocalNumberField, LocalStringDateField, LocalSubm
 export class WorkRequestForm extends EntityFormBase<WorkRequest> implements OnInit, OnDestroy {
   httpClient = inject(WorkRequestClient);
 
-  get customerId(): string | null { return this.formGroup().get('customerId')?.value?.value || null; }
+  get customerId(): string | null { return this.formGroup().get('customerId')?.value?.id || null; }
 
   constructor() {
     super('workRequestId');
@@ -40,7 +40,7 @@ export class WorkRequestForm extends EntityFormBase<WorkRequest> implements OnIn
   }
 
   toSelectOption(customer: Customer): SelectListOption {
-    return { display: customer.name, value: String(customer.customerId) };
+    return { display: customer.name, id: String(customer.customerId) };
   }
 
   ngOnDestroy(): void {
@@ -48,7 +48,7 @@ export class WorkRequestForm extends EntityFormBase<WorkRequest> implements OnIn
   }
 
   get isCustomerNameEditable(): boolean {
-    return this.formGroup().get('customerId')?.value?.value === this.NEW_CUSTOMER_ID && !this.entityId;
+    return this.formGroup().get('customerId')?.value?.id === this.NEW_CUSTOMER_ID && !this.entityId;
   }
 
   get isCustomerChangeable(): boolean {
@@ -56,7 +56,7 @@ export class WorkRequestForm extends EntityFormBase<WorkRequest> implements OnIn
   }
 
   NEW_CUSTOMER_ID = null as string | null;
-  defaultOptions = [ { display: '<New Customer>', value: this.NEW_CUSTOMER_ID } ] as SelectListOption[];
+  defaultOptions = [ { display: '<New Customer>', id: this.NEW_CUSTOMER_ID } ] as SelectListOption[];
 
   //Use the arrow pattern here so that we can pass this function as a delegate to another component
   requeryCustomers = (partialName: string) => {

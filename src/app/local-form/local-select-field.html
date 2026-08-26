@@ -1,5 +1,5 @@
 <div [formGroup]="formGroup()">
   <label for="{{fieldName()}}">{{label()}}</label>
-  <p-select inputId="{{fieldName()}}" formControlName="{{fieldName()}}" [options]="options()" [invalid]="isInvalid()" optionLabel="display" optionValue="value" class="w-full md:w-56" />
+  <p-select inputId="{{fieldName()}}" formControlName="{{fieldName()}}" [options]="options()" [invalid]="isInvalid()" optionLabel="display" optionValue="id" class="w-full md:w-56" />
   <app-local-field-errors [errors]="getErrors()" [shouldDisplay]="shouldDisplayError()" />
 </div>

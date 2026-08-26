@@ -24,7 +24,7 @@ export class PayPeriodCreate implements OnInit, OnDestroy {
   candidateOptions = computed<SelectListOption[]>(() =>
     this.candidates().map(c => ({
       display: `${c.startDate} - ${c.endDate}`,
-      value: c.startDate.toString(),
+      id: c.startDate.toString(),
     }))
   );
 

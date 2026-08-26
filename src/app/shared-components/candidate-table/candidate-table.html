@@ -19,11 +19,11 @@
       <span>Filter:</span>
       <div>
         Skills: 
-        <p-multiselect [options]="skillTagOptions()" [(ngModel)]="skillTagFilter" optionLabel="display" optionValue="value" (onChange)="forcePageLoad()" />
+        <p-multiselect [options]="skillTagOptions()" [(ngModel)]="skillTagFilter" optionLabel="display" optionValue="id" (onChange)="forcePageLoad()" />
       </div>
       <div>
         Fighting Skill:
-        <p-select [options]="fightingSkillOptions()" [(ngModel)]="fightingSkillFilter" optionLabel="display" optionValue="value" (onChange)="forcePageLoad()" />
+        <p-select [options]="fightingSkillOptions()" [(ngModel)]="fightingSkillFilter" optionLabel="display" optionValue="id" (onChange)="forcePageLoad()" />
       </div>
       <p-button label="Clear" (onClick)="clearFilter()" />
     </div>

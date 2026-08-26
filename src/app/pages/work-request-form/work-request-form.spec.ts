@@ -120,7 +120,7 @@ describe('Work Request Form Tests', () => {
 
     //Act: fill out and submit the form
     component.formGroup().get('name')?.setValue('Egg Sitting');
-    component.formGroup().get('customerId')?.setValue({ display: 'The Sky', value: '5' });
+    component.formGroup().get('customerId')?.setValue({ display: 'The Sky', id: '5' });
     component.onSubmit();
     await fixture.whenStable();
 
@@ -262,7 +262,7 @@ describe('Work Request Form Tests', () => {
     await fixture.whenStable();
 
     //Act: select an existing customer and submit
-    component.formGroup().get('customerId')?.setValue({ display: 'The Ocean', value: '4' });
+    component.formGroup().get('customerId')?.setValue({ display: 'The Ocean', id: '4' });
     component.formGroup().get('name')?.setValue('Dragon Wrangling');
     component.onSubmit();
     await fixture.whenStable();
