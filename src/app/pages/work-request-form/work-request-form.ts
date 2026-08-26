@@ -24,10 +24,14 @@ import { LocalCustomerIdField, LocalNumberField, LocalStringDateField, LocalSubm
 export class WorkRequestForm extends EntityFormBase<WorkRequest> implements OnInit, OnDestroy {
   httpClient = inject(WorkRequestClient);
 
-  get customerId(): string | null { return this.formGroup().get('customerId')?.value?.id || null; }
+  get customerId(): string | null { return this.customerField()?.value?.id || null; }
 
   constructor() {
     super('workRequestId');
+  }
+
+  private customerField() {
+    return this.formGroup().get('customerId');
   }
 
   ngOnInit(): void {
@@ -35,7 +39,7 @@ export class WorkRequestForm extends EntityFormBase<WorkRequest> implements OnIn
       this.httpClient.getWorkRequest(this.entityId)
         .subscribe(validatedResponse => {
           this.formGroup.set(this.getFormGroup(validatedResponse.payload));
-          this.formGroup().get('customerId')?.setValue(null);
+          this.customerField()?.setValue(null);
         });
   }
 
@@ -48,7 +52,7 @@ export class WorkRequestForm extends EntityFormBase<WorkRequest> implements OnIn
   }
 
   get isCustomerNameEditable(): boolean {
-    return this.formGroup().get('customerId')?.value?.id === this.NEW_CUSTOMER_ID && !this.entityId;
+    return this.customerField()?.value?.id === this.NEW_CUSTOMER_ID && !this.entityId;
   }
 
   get isCustomerChangeable(): boolean {
