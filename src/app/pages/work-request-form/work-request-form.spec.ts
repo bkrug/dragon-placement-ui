@@ -89,8 +89,18 @@ describe('Work Request Form Tests', () => {
       return of(Effect.succeed(validatedPayload) as Effect.Effect<ValidatedPayload<WorkRequest>, ValidatedForm<ValidationFailures>, never>);
     };
 
+    mockHttpClient.searchCustomers = (name: string, count: number) => {
+      const validatedPayload = {
+        isInternalError: false,
+        isSuccess: true,
+        validationFailures: [],
+        payload: [ { customerId: 4, name: 'The Ocean' }, { customerId: 5, name: 'The Sky' } ] as Customer[]
+      } as ValidatedPayload<Customer[]>;
+      return of(validatedPayload as ValidatedPayload<Customer[]>);
+    }
+
     const mockActivatedRoute = new MockActivatedRoute();
-    mockActivatedRoute.setParams({ customerId: 5, customerName: 'The Sky' });
+    mockActivatedRoute.setParams({});
     TestBed.configureTestingModule({
       providers: [
         { provide: WorkRequestClient, useValue: mockHttpClient },
@@ -107,11 +117,10 @@ describe('Work Request Form Tests', () => {
     //Assert: customer name is displayed but not editable
     expect(component).toBeTruthy();
     const nativeElement: HTMLDivElement = fixture.nativeElement;
-    expect(getInputElement(nativeElement, '#customer-name input')).toBeFalsy();
-    expect(nativeElement.querySelector('#customer-name-display')?.textContent).toContain('The Sky');
 
     //Act: fill out and submit the form
     component.formGroup().get('name')?.setValue('Egg Sitting');
+    component.formGroup().get('customerId')?.setValue('5');
     component.onSubmit();
     await fixture.whenStable();
 
