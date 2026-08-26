@@ -2,15 +2,10 @@
 
 <div class="card flex justify-center">
   <form [formGroup]="formGroup()" (ngSubmit)="onSubmit()" (focusin)="onFormFocus()">
+    <app-local-select-field id="customer-id" label="Customer:" fieldName="customerId" [formGroup]="formGroup()" [fieldControl]="formGroup().get('customerId')" [options]="customers()" />
     @if (isCustomerNameEditable) {
       <app-local-text-field id="customer-name" label="Customer Name:" fieldName="customerName" [formGroup]="formGroup()" [fieldControl]="formGroup().get('customerName')" />
-    } @else {
-      <div id="customer-name-display" class="local-field-display">
-        <label>Customer Name:</label>
-        <span>{{ formGroup().get('customerName')?.value }}</span>
-      </div>
     }
-    <app-local-select-field id="customer-id" label="Customer:" fieldName="customerId" [formGroup]="formGroup()" [fieldControl]="formGroup().get('customerId')" [options]="customers()" />
     <app-local-text-field id="work-request-name" label="Work Request Name:" fieldName="name" [formGroup]="formGroup()" [fieldControl]="formGroup().get('name')" />
     <app-local-text-area-field id="description" label="Description:" fieldName="description" [formGroup]="formGroup()" [fieldControl]="formGroup().get('description')" />
     <app-local-string-date-field id="estimated-start-date" label="Estimated Start Date:" fieldName="estimatedStartDate" [formGroup]="formGroup()" [fieldControl]="formGroup().get('estimatedStartDate')" />

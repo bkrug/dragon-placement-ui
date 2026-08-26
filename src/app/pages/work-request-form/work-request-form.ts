@@ -18,9 +18,8 @@ export class WorkRequestForm extends EntityFormBase<WorkRequest> implements OnIn
   private route = inject(ActivatedRoute);
 
   private routeParams: Params = {};
-  private routeParamsSubscription = this.route.params.subscribe(params => this.routeParams = params);
 
-  get customerId(): number | null { return this.routeParams['customerId'] || null; }
+  get customerId(): string | null { return this.formGroup().get('customerId')?.value || null; }
   get urlCustomerName(): string { return this.routeParams['customerName'] || ''; }
 
   constructor() {
@@ -30,14 +29,24 @@ export class WorkRequestForm extends EntityFormBase<WorkRequest> implements OnIn
   customers = signal<SelectListOption[]>([]);
 
   ngOnInit(): void {
+    this.setCutomerIdField();
+
     this.httpClient.searchCustomers('', 20)
-      .subscribe(validatedResponse => this.customers.set(validatedResponse.payload.map(this.toSelectOption)));
+      .subscribe(validatedResponse => {
+        this.customers.set(validatedResponse.payload.map(this.toSelectOption));
+        this.setCutomerIdField();
+      });
 
     if (this.entityId)
       this.httpClient.getWorkRequest(this.entityId)
         .subscribe(validatedResponse => {
           this.formGroup.set(this.getFormGroup(validatedResponse.payload));
         });
+  }
+
+  private setCutomerIdField() {
+    if (this.routeParams['customerId'])
+      this.formGroup().get('customerId')?.setValue(this.routeParams['customerId']);
   }
 
   toSelectOption(customer: Customer): SelectListOption {
@@ -49,7 +58,7 @@ export class WorkRequestForm extends EntityFormBase<WorkRequest> implements OnIn
   }
 
   get isCustomerNameEditable(): boolean {
-    return !this.customerId && !this.entityId;
+    return !this.formGroup().get('customerId')?.value && !this.entityId;
   }
 
   private getFormGroup(payload: WorkRequest) {
@@ -94,6 +103,7 @@ export class WorkRequestForm extends EntityFormBase<WorkRequest> implements OnIn
     }
     
     else {
+      let customerId = parseInt(this.customerId);
       const body = {
         name: values.name!,
         description: values.description || '',
@@ -101,7 +111,7 @@ export class WorkRequestForm extends EntityFormBase<WorkRequest> implements OnIn
         estimatedEndDate: values.estimatedEndDate,
         estimatedWorkforceSize: values.estimatedWorkforceSize!,
       } as WorkRequestCreateEdit;
-      return this.httpClient.postWorkRequestForm(this.customerId!, body);
+      return this.httpClient.postWorkRequestForm(customerId, body);
     }
   }
 
