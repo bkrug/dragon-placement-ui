@@ -3,6 +3,8 @@ import { catchError, Observable, of, Subject, switchMap, takeUntil } from 'rxjs'
 import { fromFetch } from 'rxjs/fetch';
 import { PagedData, ValidatedForm, ValidatedPayload, ValidatedResponse } from '../poco/standard-responses';
 
+//TODO: Research if usings async/await in the various switchMap() calls will improve thi code.
+//AI claims it will, but I couldn't tell if it knew what it was talking about.
 export class BaseHttpClient {
   private readonly unsubscribeSubject = new Subject<void>();
 
