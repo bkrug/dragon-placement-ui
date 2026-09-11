@@ -11,6 +11,8 @@ import { CandidateTable } from '../../shared-components/candidate-table/candidat
 @Component({
   selector: 'app-manage-job',
   imports: [DatePipe, AssignedDragonTable, CandidateTable, RouterLink],
+  //TODO: uncomment the below code in order to ensure that difference componets will have different instances of shared dependencies.
+  //providers: [AssignmentHttpClient, ActivatedRoute],
   templateUrl: './manage-job.html',
   styleUrl: './manage-job.scss',
 })
@@ -24,6 +26,7 @@ export class ManageJob implements OnInit, OnDestroy {
   DragonTableType = DragonTableType;
 
   ngOnInit() {
+    //TODO: Consider making HTTP requests from rxResource() instead of ngOnInit()
     this.activatedRoute.params.subscribe(params => {
       const jobId = params['jobId'] || null;
       this.httpClient.getJob(jobId).subscribe(validatedPayload => {

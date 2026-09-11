@@ -18,6 +18,8 @@ import { LocalCustomerIdField, LocalNumberField, LocalStringDateField, LocalSubm
     LocalSubmitButton,
     LocalCustomerIdField
   ],
+  //TODO: uncomment the below code in order to ensure that difference componets will have different instances of shared dependencies.
+  //providers: [WorkRequestClient],
   templateUrl: './work-request-form.html',
   styleUrl: './work-request-form.scss',
 })
@@ -46,6 +48,7 @@ export class WorkRequestForm extends EntityFormBase<WorkRequest> implements OnIn
   }
 
   ngOnInit(): void {
+    //TODO: Consider making HTTP requests from rxResource() instead of ngOnInit()
     if (this.entityId)
       this.httpClient.getWorkRequest(this.entityId)
         .subscribe(validatedResponse => {

@@ -13,6 +13,8 @@ import { DisplayJob } from '../../../poco/models';
 @Component({
   selector: 'app-job-list',
   imports: [TableModule, DatePipe, RouterLink, SelectModule, FormsModule],
+  //TODO: uncomment the below code in order to ensure that difference componets will have different instances of shared dependencies.
+  //providers: [AssignmentHttpClient],
   templateUrl: './job-list.html',
   styleUrl: './job-list.scss',
 })

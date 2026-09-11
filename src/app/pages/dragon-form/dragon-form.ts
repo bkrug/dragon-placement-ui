@@ -11,6 +11,8 @@ import { LocalNumberField, LocalSelectField, LocalSubmitButton, LocalTagField, L
 @Component({
   selector: 'app-dragon-form',
   imports: [ ReactiveFormsModule, LocalTextField, LocalNumberField, LocalSelectField, LocalSubmitButton, LocalTagField ],
+  //TODO: uncomment the below code in order to ensure that difference componets will have different instances of shared dependencies.
+  //providers: [AssignmentHttpClient],
   templateUrl: './dragon-form.html',
   styleUrl: './dragon-form.scss',
 })
@@ -22,6 +24,7 @@ export class DragonForm extends EntityFormBase<Dragon> implements OnInit, OnDest
   }
 
   ngOnInit(): void {
+    //TODO: Consider making HTTP requests from rxResource() instead of ngOnInit()
     this.httpClient.getAllSkills()
       .subscribe(pagedData => this.skillTags.set(pagedData.data.map(this.toTagOption)));
     if (this.entityId)

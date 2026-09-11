@@ -25,6 +25,8 @@ import { getErrorsFromControl, LocalFieldErrors, LocalStringDateField, LocalStri
     LocalStringTimeField,
     LocalFieldErrors,
     LocalSubmitButton],
+  //TODO: uncomment the below code in order to ensure that difference componets will have different instances of shared dependencies.
+  //providers: [HoursWorkedClient, ActivatedRoute],
   templateUrl: './pay-period-form.html',
   styleUrl: './pay-period-form.scss',
 })
@@ -57,6 +59,7 @@ export class PayPeriodForm extends EntityFormBase<PayPeriod> implements OnInit, 
   }
 
   ngOnInit(): void {
+    //TODO: Consider making HTTP requests from rxResource() instead of ngOnInit()
     if (this.entityId) {
       this.httpClient.getPayPeriod(this.entityId)
         .subscribe(r => this.initializeForm(r.payload));

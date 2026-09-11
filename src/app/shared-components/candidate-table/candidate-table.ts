@@ -14,6 +14,8 @@ import { SelectListOption } from '../../local-form/local-fields';
 @Component({
   selector: 'app-candidate-table',
   imports: [ TableModule, ButtonModule, SelectModule, FormsModule, MultiSelectModule, RouterLink ],
+  //TODO: uncomment the below code in order to ensure that difference componets will have different instances of shared dependencies.
+  //providers: [AssignmentHttpClient],
   templateUrl: './candidate-table.html',
   styleUrl: './candidate-table.scss',
 })
@@ -38,6 +40,7 @@ export class CandidateTable implements OnInit, OnDestroy {
   fightingSkillFilter = signal(null as string | null);
 
   ngOnInit(): void {
+    //TODO: Consider making HTTP requests from rxResource() instead of ngOnInit()
     this.forcePageLoad();
     this.httpClient.getAllSkills()
       .subscribe(pageData => {

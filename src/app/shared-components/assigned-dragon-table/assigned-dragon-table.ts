@@ -10,6 +10,8 @@ import { ValidatedResponse } from '../../../poco/standard-responses';
 @Component({
   selector: 'app-assigned-dragon-table',
   imports: [TableModule, ButtonModule, RouterLink],
+  //TODO: uncomment the below code in order to ensure that difference componets will have different instances of shared dependencies.
+  //providers: [AssignmentHttpClient],
   templateUrl: './assigned-dragon-table.html',
   styleUrl: './assigned-dragon-table.scss',
 })
@@ -27,6 +29,7 @@ export class AssignedDragonTable implements OnInit, OnDestroy {
   readonly pageSize = PAGE_SIZE;
 
   ngOnInit(): void {
+    //TODO: Consider making HTTP requests from rxResource() instead of ngOnInit()
     this.forcePageLoad();
   }
 

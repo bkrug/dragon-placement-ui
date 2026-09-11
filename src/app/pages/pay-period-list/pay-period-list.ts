@@ -9,6 +9,8 @@ import { PayPeriod } from '../../../poco/models';
 @Component({
   selector: 'app-pay-period-list',
   imports: [TableModule, RouterLink, DatePipe],
+  //TODO: uncomment the below code in order to ensure that difference componets will have different instances of shared dependencies.
+  //providers: [HoursWorkedClient, ActivatedRoute],
   templateUrl: './pay-period-list.html',
   styleUrl: './pay-period-list.scss',
 })

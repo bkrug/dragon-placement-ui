@@ -12,6 +12,8 @@ import { PagedData, ValidatedResponse } from '../../../poco/standard-responses';
 @Component({
   selector: 'app-dragon-table',
   imports: [ TableModule, ButtonModule, RouterLink ],
+  //TODO: uncomment the below code in order to ensure that difference componets will have different instances of shared dependencies.
+  //providers: [AssignmentHttpClient],
   templateUrl: './dragon-table.html',
   styleUrl: './dragon-table.scss',
 })
@@ -33,6 +35,7 @@ export class DragonTable implements OnInit, OnDestroy {
   DragonTableType = DragonTableType;
 
   ngOnInit(): void {
+    //TODO: Consider making HTTP requests from rxResource() instead of ngOnInit()
     this.forcePageLoad();
   }
 

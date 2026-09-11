@@ -11,6 +11,8 @@ import { Assignment, DisplayDragon } from '../../../poco/models';
 @Component({
   selector: 'app-dragon-view',
   imports: [ TableModule, RouterLink, DatePipe ],
+  //TODO: uncomment the below code in order to ensure that difference componets will have different instances of shared dependencies.
+  //providers: [AssignmentHttpClient, ActivatedRoute],
   templateUrl: './dragon-view.html',
   styleUrl: './dragon-view.scss',
 })
@@ -31,6 +33,7 @@ export class DragonView implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    //TODO: Consider making HTTP requests from rxResource() instead of ngOnInit()
     this.dragonHttpClient.getDragonWithJobs(this.dragonId, JobInclusions.CurrentAndFuture)
       .subscribe(validatedResponse => {
         this.dragon.set(mapDragonToDisplayDragon(validatedResponse.payload));

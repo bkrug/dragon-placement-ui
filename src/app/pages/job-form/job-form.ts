@@ -10,6 +10,8 @@ import { LocalNumberField, LocalStringDateField, LocalSubmitButton, LocalTagFiel
 @Component({
   selector: 'app-job-form',
   imports: [ ReactiveFormsModule, LocalStringDateField, LocalNumberField, LocalTextField, LocalSubmitButton, LocalTagField ],
+  //TODO: uncomment the below code in order to ensure that difference componets will have different instances of shared dependencies.
+  //providers: [AssignmentHttpClient],
   templateUrl: './job-form.html',
   styleUrl: './job-form.scss',
 })
@@ -21,6 +23,7 @@ export class JobForm extends EntityFormBase<Job> implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    //TODO: Consider making HTTP requests from rxResource() instead of ngOnInit()
     this.httpClient.getAllSkills()
       .subscribe(pagedData => this.skillTags.set(pagedData.data.map(this.toTagOption)));
     if (this.entityId)
