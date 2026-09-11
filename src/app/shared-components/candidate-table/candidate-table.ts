@@ -22,7 +22,7 @@ export class CandidateTable implements OnInit, OnDestroy {
 
   selectedJob = input<DisplayJob | null>();
 
-  //TODO: Why not use output() here instead of @Output()?
+  //TODO: Why not use output<void>() here instead of @Output()?
   @Output() assignedDragon = new EventEmitter();
 
   dragons = signal<Dragon[]>([]);
