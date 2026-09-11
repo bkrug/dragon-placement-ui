@@ -6,6 +6,7 @@ import { apiUrl } from './api-url';
 import { BaseHttpClient } from './base-http-client';
 
 @Injectable({
+  //TODO: This class should probably be injected at the component level, remove "providedIn: root"
   providedIn: 'root',
 })
 export class HoursWorkedClient extends BaseHttpClient {
