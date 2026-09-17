@@ -10,13 +10,12 @@ import { LocalNumberField, LocalStringDateField, LocalSubmitButton, LocalTagFiel
 @Component({
   selector: 'app-job-form',
   imports: [ ReactiveFormsModule, LocalStringDateField, LocalNumberField, LocalTextField, LocalSubmitButton, LocalTagField ],
-  //TODO: uncomment the below code in order to ensure that difference componets will have different instances of shared dependencies.
-  //providers: [AssignmentHttpClient],
+  providers: [ AssignmentHttpClient ],
   templateUrl: './job-form.html',
   styleUrl: './job-form.scss',
 })
 export class JobForm extends EntityFormBase<Job> implements OnInit, OnDestroy {
-  httpClient = inject(AssignmentHttpClient);
+  private httpClient = inject(AssignmentHttpClient);
 
   constructor() {
     super('jobId');

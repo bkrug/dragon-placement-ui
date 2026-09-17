@@ -12,13 +12,12 @@ import { PagedData, ValidatedResponse } from '../../../poco/standard-responses';
 @Component({
   selector: 'app-dragon-table',
   imports: [ TableModule, ButtonModule, RouterLink ],
-  //TODO: uncomment the below code in order to ensure that difference componets will have different instances of shared dependencies.
-  //providers: [AssignmentHttpClient],
+  providers: [ AssignmentHttpClient ],
   templateUrl: './dragon-table.html',
   styleUrl: './dragon-table.scss',
 })
 export class DragonTable implements OnInit, OnDestroy {
-  httpClient = inject(AssignmentHttpClient);
+  private httpClient = inject(AssignmentHttpClient);
 
   selectedJob = input<DisplayJob | null>();
   dragonTableType = input<DragonTableType>();

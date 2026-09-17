@@ -6,10 +6,7 @@ import { ValidationFailures } from '../poco/validation-failures';
 import { apiUrl } from './api-url';
 import { BaseHttpClient } from './base-http-client';
 
-@Injectable({
-  //TODO: This class should probably be injected at the component level, remove "providedIn: root"
-  providedIn: 'root',
-})
+@Injectable()
 export class AssignmentHttpClient extends BaseHttpClient {
   getOnePageOfJobs(offset: number, limit: number, jobInclusions: JobInclusions) {
     return this.getOnePage<Job>(`${apiUrl}job?offset=${offset}&limit=${limit}&jobInclusions=${jobInclusions}`);

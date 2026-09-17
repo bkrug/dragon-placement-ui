@@ -11,13 +11,12 @@ import { Assignment, DisplayDragon } from '../../../poco/models';
 @Component({
   selector: 'app-dragon-view',
   imports: [ TableModule, RouterLink, DatePipe ],
-  //TODO: uncomment the below code in order to ensure that difference componets will have different instances of shared dependencies.
-  //providers: [AssignmentHttpClient, ActivatedRoute],
+  providers: [ AssignmentHttpClient ],
   templateUrl: './dragon-view.html',
   styleUrl: './dragon-view.scss',
 })
 export class DragonView implements OnInit, OnDestroy {
-  dragonHttpClient = inject(AssignmentHttpClient);
+  private dragonHttpClient = inject(AssignmentHttpClient);
   private activatedRoute = inject(ActivatedRoute);
 
   private dragonId: number = 0;

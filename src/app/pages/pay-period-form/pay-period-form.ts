@@ -26,7 +26,7 @@ import { getErrorsFromControl, LocalFieldErrors, LocalStringDateField, LocalStri
     LocalFieldErrors,
     LocalSubmitButton],
   //TODO: uncomment the below code in order to ensure that difference componets will have different instances of shared dependencies.
-  //providers: [HoursWorkedClient, ActivatedRoute],
+  //providers: [ HoursWorkedClient ],
   templateUrl: './pay-period-form.html',
   styleUrl: './pay-period-form.scss',
 })

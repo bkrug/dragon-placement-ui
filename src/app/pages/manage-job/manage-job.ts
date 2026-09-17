@@ -11,8 +11,7 @@ import { CandidateTable } from '../../shared-components/candidate-table/candidat
 @Component({
   selector: 'app-manage-job',
   imports: [DatePipe, AssignedDragonTable, CandidateTable, RouterLink],
-  //TODO: uncomment the below code in order to ensure that difference componets will have different instances of shared dependencies.
-  //providers: [AssignmentHttpClient, ActivatedRoute],
+  providers: [ AssignmentHttpClient ],
   templateUrl: './manage-job.html',
   styleUrl: './manage-job.scss',
 })

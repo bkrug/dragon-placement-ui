@@ -11,13 +11,12 @@ import { LocalNumberField, LocalSelectField, LocalSubmitButton, LocalTagField, L
 @Component({
   selector: 'app-dragon-form',
   imports: [ ReactiveFormsModule, LocalTextField, LocalNumberField, LocalSelectField, LocalSubmitButton, LocalTagField ],
-  //TODO: uncomment the below code in order to ensure that difference componets will have different instances of shared dependencies.
-  //providers: [AssignmentHttpClient],
+  providers: [ AssignmentHttpClient ],
   templateUrl: './dragon-form.html',
   styleUrl: './dragon-form.scss',
 })
 export class DragonForm extends EntityFormBase<Dragon> implements OnInit, OnDestroy {
-  httpClient = inject(AssignmentHttpClient);
+  private httpClient = inject(AssignmentHttpClient);
 
   constructor() {
     super('dragonId');

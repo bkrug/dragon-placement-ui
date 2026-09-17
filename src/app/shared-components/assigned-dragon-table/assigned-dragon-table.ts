@@ -9,14 +9,13 @@ import { ValidatedResponse } from '../../../poco/standard-responses';
 
 @Component({
   selector: 'app-assigned-dragon-table',
-  imports: [TableModule, ButtonModule, RouterLink],
-  //TODO: uncomment the below code in order to ensure that difference componets will have different instances of shared dependencies.
-  //providers: [AssignmentHttpClient],
+  imports: [ TableModule, ButtonModule, RouterLink ],
+  providers: [ AssignmentHttpClient ],
   templateUrl: './assigned-dragon-table.html',
   styleUrl: './assigned-dragon-table.scss',
 })
 export class AssignedDragonTable implements OnInit, OnDestroy {
-  httpClient = inject(AssignmentHttpClient);
+  private httpClient = inject(AssignmentHttpClient);
 
   selectedJob = input<DisplayJob | null>();
 

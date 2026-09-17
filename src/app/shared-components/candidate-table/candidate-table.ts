@@ -14,13 +14,12 @@ import { SelectListOption } from '../../local-form/local-fields';
 @Component({
   selector: 'app-candidate-table',
   imports: [ TableModule, ButtonModule, SelectModule, FormsModule, MultiSelectModule, RouterLink ],
-  //TODO: uncomment the below code in order to ensure that difference componets will have different instances of shared dependencies.
-  //providers: [AssignmentHttpClient],
+  providers: [ AssignmentHttpClient ],
   templateUrl: './candidate-table.html',
   styleUrl: './candidate-table.scss',
 })
 export class CandidateTable implements OnInit, OnDestroy {
-  httpClient = inject(AssignmentHttpClient);
+  private httpClient = inject(AssignmentHttpClient);
 
   selectedJob = input<DisplayJob | null>();
 

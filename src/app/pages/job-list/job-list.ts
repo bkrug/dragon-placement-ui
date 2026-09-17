@@ -13,13 +13,12 @@ import { DisplayJob } from '../../../poco/models';
 @Component({
   selector: 'app-job-list',
   imports: [TableModule, DatePipe, RouterLink, SelectModule, FormsModule],
-  //TODO: uncomment the below code in order to ensure that difference componets will have different instances of shared dependencies.
-  //providers: [AssignmentHttpClient],
+  providers: [ AssignmentHttpClient ],
   templateUrl: './job-list.html',
   styleUrl: './job-list.scss',
 })
 export class JobList implements OnInit, OnDestroy {
-  httpClient = inject(AssignmentHttpClient);
+  private httpClient = inject(AssignmentHttpClient);
 
   jobs = signal<DisplayJob[]>([]);
   totalRecords = signal(0);
