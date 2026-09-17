@@ -5,10 +5,7 @@ import { ValidationFailures } from '../poco/validation-failures';
 import { apiUrl } from './api-url';
 import { BaseHttpClient } from './base-http-client';
 
-@Injectable({
-  //TODO: This class should probably be injected at the component level, remove "providedIn: root"
-  providedIn: 'root',
-})
+@Injectable()
 export class HoursWorkedClient extends BaseHttpClient {
   getOnePageOfPayPeriods(assignmentId: number, offset: number, limit: number) {
     return this.getOnePage<PayPeriod>(`${apiUrl}dragon/0/assignment/${assignmentId}/payperiod?offset=${offset}&limit=${limit}`);

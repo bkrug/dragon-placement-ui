@@ -10,8 +10,7 @@ import { PayPeriodForm } from '../pay-period-form/pay-period-form';
 @Component({
   selector: 'app-pay-period-create',
   imports: [SelectModule, PayPeriodForm],
-  //TODO: uncomment the below code in order to ensure that difference componets will have different instances of shared dependencies.
-  //providers: [ HoursWorkedClient ],
+  providers: [ HoursWorkedClient ],
   templateUrl: './pay-period-create.html',
   styleUrl: './pay-period-create.scss',
 })
