@@ -1,4 +1,4 @@
-import { Component, EventEmitter, inject, input, OnDestroy, OnInit, Output, signal } from '@angular/core';
+import { Component, inject, input, OnDestroy, OnInit, output, OutputEmitterRef, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { TableLazyLoadEvent, TableModule } from 'primeng/table';
@@ -23,8 +23,8 @@ export class DragonTable implements OnInit, OnDestroy {
   dragonTableType = input<DragonTableType>();
 
   //TODO: Why not use output() here instead of @Output()?
-  @Output() assignedDragon = new EventEmitter();
-  @Output() unassignedDragon = new EventEmitter();
+  assignedDragon = output<void>();
+  unassignedDragon = output<void>();
 
   dragons = signal<Dragon[]>([]);
   selectedDragon = signal<Dragon | null>(null);
@@ -86,7 +86,7 @@ export class DragonTable implements OnInit, OnDestroy {
   private executeDragonAction(
     dragonId: number,
     httpFunction: (dragonId: number, jobId: number) => Observable<ValidatedResponse>,
-    eventToEmit: EventEmitter<any>
+    eventToEmit: OutputEmitterRef<void>
   ) {
     if (this.selectedJob() === null)
       return;

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, inject, input, OnDestroy, OnInit, Output, signal } from '@angular/core';
+import { Component, inject, input, OnDestroy, OnInit, output, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
@@ -23,8 +23,7 @@ export class CandidateTable implements OnInit, OnDestroy {
 
   selectedJob = input<DisplayJob | null>();
 
-  //TODO: Why not use output<void>() here instead of @Output()?
-  @Output() assignedDragon = new EventEmitter();
+  assignedDragon = output<void>();
 
   dragons = signal<Dragon[]>([]);
   selectedDragon = signal<Dragon | null>(null);

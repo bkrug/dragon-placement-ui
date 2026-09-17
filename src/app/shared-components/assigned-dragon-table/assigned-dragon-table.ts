@@ -1,4 +1,4 @@
-import { Component, EventEmitter, inject, input, OnDestroy, OnInit, Output, signal } from '@angular/core';
+import { Component, inject, input, OnDestroy, OnInit, output, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { TableModule } from 'primeng/table';
@@ -19,8 +19,7 @@ export class AssignedDragonTable implements OnInit, OnDestroy {
 
   selectedJob = input<DisplayJob | null>();
 
-  //TODO: Why not use output<void>() here instead of @Output()?
-  @Output() unassignedDragon = new EventEmitter();
+  unassignedDragon = output<void>();
 
   dragons = signal<Dragon[]>([]);
   totalRecords = signal(0);
