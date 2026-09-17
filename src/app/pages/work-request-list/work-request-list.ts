@@ -10,8 +10,7 @@ import { WorkRequest } from '../../../poco/models';
 @Component({
   selector: 'app-work-request-list',
   imports: [TableModule, DatePipe, RouterLink],
-  //TODO: uncomment the below code in order to ensure that difference componets will have different instances of shared dependencies.
-  //providers: [WorkRequestClient],
+  providers: [ WorkRequestClient ],
   templateUrl: './work-request-list.html',
   styleUrl: './work-request-list.scss',
 })

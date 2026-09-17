@@ -18,8 +18,7 @@ import { LocalCustomerIdField, LocalNumberField, LocalStringDateField, LocalSubm
     LocalSubmitButton,
     LocalCustomerIdField
   ],
-  //TODO: uncomment the below code in order to ensure that difference componets will have different instances of shared dependencies.
-  //providers: [WorkRequestClient],
+  providers: [ WorkRequestClient ],
   templateUrl: './work-request-form.html',
   styleUrl: './work-request-form.scss',
 })
