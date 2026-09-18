@@ -1,5 +1,6 @@
 import { Component, computed, inject, OnDestroy, OnInit, signal } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { ActivatedRoute, Params } from '@angular/router';
 import { SelectModule } from 'primeng/select';
 import { HoursWorkedClient } from '../../../httpClients/hours-worked-http-client';
 import { ValidPaySpan } from '../../../poco/endpoint-request-bodies';
@@ -18,9 +19,6 @@ export class PayPeriodCreate implements OnInit, OnDestroy {
   private httpClient = inject(HoursWorkedClient);
   private route = inject(ActivatedRoute);
 
-  dragonId = signal(0);
-  assignmentId = signal(0);
-
   candidates = signal<ValidPaySpan[]>([]);
   candidateOptions = computed<SelectListOption[]>(() =>
     this.candidates().map(c => ({
@@ -31,12 +29,9 @@ export class PayPeriodCreate implements OnInit, OnDestroy {
 
   selectedCandidate = signal<PayPeriod | null>(null);
 
-  constructor() {
-    this.route.params.subscribe(params => {
-      this.dragonId.set(params['dragonId'] || 0);
-      this.assignmentId.set(params['assignmentId'] || 0);
-    });
-  }
+  private routeParams = toSignal(this.route.params, { initialValue: {} as Params });
+  private dragonId = computed(() => this.routeParams()['dragonId']);
+  private assignmentId = computed(() => this.routeParams()['assignmentId']);
 
   ngOnInit() {
     //TODO: Consider making HTTP requests from rxResource() instead of ngOnInit()
