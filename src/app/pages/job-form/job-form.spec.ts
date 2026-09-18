@@ -7,7 +7,7 @@ import { JobCreateEdit } from '../../../poco/endpoint-request-bodies';
 import { Job, SkillTag } from '../../../poco/models';
 import { PagedData, ValidatedForm, ValidatedPayload } from '../../../poco/standard-responses';
 import { ValidationFailures } from '../../../poco/validation-failures';
-import { getValidatedPayload } from '../../../testHelpers/get-validated-payload';
+import { getFailedValidatedForm, getValidatedPayload } from '../../../testHelpers/get-validated-payload';
 import { MockActivatedRoute } from '../../../testHelpers/MockActivatedRoute';
 import { JobForm } from './job-form';
 
@@ -188,11 +188,7 @@ describe('Job Form Tests', () => {
     };
 
     mockHttpClient.putJobForm = () => {
-      const failedForm: ValidatedForm<ValidationFailures> = {
-        isInternalError: false,
-        isSuccess: false,
-        validationFailures
-      };
+      const failedForm = getFailedValidatedForm(validationFailures);
       return of(Effect.fail(failedForm) as Effect.Effect<ValidatedPayload<Job>, ValidatedForm<ValidationFailures>, never>);
     };
 

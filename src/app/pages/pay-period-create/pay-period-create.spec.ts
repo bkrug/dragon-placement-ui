@@ -8,7 +8,7 @@ import { PayPeriodCreateEdit, ValidPaySpan } from '../../../poco/endpoint-reques
 import { PayPeriod } from '../../../poco/models';
 import { ValidatedForm, ValidatedPayload } from '../../../poco/standard-responses';
 import { GridRowValidationFailures, ValidationFailures } from '../../../poco/validation-failures';
-import { getValidatedPayload } from '../../../testHelpers/get-validated-payload';
+import { getFailedValidatedForm, getValidatedPayload } from '../../../testHelpers/get-validated-payload';
 import { MockActivatedRoute } from '../../../testHelpers/MockActivatedRoute';
 import { PayPeriodForm } from '../pay-period-form/pay-period-form';
 import { PayPeriodCreate } from './pay-period-create';
@@ -320,11 +320,7 @@ describe('Pay Period Create Tests', () => {
           ],
         },
       };
-      const failBody = {
-        isInternalError: false,
-        isSuccess: false,
-        validationFailures: failures
-      } as ValidatedForm<ValidationFailures>;
+      const failBody = getFailedValidatedForm(failures);
       return of(Effect.fail(failBody) as Effect.Effect<ValidatedPayload<PayPeriod>, ValidatedForm<ValidationFailures>, never>);
     };
 

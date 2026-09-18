@@ -7,7 +7,7 @@ import { DragonCreateEdit } from '../../../poco/endpoint-request-bodies';
 import { Dragon, SkillTag } from '../../../poco/models';
 import { PagedData, ValidatedForm, ValidatedPayload } from '../../../poco/standard-responses';
 import { ValidationFailures } from '../../../poco/validation-failures';
-import { getValidatedPayload } from '../../../testHelpers/get-validated-payload';
+import { getFailedValidatedForm, getValidatedPayload } from '../../../testHelpers/get-validated-payload';
 import { MockActivatedRoute } from '../../../testHelpers/MockActivatedRoute';
 import { DragonForm } from './dragon-form';
 
@@ -194,11 +194,7 @@ describe('Dragon Form Tests', () => {
     };
 
     mockHttpClient.putDragonForm = () => {
-      const failedForm: ValidatedForm<ValidationFailures> = {
-        isInternalError: false,
-        isSuccess: false,
-        validationFailures
-      };
+      const failedForm = getFailedValidatedForm(validationFailures);
       return of(Effect.fail(failedForm) as Effect.Effect<ValidatedPayload<Dragon>, ValidatedForm<ValidationFailures>, never>);
     };
 
