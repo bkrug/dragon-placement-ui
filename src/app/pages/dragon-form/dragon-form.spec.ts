@@ -1,5 +1,5 @@
-import { TestBed } from '@angular/core/testing';
-import { ActivatedRoute } from '@angular/router';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ActivatedRoute, Params } from '@angular/router';
 import { Effect } from 'effect';
 import { from, of } from 'rxjs';
 import { AssignmentHttpClient } from '../../../httpClients/assignment-http-client';
@@ -13,6 +13,27 @@ import { DragonForm } from './dragon-form';
 describe('Dragon Form Tests', () => {
   function getInputElement(nativeElement:HTMLDivElement, css:string) {
     return nativeElement.querySelector(css) as HTMLInputElement;
+  }
+
+  async function getFixture(mockHttpClient: AssignmentHttpClient, routeParams: Params = {}) {
+    const mockActivatedRoute = new MockActivatedRoute();
+    mockActivatedRoute.setParams(routeParams);
+    await TestBed
+      .overrideComponent(DragonForm, {
+        set: { providers: [{ provide: AssignmentHttpClient, useValue: mockHttpClient }] }
+      })    
+      .configureTestingModule({
+        imports: [ DragonForm ],
+        providers: [ { provide: ActivatedRoute, useValue: mockActivatedRoute } ]
+      })
+      .compileComponents();
+    return TestBed.createComponent(DragonForm);
+  }
+
+  async function getComponent(fixture: ComponentFixture<DragonForm>) {
+    const component = fixture.componentInstance;
+    await fixture.whenStable();
+    return component;
   }
 
   it('Load a blank Dragon Form for creation of a dragon', async () => {
@@ -60,22 +81,9 @@ describe('Dragon Form Tests', () => {
       } as PagedData<SkillTag>);
     };
 
-    const mockActivatedRoute = new MockActivatedRoute();
-    mockActivatedRoute.setParams({});
-    TestBed.overrideComponent(DragonForm, {
-      set: { providers: [{ provide: AssignmentHttpClient, useValue: mockHttpClient }] }
-    });
-
     //Act
-    await TestBed
-      .configureTestingModule({
-        imports: [DragonForm],
-        providers: [ { provide: ActivatedRoute, useValue: mockActivatedRoute } ]
-      })
-      .compileComponents();
-    const fixture = TestBed.createComponent(DragonForm);
-    const component = fixture.componentInstance;
-    await fixture.whenStable();
+    const fixture = await getFixture(mockHttpClient);
+    const component = await getComponent(fixture);
 
     //Assert: fields should be empty
     expect(component).toBeTruthy();
@@ -150,23 +158,9 @@ describe('Dragon Form Tests', () => {
       } as PagedData<SkillTag>);
     };
 
-    const mockActivatedRoute = new MockActivatedRoute();
-    const mockParams : Record<string, number> = { ['dragonId'] : recordId };
-    mockActivatedRoute.setParams(mockParams);
-    TestBed.overrideComponent(DragonForm, {
-      set: { providers: [{ provide: AssignmentHttpClient, useValue: mockHttpClient }] }
-    });
-
     //Act
-    await TestBed
-      .configureTestingModule({
-        imports: [DragonForm],
-        providers: [ { provide: ActivatedRoute, useValue: mockActivatedRoute } ]
-      })
-      .compileComponents();
-    const fixture = TestBed.createComponent(DragonForm);
-    const component = fixture.componentInstance;
-    await fixture.whenStable();
+    const fixture = await getFixture(mockHttpClient, { dragonId: recordId });
+    const component = await getComponent(fixture);
 
     //Assert values at load
     expect(component).toBeTruthy();
@@ -241,23 +235,9 @@ describe('Dragon Form Tests', () => {
       } as PagedData<SkillTag>);
     };
 
-    const mockActivatedRoute = new MockActivatedRoute();
-    const mockParams: Record<string, number> = { ['dragonId']: recordId };
-    mockActivatedRoute.setParams(mockParams);
-    TestBed.overrideComponent(DragonForm, {
-      set: { providers: [{ provide: AssignmentHttpClient, useValue: mockHttpClient }] }
-    });
-
     //Act
-    await TestBed
-      .configureTestingModule({
-        imports: [DragonForm],
-        providers: [ { provide: ActivatedRoute, useValue: mockActivatedRoute } ]
-      })
-      .compileComponents();
-    const fixture = TestBed.createComponent(DragonForm);
-    const component = fixture.componentInstance;
-    await fixture.whenStable();
+    const fixture = await getFixture(mockHttpClient, { dragonId: recordId });
+    const component = await getComponent(fixture);
 
     // Simulate the user having touched all fields so that server-side errors will be visible
     component.formGroup().markAllAsTouched();
@@ -312,22 +292,9 @@ describe('Dragon Form Tests', () => {
       } as PagedData<SkillTag>);
     };
 
-    const mockActivatedRoute = new MockActivatedRoute();
-    const mockParams: Record<string, number> = { ['dragonId']: recordId };
-    mockActivatedRoute.setParams(mockParams);
-    TestBed.overrideComponent(DragonForm, {
-      set: { providers: [{ provide: AssignmentHttpClient, useValue: mockHttpClient }] }
-    });
-
     //Act
-    await TestBed
-      .configureTestingModule({
-        imports: [DragonForm],
-        providers: [ { provide: ActivatedRoute, useValue: mockActivatedRoute } ]
-      })
-      .compileComponents();
-    const fixture = TestBed.createComponent(DragonForm);
-    await fixture.whenStable();
+    const fixture = await getFixture(mockHttpClient, { dragonId: recordId });
+    await getComponent(fixture);
 
     const submitButton = fixture.nativeElement.querySelector('button[type="submit"]');
     submitButton.click();
@@ -367,22 +334,9 @@ describe('Dragon Form Tests', () => {
       } as PagedData<SkillTag>);
     };
 
-    const mockActivatedRoute = new MockActivatedRoute();
-    mockActivatedRoute.setParams({});
-    TestBed.overrideComponent(DragonForm, {
-      set: { providers: [{ provide: AssignmentHttpClient, useValue: mockHttpClient }] }
-    });
-
     //Act
-    await TestBed
-      .configureTestingModule({
-        imports: [DragonForm],
-        providers: [ { provide: ActivatedRoute, useValue: mockActivatedRoute } ]
-      })
-      .compileComponents();
-    const fixture = TestBed.createComponent(DragonForm);
-    const component = fixture.componentInstance;
-    await fixture.whenStable();
+    const fixture = await getFixture(mockHttpClient);
+    const component = await getComponent(fixture);
 
     component.formGroup().get('givenName')?.setValue('Susan');
     const submitButton = fixture.nativeElement.querySelector('button[type="submit"]');
