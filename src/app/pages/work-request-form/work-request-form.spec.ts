@@ -1,5 +1,5 @@
-import { TestBed } from '@angular/core/testing';
-import { ActivatedRoute } from '@angular/router';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ActivatedRoute, Params } from '@angular/router';
 import { Effect } from 'effect';
 import { of } from 'rxjs';
 import { WorkRequestClient } from '../../../httpClients/work-request-http-client';
@@ -26,6 +26,27 @@ describe('Work Request Form Tests', () => {
     };
   }
 
+  async function getFixture(mockHttpClient: WorkRequestClient, routeParams: Params = {}) {
+    const mockActivatedRoute = new MockActivatedRoute();
+    mockActivatedRoute.setParams(routeParams);
+    await TestBed
+      .overrideComponent(WorkRequestForm, {
+        set: { providers: [{ provide: WorkRequestClient, useValue: mockHttpClient }] }
+      })    
+      .configureTestingModule({
+        imports: [ WorkRequestForm ],
+        providers: [ { provide: ActivatedRoute, useValue: mockActivatedRoute } ]
+      })
+      .compileComponents();
+    return TestBed.createComponent(WorkRequestForm);
+  }
+
+  async function getComponent(fixture: ComponentFixture<WorkRequestForm>) {
+    const component = fixture.componentInstance;
+    await fixture.whenStable();
+    return component;
+  }
+
   it('Create a work request along with a new customer', async () => {
     const mockHttpClient = new WorkRequestClient();
     mockSearchCustomers(mockHttpClient);
@@ -41,22 +62,9 @@ describe('Work Request Form Tests', () => {
       return of(Effect.succeed(validatedPayload) as Effect.Effect<ValidatedPayload<WorkRequest>, ValidatedForm<ValidationFailures>, never>);
     };
 
-    const mockActivatedRoute = new MockActivatedRoute();
-    mockActivatedRoute.setParams({});
-    TestBed.overrideComponent(WorkRequestForm, {
-      set: { providers: [{ provide: WorkRequestClient, useValue: mockHttpClient }] }
-    });
-
     //Act
-    await TestBed
-      .configureTestingModule({
-        imports: [WorkRequestForm],
-        providers: [ { provide: ActivatedRoute, useValue: mockActivatedRoute } ]
-      })
-      .compileComponents();
-    const fixture = TestBed.createComponent(WorkRequestForm);
-    const component = fixture.componentInstance;
-    await fixture.whenStable();
+    const fixture = await getFixture(mockHttpClient);
+    const component = await getComponent(fixture);
 
     //Assert: customer name field is editable
     expect(component).toBeTruthy();
@@ -101,22 +109,9 @@ describe('Work Request Form Tests', () => {
       return of(validatedPayload as ValidatedPayload<Customer[]>);
     }
 
-    const mockActivatedRoute = new MockActivatedRoute();
-    mockActivatedRoute.setParams({});
-    TestBed.overrideComponent(WorkRequestForm, {
-      set: { providers: [{ provide: WorkRequestClient, useValue: mockHttpClient }] }
-    });
-
     //Act
-    await TestBed
-      .configureTestingModule({
-        imports: [WorkRequestForm],
-        providers: [ { provide: ActivatedRoute, useValue: mockActivatedRoute } ]
-      })
-      .compileComponents();
-    const fixture = TestBed.createComponent(WorkRequestForm);
-    const component = fixture.componentInstance;
-    await fixture.whenStable();
+    const fixture = await getFixture(mockHttpClient);
+    const component = await getComponent(fixture);
 
     //Assert: customer name is displayed but not editable
     expect(component).toBeTruthy();
@@ -171,22 +166,9 @@ describe('Work Request Form Tests', () => {
       return of(Effect.succeed(validatedPayload) as Effect.Effect<ValidatedPayload<WorkRequest>, ValidatedForm<ValidationFailures>, never>);
     };
 
-    const mockActivatedRoute = new MockActivatedRoute();
-    mockActivatedRoute.setParams({ workRequestId: recordId });
-    TestBed.overrideComponent(WorkRequestForm, {
-      set: { providers: [{ provide: WorkRequestClient, useValue: mockHttpClient }] }
-    });
-
     //Act
-    await TestBed
-      .configureTestingModule({
-        imports: [WorkRequestForm],
-        providers: [ { provide: ActivatedRoute, useValue: mockActivatedRoute } ]
-      })
-      .compileComponents();
-    const fixture = TestBed.createComponent(WorkRequestForm);
-    const component = fixture.componentInstance;
-    await fixture.whenStable();
+    const fixture = await getFixture(mockHttpClient, { workRequestId: recordId });
+    const component = await getComponent(fixture);
 
     //Assert: customer name is displayed but not editable, other fields are populated
     expect(component).toBeTruthy();
@@ -252,22 +234,9 @@ describe('Work Request Form Tests', () => {
       return of(validatedPayload as ValidatedPayload<Customer[]>);
     }
 
-    const mockActivatedRoute = new MockActivatedRoute();
-    mockActivatedRoute.setParams({});
-    TestBed.overrideComponent(WorkRequestForm, {
-      set: { providers: [{ provide: WorkRequestClient, useValue: mockHttpClient }] }
-    });
-
     //Act
-    await TestBed
-      .configureTestingModule({
-        imports: [WorkRequestForm],
-        providers: [ { provide: ActivatedRoute, useValue: mockActivatedRoute } ]
-      })
-      .compileComponents();
-    const fixture = TestBed.createComponent(WorkRequestForm);
-    const component = fixture.componentInstance;
-    await fixture.whenStable();
+    const fixture = await getFixture(mockHttpClient);
+    const component = await getComponent(fixture);
 
     //Act: select an existing customer and submit
     component.formGroup().get('customerId')?.setValue({ display: 'The Ocean', id: '4' });
