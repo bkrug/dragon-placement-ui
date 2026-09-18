@@ -1,4 +1,4 @@
-import { TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute, provideRouter } from '@angular/router';
 import { of } from 'rxjs';
 import { AssignmentHttpClient } from '../../../httpClients/assignment-http-client';
@@ -35,6 +35,37 @@ describe('ManageJob', () => {
     skillTags: []
   };
 
+  async function getFixture(mockHttpClient: AssignmentHttpClient, jobId: number) {
+    const mockActivatedRoute = new MockActivatedRoute();
+    const mockParams: Record<string, number> = { ['jobId']: jobId };
+    mockActivatedRoute.setParams(mockParams);
+
+    TestBed.overrideComponent(ManageJob, {
+      set: { providers: [{ provide: AssignmentHttpClient, useValue: mockHttpClient }] }
+    });
+    TestBed.overrideComponent(CandidateTable, {
+      set: { providers: [{ provide: AssignmentHttpClient, useValue: mockHttpClient }] }
+    });
+    TestBed.overrideComponent(AssignedDragonTable, {
+      set: { providers: [{ provide: AssignmentHttpClient, useValue: mockHttpClient }] }
+    });
+    TestBed.configureTestingModule({
+      imports: [ManageJob],
+      providers: [
+        provideRouter([]),
+        { provide: ActivatedRoute, useValue: mockActivatedRoute },
+      ]
+    });
+    await TestBed.compileComponents();
+    return TestBed.createComponent(ManageJob);
+  }
+
+  async function getComponent(fixture: ComponentFixture<ManageJob>) {
+    const component = fixture.componentInstance;
+    await fixture.whenStable();
+    return component;
+  }
+
   it('When a dragon from the list of candidates is assigned, a request should be made for both dragon tables to reload data.', async () => {
     const mockHttpClient = new AssignmentHttpClient();
     mockHttpClient.getJob = () => of(mockValidatedJob(mockJob));
@@ -57,33 +88,9 @@ describe('ManageJob', () => {
 
     mockHttpClient.getAllSkills = () => of({ offset: 0, limit: 0, totalRecords: 0, data: [] } as PagedData<SkillTag>);
 
-    const mockActivatedRoute = new MockActivatedRoute();
-    const mockParams : Record<string, number> = { ['jobId'] : jobId };
-    mockActivatedRoute.setParams(mockParams);
-
-    TestBed.overrideComponent(ManageJob, {
-      set: { providers: [{ provide: AssignmentHttpClient, useValue: mockHttpClient }] }
-    });
-    TestBed.overrideComponent(CandidateTable, {
-      set: { providers: [{ provide: AssignmentHttpClient, useValue: mockHttpClient }] }
-    });
-    TestBed.overrideComponent(AssignedDragonTable, {
-      set: { providers: [{ provide: AssignmentHttpClient, useValue: mockHttpClient }] }
-    });
-
     //Act
-    await TestBed
-      .configureTestingModule({
-        imports: [ManageJob],
-        providers: [
-          provideRouter([]),
-          { provide: ActivatedRoute, useValue: mockActivatedRoute },
-        ]
-      })
-      .compileComponents();
-    const fixture = TestBed.createComponent(ManageJob);
-    const component = fixture.componentInstance;
-    await fixture.whenStable();
+    const fixture = await getFixture(mockHttpClient, jobId);
+    const component = await getComponent(fixture);
     const nativeElement = fixture.nativeElement as HTMLElement;
 
     //Assert
@@ -125,32 +132,9 @@ describe('ManageJob', () => {
 
     mockHttpClient.getAllSkills = () => of({ offset: 0, limit: 0, totalRecords: 0, data: [] } as PagedData<SkillTag>);
 
-    const mockActivatedRoute = new MockActivatedRoute();
-    const mockParams : Record<string, number> = { ['jobId'] : jobId };
-    mockActivatedRoute.setParams(mockParams);
-
     //Act
-    TestBed.overrideComponent(ManageJob, {
-      set: { providers: [{ provide: AssignmentHttpClient, useValue: mockHttpClient }] }
-    });
-    TestBed.overrideComponent(CandidateTable, {
-      set: { providers: [{ provide: AssignmentHttpClient, useValue: mockHttpClient }] }
-    });
-    TestBed.overrideComponent(AssignedDragonTable, {
-      set: { providers: [{ provide: AssignmentHttpClient, useValue: mockHttpClient }] }
-    });
-    await TestBed
-      .configureTestingModule({
-        imports: [ManageJob],
-        providers: [
-          provideRouter([]),
-          { provide: ActivatedRoute, useValue: mockActivatedRoute },
-        ]
-      })
-      .compileComponents();
-    const fixture = TestBed.createComponent(ManageJob);
-    const component = fixture.componentInstance;
-    await fixture.whenStable();
+    const fixture = await getFixture(mockHttpClient, jobId);
+    const component = await getComponent(fixture);
     const nativeElement = fixture.nativeElement as HTMLElement;
 
     //Assert
