@@ -9,9 +9,9 @@ export function getValidatedPayload<T extends object>(payload: T): ValidatedPayl
   };
 }
 
-export function getFailedValidatedForm<T extends object>(validationFailures: T): ValidatedForm<T> {
+export function getFailedValidatedForm<T extends object>(validationFailures: T, isInternalError?: boolean): ValidatedForm<T> {
   return {
-    isInternalError: false,
+    isInternalError: isInternalError ?? false,
     isSuccess: false,
     validationFailures
   };

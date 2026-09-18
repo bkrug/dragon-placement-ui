@@ -242,11 +242,7 @@ describe('Dragon Form Tests', () => {
     };
 
     mockHttpClient.putDragonForm = () => {
-      const failedForm = {
-        isInternalError: true,
-        isSuccess: false,
-        validationFailures: { fieldFailures: {}, gridRowFailures: {} }
-      } as ValidatedForm<ValidationFailures>;
+      const failedForm = getFailedValidatedForm({ fieldFailures: {}, gridRowFailures: {} } as ValidationFailures, true);
       return of(Effect.fail(failedForm) as Effect.Effect<ValidatedPayload<Dragon>, ValidatedForm<ValidationFailures>, never>);
     };
 
