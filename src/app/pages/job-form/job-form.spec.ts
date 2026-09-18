@@ -1,5 +1,5 @@
-import { TestBed } from '@angular/core/testing';
-import { ActivatedRoute } from '@angular/router';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ActivatedRoute, Params } from '@angular/router';
 import { Effect } from 'effect';
 import { of } from 'rxjs';
 import { AssignmentHttpClient } from '../../../httpClients/assignment-http-client';
@@ -17,6 +17,27 @@ describe('Job Form Tests', () => {
 
   const beginDateString = '2010-01-01';
   const endDateString = '2010-12-31';
+
+  async function getFixture(mockHttpClient: AssignmentHttpClient, routeParams: Params = {}) {
+    const mockActivatedRoute = new MockActivatedRoute();
+    mockActivatedRoute.setParams(routeParams);
+    await TestBed
+      .overrideComponent(JobForm, {
+        set: { providers: [{ provide: AssignmentHttpClient, useValue: mockHttpClient }] }
+      })    
+      .configureTestingModule({
+        imports: [JobForm],
+        providers: [ { provide: ActivatedRoute, useValue: mockActivatedRoute } ]
+      })
+      .compileComponents();
+    return TestBed.createComponent(JobForm);
+  }
+
+  async function getComponent(fixture: ComponentFixture<JobForm>) {
+    const component = fixture.componentInstance;
+    await fixture.whenStable();
+    return component;
+  }
 
   it('Load a blank Job Form for creation of a job', async () => {
     const mockHttpClient = new AssignmentHttpClient();
@@ -52,22 +73,9 @@ describe('Job Form Tests', () => {
       } as PagedData<SkillTag>);
     };
 
-    const mockActivatedRoute = new MockActivatedRoute();
-    mockActivatedRoute.setParams({});
-    TestBed.overrideComponent(JobForm, {
-      set: { providers: [{ provide: AssignmentHttpClient, useValue: mockHttpClient }] }
-    });
-
     //Act
-    await TestBed
-      .configureTestingModule({
-        imports: [JobForm],
-        providers: [ { provide: ActivatedRoute, useValue: mockActivatedRoute } ]
-      })
-      .compileComponents();
-    const fixture = TestBed.createComponent(JobForm);
-    const component = fixture.componentInstance;
-    await fixture.whenStable();
+    const fixture = await getFixture(mockHttpClient);
+    const component = await getComponent(fixture);
 
     //Assert: fields should be empty
     expect(component).toBeTruthy();
@@ -140,23 +148,9 @@ describe('Job Form Tests', () => {
       } as PagedData<SkillTag>);
     };
 
-    const mockActivatedRoute = new MockActivatedRoute();
-    const mockParams: Record<string, number> = { ['jobId']: recordId };
-    mockActivatedRoute.setParams(mockParams);
-    TestBed.overrideComponent(JobForm, {
-      set: { providers: [{ provide: AssignmentHttpClient, useValue: mockHttpClient }] }
-    });
-
     //Act
-    await TestBed
-      .configureTestingModule({
-        imports: [JobForm],
-        providers: [ { provide: ActivatedRoute, useValue: mockActivatedRoute } ]
-      })
-      .compileComponents();
-    const fixture = TestBed.createComponent(JobForm);
-    const component = fixture.componentInstance;
-    await fixture.whenStable();
+    const fixture = await getFixture(mockHttpClient, { jobId: recordId });
+    const component = await getComponent(fixture);
 
     //Assert values at load
     expect(component).toBeTruthy();
@@ -230,23 +224,9 @@ describe('Job Form Tests', () => {
       } as PagedData<SkillTag>);
     };
 
-    const mockActivatedRoute = new MockActivatedRoute();
-    const mockParams: Record<string, number> = { ['jobId']: recordId };
-    mockActivatedRoute.setParams(mockParams);
-    TestBed.overrideComponent(JobForm, {
-      set: { providers: [{ provide: AssignmentHttpClient, useValue: mockHttpClient }] }
-    });
-
     //Act
-    await TestBed
-      .configureTestingModule({
-        imports: [JobForm],
-        providers: [ { provide: ActivatedRoute, useValue: mockActivatedRoute } ]
-      })
-      .compileComponents();
-    const fixture = TestBed.createComponent(JobForm);
-    const component = fixture.componentInstance;
-    await fixture.whenStable();
+    const fixture = await getFixture(mockHttpClient, { jobId: recordId });
+    const component = await getComponent(fixture);
 
     // Simulate the user having touched all fields so that server-side errors will be visible
     component.formGroup().markAllAsTouched();
