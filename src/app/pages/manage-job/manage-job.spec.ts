@@ -117,14 +117,18 @@ describe('ManageJob', () => {
     mockActivatedRoute.setParams(mockParams);
 
     //Act
-    await TestBed.configureTestingModule({
-      imports: [ManageJob],
-      providers: [
-        provideRouter([]),
-        { provide: ActivatedRoute, useValue: mockActivatedRoute },
-        { provide: AssignmentHttpClient, useValue: mockHttpClient },
-      ]
-    }).compileComponents();
+    TestBed.overrideComponent(ManageJob, {
+      set: { providers: [{ provide: AssignmentHttpClient, useValue: mockHttpClient }] }
+    });
+    await TestBed
+      .configureTestingModule({
+        imports: [ManageJob],
+        providers: [
+          provideRouter([]),
+          { provide: ActivatedRoute, useValue: mockActivatedRoute },
+        ]
+      })
+      .compileComponents();
     const fixture = TestBed.createComponent(ManageJob);
     const component = fixture.componentInstance;
     await fixture.whenStable();

@@ -50,8 +50,8 @@ describe('WorkRequestList', () => {
       } as PagedData<WorkRequest>);
     };
 
-    TestBed.configureTestingModule({
-      providers: [{ provide: WorkRequestClient, useValue: mockHttpClient }]
+    TestBed.overrideComponent(WorkRequestList, {
+      set: { providers: [{ provide: WorkRequestClient, useValue: mockHttpClient }] }
     });
 
     //Act

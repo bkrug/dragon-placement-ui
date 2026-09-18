@@ -43,11 +43,11 @@ describe('Work Request Form Tests', () => {
 
     const mockActivatedRoute = new MockActivatedRoute();
     mockActivatedRoute.setParams({});
+    TestBed.overrideComponent(WorkRequestForm, {
+      set: { providers: [{ provide: WorkRequestClient, useValue: mockHttpClient }] }
+    });
     TestBed.configureTestingModule({
-      providers: [
-        { provide: WorkRequestClient, useValue: mockHttpClient },
-        { provide: ActivatedRoute, useValue: mockActivatedRoute }
-      ]
+      providers: [ { provide: ActivatedRoute, useValue: mockActivatedRoute } ]
     });
 
     //Act
@@ -101,11 +101,11 @@ describe('Work Request Form Tests', () => {
 
     const mockActivatedRoute = new MockActivatedRoute();
     mockActivatedRoute.setParams({});
+    TestBed.overrideComponent(WorkRequestForm, {
+      set: { providers: [{ provide: WorkRequestClient, useValue: mockHttpClient }] }
+    });
     TestBed.configureTestingModule({
-      providers: [
-        { provide: WorkRequestClient, useValue: mockHttpClient },
-        { provide: ActivatedRoute, useValue: mockActivatedRoute }
-      ]
+      providers: [ { provide: ActivatedRoute, useValue: mockActivatedRoute } ]
     });
 
     //Act
@@ -248,11 +248,11 @@ describe('Work Request Form Tests', () => {
 
     const mockActivatedRoute = new MockActivatedRoute();
     mockActivatedRoute.setParams({});
+    TestBed.overrideComponent(WorkRequestForm, {
+      set: { providers: [{ provide: WorkRequestClient, useValue: mockHttpClient }] }
+    });
     TestBed.configureTestingModule({
-      providers: [
-        { provide: WorkRequestClient, useValue: mockHttpClient },
-        { provide: ActivatedRoute, useValue: mockActivatedRoute }
-      ]
+      providers: [ { provide: ActivatedRoute, useValue: mockActivatedRoute } ]
     });
 
     //Act

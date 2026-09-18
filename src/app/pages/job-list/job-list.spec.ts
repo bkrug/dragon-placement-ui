@@ -45,8 +45,8 @@ describe('JobList', () => {
       } as PagedData<Job>);
     };
 
-    TestBed.configureTestingModule({
-      providers: [{ provide:AssignmentHttpClient, useValue:mockHttpClient }]
+    TestBed.overrideComponent(JobList, {
+      set: { providers: [{ provide:AssignmentHttpClient, useValue:mockHttpClient }] }
     });
 
     //Act

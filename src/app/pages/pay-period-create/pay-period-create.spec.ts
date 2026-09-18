@@ -73,14 +73,15 @@ describe('Pay Period Create Tests', () => {
 
     const mockActivatedRoute = new MockActivatedRoute();
     mockActivatedRoute.setParams({ assignmentId });
-    TestBed.configureTestingModule({
-      providers: [
-        { provide: HoursWorkedClient, useValue: mockHttpClient },
-        { provide: ActivatedRoute, useValue: mockActivatedRoute }
-      ]
+    TestBed.overrideComponent(PayPeriodCreate, {
+      set: { providers: [{ provide: HoursWorkedClient, useValue: mockHttpClient }] }
     });
-
-    await TestBed.configureTestingModule({ imports: [PayPeriodCreate] }).compileComponents();
+    await TestBed
+      .configureTestingModule({
+        imports: [PayPeriodCreate],
+        providers: [ { provide: ActivatedRoute, useValue: mockActivatedRoute } ]
+      })
+      .compileComponents();
     const fixture = TestBed.createComponent(PayPeriodCreate);
     const component = fixture.componentInstance;
     await fixture.whenStable();
@@ -179,14 +180,15 @@ describe('Pay Period Create Tests', () => {
 
     const mockActivatedRoute = new MockActivatedRoute();
     mockActivatedRoute.setParams({ dragonId, assignmentId });
-    TestBed.configureTestingModule({
-      providers: [
-        { provide: HoursWorkedClient, useValue: mockHttpClient },
-        { provide: ActivatedRoute, useValue: mockActivatedRoute }
-      ]
+    TestBed.overrideComponent(PayPeriodCreate, {
+      set: { providers: [{ provide: HoursWorkedClient, useValue: mockHttpClient }] }
     });
-
-    await TestBed.configureTestingModule({ imports: [PayPeriodCreate] }).compileComponents();
+    await TestBed
+      .configureTestingModule({
+        imports: [PayPeriodCreate],
+        providers: [ { provide: ActivatedRoute, useValue: mockActivatedRoute } ]
+      })
+      .compileComponents();
     const fixture = TestBed.createComponent(PayPeriodCreate);
     const component = fixture.componentInstance;
     await fixture.whenStable();
@@ -238,14 +240,15 @@ describe('Pay Period Create Tests', () => {
 
     const mockActivatedRoute = new MockActivatedRoute();
     mockActivatedRoute.setParams({ dragonId, assignmentId });
-    TestBed.configureTestingModule({
-      providers: [
-        { provide: HoursWorkedClient, useValue: mockHttpClient },
-        { provide: ActivatedRoute, useValue: mockActivatedRoute }
-      ]
+    TestBed.overrideComponent(PayPeriodCreate, {
+      set: { providers: [{ provide: HoursWorkedClient, useValue: mockHttpClient }] }
     });
-
-    await TestBed.configureTestingModule({ imports: [PayPeriodCreate] }).compileComponents();
+    await TestBed
+      .configureTestingModule({
+        imports: [PayPeriodCreate],
+        providers: [ { provide: ActivatedRoute, useValue: mockActivatedRoute } ]
+      })
+      .compileComponents();
     const fixture = TestBed.createComponent(PayPeriodCreate);
     const component = fixture.componentInstance;
     await fixture.whenStable();
@@ -309,14 +312,15 @@ describe('Pay Period Create Tests', () => {
 
     const mockActivatedRoute = new MockActivatedRoute();
     mockActivatedRoute.setParams({ dragonId, assignmentId });
-    TestBed.configureTestingModule({
-      providers: [
-        { provide: HoursWorkedClient, useValue: mockHttpClient },
-        { provide: ActivatedRoute, useValue: mockActivatedRoute }
-      ]
+    TestBed.overrideComponent(PayPeriodCreate, {
+      set: { providers: [{ provide: HoursWorkedClient, useValue: mockHttpClient }] }
     });
-
-    await TestBed.configureTestingModule({ imports: [PayPeriodCreate] }).compileComponents();
+    await TestBed
+      .configureTestingModule({
+        imports: [PayPeriodCreate],
+        providers: [ { provide: ActivatedRoute, useValue: mockActivatedRoute } ]
+      })
+      .compileComponents();
     const fixture = TestBed.createComponent(PayPeriodCreate);
     const component = fixture.componentInstance;
     await fixture.whenStable();
@@ -392,14 +396,15 @@ describe('Pay Period Create Tests', () => {
 
     const mockActivatedRoute = new MockActivatedRoute();
     mockActivatedRoute.setParams({ dragonId, assignmentId });
-    TestBed.configureTestingModule({
-      providers: [
-        { provide: HoursWorkedClient, useValue: mockHttpClient },
-        { provide: ActivatedRoute, useValue: mockActivatedRoute }
-      ]
+    TestBed.overrideComponent(PayPeriodCreate, {
+      set: { providers: [{ provide: HoursWorkedClient, useValue: mockHttpClient }] }
     });
-
-    await TestBed.configureTestingModule({ imports: [PayPeriodCreate] }).compileComponents();
+    await TestBed
+      .configureTestingModule({
+        imports: [PayPeriodCreate],
+        providers: [ { provide: ActivatedRoute, useValue: mockActivatedRoute } ]
+      })
+      .compileComponents();
     const fixture = TestBed.createComponent(PayPeriodCreate);
     const component = fixture.componentInstance;
     await fixture.whenStable();
