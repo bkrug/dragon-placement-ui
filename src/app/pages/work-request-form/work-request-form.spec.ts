@@ -18,12 +18,7 @@ describe('Work Request Form Tests', () => {
 
   function mockSearchCustomers(mockHttpClient: WorkRequestClient) {
     mockHttpClient.searchCustomers = () => {
-      return of({
-        isInternalError: false,
-        isSuccess: true,
-        validationFailures: [],
-        payload: [] as Customer[]
-      } as ValidatedPayload<Customer[]>);
+      return of(getValidatedPayload([] as Customer[]));
     };
   }
 
@@ -91,13 +86,8 @@ describe('Work Request Form Tests', () => {
     };
 
     mockHttpClient.searchCustomers = (name: string, count: number) => {
-      const validatedPayload = {
-        isInternalError: false,
-        isSuccess: true,
-        validationFailures: [],
-        payload: [ { customerId: 4, name: 'The Ocean' }, { customerId: 5, name: 'The Sky' } ] as Customer[]
-      } as ValidatedPayload<Customer[]>;
-      return of(validatedPayload as ValidatedPayload<Customer[]>);
+      const validatedPayload = getValidatedPayload([ { customerId: 4, name: 'The Ocean' }, { customerId: 5, name: 'The Sky' } ] as Customer[]);
+      return of(validatedPayload);
     }
 
     //Act
@@ -196,13 +186,8 @@ describe('Work Request Form Tests', () => {
     };
 
     mockHttpClient.searchCustomers = (name: string, count: number) => {
-      const validatedPayload = {
-        isInternalError: false,
-        isSuccess: true,
-        validationFailures: [],
-        payload: [ { customerId: 4, name: 'The Ocean' } ] as Customer[]
-      } as ValidatedPayload<Customer[]>;
-      return of(validatedPayload as ValidatedPayload<Customer[]>);
+      const validatedPayload = getValidatedPayload([ { customerId: 4, name: 'The Ocean' } ] as Customer[]);
+      return of(validatedPayload);
     }
 
     //Act

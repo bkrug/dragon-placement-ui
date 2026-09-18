@@ -3,14 +3,12 @@ import { ActivatedRoute, provideRouter } from '@angular/router';
 import { of } from 'rxjs';
 import { AssignmentHttpClient } from '../../../httpClients/assignment-http-client';
 import { Dragon, Job, SkillTag } from '../../../poco/models';
-import { PagedData, ValidatedPayload, ValidatedResponse } from '../../../poco/standard-responses';
+import { PagedData, ValidatedResponse } from '../../../poco/standard-responses';
+import { getValidatedPayload } from '../../../testHelpers/get-validated-payload';
 import { MockActivatedRoute } from '../../../testHelpers/MockActivatedRoute';
 import { AssignedDragonTable } from '../../shared-components/assigned-dragon-table/assigned-dragon-table';
 import { CandidateTable } from '../../shared-components/candidate-table/candidate-table';
 import { ManageJob } from './manage-job';
-
-const mockValidatedJob = (job: Job): ValidatedPayload<Job> =>
-  ({ payload: job, isSuccess: true, isInternalError: false, validationFailures: [] });
 
 describe('ManageJob', () => {
   const jobId = 12;
@@ -68,7 +66,7 @@ describe('ManageJob', () => {
 
   it('When a dragon from the list of candidates is assigned, a request should be made for both dragon tables to reload data.', async () => {
     const mockHttpClient = new AssignmentHttpClient();
-    mockHttpClient.getJob = () => of(mockValidatedJob(mockJob));
+    mockHttpClient.getJob = () => of(getValidatedPayload(mockJob));
 
     let getCandidateCount = 0;
     let getAssignedCount = 0;
@@ -112,7 +110,7 @@ describe('ManageJob', () => {
 
   it('When a dragon from the list of assigned individuals is unassigned, a request should be made for both dragon tables to reload data.', async () => {
     const mockHttpClient = new AssignmentHttpClient();
-    mockHttpClient.getJob = () => of(mockValidatedJob(mockJob));
+    mockHttpClient.getJob = () => of(getValidatedPayload(mockJob));
 
     let getCandidateCount = 0;
     let getAssignedCount = 0;

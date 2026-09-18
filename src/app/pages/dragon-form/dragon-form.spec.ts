@@ -42,31 +42,21 @@ describe('Dragon Form Tests', () => {
     let getMethodWasCalled = false;
     mockHttpClient.getDragonWithJobs = () => {
       getMethodWasCalled = true;
-      return of({
-        isInternalError: false,
-        isSuccess: true,
-        validationFailures: [],
-        payload: new Dragon()
-      } as ValidatedPayload<Dragon>);
+      return of(getValidatedPayload(new Dragon()));
     };
 
     let actualModelInPostRequest = new DragonCreateEdit();
     mockHttpClient.postDragonForm = (dragon: DragonCreateEdit) => {
       actualModelInPostRequest = dragon;
-      const validatedPayload = {
-        isInternalError: false,
-        isSuccess: true,
-        validationFailures: [],
-        payload: Object.assign(new Dragon(), {
-          dragonId: 298,
-          givenName: dragon.givenName,
-          familyName: dragon.familyName,
-          weightInKg: dragon.weightInKg,
-          lengthInMeters: dragon.lengthInMeters,
-          fightingSkills: dragon.fightingSkills,
-          skillTags: dragon.skillTagIds.map(stId => ({ skillTageId: stId, skillTageName: '' }))
-        })
-      } as ValidatedPayload<Dragon>;
+      const validatedPayload = getValidatedPayload(Object.assign(new Dragon(), {
+        dragonId: 298,
+        givenName: dragon.givenName,
+        familyName: dragon.familyName,
+        weightInKg: dragon.weightInKg,
+        lengthInMeters: dragon.lengthInMeters,
+        fightingSkills: dragon.fightingSkills,
+        skillTags: dragon.skillTagIds.map(stId => ({ skillTageId: stId, skillTageName: '' }))
+      }));
       return of(Effect.succeed(validatedPayload) as Effect.Effect<ValidatedPayload<Dragon>, ValidatedForm<ValidationFailures>, never>);
     };
 
@@ -288,12 +278,7 @@ describe('Dragon Form Tests', () => {
 
   it('Submit button shows "Submitting..." while waiting for a server response', async () => {
     const mockHttpClient = new AssignmentHttpClient();
-    mockHttpClient.getDragonWithJobs = () => of({
-      isInternalError: false,
-      isSuccess: true,
-      validationFailures: [],
-      payload: new Dragon()
-    } as ValidatedPayload<Dragon>);
+    mockHttpClient.getDragonWithJobs = () => of(getValidatedPayload(new Dragon()));
 
     mockHttpClient.postDragonForm = () => {
       const failedForm = {

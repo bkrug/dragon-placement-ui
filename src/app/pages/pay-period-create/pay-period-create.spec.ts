@@ -8,6 +8,7 @@ import { PayPeriodCreateEdit, ValidPaySpan } from '../../../poco/endpoint-reques
 import { PayPeriod } from '../../../poco/models';
 import { ValidatedForm, ValidatedPayload } from '../../../poco/standard-responses';
 import { GridRowValidationFailures, ValidationFailures } from '../../../poco/validation-failures';
+import { getValidatedPayload } from '../../../testHelpers/get-validated-payload';
 import { MockActivatedRoute } from '../../../testHelpers/MockActivatedRoute';
 import { PayPeriodForm } from '../pay-period-form/pay-period-form';
 import { PayPeriodCreate } from './pay-period-create';
@@ -53,12 +54,7 @@ describe('Pay Period Create Tests', () => {
     });
 
     const mockHttpClient = new HoursWorkedClient();
-    mockHttpClient.getPayPeriodCandidates = () => of({
-      isInternalError: false,
-      isSuccess: true,
-      validationFailures: [],
-      payload: [candidate]
-    } as ValidatedPayload<ValidPaySpan[]>);
+    mockHttpClient.getPayPeriodCandidates = () => of(getValidatedPayload([candidate]));
 
     let actualPostBody = new PayPeriodCreateEdit();
     mockHttpClient.postPayPeriodForm = (body: PayPeriodCreateEdit) => {
@@ -69,12 +65,7 @@ describe('Pay Period Create Tests', () => {
         startDate: body.startDate,
         endDate: body.endDate,
       });
-      return of(Effect.succeed({
-        isInternalError: false,
-        isSuccess: true,
-        validationFailures: [],
-        payload: responsePayload
-      } as ValidatedPayload<PayPeriod>) as Effect.Effect<ValidatedPayload<PayPeriod>, ValidatedForm<ValidationFailures>, never>);
+      return of(Effect.succeed(getValidatedPayload(responsePayload)) as Effect.Effect<ValidatedPayload<PayPeriod>, ValidatedForm<ValidationFailures>, never>);
     };
 
     let actualPutId = 0;
@@ -88,12 +79,7 @@ describe('Pay Period Create Tests', () => {
         startDate: body.startDate,
         endDate: body.endDate,
       });
-      return of(Effect.succeed({
-        isInternalError: false,
-        isSuccess: true,
-        validationFailures: [],
-        payload: responsePayload
-      } as ValidatedPayload<PayPeriod>) as Effect.Effect<ValidatedPayload<PayPeriod>, ValidatedForm<ValidationFailures>, never>);
+      return of(Effect.succeed(getValidatedPayload(responsePayload)) as Effect.Effect<ValidatedPayload<PayPeriod>, ValidatedForm<ValidationFailures>, never>);
     };
 
     const fixture = await getFixture(dragonId, assignmentId, mockHttpClient);
@@ -166,12 +152,7 @@ describe('Pay Period Create Tests', () => {
     });
 
     const mockHttpClient = new HoursWorkedClient();
-    mockHttpClient.getPayPeriodCandidates = () => of({
-      isInternalError: false,
-      isSuccess: true,
-      validationFailures: [],
-      payload: [candidate]
-    } as ValidatedPayload<ValidPaySpan[]>);
+    mockHttpClient.getPayPeriodCandidates = () => of(getValidatedPayload([candidate]));
 
     let actualPostBody = new PayPeriodCreateEdit();
     mockHttpClient.postPayPeriodForm = (body: PayPeriodCreateEdit) => {
@@ -182,12 +163,7 @@ describe('Pay Period Create Tests', () => {
         startDate: body.startDate,
         endDate: body.endDate,
       });
-      return of(Effect.succeed({
-        isInternalError: false,
-        isSuccess: true,
-        validationFailures: [],
-        payload: responsePayload
-      } as ValidatedPayload<PayPeriod>) as Effect.Effect<ValidatedPayload<PayPeriod>, ValidatedForm<ValidationFailures>, never>);
+      return of(Effect.succeed(getValidatedPayload(responsePayload)) as Effect.Effect<ValidatedPayload<PayPeriod>, ValidatedForm<ValidationFailures>, never>);
     };
 
     const fixture = await getFixture(dragonId, assignmentId, mockHttpClient);
@@ -230,12 +206,7 @@ describe('Pay Period Create Tests', () => {
     });
 
     const mockHttpClient = new HoursWorkedClient();
-    mockHttpClient.getPayPeriodCandidates = () => of({
-      isInternalError: false,
-      isSuccess: true,
-      validationFailures: [],
-      payload: [candidate]
-    } as ValidatedPayload<ValidPaySpan[]>);
+    mockHttpClient.getPayPeriodCandidates = () => of(getValidatedPayload([candidate]));
 
     const fixture = await getFixture(dragonId, assignmentId, mockHttpClient);
     const component = await getComponent(fixture);
@@ -289,12 +260,7 @@ describe('Pay Period Create Tests', () => {
     });
 
     const mockHttpClient = new HoursWorkedClient();
-    mockHttpClient.getPayPeriodCandidates = () => of({
-      isInternalError: false,
-      isSuccess: true,
-      validationFailures: [],
-      payload: [candidate]
-    } as ValidatedPayload<ValidPaySpan[]>);
+    mockHttpClient.getPayPeriodCandidates = () => of(getValidatedPayload([candidate]));
 
     const fixture = await getFixture(dragonId, assignmentId, mockHttpClient);
     const component = await getComponent(fixture);
@@ -341,12 +307,7 @@ describe('Pay Period Create Tests', () => {
     const row2Error = 'End time must be before pay-period end date';
 
     const mockHttpClient = new HoursWorkedClient();
-    mockHttpClient.getPayPeriodCandidates = () => of({
-      isInternalError: false,
-      isSuccess: true,
-      validationFailures: [],
-      payload: [candidate]
-    } as ValidatedPayload<ValidPaySpan[]>);
+    mockHttpClient.getPayPeriodCandidates = () => of(getValidatedPayload([candidate]));
 
     mockHttpClient.postPayPeriodForm = () => {
       const failures: ValidationFailures = {

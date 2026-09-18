@@ -45,12 +45,7 @@ describe('Job Form Tests', () => {
     let getMethodWasCalled = false;
     mockHttpClient.getJob = () => {
       getMethodWasCalled = true;
-      return of({
-        isInternalError: false,
-        isSuccess: true,
-        validationFailures: [],
-        payload: new Job()
-      } as ValidatedPayload<Job>);
+      return of(getValidatedPayload(new Job()));
     };
 
     let actualModelInPostRequest = new JobCreateEdit();
