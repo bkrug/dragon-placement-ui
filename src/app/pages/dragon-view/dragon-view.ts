@@ -1,7 +1,7 @@
 import { DatePipe } from '@angular/common';
 import { Component, computed, inject, OnDestroy, signal } from '@angular/core';
-import { rxResource } from '@angular/core/rxjs-interop';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { rxResource, toSignal } from '@angular/core/rxjs-interop';
+import { ActivatedRoute, Params, RouterLink } from '@angular/router';
 import { TableModule } from 'primeng/table';
 import { PAGE_SIZE } from '../../../global-consts';
 import { AssignmentHttpClient } from '../../../httpClients/assignment-http-client';
@@ -20,16 +20,14 @@ export class DragonView implements OnDestroy {
   private dragonHttpClient = inject(AssignmentHttpClient);
   private activatedRoute = inject(ActivatedRoute);
 
-  private dragonId: number = 0;
-  private paramsSubscription = this.activatedRoute.params.subscribe((params) => {
-    this.dragonId = params['dragonId'];
-  });
+  private routeParams = toSignal(this.activatedRoute.params, { initialValue: {} as Params });
+  private dragonId = computed(() => this.routeParams()['dragonId']);
 
   selectedAssignment = signal(null as Assignment | null);
   readonly pageSize = PAGE_SIZE;
 
   private dragonResource = rxResource({
-    params: () => this.dragonId,
+    params: () => this.dragonId(),
     stream: ({ params }) => this.dragonHttpClient.getDragonWithJobs(params, JobInclusions.CurrentAndFuture),
   });
 
@@ -38,6 +36,5 @@ export class DragonView implements OnDestroy {
 
   ngOnDestroy(): void {
     this.dragonHttpClient.unsubscribe();
-    this.paramsSubscription.unsubscribe();
   }
 }
