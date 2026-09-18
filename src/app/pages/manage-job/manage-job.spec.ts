@@ -5,6 +5,8 @@ import { AssignmentHttpClient } from '../../../httpClients/assignment-http-clien
 import { Dragon, Job, SkillTag } from '../../../poco/models';
 import { PagedData, ValidatedPayload, ValidatedResponse } from '../../../poco/standard-responses';
 import { MockActivatedRoute } from '../../../testHelpers/MockActivatedRoute';
+import { AssignedDragonTable } from '../../shared-components/assigned-dragon-table/assigned-dragon-table';
+import { CandidateTable } from '../../shared-components/candidate-table/candidate-table';
 import { ManageJob } from './manage-job';
 
 const mockValidatedJob = (job: Job): ValidatedPayload<Job> =>
@@ -60,6 +62,12 @@ describe('ManageJob', () => {
     mockActivatedRoute.setParams(mockParams);
 
     TestBed.overrideComponent(ManageJob, {
+      set: { providers: [{ provide: AssignmentHttpClient, useValue: mockHttpClient }] }
+    });
+    TestBed.overrideComponent(CandidateTable, {
+      set: { providers: [{ provide: AssignmentHttpClient, useValue: mockHttpClient }] }
+    });
+    TestBed.overrideComponent(AssignedDragonTable, {
       set: { providers: [{ provide: AssignmentHttpClient, useValue: mockHttpClient }] }
     });
 
@@ -123,6 +131,12 @@ describe('ManageJob', () => {
 
     //Act
     TestBed.overrideComponent(ManageJob, {
+      set: { providers: [{ provide: AssignmentHttpClient, useValue: mockHttpClient }] }
+    });
+    TestBed.overrideComponent(CandidateTable, {
+      set: { providers: [{ provide: AssignmentHttpClient, useValue: mockHttpClient }] }
+    });
+    TestBed.overrideComponent(AssignedDragonTable, {
       set: { providers: [{ provide: AssignmentHttpClient, useValue: mockHttpClient }] }
     });
     await TestBed

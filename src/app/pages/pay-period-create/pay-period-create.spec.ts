@@ -76,6 +76,9 @@ describe('Pay Period Create Tests', () => {
     TestBed.overrideComponent(PayPeriodCreate, {
       set: { providers: [{ provide: HoursWorkedClient, useValue: mockHttpClient }] }
     });
+    TestBed.overrideComponent(PayPeriodForm, {
+      set: { providers: [{ provide: HoursWorkedClient, useValue: mockHttpClient }] }
+    });
     await TestBed
       .configureTestingModule({
         imports: [PayPeriodCreate],
@@ -183,6 +186,9 @@ describe('Pay Period Create Tests', () => {
     TestBed.overrideComponent(PayPeriodCreate, {
       set: { providers: [{ provide: HoursWorkedClient, useValue: mockHttpClient }] }
     });
+    TestBed.overrideComponent(PayPeriodForm, {
+      set: { providers: [{ provide: HoursWorkedClient, useValue: mockHttpClient }] }
+    });
     await TestBed
       .configureTestingModule({
         imports: [PayPeriodCreate],
@@ -241,6 +247,9 @@ describe('Pay Period Create Tests', () => {
     const mockActivatedRoute = new MockActivatedRoute();
     mockActivatedRoute.setParams({ dragonId, assignmentId });
     TestBed.overrideComponent(PayPeriodCreate, {
+      set: { providers: [{ provide: HoursWorkedClient, useValue: mockHttpClient }] }
+    });
+    TestBed.overrideComponent(PayPeriodForm, {
       set: { providers: [{ provide: HoursWorkedClient, useValue: mockHttpClient }] }
     });
     await TestBed
@@ -313,6 +322,9 @@ describe('Pay Period Create Tests', () => {
     const mockActivatedRoute = new MockActivatedRoute();
     mockActivatedRoute.setParams({ dragonId, assignmentId });
     TestBed.overrideComponent(PayPeriodCreate, {
+      set: { providers: [{ provide: HoursWorkedClient, useValue: mockHttpClient }] }
+    });
+    TestBed.overrideComponent(PayPeriodForm, {
       set: { providers: [{ provide: HoursWorkedClient, useValue: mockHttpClient }] }
     });
     await TestBed
@@ -397,6 +409,9 @@ describe('Pay Period Create Tests', () => {
     const mockActivatedRoute = new MockActivatedRoute();
     mockActivatedRoute.setParams({ dragonId, assignmentId });
     TestBed.overrideComponent(PayPeriodCreate, {
+      set: { providers: [{ provide: HoursWorkedClient, useValue: mockHttpClient }] }
+    });
+    TestBed.overrideComponent(PayPeriodForm, {
       set: { providers: [{ provide: HoursWorkedClient, useValue: mockHttpClient }] }
     });
     await TestBed
