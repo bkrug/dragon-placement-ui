@@ -3,19 +3,25 @@ import { By } from '@angular/platform-browser';
 import { Counter } from './counter';
 
 describe('Counter', () => {
-  let component: Counter;
-  let fixture: ComponentFixture<Counter>;
-
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [Counter],
     }).compileComponents();
   });
 
-  it('Increment button should cause the number in a text message to increase by one', async () => {
-    fixture = TestBed.createComponent(Counter);
-    component = fixture.componentInstance;
+  function getFixture() {
+    return TestBed.createComponent(Counter);
+  }
+
+  async function getComponent(fixture: ComponentFixture<Counter>) {
+    const component = fixture.componentInstance;
     await fixture.whenStable();
+    return component;
+  }
+
+  it('Increment button should cause the number in a text message to increase by one', async () => {
+    const fixture = getFixture();
+    const component = await getComponent(fixture);
     const nativeElement:HTMLElement = fixture.nativeElement;
 
     //Act
@@ -34,9 +40,8 @@ describe('Counter', () => {
   });
 
   it('Increment button should cause the number in a text message to increase by whatever number is reflected in the "step" input.', async () => {
-    fixture = TestBed.createComponent(Counter);
-    component = fixture.componentInstance;
-    await fixture.whenStable();
+    const fixture = getFixture();
+    const component = await getComponent(fixture);
     const nativeElement:HTMLElement = fixture.nativeElement;
 
     //Act
@@ -56,9 +61,8 @@ describe('Counter', () => {
   });
 
   it('The sum of two numbers should be displayed', async () => {
-    fixture = TestBed.createComponent(Counter);
-    component = fixture.componentInstance;
-    await fixture.whenStable();
+    const fixture = getFixture();
+    const component = await getComponent(fixture);
     const nativeElement:HTMLElement = fixture.nativeElement;
 
     //Act
