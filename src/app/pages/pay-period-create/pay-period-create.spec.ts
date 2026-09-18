@@ -1,4 +1,4 @@
-import { TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { Effect } from 'effect';
@@ -20,6 +20,31 @@ describe('Pay Period Create Tests', () => {
   const postResponsePayPeriodId = 42;
 
   beforeEach(() => TestBed.resetTestingModule());
+
+  async function getFixture(dragonId: number, assignmentId: number, mockHttpClient: HoursWorkedClient) {
+    const mockActivatedRoute = new MockActivatedRoute();
+    mockActivatedRoute.setParams({ dragonId, assignmentId });
+    await TestBed
+      .overrideComponent(PayPeriodCreate, {
+        set: { providers: [{ provide: HoursWorkedClient, useValue: mockHttpClient }] }
+      })    
+      .overrideComponent(PayPeriodForm, {
+        set: { providers: [{ provide: HoursWorkedClient, useValue: mockHttpClient }] }
+      })
+      .configureTestingModule({
+        imports: [PayPeriodCreate],
+        providers: [{ provide: ActivatedRoute, useValue: mockActivatedRoute }]
+      })
+      .compileComponents();
+    return TestBed.createComponent(PayPeriodCreate);
+  }
+
+  async function getComponent(fixture: ComponentFixture<PayPeriodCreate>) {
+    const component = fixture.componentInstance;
+    await fixture.whenStable();
+    fixture.detectChanges();
+    return component;
+  }  
 
   it('should show no form initially, then create via POST and update via PUT', async () => {
     const candidate = Object.assign(new ValidPaySpan(), {
@@ -71,24 +96,8 @@ describe('Pay Period Create Tests', () => {
       } as ValidatedPayload<PayPeriod>) as Effect.Effect<ValidatedPayload<PayPeriod>, ValidatedForm<ValidationFailures>, never>);
     };
 
-    const mockActivatedRoute = new MockActivatedRoute();
-    mockActivatedRoute.setParams({ assignmentId });
-    TestBed.overrideComponent(PayPeriodCreate, {
-      set: { providers: [{ provide: HoursWorkedClient, useValue: mockHttpClient }] }
-    });
-    TestBed.overrideComponent(PayPeriodForm, {
-      set: { providers: [{ provide: HoursWorkedClient, useValue: mockHttpClient }] }
-    });
-    await TestBed
-      .configureTestingModule({
-        imports: [PayPeriodCreate],
-        providers: [ { provide: ActivatedRoute, useValue: mockActivatedRoute } ]
-      })
-      .compileComponents();
-    const fixture = TestBed.createComponent(PayPeriodCreate);
-    const component = fixture.componentInstance;
-    await fixture.whenStable();
-    fixture.detectChanges();
+    const fixture = await getFixture(dragonId, assignmentId, mockHttpClient);
+    const component = await getComponent(fixture);
 
     //Assert: form is not initially visible
     expect(fixture.nativeElement.querySelector('app-pay-period-form')).toBeNull();
@@ -181,24 +190,8 @@ describe('Pay Period Create Tests', () => {
       } as ValidatedPayload<PayPeriod>) as Effect.Effect<ValidatedPayload<PayPeriod>, ValidatedForm<ValidationFailures>, never>);
     };
 
-    const mockActivatedRoute = new MockActivatedRoute();
-    mockActivatedRoute.setParams({ dragonId, assignmentId });
-    TestBed.overrideComponent(PayPeriodCreate, {
-      set: { providers: [{ provide: HoursWorkedClient, useValue: mockHttpClient }] }
-    });
-    TestBed.overrideComponent(PayPeriodForm, {
-      set: { providers: [{ provide: HoursWorkedClient, useValue: mockHttpClient }] }
-    });
-    await TestBed
-      .configureTestingModule({
-        imports: [PayPeriodCreate],
-        providers: [ { provide: ActivatedRoute, useValue: mockActivatedRoute } ]
-      })
-      .compileComponents();
-    const fixture = TestBed.createComponent(PayPeriodCreate);
-    const component = fixture.componentInstance;
-    await fixture.whenStable();
-    fixture.detectChanges();
+    const fixture = await getFixture(dragonId, assignmentId, mockHttpClient);
+    const component = await getComponent(fixture);
 
     //Act: select a pay period candidate
     component.onCandidateSelect({ value: payPeriodStart });
@@ -244,24 +237,8 @@ describe('Pay Period Create Tests', () => {
       payload: [candidate]
     } as ValidatedPayload<ValidPaySpan[]>);
 
-    const mockActivatedRoute = new MockActivatedRoute();
-    mockActivatedRoute.setParams({ dragonId, assignmentId });
-    TestBed.overrideComponent(PayPeriodCreate, {
-      set: { providers: [{ provide: HoursWorkedClient, useValue: mockHttpClient }] }
-    });
-    TestBed.overrideComponent(PayPeriodForm, {
-      set: { providers: [{ provide: HoursWorkedClient, useValue: mockHttpClient }] }
-    });
-    await TestBed
-      .configureTestingModule({
-        imports: [PayPeriodCreate],
-        providers: [ { provide: ActivatedRoute, useValue: mockActivatedRoute } ]
-      })
-      .compileComponents();
-    const fixture = TestBed.createComponent(PayPeriodCreate);
-    const component = fixture.componentInstance;
-    await fixture.whenStable();
-    fixture.detectChanges();
+    const fixture = await getFixture(dragonId, assignmentId, mockHttpClient);
+    const component = await getComponent(fixture);
 
     //Act: select a candidate and add a row with empty fields
     component.onCandidateSelect({ value: payPeriodStart });
@@ -319,24 +296,8 @@ describe('Pay Period Create Tests', () => {
       payload: [candidate]
     } as ValidatedPayload<ValidPaySpan[]>);
 
-    const mockActivatedRoute = new MockActivatedRoute();
-    mockActivatedRoute.setParams({ dragonId, assignmentId });
-    TestBed.overrideComponent(PayPeriodCreate, {
-      set: { providers: [{ provide: HoursWorkedClient, useValue: mockHttpClient }] }
-    });
-    TestBed.overrideComponent(PayPeriodForm, {
-      set: { providers: [{ provide: HoursWorkedClient, useValue: mockHttpClient }] }
-    });
-    await TestBed
-      .configureTestingModule({
-        imports: [PayPeriodCreate],
-        providers: [ { provide: ActivatedRoute, useValue: mockActivatedRoute } ]
-      })
-      .compileComponents();
-    const fixture = TestBed.createComponent(PayPeriodCreate);
-    const component = fixture.componentInstance;
-    await fixture.whenStable();
-    fixture.detectChanges();
+    const fixture = await getFixture(dragonId, assignmentId, mockHttpClient);
+    const component = await getComponent(fixture);
 
     component.onCandidateSelect({ value: payPeriodStart });
     fixture.detectChanges();
@@ -406,25 +367,10 @@ describe('Pay Period Create Tests', () => {
       return of(Effect.fail(failBody) as Effect.Effect<ValidatedPayload<PayPeriod>, ValidatedForm<ValidationFailures>, never>);
     };
 
-    const mockActivatedRoute = new MockActivatedRoute();
-    mockActivatedRoute.setParams({ dragonId, assignmentId });
-    TestBed.overrideComponent(PayPeriodCreate, {
-      set: { providers: [{ provide: HoursWorkedClient, useValue: mockHttpClient }] }
-    });
-    TestBed.overrideComponent(PayPeriodForm, {
-      set: { providers: [{ provide: HoursWorkedClient, useValue: mockHttpClient }] }
-    });
-    await TestBed
-      .configureTestingModule({
-        imports: [PayPeriodCreate],
-        providers: [ { provide: ActivatedRoute, useValue: mockActivatedRoute } ]
-      })
-      .compileComponents();
-    const fixture = TestBed.createComponent(PayPeriodCreate);
-    const component = fixture.componentInstance;
-    await fixture.whenStable();
-    fixture.detectChanges();
+    const fixture = await getFixture(dragonId, assignmentId, mockHttpClient);
+    const component = await getComponent(fixture);
 
+    //Act
     component.onCandidateSelect({ value: payPeriodStart });
     fixture.detectChanges();
     await fixture.whenStable();
