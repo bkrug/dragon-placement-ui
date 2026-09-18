@@ -46,12 +46,14 @@ describe('Work Request Form Tests', () => {
     TestBed.overrideComponent(WorkRequestForm, {
       set: { providers: [{ provide: WorkRequestClient, useValue: mockHttpClient }] }
     });
-    TestBed.configureTestingModule({
-      providers: [ { provide: ActivatedRoute, useValue: mockActivatedRoute } ]
-    });
 
     //Act
-    await TestBed.configureTestingModule({ imports: [WorkRequestForm] }).compileComponents();
+    await TestBed
+      .configureTestingModule({
+        imports: [WorkRequestForm],
+        providers: [ { provide: ActivatedRoute, useValue: mockActivatedRoute } ]
+      })
+      .compileComponents();
     const fixture = TestBed.createComponent(WorkRequestForm);
     const component = fixture.componentInstance;
     await fixture.whenStable();
@@ -104,12 +106,14 @@ describe('Work Request Form Tests', () => {
     TestBed.overrideComponent(WorkRequestForm, {
       set: { providers: [{ provide: WorkRequestClient, useValue: mockHttpClient }] }
     });
-    TestBed.configureTestingModule({
-      providers: [ { provide: ActivatedRoute, useValue: mockActivatedRoute } ]
-    });
 
     //Act
-    await TestBed.configureTestingModule({ imports: [WorkRequestForm] }).compileComponents();
+    await TestBed
+      .configureTestingModule({
+        imports: [WorkRequestForm],
+        providers: [ { provide: ActivatedRoute, useValue: mockActivatedRoute } ]
+      })
+      .compileComponents();
     const fixture = TestBed.createComponent(WorkRequestForm);
     const component = fixture.componentInstance;
     await fixture.whenStable();
@@ -169,15 +173,17 @@ describe('Work Request Form Tests', () => {
 
     const mockActivatedRoute = new MockActivatedRoute();
     mockActivatedRoute.setParams({ workRequestId: recordId });
-    TestBed.configureTestingModule({
-      providers: [
-        { provide: WorkRequestClient, useValue: mockHttpClient },
-        { provide: ActivatedRoute, useValue: mockActivatedRoute }
-      ]
+    TestBed.overrideComponent(WorkRequestForm, {
+      set: { providers: [{ provide: WorkRequestClient, useValue: mockHttpClient }] }
     });
 
     //Act
-    await TestBed.configureTestingModule({ imports: [WorkRequestForm] }).compileComponents();
+    await TestBed
+      .configureTestingModule({
+        imports: [WorkRequestForm],
+        providers: [ { provide: ActivatedRoute, useValue: mockActivatedRoute } ]
+      })
+      .compileComponents();
     const fixture = TestBed.createComponent(WorkRequestForm);
     const component = fixture.componentInstance;
     await fixture.whenStable();
@@ -251,12 +257,14 @@ describe('Work Request Form Tests', () => {
     TestBed.overrideComponent(WorkRequestForm, {
       set: { providers: [{ provide: WorkRequestClient, useValue: mockHttpClient }] }
     });
-    TestBed.configureTestingModule({
-      providers: [ { provide: ActivatedRoute, useValue: mockActivatedRoute } ]
-    });
 
     //Act
-    await TestBed.configureTestingModule({ imports: [WorkRequestForm] }).compileComponents();
+    await TestBed
+      .configureTestingModule({
+        imports: [WorkRequestForm],
+        providers: [ { provide: ActivatedRoute, useValue: mockActivatedRoute } ]
+      })
+      .compileComponents();
     const fixture = TestBed.createComponent(WorkRequestForm);
     const component = fixture.componentInstance;
     await fixture.whenStable();

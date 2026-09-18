@@ -39,11 +39,11 @@ describe('DragonView', () => {
     };
     const mockActivatedRoute = new MockActivatedRoute();
     mockActivatedRoute.setParams({ dragonId: 15 });
+    TestBed.overrideComponent(DragonView, {
+      set: { providers: [{ provide: AssignmentHttpClient, useValue: mockHttpClient }] }
+    });
     TestBed.configureTestingModule({
-      providers: [
-        { provide: AssignmentHttpClient, useValue: mockHttpClient },
-        { provide: ActivatedRoute, useValue: mockActivatedRoute }
-      ]
+      providers: [ { provide: ActivatedRoute, useValue: mockActivatedRoute } ]
     });
     fixture = TestBed.createComponent(DragonView);
     component = fixture.componentInstance;

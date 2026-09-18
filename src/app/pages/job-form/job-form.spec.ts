@@ -54,15 +54,17 @@ describe('Job Form Tests', () => {
 
     const mockActivatedRoute = new MockActivatedRoute();
     mockActivatedRoute.setParams({});
-    TestBed.configureTestingModule({
-      providers: [
-        { provide: AssignmentHttpClient, useValue: mockHttpClient },
-        { provide: ActivatedRoute, useValue: mockActivatedRoute }
-      ]
+    TestBed.overrideComponent(JobForm, {
+      set: { providers: [{ provide: AssignmentHttpClient, useValue: mockHttpClient }] }
     });
 
     //Act
-    await TestBed.configureTestingModule({ imports: [JobForm] }).compileComponents();
+    await TestBed
+      .configureTestingModule({
+        imports: [JobForm],
+        providers: [ { provide: ActivatedRoute, useValue: mockActivatedRoute } ]
+      })
+      .compileComponents();
     const fixture = TestBed.createComponent(JobForm);
     const component = fixture.componentInstance;
     await fixture.whenStable();
@@ -141,15 +143,17 @@ describe('Job Form Tests', () => {
     const mockActivatedRoute = new MockActivatedRoute();
     const mockParams: Record<string, number> = { ['jobId']: recordId };
     mockActivatedRoute.setParams(mockParams);
-    TestBed.configureTestingModule({
-      providers: [
-        { provide: AssignmentHttpClient, useValue: mockHttpClient },
-        { provide: ActivatedRoute, useValue: mockActivatedRoute }
-      ]
+    TestBed.overrideComponent(JobForm, {
+      set: { providers: [{ provide: AssignmentHttpClient, useValue: mockHttpClient }] }
     });
 
     //Act
-    await TestBed.configureTestingModule({ imports: [JobForm] }).compileComponents();
+    await TestBed
+      .configureTestingModule({
+        imports: [JobForm],
+        providers: [ { provide: ActivatedRoute, useValue: mockActivatedRoute } ]
+      })
+      .compileComponents();
     const fixture = TestBed.createComponent(JobForm);
     const component = fixture.componentInstance;
     await fixture.whenStable();
@@ -229,15 +233,17 @@ describe('Job Form Tests', () => {
     const mockActivatedRoute = new MockActivatedRoute();
     const mockParams: Record<string, number> = { ['jobId']: recordId };
     mockActivatedRoute.setParams(mockParams);
-    TestBed.configureTestingModule({
-      providers: [
-        { provide: AssignmentHttpClient, useValue: mockHttpClient },
-        { provide: ActivatedRoute, useValue: mockActivatedRoute }
-      ]
+    TestBed.overrideComponent(JobForm, {
+      set: { providers: [{ provide: AssignmentHttpClient, useValue: mockHttpClient }] }
     });
 
     //Act
-    await TestBed.configureTestingModule({ imports: [JobForm] }).compileComponents();
+    await TestBed
+      .configureTestingModule({
+        imports: [JobForm],
+        providers: [ { provide: ActivatedRoute, useValue: mockActivatedRoute } ]
+      })
+      .compileComponents();
     const fixture = TestBed.createComponent(JobForm);
     const component = fixture.componentInstance;
     await fixture.whenStable();
