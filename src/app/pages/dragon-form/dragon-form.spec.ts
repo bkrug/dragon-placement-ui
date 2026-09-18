@@ -7,6 +7,7 @@ import { DragonCreateEdit } from '../../../poco/endpoint-request-bodies';
 import { Dragon, SkillTag } from '../../../poco/models';
 import { PagedData, ValidatedForm, ValidatedPayload } from '../../../poco/standard-responses';
 import { ValidationFailures } from '../../../poco/validation-failures';
+import { getValidatedPayload } from '../../../testHelpers/get-validated-payload';
 import { MockActivatedRoute } from '../../../testHelpers/MockActivatedRoute';
 import { DragonForm } from './dragon-form';
 
@@ -124,12 +125,7 @@ describe('Dragon Form Tests', () => {
 
     const mockHttpClient = new AssignmentHttpClient();
     mockHttpClient.getDragonWithJobs = () => {
-      return of({
-        isInternalError: false,
-        isSuccess: true,
-        validationFailures: [],
-        payload: JSON.parse(JSON.stringify(initialDbRecord))
-      } as ValidatedPayload<Dragon>);
+      return of(getValidatedPayload(initialDbRecord));
     };
 
     let actualRecordIdInPutRequest: number = 0;
@@ -137,12 +133,7 @@ describe('Dragon Form Tests', () => {
     mockHttpClient.putDragonForm = (dragonId: number, dragon: DragonCreateEdit) => {
       actualRecordIdInPutRequest = dragonId;
       actualModelInPutRequest = dragon;
-      const validatedPayload = {
-        isInternalError: false,
-        isSuccess: true,
-        validationFailures: [],
-        payload: JSON.parse(JSON.stringify(initialDbRecord))
-      } as ValidatedPayload<Dragon>;
+      const validatedPayload = getValidatedPayload(initialDbRecord);
       return of(Effect.succeed(validatedPayload) as Effect.Effect<ValidatedPayload<Dragon>, ValidatedForm<ValidationFailures>, never>);
     };
 
@@ -198,12 +189,7 @@ describe('Dragon Form Tests', () => {
 
     const mockHttpClient = new AssignmentHttpClient();
     mockHttpClient.getDragonWithJobs = () => {
-      return of({
-        isInternalError: false,
-        isSuccess: true,
-        validationFailures: [],
-        payload: JSON.parse(JSON.stringify(initialDbRecord))
-      } as ValidatedPayload<Dragon>);
+      return of(getValidatedPayload(initialDbRecord));
     };
 
     const validationFailures: ValidationFailures = {
@@ -266,12 +252,7 @@ describe('Dragon Form Tests', () => {
 
     const mockHttpClient = new AssignmentHttpClient();
     mockHttpClient.getDragonWithJobs = () => {
-      return of({
-        isInternalError: false,
-        isSuccess: true,
-        validationFailures: [],
-        payload: JSON.parse(JSON.stringify(initialDbRecord))
-      } as ValidatedPayload<Dragon>);
+      return of(getValidatedPayload(initialDbRecord));
     };
 
     mockHttpClient.putDragonForm = () => {

@@ -7,6 +7,7 @@ import { JobCreateEdit } from '../../../poco/endpoint-request-bodies';
 import { Job, SkillTag } from '../../../poco/models';
 import { PagedData, ValidatedForm, ValidatedPayload } from '../../../poco/standard-responses';
 import { ValidationFailures } from '../../../poco/validation-failures';
+import { getValidatedPayload } from '../../../testHelpers/get-validated-payload';
 import { MockActivatedRoute } from '../../../testHelpers/MockActivatedRoute';
 import { JobForm } from './job-form';
 
@@ -117,12 +118,7 @@ describe('Job Form Tests', () => {
 
     const mockHttpClient = new AssignmentHttpClient();
     mockHttpClient.getJob = () => {
-      return of({
-        isInternalError: false,
-        isSuccess: true,
-        validationFailures: [],
-        payload: JSON.parse(JSON.stringify(initialDbRecord))
-      } as ValidatedPayload<Job>);
+      return of(getValidatedPayload(initialDbRecord));
     };
 
     let actualRecordIdInPutRequest: number = 0;
@@ -130,12 +126,7 @@ describe('Job Form Tests', () => {
     mockHttpClient.putJobForm = (jobId: number, job: JobCreateEdit) => {
       actualRecordIdInPutRequest = jobId;
       actualModelInPutRequest = job;
-      const validatedPayload = {
-        isInternalError: false,
-        isSuccess: true,
-        validationFailures: [],
-        payload: JSON.parse(JSON.stringify(initialDbRecord))
-      } as ValidatedPayload<Job>;
+      const validatedPayload = getValidatedPayload(initialDbRecord);
       return of(Effect.succeed(validatedPayload) as Effect.Effect<ValidatedPayload<Job>, ValidatedForm<ValidationFailures>, never>);
     };
 
@@ -188,12 +179,7 @@ describe('Job Form Tests', () => {
 
     const mockHttpClient = new AssignmentHttpClient();
     mockHttpClient.getJob = () => {
-      return of({
-        isInternalError: false,
-        isSuccess: true,
-        validationFailures: [],
-        payload: JSON.parse(JSON.stringify(initialDbRecord))
-      } as ValidatedPayload<Job>);
+      return of(getValidatedPayload(initialDbRecord));
     };
 
     const validationFailures: ValidationFailures = {

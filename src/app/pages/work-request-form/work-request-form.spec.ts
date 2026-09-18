@@ -7,6 +7,7 @@ import { CreateCustomerAndWorkRequest, WorkRequestCreateEdit } from '../../../po
 import { Customer, WorkRequest } from '../../../poco/models';
 import { ValidatedForm, ValidatedPayload } from '../../../poco/standard-responses';
 import { ValidationFailures } from '../../../poco/validation-failures';
+import { getValidatedPayload } from '../../../testHelpers/get-validated-payload';
 import { MockActivatedRoute } from '../../../testHelpers/MockActivatedRoute';
 import { WorkRequestForm } from './work-request-form';
 
@@ -53,12 +54,7 @@ describe('Work Request Form Tests', () => {
     let actualBody = new CreateCustomerAndWorkRequest();
     mockHttpClient.postCustomerWithWorkRequestForm = (body: CreateCustomerAndWorkRequest) => {
       actualBody = body;
-      const validatedPayload = {
-        isInternalError: false,
-        isSuccess: true,
-        validationFailures: [],
-        payload: JSON.parse(JSON.stringify(new WorkRequest()))
-      } as ValidatedPayload<WorkRequest>;
+      const validatedPayload = getValidatedPayload(new WorkRequest());
       return of(Effect.succeed(validatedPayload) as Effect.Effect<ValidatedPayload<WorkRequest>, ValidatedForm<ValidationFailures>, never>);
     };
 
@@ -90,12 +86,7 @@ describe('Work Request Form Tests', () => {
     mockHttpClient.postWorkRequestForm = (customerId: number, body: WorkRequestCreateEdit) => {
       actualCustomerId = customerId;
       actualBody = body;
-      const validatedPayload = {
-        isInternalError: false,
-        isSuccess: true,
-        validationFailures: [],
-        payload: JSON.parse(JSON.stringify(new WorkRequest()))
-      } as ValidatedPayload<WorkRequest>;
+      const validatedPayload = getValidatedPayload(new WorkRequest());
       return of(Effect.succeed(validatedPayload) as Effect.Effect<ValidatedPayload<WorkRequest>, ValidatedForm<ValidationFailures>, never>);
     };
 
@@ -144,12 +135,7 @@ describe('Work Request Form Tests', () => {
     const mockHttpClient = new WorkRequestClient();
     mockSearchCustomers(mockHttpClient);
     mockHttpClient.getWorkRequest = () => {
-      return of({
-        isInternalError: false,
-        isSuccess: true,
-        validationFailures: [],
-        payload: JSON.parse(JSON.stringify(initialDbRecord))
-      } as ValidatedPayload<WorkRequest>);
+      return of(getValidatedPayload(initialDbRecord));
     };
 
     let actualRecordIdInPutRequest = 0;
@@ -157,12 +143,7 @@ describe('Work Request Form Tests', () => {
     mockHttpClient.putWorkRequestForm = (workRequestId: number, body: WorkRequestCreateEdit) => {
       actualRecordIdInPutRequest = workRequestId;
       actualBody = body;
-      const validatedPayload = {
-        isInternalError: false,
-        isSuccess: true,
-        validationFailures: [],
-        payload: JSON.parse(JSON.stringify(initialDbRecord))
-      } as ValidatedPayload<WorkRequest>;
+      const validatedPayload = getValidatedPayload(initialDbRecord);
       return of(Effect.succeed(validatedPayload) as Effect.Effect<ValidatedPayload<WorkRequest>, ValidatedForm<ValidationFailures>, never>);
     };
 
@@ -199,12 +180,7 @@ describe('Work Request Form Tests', () => {
       postCallCount++;
       actualPostCustomerId = customerId;
       actualPostBody = body;
-      const validatedPayload = {
-        isInternalError: false,
-        isSuccess: true,
-        validationFailures: [],
-        payload: JSON.parse(JSON.stringify(Object.assign(new WorkRequest(), { workRequestId: createdWorkRequestId, customerId })))
-      } as ValidatedPayload<WorkRequest>;
+      const validatedPayload = getValidatedPayload(Object.assign(new WorkRequest(), { workRequestId: createdWorkRequestId, customerId }));
       return of(Effect.succeed(validatedPayload) as Effect.Effect<ValidatedPayload<WorkRequest>, ValidatedForm<ValidationFailures>, never>);
     };
 
@@ -215,12 +191,7 @@ describe('Work Request Form Tests', () => {
       putCallCount++;
       actualPutWorkRequestId = workRequestId;
       actualPutBody = body;
-      const validatedPayload = {
-        isInternalError: false,
-        isSuccess: true,
-        validationFailures: [],
-        payload: JSON.parse(JSON.stringify(Object.assign(new WorkRequest(), { workRequestId })))
-      } as ValidatedPayload<WorkRequest>;
+      const validatedPayload = getValidatedPayload(Object.assign(new WorkRequest(), { workRequestId }));
       return of(Effect.succeed(validatedPayload) as Effect.Effect<ValidatedPayload<WorkRequest>, ValidatedForm<ValidationFailures>, never>);
     };
 
