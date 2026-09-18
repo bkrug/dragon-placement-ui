@@ -3,7 +3,12 @@ import { catchError, Observable, of, Subject, switchMap, takeUntil } from 'rxjs'
 import { fromFetch } from 'rxjs/fetch';
 import { PagedData, ValidatedForm, ValidatedPayload, ValidatedResponse } from '../poco/standard-responses';
 
-//TODO: Research if usings async/await in the various switchMap() calls will improve thi code.
+//Subclasses of BaseHttpClient are not provided at the "root".
+//That is because it is because the unsubscribe() method is almost like a dispose() method.
+//If two components on the same page use the same HttpClient, but they disappear at different times,
+//it is not good to make separate calls to unsubscribe().
+//
+//TODO: Research if usings async/await in the various switchMap() calls will improve this code.
 //AI claims it will, but I couldn't tell if it knew what it was talking about.
 export class BaseHttpClient {
   private readonly unsubscribeSubject = new Subject<void>();

@@ -1,4 +1,5 @@
-import { Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
+import { Component, computed, inject, OnDestroy } from '@angular/core';
+import { rxResource } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AssignmentHttpClient } from '../../../httpClients/assignment-http-client';
 import { JobInclusions } from '../../../misc/enums';
@@ -15,23 +16,21 @@ import { LocalNumberField, LocalSelectField, LocalSubmitButton, LocalTagField, L
   templateUrl: './dragon-form.html',
   styleUrl: './dragon-form.scss',
 })
-export class DragonForm extends EntityFormBase<Dragon> implements OnInit, OnDestroy {
+export class DragonForm extends EntityFormBase<Dragon> implements OnDestroy {
   private httpClient = inject(AssignmentHttpClient);
 
   constructor() {
     super('dragonId');
   }
 
-  ngOnInit(): void {
-    //TODO: Consider making HTTP requests from rxResource() instead of ngOnInit()
-    this.httpClient.getAllSkills()
-      .subscribe(pagedData => this.skillTags.set(pagedData.data.map(this.toTagOption)));
-    if (this.entityId)
-      this.httpClient.getDragonWithJobs(this.entityId, JobInclusions.None)
-        .subscribe(validatedResponse => {
-          this.formGroup.set(this.createDragonFormGroup(validatedResponse.payload));
-        });
-  }
+  private skillsResource = rxResource({
+    stream: () => this.httpClient.getAllSkills(),
+  });
+
+  private dragonResource = rxResource({
+    params: () => this.entityId ?? undefined,
+    stream: ({ params }) => this.httpClient.getDragonWithJobs(params, JobInclusions.None),
+  });
 
   ngOnDestroy(): void {
     this.httpClient.unsubscribe();
@@ -47,9 +46,9 @@ export class DragonForm extends EntityFormBase<Dragon> implements OnInit, OnDest
 
   skillLevels = globalFightingSkillOptions;
 
-  skillTags = signal([] as TagOption[]);
+  skillTags = computed(() => this.skillsResource.value()?.data.map(this.toTagOption) ?? [] as TagOption[]);
 
-  formGroup = signal(this.createDragonFormGroup(new Dragon()));
+  formGroup = computed(() => this.createDragonFormGroup(this.dragonResource.value()?.payload ?? new Dragon()));
 
   private createDragonFormGroup(payload: Dragon) {
     return new FormGroup({

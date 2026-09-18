@@ -1,4 +1,4 @@
-import { Directive, WritableSignal, inject, signal } from '@angular/core';
+import { Directive, inject, signal, Signal } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Effect } from 'effect';
@@ -24,7 +24,7 @@ export abstract class EntityFormBase<TDb extends object> {
     });
   }
 
-  abstract formGroup: WritableSignal<FormGroup>;
+  abstract formGroup: Signal<FormGroup>;
 
   protected abstract makeSubmissionRequest(): Observable<Effect.Effect<ValidatedPayload<TDb>, ValidatedForm<ValidationFailures>, never>>;
   protected abstract handleSubmissionSuccess(payload: TDb): void;
