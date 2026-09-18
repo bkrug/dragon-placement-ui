@@ -26,6 +26,7 @@ export class ManageJob implements OnInit, OnDestroy {
 
   ngOnInit() {
     //TODO: Consider making HTTP requests from rxResource() instead of ngOnInit()
+    //TODO: Read these query parameters through signals, like in pay-period-create.ts.
     this.activatedRoute.params.subscribe(params => {
       const jobId = params['jobId'] || null;
       this.httpClient.getJob(jobId).subscribe(validatedPayload => {

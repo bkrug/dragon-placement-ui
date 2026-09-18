@@ -1,6 +1,7 @@
 import { DatePipe } from '@angular/common';
-import { Component, inject, OnDestroy, signal } from '@angular/core';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { Component, computed, inject, OnDestroy, signal } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { ActivatedRoute, Params, RouterLink } from '@angular/router';
 import { TableLazyLoadEvent, TableModule } from 'primeng/table';
 import { PAGE_SIZE } from '../../../global-consts';
 import { HoursWorkedClient } from '../../../httpClients/hours-worked-http-client';
@@ -20,15 +21,10 @@ export class PayPeriodList implements OnDestroy {
   payPeriods = signal<PayPeriod[]>([]);
   totalRecords = signal(0);
   readonly pageSize = PAGE_SIZE;
-  dragonId = signal(0);
-  assignmentId = signal(0);
 
-  constructor() {
-    this.activatedRoute.params.subscribe(params => {
-      this.dragonId.set(params['dragonId']);
-      this.assignmentId.set(params['assignmentId']);
-    });
-  }
+  private routeParams = toSignal(this.activatedRoute.params, { initialValue: {} as Params });
+  dragonId = computed(() => this.routeParams()['dragonId']);
+  assignmentId = computed(() => this.routeParams()['assignmentId']);
 
   ngOnDestroy(): void {
     this.httpClient.unsubscribe();
