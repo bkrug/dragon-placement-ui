@@ -1,12 +1,13 @@
 import { DatePipe } from '@angular/common';
-import { Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
+import { Component, computed, inject, OnDestroy, signal } from '@angular/core';
+import { rxResource } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { TableModule } from 'primeng/table';
 import { PAGE_SIZE } from '../../../global-consts';
 import { AssignmentHttpClient } from '../../../httpClients/assignment-http-client';
 import { JobInclusions } from '../../../misc/enums';
 import { mapDragonToDisplayDragon } from '../../../misc/transformers';
-import { Assignment, DisplayDragon } from '../../../poco/models';
+import { Assignment, Dragon } from '../../../poco/models';
 
 @Component({
   selector: 'app-dragon-view',
@@ -15,32 +16,28 @@ import { Assignment, DisplayDragon } from '../../../poco/models';
   templateUrl: './dragon-view.html',
   styleUrl: './dragon-view.scss',
 })
-export class DragonView implements OnInit, OnDestroy {
+export class DragonView implements OnDestroy {
   private dragonHttpClient = inject(AssignmentHttpClient);
   private activatedRoute = inject(ActivatedRoute);
 
   private dragonId: number = 0;
-  haveDragon = signal(false);
-  dragon = signal(new DisplayDragon());
+  private paramsSubscription = this.activatedRoute.params.subscribe((params) => {
+    this.dragonId = params['dragonId'];
+  });
+
   selectedAssignment = signal(null as Assignment | null);
   readonly pageSize = PAGE_SIZE;
 
-  constructor() {
-    this.activatedRoute.params.subscribe((params) => {
-      this.dragonId = params['dragonId'];
-    });
-  }
+  private dragonResource = rxResource({
+    params: () => this.dragonId,
+    stream: ({ params }) => this.dragonHttpClient.getDragonWithJobs(params, JobInclusions.CurrentAndFuture),
+  });
 
-  ngOnInit(): void {
-    //TODO: Consider making HTTP requests from rxResource() instead of ngOnInit()
-    this.dragonHttpClient.getDragonWithJobs(this.dragonId, JobInclusions.CurrentAndFuture)
-      .subscribe(validatedResponse => {
-        this.dragon.set(mapDragonToDisplayDragon(validatedResponse.payload));
-        this.haveDragon.set(true);
-      });
-  }
+  haveDragon = computed(() => this.dragonResource.value() !== undefined);
+  dragon = computed(() => mapDragonToDisplayDragon(this.dragonResource.value()?.payload ?? new Dragon()));
 
   ngOnDestroy(): void {
     this.dragonHttpClient.unsubscribe();
+    this.paramsSubscription.unsubscribe();
   }
 }
