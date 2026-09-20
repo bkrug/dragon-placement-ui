@@ -22,7 +22,6 @@ export class DragonTable implements OnInit, OnDestroy {
   selectedJob = input<DisplayJob | null>();
   dragonTableType = input<DragonTableType>();
 
-  //TODO: Why not use output() here instead of @Output()?
   assignedDragon = output<void>();
   unassignedDragon = output<void>();
 
