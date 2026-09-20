@@ -1,4 +1,5 @@
-import { Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
+import { Component, computed, inject, OnDestroy, OnInit, signal } from '@angular/core';
+import { rxResource } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AssignmentHttpClient } from '../../../httpClients/assignment-http-client';
 import { getDateFromDateTimeString } from '../../../misc/transformers';
@@ -14,37 +15,27 @@ import { LocalNumberField, LocalStringDateField, LocalSubmitButton, LocalTagFiel
   templateUrl: './job-form.html',
   styleUrl: './job-form.scss',
 })
-export class JobForm extends EntityFormBase<Job> implements OnInit, OnDestroy {
+export class JobForm extends EntityFormBase<Job> implements OnDestroy {
   private httpClient = inject(AssignmentHttpClient);
 
   constructor() {
     super('jobId');
   }
 
-  ngOnInit(): void {
-    //TODO: Consider making HTTP requests from rxResource() instead of ngOnInit()
-    this.httpClient.getAllSkills()
-      .subscribe(pagedData => this.skillTags.set(pagedData.data.map(this.toTagOption)));
-    if (this.entityId)
-      this.httpClient.getJob(this.entityId)
-        .subscribe(validatedResponse => {
-          this.formGroup.set(this.getFormGroup(validatedResponse.payload));
-        });
-  }
-
   ngOnDestroy(): void {
     this.httpClient.unsubscribe();
   }
+  
+  private skillsResource = rxResource({
+    stream: () => this.httpClient.getAllSkills(),
+  });
 
-  toTagOption(skillTag: SkillTag) { return { value: skillTag.skillTagId, display: skillTag.skillName } as TagOption; }
-  toSkillTagId(tagOption: TagOption) {
-    //HACK: Despite the strict typing of typescript, testing reveals "tagOption" can be a number.
-    return (typeof tagOption === 'number')
-      ? tagOption as number
-      : tagOption.value;
-  }
-
-  skillTags = signal([] as TagOption[]);
+  skillTags = computed(() => this.skillsResource.value()?.data.map(this.toTagOption) ?? [] as TagOption[]);
+  
+  private dragonResource = rxResource({
+    params: () => this.entityId ?? undefined,
+    stream: ({ params }) => this.httpClient.getJob(params),
+  });
 
   getFormGroup(payload: Job) {
     return new FormGroup({
@@ -55,9 +46,17 @@ export class JobForm extends EntityFormBase<Job> implements OnInit, OnDestroy {
       endDate: new FormControl<string | null>(this.entityId ? getDateFromDateTimeString(payload.endDate) : null),
       skillTags: new FormControl(payload.skillTags.map(this.toTagOption))
     })
-  }
+  }  
 
-  formGroup = signal(this.getFormGroup(new Job()));
+  formGroup = computed(() => this.getFormGroup(this.dragonResource.value()?.payload ?? new Job()));
+
+  toTagOption(skillTag: SkillTag) { return { value: skillTag.skillTagId, display: skillTag.skillName } as TagOption; }
+  toSkillTagId(tagOption: TagOption) {
+    //HACK: Despite the strict typing of typescript, testing reveals "tagOption" can be a number.
+    return (typeof tagOption === 'number')
+      ? tagOption as number
+      : tagOption.value;
+  }
 
   protected override makeSubmissionRequest() {
     const values = this.formGroup().value;
